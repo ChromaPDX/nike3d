@@ -18,6 +18,9 @@
 #define BOARD_LENGTH 10
 #define BOARD_WIDTH 7
 
+#define TILE_WIDTH 96
+#define TILE_HEIGHT 112
+
 // UI COLORS
 
 #define V2RED [SKColor colorWithRed:255./255. green:42./255. blue:0./255. alpha:1.]
