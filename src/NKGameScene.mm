@@ -45,7 +45,7 @@
     [self addChild:_pivot];
 
     
-    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKSpriteNode texNamed:@"GAMELOGO.png"] color:nil size:CGSizeMake(TILE_WIDTH*4, TILE_WIDTH*5.2)];
+    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureNamed:@"GAMELOGO.png"] color:nil size:CGSizeMake(TILE_WIDTH*4, TILE_WIDTH*5.2)];
     //[logo setPosition:CGPointMake(self.size.width*.5, self.size.height*.5)];
     [_pivot addChild:logo];
     [logo setZPosition:-3];
@@ -55,7 +55,7 @@
     
     [_pivot addChild:_boardScroll];
     
-    _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKSpriteNode texNamed:@"Background_Field.png"] color:Nil size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + TILE_WIDTH*.7, BOARD_LENGTH*TILE_HEIGHT + TILE_HEIGHT/2.)];
+    _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKTexture textureNamed:@"Background_Field.png"] color:Nil size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + TILE_WIDTH*.7, BOARD_LENGTH*TILE_HEIGHT + TILE_HEIGHT/2.)];
     
     [_boardScroll addChild:_gameBoardNode];
     
@@ -76,19 +76,19 @@
         }
     }
     
-    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKSpriteNode texNamed:@"Field_Layer01.png"] color:nil size:_gameBoardNode.size];
+    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureNamed:@"Field_Layer01.png"] color:nil size:_gameBoardNode.size];
     
     [_gameBoardNode addChild:lines];
     [lines set3dPosition:ofPoint(0,0,5)];
     
-    NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKSpriteNode texNamed:@"Field_Layer02.png"] color:nil size:_gameBoardNode.size];
+    NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureNamed:@"Field_Layer02.png"] color:nil size:_gameBoardNode.size];
     
     [_gameBoardNode addChild:glow];
     [glow set3dPosition:ofPoint(0,0,10)];
     
     
     for (int i = 0; i < 7; i++){
-    PlayerNode *player1 = [[PlayerNode alloc] initWithTexture:[NKSpriteNode texNamed:@"PlayerIndicator_PlayerON.png"] color:nil size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
+    PlayerNode *player1 = [[PlayerNode alloc] initWithTexture:[NKTexture textureNamed:@"PlayerIndicator_PlayerON.png"] color:nil size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
     
     [_gameTiles[[BoardLocation pX:i Y:rand()%7]] addChild:player1];
     

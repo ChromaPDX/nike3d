@@ -14,6 +14,6 @@
 // MODEL
 @property (nonatomic, strong) BoardLocation *location;
 
--(instancetype)initWithTexture:(ofTexture *)texture color:(UIColor *)color size:(CGSize)size;
+-(instancetype)initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size;
 
 @end

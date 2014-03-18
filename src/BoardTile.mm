@@ -10,7 +10,7 @@
 
 @implementation BoardTile
 
--(instancetype)initWithTexture:(ofTexture*)texture color:(UIColor *)color size:(CGSize)size {
+-(instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(CGSize)size {
     self = [super initWithTexture:texture color:color size:size];
     if (self){
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
