@@ -131,6 +131,7 @@
 		61D0177318D7CD4C0085D7F9 /* NKGaussianZ.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61D0175118D7CD4C0085D7F9 /* NKGaussianZ.mm */; };
 		61D0177418D7CD4C0085D7F9 /* NKZBlur.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61D0175418D7CD4C0085D7F9 /* NKZBlur.mm */; };
 		61D0177E18D7CD7E0085D7F9 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D0177D18D7CD7D0085D7F9 /* CoreText.framework */; };
+		61F9C4F018D7D3DB005F849D /* NKCoreTextNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F9C4EF18D7D3DB005F849D /* NKCoreTextNode.m */; };
 		678E130817951530005B6D19 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130717951530005B6D19 /* Icon@2x.png */; };
 		678E130A17951536005B6D19 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130917951536005B6D19 /* Icon.png */; };
 		678E130C1795153C005B6D19 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130B1795153C005B6D19 /* Default.png */; };
@@ -323,6 +324,8 @@
 		61D0175318D7CD4C0085D7F9 /* NKZBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKZBlur.h; sourceTree = "<group>"; };
 		61D0175418D7CD4C0085D7F9 /* NKZBlur.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKZBlur.mm; sourceTree = "<group>"; };
 		61D0177D18D7CD7D0085D7F9 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		61F9C4EE18D7D3DB005F849D /* NKCoreTextNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCoreTextNode.h; sourceTree = "<group>"; };
+		61F9C4EF18D7D3DB005F849D /* NKCoreTextNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKCoreTextNode.m; sourceTree = "<group>"; };
 		678E130717951530005B6D19 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "bin/data/Icon@2x.png"; sourceTree = "<group>"; };
 		678E130917951536005B6D19 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = bin/data/Icon.png; sourceTree = "<group>"; };
 		678E130B1795153C005B6D19 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = bin/data/Default.png; sourceTree = "<group>"; };
@@ -640,6 +643,8 @@
 		61D0173218D7CD4C0085D7F9 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				61F9C4EE18D7D3DB005F849D /* NKCoreTextNode.h */,
+				61F9C4EF18D7D3DB005F849D /* NKCoreTextNode.m */,
 				61D0173318D7CD4C0085D7F9 /* NKLabelNode.h */,
 				61D0173418D7CD4C0085D7F9 /* NKLabelNode.mm */,
 				61D0173518D7CD4C0085D7F9 /* NKNode.h */,
@@ -949,6 +954,7 @@
 				61D0176B18D7CD4C0085D7F9 /* NKScrollNode.mm in Sources */,
 				E4D8936F11527B74007E1F53 /* ofApp.mm in Sources */,
 				61D0176D18D7CD4C0085D7F9 /* NKSpriteNode.mm in Sources */,
+				61F9C4F018D7D3DB005F849D /* NKCoreTextNode.m in Sources */,
 				618E1D3F18C024200038AD46 /* NKGameScene.mm in Sources */,
 				618E1D3518C0217F0038AD46 /* BoardLocation.m in Sources */,
 				61D0176E18D7CD4C0085D7F9 /* NKTexture.mm in Sources */,
