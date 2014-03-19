@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <GameKit/GameKit.h>
-
-#import "GlobalTypes.h"
 #import "CardTypes.h"
+#import "GlobalTypes.h"
+
 
 #define NEWPLAYER @"New Player"
 

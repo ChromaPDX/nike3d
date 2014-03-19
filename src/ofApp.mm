@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "NikeNodeHeaders.h"
+#include "Game.h"
 
 // HERE IS AN EXAMPLE SUBCLASS OF A TABLE VIEW CELL
 
@@ -16,7 +17,13 @@ void ofApp::setup(){
     
     lastTime = CFAbsoluteTimeGetCurrent();
     
-    scene = [[NKGameScene alloc]initWithSize:CGSizeMake(ofGetWidth(), ofGetHeight())];
+    game = [[Game alloc] init];
+    
+    scene = [[GameScene alloc]initWithSize:CGSizeMake(ofGetWidth(), ofGetHeight())];
+    
+    game.gameScene = scene;
+    
+    [game startSinglePlayerGame];
     
     setupCM();
 

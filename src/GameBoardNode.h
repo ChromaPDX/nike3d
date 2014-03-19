@@ -25,17 +25,6 @@ typedef enum Z_INDEX_CHART {
     
 } Z_INDEX_CHART;
 
-int TILE_SIZE;
-int THICK_LINE;
-int MED_LINE;
-float DRIBBLE_WIDTH;
-float THUMB_OFFSET;
-float UI_MULT;
-float WINDOW_WIDTH;
-float WINDOW_HEIGHT;
-float ANCHOR_WIDTH;
-float PARTICLE_SCALE;
-
 @interface GameBoardNode : NKSpriteNode
 
 //@property (nonatomic, strong) ActionWindow *actionWindow;

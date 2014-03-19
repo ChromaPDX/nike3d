@@ -5,7 +5,8 @@
 #import "ofxNodeKitten.h"
 #import <CoreMotion/CoreMotion.h>
 
-@class NKGameScene;
+@class GameScene;
+@class Game;
 
 class ofApp : public ofxiOSApp {
     
@@ -37,7 +38,8 @@ public:
     
     NSTimeInterval lastTime;
     
-    NKGameScene *scene;
+    Game *game;
+    GameScene *scene;
     NKNode *pivot;
     NKNode *emitter;
     

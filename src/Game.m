@@ -100,6 +100,7 @@
     
     [_me setColor:[UIColor colorWithRed:0.0 green:80/255. blue:249/255. alpha:1.0]];
     [_opponent setColor:[UIColor colorWithRed:1.0 green:40/255. blue:0 alpha:1.0]];
+    
     [_me setTeamSide:1];
     [_opponent setTeamSide:0];
     
@@ -112,8 +113,9 @@
     
     singlePlayer = 1;
     
+
     _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
-                                                                 @"current player":_match.currentParticipant.playerID,
+                                                                 @"current player":@"single player game",
                                                                  @"rtmatchid":uid,
                                                                  @"boardLength": [NSNumber numberWithInt:BOARD_LENGTH],
                                                                  @"singlePlayerMode": [NSNumber numberWithBool:YES]
@@ -129,15 +131,20 @@
     
     [_gameScene setupGameBoard];
     
+    NSLog(@"gameboard setup");
+    
     _history = [NSMutableArray array];
     _thisTurnActions = [NSMutableArray array];
     gameBoard = [NSMutableDictionary dictionary];
     
     [self setupNewPlayers];
     
-    [self addStartTurnEventsToAction:_currentAction];
+    NSLog(@"added new players");
     
+    [self addStartTurnEventsToAction:_currentAction];
     [self refreshGameBoard];
+    
+     NSLog(@"running new game action");
     
     [self performAction:_currentAction record:YES animate:YES];
     

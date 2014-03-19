@@ -11,7 +11,14 @@
 
 #import "GameBoardNode.h"
 #import "BoardTile.h"
-#import "NKGameScene.h"
-#import "PlayerNode.h"
+#import "GameScene.h"]
+
+#import "ActionWindow.h"
+
+#import "PlayerSprite.h"
+#import "CardSprite.h"
+#import "ButtonSprite.h"
+#import "BallSprite.h"
+#import "AlertSprite.h"
 
 #import "MiniGames.h"

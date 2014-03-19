@@ -22,7 +22,7 @@
 
 -(void)startMiniGame {
     _miniMaze = new MiniMaze();
-    _miniMaze->objDelegate = (NKGameScene*)self.scene;
+    _miniMaze->objDelegate = (GameScene*)self.scene;
     ofRectangle d = [self getDrawFrame];
     _miniMaze->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8);
     

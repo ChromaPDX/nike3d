@@ -19,7 +19,11 @@
 		6116FB2918C554B600BBD1CB /* Field_Layer03.png in Resources */ = {isa = PBXBuildFile; fileRef = 6116FB2318C554B600BBD1CB /* Field_Layer03.png */; };
 		6116FB2A18C554B600BBD1CB /* PlayerIndicator_PlayerOFF.png in Resources */ = {isa = PBXBuildFile; fileRef = 6116FB2418C554B600BBD1CB /* PlayerIndicator_PlayerOFF.png */; };
 		6116FB2B18C554B600BBD1CB /* PlayerIndicator_PlayerON.png in Resources */ = {isa = PBXBuildFile; fileRef = 6116FB2518C554B600BBD1CB /* PlayerIndicator_PlayerON.png */; };
-		61341FB818C69407003D7C9E /* PlayerNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61341FB718C69407003D7C9E /* PlayerNode.mm */; };
+		6124554B18D91866003FF53D /* NKEmitterNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6124554A18D91866003FF53D /* NKEmitterNode.mm */; };
+		6124554E18D91DB3003FF53D /* ActionWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6124554D18D91DB3003FF53D /* ActionWindow.mm */; };
+		6124555118D91EB4003FF53D /* CardSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6124555018D91EB4003FF53D /* CardSprite.mm */; };
+		6124555418D92155003FF53D /* ButtonSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6124555318D92155003FF53D /* ButtonSprite.mm */; };
+		61341FB818C69407003D7C9E /* PlayerSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61341FB718C69407003D7C9E /* PlayerSprite.mm */; };
 		61341FBA18C6A4A3003D7C9E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61341FB918C6A4A3003D7C9E /* Images.xcassets */; };
 		6134200F18C6A4B1003D7C9E /* BoostButton_Empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 61341FBC18C6A4B1003D7C9E /* BoostButton_Empty.png */; };
 		6134201018C6A4B1003D7C9E /* BoostButton_Full.png in Resources */ = {isa = PBXBuildFile; fileRef = 61341FBD18C6A4B1003D7C9E /* BoostButton_Full.png */; };
@@ -109,10 +113,13 @@
 		6134208718C6ABA4003D7C9E /* theball.png in Resources */ = {isa = PBXBuildFile; fileRef = 6134207D18C6ABA4003D7C9E /* theball.png */; };
 		6134208818C6ABA4003D7C9E /* thirtypercentwhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 6134207E18C6ABA4003D7C9E /* thirtypercentwhite.png */; };
 		6134208E18C6ABD4003D7C9E /* MiniGameNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */; };
+		617BDD0718D92491005EC4B1 /* BallSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0618D92491005EC4B1 /* BallSprite.mm */; };
+		617BDD0A18D9298E005EC4B1 /* AlertSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0918D9298E005EC4B1 /* AlertSprite.mm */; };
+		6183B7D518D90B1F002D426F /* touch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6183B7D418D90B1F002D426F /* touch.wav */; };
 		618E1D3218C01E620038AD46 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 618E1D3118C01E620038AD46 /* CoreMotion.framework */; };
 		618E1D3518C0217F0038AD46 /* BoardLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 618E1D3418C0217F0038AD46 /* BoardLocation.m */; };
 		618E1D3918C0231C0038AD46 /* GameBoardNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 618E1D3818C0231C0038AD46 /* GameBoardNode.mm */; };
-		618E1D3F18C024200038AD46 /* NKGameScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 618E1D3E18C024200038AD46 /* NKGameScene.mm */; };
+		618E1D3F18C024200038AD46 /* GameScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 618E1D3E18C024200038AD46 /* GameScene.mm */; };
 		61B289D418D8FAC700102278 /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B289D318D8FAC700102278 /* Game.m */; };
 		61B289DB18D8FAEB00102278 /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B289D618D8FAEB00102278 /* Card.m */; };
 		61B289DC18D8FAEB00102278 /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B289D818D8FAEB00102278 /* Deck.m */; };
@@ -207,8 +214,16 @@
 		6116FB2318C554B600BBD1CB /* Field_Layer03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Field_Layer03.png; sourceTree = "<group>"; };
 		6116FB2418C554B600BBD1CB /* PlayerIndicator_PlayerOFF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayerIndicator_PlayerOFF.png; sourceTree = "<group>"; };
 		6116FB2518C554B600BBD1CB /* PlayerIndicator_PlayerON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayerIndicator_PlayerON.png; sourceTree = "<group>"; };
-		61341FB618C69407003D7C9E /* PlayerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerNode.h; sourceTree = "<group>"; };
-		61341FB718C69407003D7C9E /* PlayerNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayerNode.mm; sourceTree = "<group>"; };
+		6124554918D91866003FF53D /* NKEmitterNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKEmitterNode.h; sourceTree = "<group>"; };
+		6124554A18D91866003FF53D /* NKEmitterNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKEmitterNode.mm; sourceTree = "<group>"; };
+		6124554C18D91DB3003FF53D /* ActionWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActionWindow.h; path = src/ActionWindow.h; sourceTree = "<group>"; };
+		6124554D18D91DB3003FF53D /* ActionWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ActionWindow.mm; path = src/ActionWindow.mm; sourceTree = "<group>"; };
+		6124554F18D91EB4003FF53D /* CardSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardSprite.h; sourceTree = "<group>"; };
+		6124555018D91EB4003FF53D /* CardSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardSprite.mm; sourceTree = "<group>"; };
+		6124555218D92155003FF53D /* ButtonSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonSprite.h; sourceTree = "<group>"; };
+		6124555318D92155003FF53D /* ButtonSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ButtonSprite.mm; sourceTree = "<group>"; };
+		61341FB618C69407003D7C9E /* PlayerSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerSprite.h; sourceTree = "<group>"; };
+		61341FB718C69407003D7C9E /* PlayerSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayerSprite.mm; sourceTree = "<group>"; };
 		61341FB918C6A4A3003D7C9E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		61341FBC18C6A4B1003D7C9E /* BoostButton_Empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BoostButton_Empty.png; sourceTree = "<group>"; };
 		61341FBD18C6A4B1003D7C9E /* BoostButton_Full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BoostButton_Full.png; sourceTree = "<group>"; };
@@ -301,6 +316,11 @@
 		6134208918C6ABB3003D7C9E /* MiniGames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniGames.h; sourceTree = "<group>"; };
 		6134208C18C6ABD4003D7C9E /* MiniGameNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniGameNode.h; path = mini_games/MiniGameNode.h; sourceTree = SOURCE_ROOT; };
 		6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniGameNode.mm; path = mini_games/MiniGameNode.mm; sourceTree = SOURCE_ROOT; };
+		617BDD0518D92491005EC4B1 /* BallSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallSprite.h; sourceTree = "<group>"; };
+		617BDD0618D92491005EC4B1 /* BallSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallSprite.mm; sourceTree = "<group>"; };
+		617BDD0818D9298E005EC4B1 /* AlertSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertSprite.h; sourceTree = "<group>"; };
+		617BDD0918D9298E005EC4B1 /* AlertSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlertSprite.mm; sourceTree = "<group>"; };
+		6183B7D418D90B1F002D426F /* touch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = touch.wav; sourceTree = "<group>"; };
 		618E1D3118C01E620038AD46 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		618E1D3318C0217F0038AD46 /* BoardLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardLocation.h; sourceTree = "<group>"; };
 		618E1D3418C0217F0038AD46 /* BoardLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardLocation.m; sourceTree = "<group>"; };
@@ -308,8 +328,8 @@
 		618E1D3718C0231C0038AD46 /* GameBoardNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameBoardNode.h; path = src/GameBoardNode.h; sourceTree = "<group>"; };
 		618E1D3818C0231C0038AD46 /* GameBoardNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GameBoardNode.mm; path = src/GameBoardNode.mm; sourceTree = "<group>"; };
 		618E1D3A18C023370038AD46 /* NikeNodeHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NikeNodeHeaders.h; path = src/NikeNodeHeaders.h; sourceTree = "<group>"; };
-		618E1D3D18C024200038AD46 /* NKGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NKGameScene.h; path = src/NKGameScene.h; sourceTree = "<group>"; };
-		618E1D3E18C024200038AD46 /* NKGameScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NKGameScene.mm; path = src/NKGameScene.mm; sourceTree = "<group>"; };
+		618E1D3D18C024200038AD46 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameScene.h; path = src/GameScene.h; sourceTree = "<group>"; };
+		618E1D3E18C024200038AD46 /* GameScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GameScene.mm; path = src/GameScene.mm; sourceTree = "<group>"; };
 		61B289D218D8FAC700102278 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		61B289D318D8FAC700102278 /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Game.m; sourceTree = "<group>"; };
 		61B289D518D8FAEB00102278 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
@@ -493,10 +513,20 @@
 			isa = PBXGroup;
 			children = (
 				618E1D3A18C023370038AD46 /* NikeNodeHeaders.h */,
-				618E1D3D18C024200038AD46 /* NKGameScene.h */,
-				618E1D3E18C024200038AD46 /* NKGameScene.mm */,
-				61341FB618C69407003D7C9E /* PlayerNode.h */,
-				61341FB718C69407003D7C9E /* PlayerNode.mm */,
+				618E1D3D18C024200038AD46 /* GameScene.h */,
+				618E1D3E18C024200038AD46 /* GameScene.mm */,
+				6124554C18D91DB3003FF53D /* ActionWindow.h */,
+				6124554D18D91DB3003FF53D /* ActionWindow.mm */,
+				6124555218D92155003FF53D /* ButtonSprite.h */,
+				6124555318D92155003FF53D /* ButtonSprite.mm */,
+				6124554F18D91EB4003FF53D /* CardSprite.h */,
+				6124555018D91EB4003FF53D /* CardSprite.mm */,
+				617BDD0818D9298E005EC4B1 /* AlertSprite.h */,
+				617BDD0918D9298E005EC4B1 /* AlertSprite.mm */,
+				61341FB618C69407003D7C9E /* PlayerSprite.h */,
+				61341FB718C69407003D7C9E /* PlayerSprite.mm */,
+				617BDD0518D92491005EC4B1 /* BallSprite.h */,
+				617BDD0618D92491005EC4B1 /* BallSprite.mm */,
 				618E1D3718C0231C0038AD46 /* GameBoardNode.h */,
 				618E1D3818C0231C0038AD46 /* GameBoardNode.mm */,
 				6116FB1A18C54CC200BBD1CB /* BoardTile.h */,
@@ -531,6 +561,7 @@
 		6116FB1F18C554B600BBD1CB /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				6183B7D318D90B0E002D426F /* SFX_BOARD */,
 				61341FBB18C6A4B1003D7C9E /* UI_Buttons */,
 				61341FCF18C6A4B1003D7C9E /* UI_Cards */,
 				61341FE118C6A4B1003D7C9E /* UI_General */,
@@ -703,6 +734,14 @@
 			path = mini_maze;
 			sourceTree = "<group>";
 		};
+		6183B7D318D90B0E002D426F /* SFX_BOARD */ = {
+			isa = PBXGroup;
+			children = (
+				6183B7D418D90B1F002D426F /* touch.wav */,
+			);
+			path = SFX_BOARD;
+			sourceTree = "<group>";
+		};
 		61B289E318D8FB8500102278 /* utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -768,6 +807,8 @@
 				61D0173618D7CD4C0085D7F9 /* NKNode.mm */,
 				61D0173718D7CD4C0085D7F9 /* NKNodeAnimationHandler.h */,
 				61D0173818D7CD4C0085D7F9 /* NKNodeAnimationHandler.mm */,
+				6124554918D91866003FF53D /* NKEmitterNode.h */,
+				6124554A18D91866003FF53D /* NKEmitterNode.mm */,
 				61D0173918D7CD4C0085D7F9 /* NKpch.h */,
 				61D0173A18D7CD4C0085D7F9 /* NKPrimitiveNode.h */,
 				61D0173B18D7CD4C0085D7F9 /* NKPrimitiveNode.mm */,
@@ -992,6 +1033,7 @@
 				6134208018C6ABA4003D7C9E /* arrowDown.png in Resources */,
 				6134207F18C6ABA4003D7C9E /* arrow.png in Resources */,
 				6134201618C6A4B1003D7C9E /* Button_BlankGreen_ON.png in Resources */,
+				6183B7D518D90B1F002D426F /* touch.wav in Resources */,
 				6134203518C6A4B1003D7C9E /* HUD_away.png in Resources */,
 				6134204D18C6A4B1003D7C9E /* LogIn_Noticebox_Cheat_.png in Resources */,
 				6134202018C6A4B1003D7C9E /* Button_SubmitON.png in Resources */,
@@ -1066,6 +1108,7 @@
 			files = (
 				6134208618C6ABA4003D7C9E /* MiniMaze.mm in Sources */,
 				618E1D3918C0231C0038AD46 /* GameBoardNode.mm in Sources */,
+				6124555118D91EB4003FF53D /* CardSprite.mm in Sources */,
 				61D0176618D7CD4C0085D7F9 /* NKLabelNode.mm in Sources */,
 				61B289E218D8FB2100102278 /* Actions.m in Sources */,
 				61B28A0818D8FB8500102278 /* gzread.c in Sources */,
@@ -1074,6 +1117,7 @@
 				6134208E18C6ABD4003D7C9E /* MiniGameNode.mm in Sources */,
 				61B28A0A18D8FB8500102278 /* infback.c in Sources */,
 				61B289DB18D8FAEB00102278 /* Card.m in Sources */,
+				617BDD0A18D9298E005EC4B1 /* AlertSprite.mm in Sources */,
 				61B28A0218D8FB8500102278 /* adler32.c in Sources */,
 				61B28A0E18D8FB8500102278 /* trees.c in Sources */,
 				E4D8936E11527B74007E1F53 /* main.mm in Sources */,
@@ -1087,12 +1131,14 @@
 				61D0176D18D7CD4C0085D7F9 /* NKSpriteNode.mm in Sources */,
 				61F9C4F018D7D3DB005F849D /* NKCoreTextNode.mm in Sources */,
 				61B28A0B18D8FB8500102278 /* inffast.c in Sources */,
-				618E1D3F18C024200038AD46 /* NKGameScene.mm in Sources */,
+				618E1D3F18C024200038AD46 /* GameScene.mm in Sources */,
 				61B289D418D8FAC700102278 /* Game.m in Sources */,
+				6124555418D92155003FF53D /* ButtonSprite.mm in Sources */,
 				61B28A0618D8FB8500102278 /* gzclose.c in Sources */,
 				61B28A0718D8FB8500102278 /* gzlib.c in Sources */,
 				618E1D3518C0217F0038AD46 /* BoardLocation.m in Sources */,
 				61B28A1018D8FB8500102278 /* zutil.c in Sources */,
+				617BDD0718D92491005EC4B1 /* BallSprite.mm in Sources */,
 				61D0176E18D7CD4C0085D7F9 /* NKTexture.mm in Sources */,
 				61D0176C18D7CD4C0085D7F9 /* NKShaderNode.mm in Sources */,
 				61B28A0918D8FB8500102278 /* gzwrite.c in Sources */,
@@ -1100,7 +1146,9 @@
 				61D0177418D7CD4C0085D7F9 /* NKZBlur.mm in Sources */,
 				61D0177318D7CD4C0085D7F9 /* NKGaussianZ.mm in Sources */,
 				61D0177118D7CD4C0085D7F9 /* NKDrawDepthShader.mm in Sources */,
-				61341FB818C69407003D7C9E /* PlayerNode.mm in Sources */,
+				6124554B18D91866003FF53D /* NKEmitterNode.mm in Sources */,
+				6124554E18D91DB3003FF53D /* ActionWindow.mm in Sources */,
+				61341FB818C69407003D7C9E /* PlayerSprite.mm in Sources */,
 				61B28A0C18D8FB8500102278 /* inflate.c in Sources */,
 				61D0176718D7CD4C0085D7F9 /* NKNode.mm in Sources */,
 				61B28A0D18D8FB8500102278 /* inftrees.c in Sources */,

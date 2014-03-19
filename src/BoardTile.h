@@ -7,6 +7,7 @@
 //
 
 #import "NKSpriteNode.h"
+
 @class BoardLocation;
 
 @interface BoardTile : NKSpriteNode

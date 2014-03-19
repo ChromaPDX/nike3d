@@ -21,6 +21,13 @@
 #define TILE_WIDTH 96
 #define TILE_HEIGHT 112
 
+
+// ANIMATION
+
+#define FAST_ANIM_DUR .2
+#define CAM_SPEED 1.
+#define CARD_ANIM_DUR .3
+
 // UI COLORS
 
 #define V2RED [SKColor colorWithRed:255./255. green:42./255. blue:0./255. alpha:1.]
