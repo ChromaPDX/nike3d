@@ -205,7 +205,7 @@
 
 -(void)alertDidCancel {
     
-    [self fadeOutChild:_alert];
+    [self fadeOutChild:_alert duration:1.];
     
     [self setZPosition:Z_BOARD_LOW];
     
@@ -225,10 +225,9 @@
     _alert.delegate = self;
     [_alert setZPosition:Z_INDEX_FX];
     
-    [_alert setPosition:CGPointMake(ANCHOR_WIDTH-WINDOW_WIDTH, 0)];
+    [_alert setPosition:CGPointMake(0, 0)];
     
-    [self fadeInSprite:_alert duration:.5 withCompletion:^{
-    }];
+    [self fadeInChild:_alert duration:.5];
     
     CardSprite* newCard = [[CardSprite alloc] initWithTexture:nil color:nil size:cardSize ];
     
@@ -255,7 +254,7 @@
     //[newCard setHasShadow:YES];
     
     [newCard runAction:[NKAction scaleTo:1.3 duration:.15]];
-    [newCard runAction:[NKAction sequence:@[[NKAction moveTo:CGPointMake(ANCHOR_WIDTH-WINDOW_WIDTH*.5, -cardSize.height*.125) duration:.1],
+    [newCard runAction:[NKAction sequence:@[[NKAction moveTo:CGPointMake(0, -cardSize.height*.125) duration:.1],
                                             [NKAction moveBy:CGVectorMake(0, 0) duration:.4]]]
             completion:^{
                 //                        [self sortMyCards:YES WithCompletionBlock:^{
@@ -310,7 +309,7 @@
             [newCard setHasShadow:YES];
             
             [newCard runAction:[NKAction scaleTo:1.3 duration:.15]];
-            [newCard runAction:[NKAction sequence:@[[NKAction moveTo:CGPointMake(ANCHOR_WIDTH-WINDOW_WIDTH*.5, 0) duration:.1],
+            [newCard runAction:[NKAction sequence:@[[NKAction moveTo:CGPointMake(0, 0) duration:.1],
                                                     [NKAction moveBy:CGVectorMake(0, 0) duration:.4]]]
                     completion:^{
                         [self sortMyCards:animated WithCompletionBlock:^{
@@ -329,7 +328,7 @@
     
     else {
         [_opCards addObject:newCard];
-        newCard.position = CGPointMake(self.scene.size.width - WINDOW_WIDTH*.5, self.size.height*.5);
+        newCard.position = CGPointMake(0, self.size.height*.5);
         [self sortOpCards:NO WithCompletionBlock:^{
             block();
         }];
@@ -537,7 +536,7 @@
     
     CardSprite *card = [_cardSprites objectForKey:c];
     
-    _delegate.currentCard = card;
+    _delegate.selectedCard = c;
     
     card.realPosition = CGPointMake(self.scene.size.width-point.x, -point.y);
     
@@ -549,13 +548,13 @@
     
     [card runAction:[NKAction customActionWithDuration:FAST_ANIM_DUR actionBlock:^(NKNode *node, CGFloat elapsedTime){
         
-        float xmod = 0;
+        //float xmod = 0;
         
         //        if (card.realPosition.x > WINDOW_WIDTH*.5) {
         //            xmod = card.realPosition.x - WINDOW_WIDTH*.5;
         //        }
         
-        [card setPosition:CGPointMake((self.scene.size.width - WINDOW_WIDTH*.5 - cardSize.width*.125), card.origin.y * (1.-(elapsedTime/FAST_ANIM_DUR)))];
+        [card setPosition:CGPointMake((self.scene.size.width - cardSize.width*.125), card.origin.y * (1.-(elapsedTime/FAST_ANIM_DUR)))];
         
     }]];
     
@@ -585,7 +584,7 @@
 -(void)cardTouchBegan:(CardSprite*)card atPoint:(CGPoint)point {
     
     if (_alert) {
-        [self fadeOutSprite:_alert];
+        [self fadeOutChild:_alert duration:1.];
         [card runAction:[NKAction scaleTo:1. duration:.15]];
         [card setHasShadow:YES];
         card.hovering = YES;
@@ -596,7 +595,7 @@
         
         [_delegate.game setCurrentAction:Nil];
         
-        if (point.x > WINDOW_WIDTH*.5) {
+        if (point.x > self.size.width*.5) {
             [self setZPosition:Z_INDEX_BOARD];
             [card setZPosition:Z_INDEX_HUD];
         }
@@ -607,7 +606,7 @@
         card.origin = card.position;
         card.realPosition = card.origin;
         
-        _delegate.currentCard = card;
+        _delegate.currentCard = card.model;
         
         [_delegate.game sendRTPacketWithCard:card.model point:point began:YES];
         
@@ -622,7 +621,7 @@
         
         
         
-        if (point.x > WINDOW_WIDTH*.75) {
+        if (point.x > self.size.width*.75) {
             
             card.realPosition = point;
             
@@ -672,7 +671,7 @@
             
         }
         
-        else if (card.hovering && point.x < WINDOW_WIDTH*.7) {
+        else if (card.hovering && point.x < self.size.width*.7) {
             
             [_delegate resetFingerLocation];
             
@@ -690,12 +689,12 @@
             
             if (_delegate.game.currentAction) {
                 [_delegate.game setCurrentAction:nil];
-                [_delegate fadeOutSprite:_delegate.infoHUD];
+                [_delegate fadeOutChild:_delegate.infoHUD duration:1.];
             }
             
         }
         
-        else if (point.x < WINDOW_WIDTH*.7){
+        else if (point.x < self.size.width*.7){
             
             if (!card.hasActions) {
                 

@@ -1174,7 +1174,7 @@ float PARTICLE_SCALE;
 
 -(void)addCardToBoardScene:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block{
     
-    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:.01] size:CGSizeMake(TILE_SIZE, TILE_SIZE)];
+    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:.01] size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
     
     person.delegate = self;
     
@@ -1197,9 +1197,9 @@ float PARTICLE_SCALE;
     
     else {
         
-        int newX = tile.position.x - TILE_SIZE*5;
+        int newX = tile.position.x - TILE_WIDTH*5;
         if (!_game.me.teamSide) {
-            newX = tile.position.x + TILE_SIZE*5;
+            newX = tile.position.x + TILE_WIDTH*5;
         }
         
         [person setPosition:CGPointMake(newX, tile.position.y)];
@@ -1208,10 +1208,11 @@ float PARTICLE_SCALE;
         
         
         [person runAction:[NKAction moveTo:tile.position duration:.2] completion:^{
-            
-            NKEmitterNode *enchant = [NNKeyedUnarchiver unarchiveObjectWithFile:[[NSBundle mainBundle] pathForResource:@"Enchant" ofType:@"sks"]];
-            NKKeyframeSequence *seq = [[NKKeyframeSequence alloc] initWithKeyframeValues:@[[NKColor blackColor], card.manager.color] times:@[@0,@.2]];
-            enchant.particleColorSequence = seq;
+
+            NKEmitterNode *enchant = [[NKEmitterNode alloc]init];
+//            NKEmitterNode *enchant = [NNKeyedUnarchiver unarchiveObjectWithFile:[[NSBundle mainBundle] pathForResource:@"Enchant" ofType:@"sks"]];
+//            NKKeyframeSequence *seq = [[NKKeyframeSequence alloc] initWithKeyframeValues:@[[NKColor blackColor], card.manager.color] times:@[@0,@.2]];
+//            enchant.particleColorSequence = seq;
             
             [person addChild:enchant];
             
@@ -1252,9 +1253,9 @@ float PARTICLE_SCALE;
                 
                 block();
                 
-                int newX = person.position.x - TILE_SIZE*5;
+                int newX = person.position.x - TILE_WIDTH*5;
                 if (!_game.me.teamSide) {
-                    newX = person.position.x + TILE_SIZE*5;
+                    newX = person.position.x + TILE_WIDTH*5;
                 }
                 
                 [person runAction:[NKAction moveTo:CGPointMake(newX, person.position.y) duration:.4] completion:^{
@@ -1324,7 +1325,7 @@ float PARTICLE_SCALE;
         
         if (!sprite) {
             
-            _followSprite = Nil;
+            _followNode = Nil;
             [_gameBoardNode removeAllActions];
             
             if (_gameBoardNode.position.x != [self camPosNormal].x) {
@@ -1349,7 +1350,7 @@ float PARTICLE_SCALE;
             NKAction *move = [NKAction moveTo:[self boardPosForSprite:sprite] duration:.5];
             [move setTimingMode:NKActionTimingEaseOut];
             [_gameBoardNode runAction:move completion:^{
-                _followSprite = sprite;
+                _followNode = sprite;
                 block();
             }];
         }
@@ -1415,6 +1416,7 @@ float PARTICLE_SCALE;
 
 // not sure which of these two will be more useful
 // both essentially do the same thing...
+
 -(void) incrementGameBoardPosition:(NSInteger)xOffset{
     _gameBoardNodeScrollOffset += xOffset;
     if(_gameBoardNodeScrollOffset < 2) _gameBoardNodeScrollOffset = 2;
@@ -1430,13 +1432,13 @@ float PARTICLE_SCALE;
 
 -(CGPoint)zonePositionForLocation:(BoardLocation*)location {
     
-    CGPoint newPosition =  CGPointMake((location.x-(_game.BOARD_LENGTH / 2.)+2.5)*TILE_SIZE, 0);
+    CGPoint newPosition =  CGPointMake((location.x-(BOARD_LENGTH / 2.)+2.5)*TILE_WIDTH, 0);
     return  newPosition;
     
 }
 
 -(CGPoint)boardPositionForLocation:(BoardLocation*)location {
-    CGPoint zonePosition =  CGPointMake((location.x-(_game.BOARD_LENGTH / 2.)+2.5)*TILE_SIZE, 0);
+    CGPoint zonePosition =  CGPointMake((location.x-(BOARD_LENGTH / 2.)+2.5)*TILE_WIDTH, 0);
     return CGPointMake(-zonePosition.x * boardScale, 0);
 }
 
@@ -1471,7 +1473,7 @@ float PARTICLE_SCALE;
     //    CGPoint newPosition =  CGPointMake(self.size.width*.64-(1.5)*TILE_SIZE,
     //                                       self.size.height*.5-(_gameBoardNodeScrollOffset-_game.BOARD_LENGTH+.5)*TILE_SIZE);
     //
-    CGPoint newPosition =  CGPointMake((_gameBoardNodeScrollOffset-(_game.BOARD_LENGTH / 2.)+.5)*TILE_SIZE, 0);
+    CGPoint newPosition =  CGPointMake((_gameBoardNodeScrollOffset-(BOARD_LENGTH / 2.)+.5)*TILE_WIDTH, 0);
     
     // return CGPointZero;
     

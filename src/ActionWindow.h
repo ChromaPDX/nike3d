@@ -49,6 +49,7 @@
 -(void)cardTouchBegan:(CardSprite*)card atPoint:(CGPoint)point;
 -(void)cardTouchEnded:(CardSprite*)card atPoint:(CGPoint)point;
 
+-(BoardLocation*)canPlayCard:(Card*)card atPosition:(CGPoint)pos;
 
 -(void)setActionButtonTo:(NSString*)function;
 -(void)cleanup;

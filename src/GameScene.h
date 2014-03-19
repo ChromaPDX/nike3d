@@ -19,6 +19,9 @@
 
 @interface GameScene : NKSceneNode <MiniMazeObjDelegate, GameSceneProtocol>
 
+{
+
+}
 // SHARE GAME / UI PROPS
 
 @property (nonatomic, weak) Game* game;
@@ -43,6 +46,11 @@
 
 @property (nonatomic, strong) MiniGameNode *miniGameNode;
 
+@property (nonatomic) int gameBoardNodeScrollOffset;
+
+
+
+
 -(void)setOrientation:(ofQuaternion)orientation;
 
 -(void)gameDidFinishWithLose;
@@ -52,6 +60,8 @@
 
 -(void)shouldPerformCurrentAction;
 -(BOOL)requestActionWithPlayer:(PlayerSprite*)player;
+-(void)resetFingerLocation;
+-(BoardLocation*)canPlayCard:(Card*)card atPosition:(CGPoint)pos;
 
 
 @end
