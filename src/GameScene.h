@@ -16,6 +16,8 @@
 @class Card;
 @class Game;
 
+#define NSFWPlayerImage @"PlayerIndicator_PlayerON.png"
+#define NSFWPlayerShadow @"PlayerIndicator_PlayerSHADOW.png"
 
 @interface GameScene : NKSceneNode <MiniMazeObjDelegate, GameSceneProtocol>
 

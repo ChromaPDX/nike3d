@@ -18,8 +18,6 @@
 #import "Actions.h"
 #import "NSData+CocoaDevUsersAdditions.h"
 
-#define DEFAULT_LENGTH 10
-#define BOARD_WIDTH 3
 #define PRESENTATION_MODE 0
 #define CHEATS 0
 #define SINGLE_PLAYER_MODE_ENABLED 0

@@ -40,34 +40,40 @@
         
         if ([_model isTypePlayer] || [_model isTypeKeeper]){
             
-            UIColor *playerColor =  [UIColor whiteColor];
+            UIColor *playerColor =  NKWHITE;
             
             if([_model.manager isEqual:_delegate.game.me]){
                 playerColor = _model.manager.color;
             }
             
-            NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"PlayerShadow"] color:nil size:CGSizeMake(w, h)];
-            [shadow setZPosition:-2];
-            [shadow setPosition:CGPointMake(-self.size.width * .03, -self.size.height *.03)];
+            NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:CGSizeMake(w, h)];
+//            [shadow setZPosition:-2];
+//
             [shadow setAlpha:.4];
             [self addChild:shadow];
             
-            NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"PlayerPawn"] color:playerColor size:CGSizeMake(w, h)];
-            [triangle setZPosition:-1];
+             [shadow setPosition:CGPointMake(-self.size.width * .03, self.size.height *.13)];
+            [shadow setZRotation:2];
+            
+            NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerImage] color:playerColor size:CGSizeMake(w, h)];
+      
+            triangle.node->setOrientation(ofVec3f(45,0,0));
             triangle.colorBlendFactor = 1.;
             
-            if(model.manager.teamSide){
-                [triangle setZRotation:M_PI*.5];
-                [shadow setZRotation:M_PI*.5];
-            }
-            else {
-                [triangle setZRotation:-M_PI*.5];
-                [shadow setZRotation:-M_PI*.5];
-                
-            }
-            
+//            if(model.manager.teamSide){
+//                [triangle setZRotation:M_PI*.5];
+//                [shadow setZRotation:M_PI*.5];
+//            }
+//            else {
+//                [triangle setZRotation:-M_PI*.5];
+//                [shadow setZRotation:-M_PI*.5];
+//                
+//            }
+//            
             
             [self addChild:triangle];
+            
+            [triangle setZPosition:h*.25];
         }
     }
     else NSLog(@"CAN'T ASSIGN NIL MODEL TO CARDSPRITE");
@@ -192,7 +198,7 @@
     
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+-(bool)touchDown:(CGPoint)location id:(int)touchId {
     
     if (touches.count == 1) {
         UILog(@"PlayerSprite.m : touchesBegan");
@@ -207,21 +213,23 @@
         
     }
     
+    return 1;
     
 }
 
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+
+-(bool)touchMoved:(CGPoint)location id:(int)touchId {
     //UILog(@"PlayerSprite.m : touchesMoved");
     if (touches.count == 1) {
         
-        
-      //  [_delegate movingPlayer:_model withTouch:[touches anyObject]];
+        [self setPosition:location];
+        //[_delegate movingPlayer:_model at
         
     }
-    
+    return 1;
 }
 
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+-(bool)touchUp:(CGPoint)location id:(int)touchId {
     
 //    if (touches.count == 1) {
 //        
@@ -237,7 +245,8 @@
 //        }
 //        
 //    }
-//    
+//
+    return 1;
 }
 
 

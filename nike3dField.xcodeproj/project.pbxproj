@@ -160,6 +160,7 @@
 		61D0177318D7CD4C0085D7F9 /* NKGaussianZ.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61D0175118D7CD4C0085D7F9 /* NKGaussianZ.mm */; };
 		61D0177418D7CD4C0085D7F9 /* NKZBlur.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61D0175418D7CD4C0085D7F9 /* NKZBlur.mm */; };
 		61D0177E18D7CD7E0085D7F9 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D0177D18D7CD7D0085D7F9 /* CoreText.framework */; };
+		61D6E10218DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E10118DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png */; };
 		61F9C4F018D7D3DB005F849D /* NKCoreTextNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61F9C4EF18D7D3DB005F849D /* NKCoreTextNode.mm */; };
 		678E130817951530005B6D19 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130717951530005B6D19 /* Icon@2x.png */; };
 		678E130A17951536005B6D19 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130917951536005B6D19 /* Icon.png */; };
@@ -407,6 +408,7 @@
 		61D0175318D7CD4C0085D7F9 /* NKZBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKZBlur.h; sourceTree = "<group>"; };
 		61D0175418D7CD4C0085D7F9 /* NKZBlur.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKZBlur.mm; sourceTree = "<group>"; };
 		61D0177D18D7CD7D0085D7F9 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		61D6E10118DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayerIndicator_PlayerSHADOW.png; sourceTree = "<group>"; };
 		61F9C4EE18D7D3DB005F849D /* NKCoreTextNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCoreTextNode.h; sourceTree = "<group>"; };
 		61F9C4EF18D7D3DB005F849D /* NKCoreTextNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKCoreTextNode.mm; sourceTree = "<group>"; };
 		678E130717951530005B6D19 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "bin/data/Icon@2x.png"; sourceTree = "<group>"; };
@@ -575,6 +577,7 @@
 				6116FB2318C554B600BBD1CB /* Field_Layer03.png */,
 				6116FB2418C554B600BBD1CB /* PlayerIndicator_PlayerOFF.png */,
 				6116FB2518C554B600BBD1CB /* PlayerIndicator_PlayerON.png */,
+				61D6E10118DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -1007,6 +1010,7 @@
 				6134201D18C6A4B1003D7C9E /* Button_IndicatorMed.png in Resources */,
 				6134205418C6A4B1003D7C9E /* Icon_Enchant.png in Resources */,
 				6134208718C6ABA4003D7C9E /* theball.png in Resources */,
+				61D6E10218DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png in Resources */,
 				6134202F18C6A4B1003D7C9E /* CardPlayerOffenseRED.png in Resources */,
 				6116FB2618C554B600BBD1CB /* Background_Field.png in Resources */,
 				6134204218C6A4B1003D7C9E /* GAMELOGO.png in Resources */,
@@ -1189,6 +1193,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ofxiOS_Prefix.pch;
 				INFOPLIST_FILE = "ofxiOS-Info.plist";
