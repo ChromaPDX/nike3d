@@ -731,10 +731,7 @@
         
         if (!_animating) {
             
-            [_gameScene setCurrentCard:nil];
-            
             if ([player.manager isEqual:_me]) {
-                
                 
                 
                 if (_currentAction) {
@@ -762,7 +759,6 @@
         _currentAction = nil;
         
     }
-    
     
     
     return 0;

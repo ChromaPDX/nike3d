@@ -27,12 +27,14 @@
 
 @property (nonatomic, weak) UITouch *touch;
 
+@property (nonatomic) bool highlighted;
+
 -(void)stealPossesionFromPlayer:(PlayerSprite*)player;
 
 -(void)getReadyForPosession:(void (^)())block;
 -(void)stopPosession:(void (^)())block;
 -(void)startPossession;
 
--(CGPoint)ballLoc;
+-(ofPoint)ballLoc;
 
 @end

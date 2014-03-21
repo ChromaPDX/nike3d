@@ -120,56 +120,43 @@ float PARTICLE_SCALE;
     [_boardScroll addChild:_gameBoardNode];
     
     _gameBoardNode.userInteractionEnabled = true;
-    
+    _gameBoardNode.name = @"Game Board";
     
     for(int i = 0; i < BOARD_WIDTH; i++){
         for(int j = 0; j < BOARD_LENGTH; j++){
-            BoardTile *square = [[BoardTile alloc] initWithTexture:Nil color:[NKColor colorWithRed:.7 green:1. blue:1. alpha:.1] size:CGSizeMake(TILE_WIDTH-2, TILE_HEIGHT-2)];
+            BoardTile *square = [[BoardTile alloc] initWithTexture:Nil color:nil size:CGSizeMake(TILE_WIDTH-2, TILE_HEIGHT-2)];
             
             [square setLocation:[BoardLocation pX:i Y:j]];
             
             [_gameBoardNode addChild:square];
             [_gameTiles setObject:square forKey:square.location];
             
-            [square setPosition:CGPointMake((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5)) ];
+            [square setPosition3d:ofPoint((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),2) ];
         }
     }
     
     NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer01.png"] color:nil size:_gameBoardNode.size];
     
     [_gameBoardNode addChild:lines];
-    [lines setPosition3d:ofPoint(0,0,5)];
+    [lines setPosition3d:ofPoint(0,0,4)];
     
     NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02.png"] color:nil size:_gameBoardNode.size];
     
     [_gameBoardNode addChild:glow];
-    [glow setPosition3d:ofPoint(0,0,10)];
+    [glow setPosition3d:ofPoint(0,0,6)];
     
-    
-//    for (int i = 0; i < 7; i++){
-//    PlayerSprite *player1 = [[PlayerSprite alloc] initWithTexture:[NKTexture textureWithImageNamed:@"PlayerIndicator_PlayerON.png"] color:nil size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
-//    
-//    [_gameTiles[[BoardLocation pX:i Y:rand()%7]] addChild:player1];
-//    
-//    [player1 set3dPosition:ofPoint(0,0,TILE_HEIGHT/2.)];
-//    
-//    player1.node->setOrientation(ofVec3f(90,0,0));
-//        
-//        [player1 runAction:[NKAction repeatActionForever:[NKAction rotateByAngle:90 duration:.1 + ((rand()%100) / 100.)]]];
-//        
-//    }
     
     //[self loadShader:[[NKDrawDepthShader alloc] initWithNode:self paramBlock:nil]];
     //
     
-    [_pivot runAction:[NKAction repeatActionForever:[NKAction sequence:@[[NKAction moveByX:100 y:0 duration:1.] ,
-                                                                         [NKAction moveByX:-100 y:0 duration:1.] ,
-                                                                         [NKAction moveByX:0 y:100 duration:1.] ,
-                                                                         [NKAction moveByX:0 y:-100 duration:1.] ,
-                                                                         
-                                                                         ]
-                                                                         
-                                                     ]]];
+//    [_pivot runAction:[NKAction repeatActionForever:[NKAction sequence:@[[NKAction moveByX:100 y:0 duration:1.] ,
+//                                                                         [NKAction moveByX:-100 y:0 duration:1.] ,
+//                                                                         [NKAction moveByX:0 y:100 duration:1.] ,
+//                                                                         [NKAction moveByX:0 y:-100 duration:1.] ,
+//                                                                         
+//                                                                         ]
+//                                                                         
+//                                                     ]]];
     
 }
 
@@ -211,7 +198,7 @@ float PARTICLE_SCALE;
     
     if (_selectedCard) {
         // NSLog(@"has card, returning");
-        [self setCurrentCard:nil];
+        [self setSelectedCard:nil];
     }
     _selectedPlayer = player.model;
     
@@ -470,15 +457,14 @@ float PARTICLE_SCALE;
         //[self cameraShouldFollowSprite:Nil withCompletionBlock:^{}];
         
         if (_game.ball.player) {
-            
-            [self refreshZone:_game.activeZone animated:YES withCompletionBlock:^{
-            }];
-            
+ 
             PlayerSprite* p = [playerSprites objectForKey:_game.ball.player];
             
             [p getReadyForPosession:^{
-                [_ballSprite runAction:[NKAction moveTo:[p ballLoc] duration:BALL_SPEED] completion:^{
+                [_ballSprite runAction:[NKAction move3dTo:[p ballLoc] duration:BALL_SPEED] completion:^{
+                    //[_ballSprite removeAllActions];
                     [p startPossession];
+                    NSLog(@"ball actions : %d", [_ballSprite hasActions]);
                     block();
                 }];
             }];
@@ -501,7 +487,7 @@ float PARTICLE_SCALE;
             
             
             [player getReadyForPosession:^{
-                [_ballSprite runAction:[NKAction moveTo:[player ballLoc] duration:BALL_SPEED] completion:^{
+                [_ballSprite runAction:[NKAction move3dTo:[player ballLoc] duration:BALL_SPEED] completion:^{
                     [player startPossession];
                     block();
                 }];
@@ -522,7 +508,7 @@ float PARTICLE_SCALE;
             
             if (event.playerPerformingAction.ball) {
                 [player getReadyForPosession:^{
-                    [_ballSprite runAction:[NKAction moveTo:[player ballLoc] duration:BALL_SPEED] completion:^{
+                    [_ballSprite runAction:[NKAction move3dTo:[player ballLoc] duration:BALL_SPEED] completion:^{
                         [player startPossession];
                         block();
                     }];
@@ -585,7 +571,7 @@ float PARTICLE_SCALE;
                         
                         [glow removeFromParent];
                         [receiver addChild:glow];
-                        [glow setPosition:[receiver ballLoc]];
+                        [glow setPosition3d:[receiver ballLoc]];
                         
                         [glow runAction:[NKAction moveTo:CGPointZero duration:CAM_SPEED*.25] completion:^{
                         }];
@@ -670,7 +656,7 @@ float PARTICLE_SCALE;
                         }
                         // [self dollyTowards:receiver duration:CAM_SPEED*.25];
                         
-                        NKAction *move = [NKAction moveTo:receiver.ballLoc duration:BALL_SPEED];
+                        NKAction *move = [NKAction move3dTo:receiver.ballLoc duration:BALL_SPEED];
                         
                         [move setTimingMode:NKActionTimingEaseOut];
                         
@@ -687,11 +673,7 @@ float PARTICLE_SCALE;
                             
                             //                            else if (event.type == kGoaliePass) {
                             //
-                            //                                [self refreshZone:_game.activeZone animated:YES withCompletionBlock:^{
-                            //
-                            //
-                            //
-                            //                                }];
+        
                             //
                             //                            }
                             
@@ -792,8 +774,7 @@ float PARTICLE_SCALE;
     
     
     else if (event.type == kGoalResetAction) {
-        
-        //[self refreshZone:_game.activeZone animated:YES withCompletionBlock:^{}];
+
         block();
         
     }
@@ -915,58 +896,58 @@ float PARTICLE_SCALE;
     else if (event.type == kTurnDrawAction) {
         
         
-        if (event.playerPerformingAction) {
-            
-            if (_game.myTurn) {
-                
-                
-                if ([event.manager isEqual:_game.me]) {
-                    
-                    if (_game.thisTurnActions.count < 2) { // ONLY TURN START
-                        NSLog(@"GameScene.m : animate TURN START : draw");
-                        
-                        [_actionWindow addStartTurnCard:event.playerPerformingAction withCompletionBlock:^{
-                            block();
-                        }];
-                        
-                        return;
-                        
-                    }
-                }
-                
-            }
-            
-            
-            [_actionWindow addCard:event.playerPerformingAction animated:YES withCompletionBlock:^{
-                block();
-            }];
-            
-        }
-        
-        else {
-            block();
-        }
-        
+//        if (event.playerPerformingAction) {
+//            
+//            if (_game.myTurn) {
+//                
+//                
+//                if ([event.manager isEqual:_game.me]) {
+//                    
+//                    if (_game.thisTurnActions.count < 2) { // ONLY TURN START
+//                        NSLog(@"GameScene.m : animate TURN START : draw");
+//                        
+//                        [_actionWindow addStartTurnCard:event.playerPerformingAction withCompletionBlock:^{
+//                            block();
+//                        }];
+//                        
+//                        return;
+//                        
+//                    }
+//                }
+//                
+//            }
+//            
+//            
+//            [_actionWindow addCard:event.playerPerformingAction animated:YES withCompletionBlock:^{
+//                block();
+//            }];
+//            
+//        }
+//        
+//        else {
+//            block();
+//        }
+        block();
         
         
     }
     else if (event.type == kDrawAction) {
         
         
-        if (event.playerPerformingAction) {
-            
-            
-            NSLog(@"GameScene.m : animateEvent : draw");
-            [_actionWindow addCard:event.playerPerformingAction animated:YES withCompletionBlock:^{
-                block();
-            }];
-            
-        }
-        
-        else {
-            block();
-        }
-        
+//        if (event.playerPerformingAction) {
+//            
+//            NSLog(@"GameScene.m : animateEvent : draw");
+//            [_actionWindow addCard:event.playerPerformingAction animated:YES withCompletionBlock:^{
+//                block();
+//            }];
+//            
+//        }
+//        
+//        else {
+//            block();
+//        }
+
+           block();
         
     }
     
@@ -1013,13 +994,7 @@ float PARTICLE_SCALE;
         //[self cameraShouldFollowSprite:nil withCompletionBlock:^{
         
         //}];
-        
-        [self refreshZone:_game.activeZone animated:YES withCompletionBlock:^{
-            
-            block();
-            
-        }];
-        
+
         
         
         
@@ -1195,7 +1170,7 @@ float PARTICLE_SCALE;
     
     [_gameBoardNode addChild:person];
     
-    [person setZPosition:Z_BOARD_PLAYER];
+    //[person setZPosition:Z_BOARD_PLAYER];
     
     if (!animated || !card.isTypePlayer){
         
@@ -1206,16 +1181,19 @@ float PARTICLE_SCALE;
     
     else {
         
-        int newY = tile.position.y - TILE_HEIGHT*5;
+        int newY = tile.position.y + TILE_HEIGHT*10;
         if (!_game.me.teamSide) {
-            newY = tile.position.y + TILE_HEIGHT*5;
+            newY = tile.position.y - TILE_HEIGHT*10;
         }
         
-        [person setPosition:CGPointMake(tile.position.x, newY)];
+        [person setPosition3d:ofPoint(tile.position.x, newY, 200)];
         [person setXScale:.33];
         
+
+        ofVec3f target = tile.position3d;
+        target.z += 2;
         
-        [person runAction:[NKAction moveTo:tile.position duration:.2] completion:^{
+        [person runAction:[NKAction move3dTo:target duration:.4] completion:^{
 
             NKEmitterNode *enchant = [[NKEmitterNode alloc]init];
 //            NKEmitterNode *enchant = [NNKeyedUnarchiver unarchiveObjectWithFile:[[NSBundle mainBundle] pathForResource:@"Enchant" ofType:@"sks"]];
@@ -1304,7 +1282,7 @@ float PARTICLE_SCALE;
 -(void)moveBallToLocation:(BoardLocation *)location {
     
     if (!_ballSprite) {
-        _ballSprite = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Icon_Possesion"] color:Nil size:CGSizeMake(TILE_WIDTH, TILE_WIDTH)];
+        _ballSprite = [[BallSprite alloc]init];
     }
     
     [_ballSprite setScale:BALL_SCALE_BIG];
@@ -1478,15 +1456,16 @@ float PARTICLE_SCALE;
 }
 
 -(CGPoint)camPosNormal {
+     return CGPointZero;
     //    CGPoint newPosition =  CGPointMake(self.size.width*.64-(1.5)*TILE_SIZE,
     //                                       self.size.height*.5-(_gameBoardNodeScrollOffset-_game.BOARD_LENGTH+.5)*TILE_SIZE);
     //
-    CGPoint newPosition =  CGPointMake((_gameBoardNodeScrollOffset-(BOARD_LENGTH / 2.)+.5)*TILE_WIDTH, 0);
+    //CGPoint newPosition =  CGPointMake((_gameBoardNodeScrollOffset-(BOARD_LENGTH / 2.)+.5)*TILE_WIDTH, 0);
     
     // return CGPointZero;
     
     // NSLog(@"GameScene.m : CamPosNormal (%f, %f) (%d)",newPosition.x, newPosition.y, _gameBoardNodeScrollOffset);
-    return newPosition;
+   
     //    NSLog(@"return to normal board position");
     //    CGPoint spriteOffset = CGPointMake(_gameBoardNode.activeZone.position.x, _gameBoardNode.size.height);
     //    NSLog(@"%f, %f",(self.size.width*.5) - (spriteOffset.x), (self.size.height*.466)-gameBoardViewScrollOffset*TILE_SIZE );
@@ -1607,7 +1586,7 @@ float PARTICLE_SCALE;
     
     if ( [_game shouldPerformCurrentAction]) {
         if (_selectedCard) {
-            [self setCurrentCard:nil];
+            [self setSelectedCard:nil];
         }
     }
     
@@ -1616,6 +1595,15 @@ float PARTICLE_SCALE;
 -(BOOL)shouldDrawCard {
     if ([_game requestDrawAction]) return 1;
     return 0;
+}
+
+-(void)setSelectedPlayer:(Card *)selectedPlayer {
+    for (PlayerSprite *p in playerSprites.allValues) {
+        [p setHighlighted:false];
+    }
+    
+    [[playerSprites objectForKey:selectedPlayer] setHighlighted:true];
+    
 }
 
 -(void)setSelectedCard:(Card *)selectedCard {
@@ -1633,6 +1621,14 @@ float PARTICLE_SCALE;
 
     _selectedCard = selectedCard;
     
+}
+
+#pragma mark - UPDATE CYCLE
+
+-(void)updateWithTimeSinceLast:(NSTimeInterval)dt {
+    [super updateWithTimeSinceLast:dt];
+    
+
 }
 
 //-(bool)touchUp:(CGPoint)location id:(int)touchId {

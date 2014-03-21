@@ -73,7 +73,8 @@ typedef enum RTMessageType {
 
 // CARDS
 
--(void)setCurrentCard:(Card*)card;
+-(void)setSelectedCard:(Card*)card;
+-(void)setSelectedPlayer:(Card*)player;
 
 -(void)sortHandForManager:(Manager *)manager animated:(BOOL)animated;
 
@@ -91,7 +92,6 @@ typedef enum RTMessageType {
 -(void)finishActionsWithCompletionBlock:(void (^)())block;
 -(void)animateEvent:(SkillEvent*)event withCompletionBlock:(void (^)())block;
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block;
--(void)refreshZone:(BoardLocation*)zone animated:(BOOL)animated withCompletionBlock:(void (^)())block;
 -(void)rollEvent:(SkillEvent*)event withCompletionBlock:(void (^)())block;
 -(void)refreshActionWindowForManager:(Manager*)m withCompletionBlock:(void (^)())block;
 -(void)refreshActionPoints;

@@ -16,8 +16,7 @@
 @class Card;
 @class Game;
 
-#define NSFWPlayerImage @"PlayerIndicator_PlayerON.png"
-#define NSFWPlayerShadow @"PlayerIndicator_PlayerSHADOW.png"
+
 
 @interface GameScene : NKSceneNode <MiniMazeObjDelegate, GameSceneProtocol>
 
@@ -42,7 +41,7 @@
 
 @property (nonatomic, weak) NKNode *followNode;
 @property (nonatomic, strong) NKSpriteNode *RTSprite;
-@property (nonatomic, strong) NKSpriteNode *ballSprite;
+@property (nonatomic, strong) BallSprite *ballSprite;
 
 @property (nonatomic, strong) NKSpriteNode *infoHUD;
 

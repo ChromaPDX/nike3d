@@ -606,7 +606,7 @@
         card.origin = card.position;
         card.realPosition = card.origin;
         
-        _delegate.currentCard = card.model;
+        _delegate.selectedCard = card.model;
         
         [_delegate.game sendRTPacketWithCard:card.model point:point began:YES];
         

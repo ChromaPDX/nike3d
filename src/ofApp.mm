@@ -23,6 +23,8 @@ void ofApp::setup(){
     
     game.gameScene = scene;
     
+    scene.game = game;
+    
     [game startSinglePlayerGame];
     
     setupCM();

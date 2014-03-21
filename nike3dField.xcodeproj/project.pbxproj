@@ -113,6 +113,8 @@
 		6134208718C6ABA4003D7C9E /* theball.png in Resources */ = {isa = PBXBuildFile; fileRef = 6134207D18C6ABA4003D7C9E /* theball.png */; };
 		6134208818C6ABA4003D7C9E /* thirtypercentwhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 6134207E18C6ABA4003D7C9E /* thirtypercentwhite.png */; };
 		6134208E18C6ABD4003D7C9E /* MiniGameNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */; };
+		61744C1E18DB9E1600C925B2 /* CardType_HUD.png in Resources */ = {isa = PBXBuildFile; fileRef = 61744C1D18DB9E1600C925B2 /* CardType_HUD.png */; };
+		61744C2018DBB86B00C925B2 /* Field_Goal.png in Resources */ = {isa = PBXBuildFile; fileRef = 61744C1F18DBB86B00C925B2 /* Field_Goal.png */; };
 		617BDD0718D92491005EC4B1 /* BallSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0618D92491005EC4B1 /* BallSprite.mm */; };
 		617BDD0A18D9298E005EC4B1 /* AlertSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0918D9298E005EC4B1 /* AlertSprite.mm */; };
 		6183B7D518D90B1F002D426F /* touch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6183B7D418D90B1F002D426F /* touch.wav */; };
@@ -317,6 +319,8 @@
 		6134208918C6ABB3003D7C9E /* MiniGames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniGames.h; sourceTree = "<group>"; };
 		6134208C18C6ABD4003D7C9E /* MiniGameNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniGameNode.h; path = mini_games/MiniGameNode.h; sourceTree = SOURCE_ROOT; };
 		6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniGameNode.mm; path = mini_games/MiniGameNode.mm; sourceTree = SOURCE_ROOT; };
+		61744C1D18DB9E1600C925B2 /* CardType_HUD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CardType_HUD.png; sourceTree = "<group>"; };
+		61744C1F18DBB86B00C925B2 /* Field_Goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Field_Goal.png; sourceTree = "<group>"; };
 		617BDD0518D92491005EC4B1 /* BallSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallSprite.h; sourceTree = "<group>"; };
 		617BDD0618D92491005EC4B1 /* BallSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallSprite.mm; sourceTree = "<group>"; };
 		617BDD0818D9298E005EC4B1 /* AlertSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertSprite.h; sourceTree = "<group>"; };
@@ -578,6 +582,8 @@
 				6116FB2418C554B600BBD1CB /* PlayerIndicator_PlayerOFF.png */,
 				6116FB2518C554B600BBD1CB /* PlayerIndicator_PlayerON.png */,
 				61D6E10118DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png */,
+				61744C1D18DB9E1600C925B2 /* CardType_HUD.png */,
+				61744C1F18DBB86B00C925B2 /* Field_Goal.png */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -1019,6 +1025,7 @@
 				6134204418C6A4B1003D7C9E /* loadingScreenIpad.png in Resources */,
 				6134203718C6A4B1003D7C9E /* move_select_circle.png in Resources */,
 				678E130817951530005B6D19 /* Icon@2x.png in Resources */,
+				61744C2018DBB86B00C925B2 /* Field_Goal.png in Resources */,
 				678E130A17951536005B6D19 /* Icon.png in Resources */,
 				6134201918C6A4B1003D7C9E /* Button_DrawCardON.png in Resources */,
 				61D0176518D7CD4C0085D7F9 /* README.md in Resources */,
@@ -1074,6 +1081,7 @@
 				6134203218C6A4B1003D7C9E /* CardSkill.png in Resources */,
 				6134203918C6A4B1003D7C9E /* star_blue.png in Resources */,
 				6134202718C6A4B1003D7C9E /* Card_Player_Male.png in Resources */,
+				61744C1E18DB9E1600C925B2 /* CardType_HUD.png in Resources */,
 				6116FB2A18C554B600BBD1CB /* PlayerIndicator_PlayerOFF.png in Resources */,
 				6134205818C6A4B1003D7C9E /* Icon_Possesion.png in Resources */,
 				6134205B18C6A4B1003D7C9E /* Icons_Skill.png in Resources */,

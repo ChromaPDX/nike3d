@@ -13,11 +13,11 @@
 @implementation PlayerSprite
 
 -(void)draw {
-    ofDisableDepthTest();
+   // ofDisableDepthTest();
     glDisable(GL_CULL_FACE);
     [super draw];
     glEnable(GL_CULL_FACE);
-    ofEnableDepthTest();
+    //ofEnableDepthTest();
 }
 
 -(NKLabelNode*)styledLabelNode {
@@ -52,8 +52,8 @@
             [shadow setAlpha:.4];
             [self addChild:shadow];
             
-             [shadow setPosition:CGPointMake(-self.size.width * .03, self.size.height *.13)];
-            [shadow setZRotation:2];
+             [shadow setPosition:CGPointMake(-self.size.width * .03, self.size.height *.1)];
+           // [shadow setZRotation:2];
             
             NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerImage] color:playerColor size:CGSizeMake(w, h)];
       
@@ -74,29 +74,52 @@
             [self addChild:triangle];
             
             [triangle setZPosition:h*.25];
+            
+            self.name = model.nameForCard;
+            self.userInteractionEnabled = true;
         }
     }
     else NSLog(@"CAN'T ASSIGN NIL MODEL TO CARDSPRITE");
+}
+
+-(void)setHighlighted:(bool)highlighted {
+    
+    if (highlighted && !_highlighted) {
+        NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:CGSizeMake(w, h)];
+        crosshairs.name = @"crosshairs";
+        [self addChild:crosshairs];
+        [crosshairs setZPosition:6];
+    }
+    
+    else if (!highlighted && _highlighted){
+        [self removeChildNamed:@"crosshairs"];
+    }
+    
+    _highlighted = highlighted;
+    
 }
 
 -(void)getReadyForPosession:(void (^)())block {
     
     if (!_ball) {
         
-        _posession = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(w*.66, w*.66)];
-        [_posession setZPosition:-1];
+        _posession = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(h, h)];
+     
         [_posession setAlpha:.5];
         [_posession setColorBlendFactor:1.];
         [_posession setColor:_model.manager.color];
         
-        NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks.png"] color:self.model.manager.color size:CGSizeMake(w*.66, w*.66)];
+        NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks.png"] color:NKWHITE size:CGSizeMake(h, h)];
         [_posession addChild:haloMarks];
         
-        _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:CGSizeMake(2, 2)];
-        [_ballTarget setPosition:CGPointMake(0, w*.3)];
-        [_posession setZRotation:M_PI/2];
-        
+        _ballTarget = [[NKSpriteNode alloc]initWithColor:NKWHITE size:CGSizeMake(4, 4)];
+
+        [_posession setZPosition:10];
+        //[_posession setZRotation:90];
         [_posession addChild:_ballTarget];
+        
+        [_ballTarget setPosition:CGPointMake(0, w*.5)];
+      
         
         [self fadeInChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
             
@@ -114,22 +137,21 @@
     if (!_ball) {
         
         _posession = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(w*.66, w*.66)];
-        [_posession setZPosition:-1];
         [_posession setAlpha:.5];
         [_posession setColorBlendFactor:1.];
         [_posession setColor:_model.manager.color];
         
         NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks.png"] color:self.model.manager.color size:CGSizeMake(w*.66, w*.66)];
+        
         [_posession addChild:haloMarks];
         
         _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:CGSizeMake(2, 2)];
-        [_ballTarget setPosition:CGPointMake(0, w*.3)];
-        [_posession setZRotation:player.posession.zRotation];
         
         [_posession addChild:_ballTarget];
         
-        [_posession removeFromParent];
-        
+        [_ballTarget setPosition:CGPointMake(0, w*.5)];
+        [_posession setZRotation:player.posession.zRotation];
+
         
     }
     
@@ -139,30 +161,35 @@
 -(void)startPossession {
     if (!_ball) {
         
-        
         _ball = _delegate.ballSprite;
-        _ball.player = self;
+       
         
-        [_ball runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:1.]];
+        [_ball runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:1.] completion:^{
+             _ball.player = self;
+        }];
+        
         [_posession runAction:[NKAction repeatActionForever:
-                               [NKAction sequence:@[[NKAction rotateToAngle:-2*M_PI duration:4.],
-                                                    [NKAction rotateToAngle:0 duration:0]
+                               [NKAction group:@[
+                                                 [NKAction sequence:@[[NKAction move3dBy:ofVec3f(0,0,h*.33) duration:2.],
+                                                                      [NKAction move3dBy:ofVec3f(0,0,-h*.33) duration:2.]]],
+                                                 
+                                                                      [NKAction rotateByAngle:-180 duration:4.]
                                                     ]]]];
         
-        [_ball runAction:[NKAction repeatActionForever:[NKAction rotateByAngle:6.17 duration:2.]]];
+        //[_ball runAction:[NKAction repeatActionForever:[NKAction rotateByAngle:-45 duration:.2]]];
         
     }
     
 }
 
--(CGPoint)ballLoc {
+-(ofPoint)ballLoc {
     
     //return [self.parent convertPoint:_ballTarget.position fromNode:self];
     //CGPoint loc = [_ballTarget pos
     
     CGPoint cp = [_posession childLocationIncludingRotation:_ballTarget];
     
-    return CGPointMake(self.position.x + cp.x, self.position.y + cp.y);
+    return ofPoint(self.position3d.x + cp.x, self.position3d.y + cp.y, _posession.position3d.z + self.position3d.z);
 }
 
 
@@ -200,19 +227,19 @@
 
 -(bool)touchDown:(CGPoint)location id:(int)touchId {
     
-    if (touches.count == 1) {
-        UILog(@"PlayerSprite.m : touchesBegan");
-        
-        //  NSLog(@"remove alerts");
-        //[_delegate removeAlerts];
-        //  NSLog(@"request player");
-        
-        if ([_delegate requestActionWithPlayer:self]){
-            // [_delegate movingPlayer:_model withTouch:[touches anyObject]];
+    if ([super touchDown:location id:touchId]){
+        if (touches.count == 1) {
+            
+            
+            //  NSLog(@"remove alerts");
+            //[_delegate removeAlerts];
+            //  NSLog(@"request player");
+            
+
+            
         }
-        
     }
-    
+
     return 1;
     
 }
@@ -231,6 +258,12 @@
 
 -(bool)touchUp:(CGPoint)location id:(int)touchId {
     
+    if ([super touchUp:location id:touchId]){
+        if ([_delegate requestActionWithPlayer:self]){
+            // [_delegate movingPlayer:_model withTouch:[touches anyObject]];
+            [_delegate setSelectedPlayer:self.model];
+        }
+    }
 //    if (touches.count == 1) {
 //        
 //        UILog(@"PlayerSprite.m : touchesEnded");
