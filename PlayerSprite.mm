@@ -14,9 +14,9 @@
 
 -(void)draw {
    // ofDisableDepthTest();
-    glDisable(GL_CULL_FACE);
+    //glDisable(GL_CULL_FACE);
     [super draw];
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     //ofEnableDepthTest();
 }
 
@@ -57,7 +57,7 @@
             
             NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerImage] color:playerColor size:CGSizeMake(w, h)];
       
-            triangle.node->setOrientation(ofVec3f(45,0,0));
+            [triangle setOrientationEuler:ofVec3f(45,0,0)];
             triangle.colorBlendFactor = 1.;
             
 //            if(model.manager.teamSide){
@@ -73,7 +73,7 @@
             
             [self addChild:triangle];
             
-            [triangle setZPosition:h*.25];
+            [triangle setZPosition:h*.33];
             
             self.name = model.nameForCard;
             self.userInteractionEnabled = true;
@@ -108,17 +108,17 @@
         [_posession setAlpha:.5];
         [_posession setColorBlendFactor:1.];
         [_posession setColor:_model.manager.color];
+        [_posession setZPosition:h*.25];
         
         NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks.png"] color:NKWHITE size:CGSizeMake(h, h)];
         [_posession addChild:haloMarks];
+        [haloMarks setZPosition:4];
         
         _ballTarget = [[NKSpriteNode alloc]initWithColor:NKWHITE size:CGSizeMake(4, 4)];
 
-        [_posession setZPosition:10];
-        //[_posession setZRotation:90];
         [_posession addChild:_ballTarget];
         
-        [_ballTarget setPosition:CGPointMake(0, w*.5)];
+        [_ballTarget setPosition3d:ofPoint(0, w*.5, 10)];
       
         
         [self fadeInChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
@@ -134,27 +134,7 @@
 
 -(void)stealPossesionFromPlayer:(PlayerSprite*)player {
     
-    if (!_ball) {
-        
-        _posession = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(w*.66, w*.66)];
-        [_posession setAlpha:.5];
-        [_posession setColorBlendFactor:1.];
-        [_posession setColor:_model.manager.color];
-        
-        NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks.png"] color:self.model.manager.color size:CGSizeMake(w*.66, w*.66)];
-        
-        [_posession addChild:haloMarks];
-        
-        _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:CGSizeMake(2, 2)];
-        
-        [_posession addChild:_ballTarget];
-        
-        [_ballTarget setPosition:CGPointMake(0, w*.5)];
-        [_posession setZRotation:player.posession.zRotation];
-
-        
-    }
-    
+    [self getReadyForPosession:nil];
     
 }
 
@@ -173,7 +153,7 @@
                                                  [NKAction sequence:@[[NKAction move3dBy:ofVec3f(0,0,h*.33) duration:2.],
                                                                       [NKAction move3dBy:ofVec3f(0,0,-h*.33) duration:2.]]],
                                                  
-                                                                      [NKAction rotateByAngle:-180 duration:4.]
+                                                                      [NKAction rotateByAngle:90 duration:4.]
                                                     ]]]];
         
         //[_ball runAction:[NKAction repeatActionForever:[NKAction rotateByAngle:-45 duration:.2]]];
@@ -181,16 +161,16 @@
     }
     
 }
-
--(ofPoint)ballLoc {
-    
-    //return [self.parent convertPoint:_ballTarget.position fromNode:self];
-    //CGPoint loc = [_ballTarget pos
-    
-    CGPoint cp = [_posession childLocationIncludingRotation:_ballTarget];
-    
-    return ofPoint(self.position3d.x + cp.x, self.position3d.y + cp.y, _posession.position3d.z + self.position3d.z);
-}
+//
+//-(ofPoint)ballLoc {
+//    
+//    //return [self.parent convertPoint:_ballTarget.position fromNode:self];
+//    //CGPoint loc = [_ballTarget pos
+//    
+//    CGPoint cp = [_posession childLocationIncludingRotation:_ballTarget];
+//    
+//    return ofPoint(self.position3d.x + cp.x, self.position3d.y + cp.y, _posession.position3d.z + self.position3d.z);
+//}
 
 
 -(void)stopPosession:(void (^)())block {

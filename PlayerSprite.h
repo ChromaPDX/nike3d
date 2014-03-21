@@ -35,6 +35,4 @@
 -(void)stopPosession:(void (^)())block;
 -(void)startPossession;
 
--(ofPoint)ballLoc;
-
 @end

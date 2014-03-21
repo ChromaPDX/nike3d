@@ -33,7 +33,7 @@ float PARTICLE_SCALE;
 @implementation GameScene
 
 -(void)setOrientation:(ofQuaternion)orientation {
-    _pivot.node->setOrientation(orientation);
+    [_pivot setOrientation:orientation];
 }
 
 -(instancetype)initWithSize:(CGSize)size {
@@ -461,7 +461,7 @@ float PARTICLE_SCALE;
             PlayerSprite* p = [playerSprites objectForKey:_game.ball.player];
             
             [p getReadyForPosession:^{
-                [_ballSprite runAction:[NKAction move3dTo:[p ballLoc] duration:BALL_SPEED] completion:^{
+                [_ballSprite runAction:[NKAction move3dTo:[p.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED]  completion:^{
                     //[_ballSprite removeAllActions];
                     [p startPossession];
                     NSLog(@"ball actions : %d", [_ballSprite hasActions]);
@@ -487,7 +487,7 @@ float PARTICLE_SCALE;
             
             
             [player getReadyForPosession:^{
-                [_ballSprite runAction:[NKAction move3dTo:[player ballLoc] duration:BALL_SPEED] completion:^{
+                [_ballSprite runAction:[NKAction move3dTo:[player.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED] completion:^{
                     [player startPossession];
                     block();
                 }];
@@ -508,7 +508,7 @@ float PARTICLE_SCALE;
             
             if (event.playerPerformingAction.ball) {
                 [player getReadyForPosession:^{
-                    [_ballSprite runAction:[NKAction move3dTo:[player ballLoc] duration:BALL_SPEED] completion:^{
+                    [_ballSprite runAction:[NKAction move3dTo:[player.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED] completion:^{
                         [player startPossession];
                         block();
                     }];
@@ -571,7 +571,7 @@ float PARTICLE_SCALE;
                         
                         [glow removeFromParent];
                         [receiver addChild:glow];
-                        [glow setPosition3d:[receiver ballLoc]];
+                        [glow setPosition3d:[receiver.ballTarget positionInNode3d:_gameBoardNode]];
                         
                         [glow runAction:[NKAction moveTo:CGPointZero duration:CAM_SPEED*.25] completion:^{
                         }];
@@ -656,7 +656,7 @@ float PARTICLE_SCALE;
                         }
                         // [self dollyTowards:receiver duration:CAM_SPEED*.25];
                         
-                        NKAction *move = [NKAction move3dTo:receiver.ballLoc duration:BALL_SPEED];
+                        NKAction *move = [NKAction move3dTo:[receiver.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED];
                         
                         [move setTimingMode:NKActionTimingEaseOut];
                         
