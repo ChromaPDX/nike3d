@@ -138,7 +138,7 @@ float PARTICLE_SCALE;
     NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer01.png"] color:nil size:_gameBoardNode.size];
     
     [_gameBoardNode addChild:lines];
-    [lines setPosition3d:ofPoint(0,0,4)];
+    [lines setPosition3d:ofPoint(0,0,3)];
     
     NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02.png"] color:nil size:_gameBoardNode.size];
     
@@ -146,7 +146,12 @@ float PARTICLE_SCALE;
     [glow setPosition3d:ofPoint(0,0,6)];
     
     
-    //[self loadShader:[[NKDrawDepthShader alloc] initWithNode:self paramBlock:nil]];
+//    NKDrawDepthShader* ddepthShader = [[NKDrawDepthShader alloc] initWithNode:self paramBlock:nil];
+//    //ddepthShader.useColor = true;
+//    ddepthShader.shouldInvert= true;
+    
+   // [self loadShader:ddepthShader];
+    
     //
     
 //    [_pivot runAction:[NKAction repeatActionForever:[NKAction sequence:@[[NKAction moveByX:100 y:0 duration:1.] ,
@@ -446,14 +451,13 @@ float PARTICLE_SCALE;
     float MOVE_SPEED = .35;
     float BALL_SPEED = .2;
     
-    
     [self refreshActionPoints];
     
     PlayerSprite* player = [playerSprites objectForKey:event.playerPerformingAction];
     
     if (event.type == kStartTurnAction || event.type == kSetBallAction) {
         
-        [_gameBoardNode fadeInChild:_ballSprite duration:.3];
+        [_gameBoardNode fadeInChild:self.ballSprite duration:.3];
         //[self cameraShouldFollowSprite:Nil withCompletionBlock:^{}];
         
         if (_game.ball.player) {
@@ -461,11 +465,12 @@ float PARTICLE_SCALE;
             PlayerSprite* p = [playerSprites objectForKey:_game.ball.player];
             
             [p getReadyForPosession:^{
-                [_ballSprite runAction:[NKAction move3dTo:[p.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED]  completion:^{
+                [self.ballSprite runAction:[NKAction move3dTo:[p.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED]  completion:^{
                     //[_ballSprite removeAllActions];
-                    [p startPossession];
-                    NSLog(@"ball actions : %d", [_ballSprite hasActions]);
                     block();
+                    [p startPossession];
+                    NSLog(@"ball actions : %d", [self.ballSprite hasActions]);
+                    
                 }];
             }];
             
@@ -487,7 +492,7 @@ float PARTICLE_SCALE;
             
             
             [player getReadyForPosession:^{
-                [_ballSprite runAction:[NKAction move3dTo:[player.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED] completion:^{
+                [self.ballSprite runAction:[NKAction move3dTo:[player.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED] completion:^{
                     [player startPossession];
                     block();
                 }];
@@ -508,7 +513,7 @@ float PARTICLE_SCALE;
             
             if (event.playerPerformingAction.ball) {
                 [player getReadyForPosession:^{
-                    [_ballSprite runAction:[NKAction move3dTo:[player.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED] completion:^{
+                    [self.ballSprite runAction:[NKAction move3dTo:[player.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED] completion:^{
                         [player startPossession];
                         block();
                     }];
@@ -552,7 +557,7 @@ float PARTICLE_SCALE;
         
         NKEmitterNode *glow = [self ballGlowWithColor:receiver.model.manager.color];
         
-        [_ballSprite addChild:glow];
+        [self.ballSprite addChild:glow];
         
         [glow runAction:[NKAction scaleTo:1. * PARTICLE_SCALE duration:CAM_SPEED*.5] completion:^{}];
         
@@ -561,7 +566,7 @@ float PARTICLE_SCALE;
             if (event.parent.wasSuccessful) {
                 
                 NKEmitterNode *glow2 = [self ballGlowWithColor:player.model.manager.color];
-                [_ballSprite addChild:glow2];
+                [self.ballSprite addChild:glow2];
                 
                 [glow2 runAction:[NKAction scaleTo:2. * PARTICLE_SCALE duration:.01] completion:^{
                     
@@ -624,7 +629,7 @@ float PARTICLE_SCALE;
 //        NKKeyframeSequence *seq = [[NKKeyframeSequence alloc] initWithKeyframeValues:@[[NKColor blackColor], event.manager.color] times:@[@0,@.2]];
 //        enchant.particleColorSequence = seq;
         
-        [_ballSprite addChild:enchant];
+        [self.ballSprite addChild:enchant];
         [enchant setZPosition:Z_INDEX_FX];
         [enchant setScale:.01];
         
@@ -660,7 +665,7 @@ float PARTICLE_SCALE;
                         
                         [move setTimingMode:NKActionTimingEaseOut];
                         
-                        [_ballSprite runAction:move completion:^(){
+                        [self.ballSprite runAction:move completion:^(){
                             
                             
                             [receiver startPossession];
@@ -710,7 +715,7 @@ float PARTICLE_SCALE;
                         NKAction *move = [NKAction moveTo:dest duration:.3];
                         [move setTimingMode:NKActionTimingEaseOut];
                         
-                        [_ballSprite runAction:move completion:^(){
+                        [self.ballSprite runAction:move completion:^(){
                             
                             NSLog(@"GameScene.m : animateEvent : GOAL");
                             
@@ -720,7 +725,7 @@ float PARTICLE_SCALE;
                                     [enchant removeFromParent];
                                     _followNode = Nil;
                                     
-                                    [self fadeOutChild:_ballSprite duration:.3];
+                                    [self fadeOutChild:self.ballSprite duration:.3];
                                     
                                     block();
                                 }];
@@ -749,9 +754,9 @@ float PARTICLE_SCALE;
                     
                     [move setTimingMode:NKActionTimingEaseOut];
                     
-                    [_ballSprite runAction:move completion:^(){
+                    [self.ballSprite runAction:move completion:^(){
                         
-                        [_ballSprite runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:CARD_ANIM_DUR]];
+                        [self.ballSprite runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:CARD_ANIM_DUR]];
                         
                         [enchant runAction:[NKAction scaleTo:.01 duration:CARD_ANIM_DUR*2] completion:^{
                             [enchant removeFromParent];
@@ -1158,7 +1163,7 @@ float PARTICLE_SCALE;
 
 -(void)addCardToBoardScene:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block{
     
-    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:.01] size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
+    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:nil size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
     
     person.delegate = self;
     
@@ -1209,10 +1214,12 @@ float PARTICLE_SCALE;
                 [enchant removeFromParent];
             }];
             
+            block();
+            
             [person runAction:[NKAction scaleXTo:1. duration:.3] completion:^{
             }];
             
-            block();
+           
             
         }];
         
@@ -1278,20 +1285,20 @@ float PARTICLE_SCALE;
     [_actionWindow removeCard:card];
 }
 
-
--(void)moveBallToLocation:(BoardLocation *)location {
-    
+-(BallSprite*)ballSprite {
     if (!_ballSprite) {
         _ballSprite = [[BallSprite alloc]init];
+        _ballSprite.texture = [NKTexture textureWithImageNamed:@"GAMELOGO.png"];
     }
-    
-    [_ballSprite setScale:BALL_SCALE_BIG];
-    
     if (!_ballSprite.parent) {
         [_gameBoardNode addChild:_ballSprite];
     }
+    return _ballSprite;
+}
+
+-(void)moveBallToLocation:(BoardLocation *)location {
     
-    [_ballSprite setZPosition:Z_BOARD_BALL];
+    [_ballSprite setScale:BALL_SCALE_BIG];
     [_ballSprite setPosition:[[_gameTiles objectForKey:location] position]];
     
     NSLog(@"GameScene.m :: moving ball to: %d %d", location.x, location.y);

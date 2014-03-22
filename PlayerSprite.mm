@@ -12,13 +12,13 @@
 
 @implementation PlayerSprite
 
--(void)draw {
-   // ofDisableDepthTest();
-    //glDisable(GL_CULL_FACE);
-    [super draw];
-    //glEnable(GL_CULL_FACE);
-    //ofEnableDepthTest();
-}
+//-(void)draw {
+//   // ofDisableDepthTest();
+//    //glDisable(GL_CULL_FACE);
+//    [super draw];
+//    //glEnable(GL_CULL_FACE);
+//    //ofEnableDepthTest();
+//}
 
 -(NKLabelNode*)styledLabelNode {
     NKLabelNode *node = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
@@ -47,32 +47,18 @@
             }
             
             NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:CGSizeMake(w, h)];
-//            [shadow setZPosition:-2];
-//
             [shadow setAlpha:.4];
             [self addChild:shadow];
-            
-             [shadow setPosition:CGPointMake(-self.size.width * .03, self.size.height *.1)];
-           // [shadow setZRotation:2];
+             [shadow setPosition3d:ofPoint(-self.size.width * .03, 0, 4)];
+
             
             NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerImage] color:playerColor size:CGSizeMake(w, h)];
       
             [triangle setOrientationEuler:ofVec3f(45,0,0)];
-            triangle.colorBlendFactor = 1.;
             
-//            if(model.manager.teamSide){
-//                [triangle setZRotation:M_PI*.5];
-//                [shadow setZRotation:M_PI*.5];
-//            }
-//            else {
-//                [triangle setZRotation:-M_PI*.5];
-//                [shadow setZRotation:-M_PI*.5];
-//                
-//            }
-//            
             
             [self addChild:triangle];
-            
+           
             [triangle setZPosition:h*.33];
             
             self.name = model.nameForCard;
@@ -103,27 +89,30 @@
     
     if (!_ball) {
         
-        _posession = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(h, h)];
-     
-        [_posession setAlpha:.5];
-        [_posession setColorBlendFactor:1.];
-        [_posession setColor:_model.manager.color];
-        [_posession setZPosition:h*.25];
-        
-        NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks.png"] color:NKWHITE size:CGSizeMake(h, h)];
-        [_posession addChild:haloMarks];
-        [haloMarks setZPosition:4];
-        
-        _ballTarget = [[NKSpriteNode alloc]initWithColor:NKWHITE size:CGSizeMake(4, 4)];
-
-        [_posession addChild:_ballTarget];
-        
-        [_ballTarget setPosition3d:ofPoint(0, w*.5, 10)];
-      
-        
-        [self fadeInChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
+        if (!_posession) {
             
-        }];
+            _posession = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(h, h)];
+            
+            //[_posession setAlpha:.5];
+            [_posession setColorBlendFactor:1.];
+            [_posession setColor:_model.manager.color];
+            [_posession setZPosition:h*.25];
+            
+            NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks.png"] color:NKWHITE size:CGSizeMake(h, h)];
+            [_posession addChild:haloMarks];
+            [haloMarks setZPosition:2];
+            
+            _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:CGSizeMake(4, 4)];
+            
+            [_posession addChild:_ballTarget];
+            
+            [_ballTarget setPosition3d:ofPoint(0, w*.5, 0)];
+            
+            [self fadeInChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
+                
+            }];
+            
+        }
         
     }
     
@@ -142,22 +131,23 @@
     if (!_ball) {
         
         _ball = _delegate.ballSprite;
-       
+        
+        [_ball runAction:[NKAction repeatActionForever:[NKAction rotateByAngle:-45 duration:.2]]];
         
         [_ball runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:1.] completion:^{
              _ball.player = self;
         }];
         
+       
+        
         [_posession runAction:[NKAction repeatActionForever:
                                [NKAction group:@[
-                                                 [NKAction sequence:@[[NKAction move3dBy:ofVec3f(0,0,h*.33) duration:2.],
-                                                                      [NKAction move3dBy:ofVec3f(0,0,-h*.33) duration:2.]]],
+                                                 [NKAction sequence:@[[NKAction move3dBy:ofVec3f(0,0,h*.33) duration:1.],
+                                                                      [NKAction move3dBy:ofVec3f(0,0,-h*.33) duration:1.]]],
                                                  
-                                                                      [NKAction rotateByAngle:90 duration:4.]
+                                                                      [NKAction rotateByAngle:180 duration:2.]
                                                     ]]]];
-        
-        //[_ball runAction:[NKAction repeatActionForever:[NKAction rotateByAngle:-45 duration:.2]]];
-        
+
     }
     
 }
@@ -178,10 +168,6 @@
     
     [_ball runAction:[NKAction scaleTo:BALL_SCALE_BIG duration:FAST_ANIM_DUR] completion:^{
         
-        
-        [_posession removeAllActions];
-        
-        [_ball removeAllActions];
         _ball.player = nil;
         _ball = nil;
         
@@ -192,6 +178,9 @@
             [_ballTarget removeFromParent];
             _posession = nil;
         }];
+        
+        [_posession removeAllActions];
+        [_ball removeAllActions];
         
         block();
         

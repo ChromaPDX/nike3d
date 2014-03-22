@@ -6,7 +6,7 @@ int main(int argc, char * argv[])
 {
     ofAppiOSWindow * window = new ofAppiOSWindow();
     
-    window->enableRendererES2();
+   // window->enableRendererES2();
     window->enableRetina();
     window->enableDepthBuffer();
     window->enableAntiAliasing(2);

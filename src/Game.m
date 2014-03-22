@@ -591,11 +591,11 @@
     
     [self addShuffleEventToAction:_currentAction forManager:_opponent];
     
-    SkillEvent* goalie1 = [self addCardEventToAction:_currentAction fromCard:nil toLocation:[BoardLocation pX:3 Y:BOARD_LENGTH-1] withType:kSpawnKeeperEvent];
+    SkillEvent* goalie1 = [self addCardEventToAction:_currentAction fromCard:nil toLocation:[BoardLocation pX:3 Y:0] withType:kSpawnKeeperEvent];
     goalie1.manager = [self managerForTeamSide:1];
     goalie1.actionCost = 0;
     
-    SkillEvent* goalie2 = [self addCardEventToAction:_currentAction fromCard:nil toLocation:[BoardLocation pX:3 Y:0] withType:kSpawnKeeperEvent];
+    SkillEvent* goalie2 = [self addCardEventToAction:_currentAction fromCard:nil toLocation:[BoardLocation pX:3 Y:BOARD_LENGTH-1] withType:kSpawnKeeperEvent];
     goalie2.manager = [self managerForTeamSide:0];
     goalie2.actionCost = 0;
     
@@ -604,8 +604,7 @@
     
     //MANAGERS- place your first 3 players
     
-    
-    [self addSetBallEventForAction:_currentAction location:[BoardLocation pX:3 Y:BOARD_LENGTH/2]];
+    [self addSetBallEventForAction:_currentAction location:[BoardLocation pX:3 Y:BOARD_LENGTH/2-1]];
     
     // PLAYER 1 GETS THE BALL. PLACE IT ON THE FIELD
     
@@ -625,12 +624,12 @@
     // CHECK WE HAVE PLAYERS
     
     for (int i = 0; i<3; i++) {
-        SkillEvent* spawn = [self addCardEventToAction:action fromCard:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+!i] withType:kSpawnPlayerEvent];
+        SkillEvent* spawn = [self addCardEventToAction:action fromCard:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2 - 1)-!i ] withType:kSpawnPlayerEvent];
         spawn.manager = [self managerForTeamSide:1];
         spawn.actionCost = 0;
         
         
-        SkillEvent* spawn2 = [self addCardEventToAction:action fromCard:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2 - 1)-!i] withType:kSpawnPlayerEvent];
+        SkillEvent* spawn2 = [self addCardEventToAction:action fromCard:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+!i] withType:kSpawnPlayerEvent];
         spawn2.manager = [self managerForTeamSide:0];
         spawn2.actionCost = 0;
     }
