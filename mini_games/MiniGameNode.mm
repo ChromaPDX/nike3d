@@ -35,6 +35,7 @@
 
 -(void)customDraw {
     ofDisableDepthTest();
+    glDisable(GL_CULL_FACE);
     ofPushMatrix();
     ofRotate(180, 0, 1, 0);
     ofRotate(180, 0, 0, 1);
@@ -43,6 +44,7 @@
     ofSetColor(255);
     _miniMaze->draw();
     ofPopMatrix();
+    glEnable(GL_CULL_FACE);
     ofEnableDepthTest();
 }
 

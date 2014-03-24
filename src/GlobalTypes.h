@@ -19,8 +19,8 @@
 #define BOARD_WIDTH 7
 #define BOARD_LENGTH 10
 
-#define TILE_WIDTH 72
-#define TILE_HEIGHT 96
+#define TILE_WIDTH 96
+#define TILE_HEIGHT 116
 
 
 // ANIMATION

@@ -9,11 +9,11 @@
 
 void ofApp::setup(){
     
+    ofSetFrameRate(62);
+    
     char* extensionList = (char*)glGetString(GL_EXTENSIONS);
     
     ofLogNotice("GL") << string(extensionList);
-    
-    ofSetFrameRate(60);
     
     lastTime = CFAbsoluteTimeGetCurrent();
     
@@ -27,63 +27,63 @@ void ofApp::setup(){
     
     [game startSinglePlayerGame];
     
-    setupCM();
+//    setupCM();
 
 }
 
-void ofApp::setupCM(){
-    
-    lastAttitude = ofMatrix3x3(1,0,0,  0,1,0,  0,0,1);
-    
-    if (!motionManager) {
-        
-        motionManager = [[CMMotionManager alloc] init];
-        
-        ofLogNotice("CORE_MOTION") << "INIT CORE MOTION";
-    }
-    if (motionManager){
-        
-        if(motionManager.isDeviceMotionAvailable){
-            
-            ofLogNotice("CORE_MOTION") << "MOTION MANAGER IS AVAILABLE";
-            
-            motionManager.deviceMotionUpdateInterval = 1.0/45.0;
-            
-            [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error) {
-                
-                CMRotationMatrix a = deviceMotion.attitude.rotationMatrix;
-                
-                attitude =
-                ofMatrix3x3(a.m11, a.m21, a.m31,
-                            a.m12, a.m22, a.m32,
-                            a.m13, a.m23, a.m33);
-                
-                normalized = attitude * lastAttitude;  // results in the identity matrix plus perturbations between polling cycles
-                //correctNormalization();  // if near 0 or 1, force into 0 and 1
-                
-                //agent.updateOrientation(attitude, normalized);  // send data to game controller
-                CMQuaternion cm = deviceMotion.attitude.quaternion;
-                
-                lastAttitude = attitude;   // store last polling cycle to compare next time around
-                lastAttitude.transpose(); //getInverse(attitude);  // transpose is the same as inverse for orthogonal matrices. and much easier
-                
-                //ofVec3f euler = ofVec3f(deviceMotion.attitude.pitch, deviceMotion.attitude.yaw, deviceMotion.attitude.roll);
-                
-                int rot = cm.x * -240.;
-                if (rot > -150 && rot < 150){
-                    float cmf = rot / 360.;
-                    sensorientation = ofQuaternion(cmf, 0, 0, cm.w);
-                    [scene setOrientation:sensorientation];
-                }
-                
-            }];
-        }
-    }
-    else {
-        ofLogError("MOTION NOT AVAILABLE");
-    }
-    
-}
+//void ofApp::setupCM(){
+//    
+//    lastAttitude = ofMatrix3x3(1,0,0,  0,1,0,  0,0,1);
+//    
+//    if (!motionManager) {
+//        
+//        motionManager = [[CMMotionManager alloc] init];
+//        
+//        ofLogNotice("CORE_MOTION") << "INIT CORE MOTION";
+//    }
+//    if (motionManager){
+//        
+//        if(motionManager.isDeviceMotionAvailable){
+//            
+//            ofLogNotice("CORE_MOTION") << "MOTION MANAGER IS AVAILABLE";
+//            
+//            motionManager.deviceMotionUpdateInterval = 1.0/45.0;
+//            
+//            [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error) {
+//                
+//                CMRotationMatrix a = deviceMotion.attitude.rotationMatrix;
+//                
+//                attitude =
+//                ofMatrix3x3(a.m11, a.m21, a.m31,
+//                            a.m12, a.m22, a.m32,
+//                            a.m13, a.m23, a.m33);
+//                
+//                normalized = attitude * lastAttitude;  // results in the identity matrix plus perturbations between polling cycles
+//                //correctNormalization();  // if near 0 or 1, force into 0 and 1
+//                
+//                //agent.updateOrientation(attitude, normalized);  // send data to game controller
+//                CMQuaternion cm = deviceMotion.attitude.quaternion;
+//                
+//                lastAttitude = attitude;   // store last polling cycle to compare next time around
+//                lastAttitude.transpose(); //getInverse(attitude);  // transpose is the same as inverse for orthogonal matrices. and much easier
+//                
+//                //ofVec3f euler = ofVec3f(deviceMotion.attitude.pitch, deviceMotion.attitude.yaw, deviceMotion.attitude.roll);
+//                
+//                int rot = cm.x * -240.;
+//                if (rot > -150 && rot < 150){
+//                    float cmf = rot / 360.;
+//                    sensorientation = ofQuaternion(cmf, 0, 0, cm.w);
+//                    [scene setOrientation:sensorientation];
+//                }
+//                
+//            }];
+//        }
+//    }
+//    else {
+//        ofLogError("MOTION NOT AVAILABLE");
+//    }
+//    
+//}
 //--------------------------------------------------------------
 void ofApp::update(){
     

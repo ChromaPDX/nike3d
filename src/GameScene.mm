@@ -92,8 +92,7 @@ float PARTICLE_SCALE;
         [self setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1.] ];
     }
     
-    return self;
-}
+    return self;}
 -(void)setupGameBoard {
     
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
@@ -102,22 +101,24 @@ float PARTICLE_SCALE;
     _pivot = [[NKNode alloc]init];
     
     [self addChild:_pivot];
-
+    [_pivot setPosition3d:(ofPoint(0,-h*.5,0))];
     
 //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:CGSizeMake(TILE_WIDTH*4, TILE_WIDTH*5.2)];
 //    [_pivot addChild:logo];
 //    [logo setZPosition:-3];
 
     
-    _boardScroll = [[NKScrollNode alloc] initWithColor:nil size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
-    
-    [_pivot addChild:_boardScroll];
+//    _boardScroll = [[NKScrollNode alloc] initWithColor:nil size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
+//    
+//    [_pivot addChild:_boardScroll];
     
     //_boardScroll.userInteractionEnabled = false;
     
     _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Background_Field.png"] color:Nil size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
     
-    [_boardScroll addChild:_gameBoardNode];
+    [_pivot addChild:_gameBoardNode];
+    
+    [_gameBoardNode setPosition3d:ofPoint(0,h*.5,0)];
     
     _gameBoardNode.userInteractionEnabled = true;
     _gameBoardNode.name = @"Game Board";
@@ -163,6 +164,8 @@ float PARTICLE_SCALE;
 //                                                                         
 //                                                     ]]];
     
+    [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
+    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.35,0) duration:2.]];
 }
 
 -(void)startMiniGame {
@@ -171,7 +174,6 @@ float PARTICLE_SCALE;
     
     [self addChild:_miniGameNode];
     
-
     [_miniGameNode startMiniGame];
     
    // [self loadShader:[[NKGaussianBlur alloc] initWithNode:self blurSize:4 numPasses:4]];
@@ -1638,12 +1640,17 @@ float PARTICLE_SCALE;
 
 }
 
-//-(bool)touchUp:(CGPoint)location id:(int)touchId {
-//    if (!_miniGameNode) {
-//        [self startMiniGame];
-//    }
-//    return [super touchUp:location id:touchId];
-//    
-//}
+-(bool)touchUp:(CGPoint)location id:(int)touchId {
+
+    if ([super touchUp:location id:touchId]) {
+        if (!_miniGameNode) {
+            [self startMiniGame];
+        }
+        return 1;
+    };
+
+    return 0;
+    
+}
 
 @end
