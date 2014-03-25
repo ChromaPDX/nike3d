@@ -100,8 +100,11 @@ float PARTICLE_SCALE;
     
     _pivot = [[NKNode alloc]init];
     
+     _pivot.name = @"PIVOT";
+    
     [self addChild:_pivot];
-    [_pivot setPosition3d:(ofPoint(0,-h*.5,0))];
+    
+    //[_pivot setPosition3d:(ofPoint(0,-h*.5,0))];
     
 //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:CGSizeMake(TILE_WIDTH*4, TILE_WIDTH*5.2)];
 //    [_pivot addChild:logo];
@@ -118,9 +121,10 @@ float PARTICLE_SCALE;
     
     [_pivot addChild:_gameBoardNode];
     
-    [_gameBoardNode setPosition3d:ofPoint(0,h*.5,0)];
+    [_gameBoardNode setPosition3d:ofPoint(0,0,0)];
     
     _gameBoardNode.userInteractionEnabled = true;
+    
     _gameBoardNode.name = @"Game Board";
     
     for(int i = 0; i < BOARD_WIDTH; i++){
@@ -163,9 +167,9 @@ float PARTICLE_SCALE;
 //                                                                         ]
 //                                                                         
 //                                                     ]]];
-    
-    [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
-    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.35,0) duration:2.]];
+//    
+//    [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
+//    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.35,0) duration:2.]];
 }
 
 -(void)startMiniGame {
@@ -1177,6 +1181,8 @@ float PARTICLE_SCALE;
     
     [_gameBoardNode addChild:person];
     
+    person.userInteractionEnabled = true;
+    
     //[person setZPosition:Z_BOARD_PLAYER];
     
     if (!animated || !card.isTypePlayer){
@@ -1640,13 +1646,13 @@ float PARTICLE_SCALE;
 
 }
 
--(bool)touchUp:(CGPoint)location id:(int)touchId {
+-(int)touchUp:(CGPoint)location id:(int)touchId {
 
-    if ([super touchUp:location id:touchId]) {
+    if ([super touchUp:location id:touchId] == 2) {
         if (!_miniGameNode) {
             [self startMiniGame];
         }
-        return 1;
+        return 2;
     };
 
     return 0;

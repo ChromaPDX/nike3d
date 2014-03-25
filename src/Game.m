@@ -2399,7 +2399,7 @@
     
     else if (event.type == kSpawnKeeperEvent) {
         
-        Card *newPlayer;
+
         
         NSArray* deck = event.manager.deck.theDeck;
         
@@ -2409,7 +2409,7 @@
             
             if ([c isTypeKeeper]){
                 event.playerPerformingAction = c;
-                newPlayer = c;
+
                 break;
             }
             

@@ -117,6 +117,7 @@
 		61744C2018DBB86B00C925B2 /* Field_Goal.png in Resources */ = {isa = PBXBuildFile; fileRef = 61744C1F18DBB86B00C925B2 /* Field_Goal.png */; };
 		617BDD0718D92491005EC4B1 /* BallSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0618D92491005EC4B1 /* BallSprite.mm */; };
 		617BDD0A18D9298E005EC4B1 /* AlertSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0918D9298E005EC4B1 /* AlertSprite.mm */; };
+		6181275318E0EE35003B72F8 /* NKMesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6181275218E0EE35003B72F8 /* NKMesh.mm */; };
 		6183B7D518D90B1F002D426F /* touch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6183B7D418D90B1F002D426F /* touch.wav */; };
 		618E1D3218C01E620038AD46 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 618E1D3118C01E620038AD46 /* CoreMotion.framework */; };
 		618E1D3518C0217F0038AD46 /* BoardLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 618E1D3418C0217F0038AD46 /* BoardLocation.m */; };
@@ -327,6 +328,8 @@
 		617BDD0618D92491005EC4B1 /* BallSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallSprite.mm; sourceTree = "<group>"; };
 		617BDD0818D9298E005EC4B1 /* AlertSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertSprite.h; sourceTree = "<group>"; };
 		617BDD0918D9298E005EC4B1 /* AlertSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AlertSprite.mm; sourceTree = "<group>"; };
+		6181275118E0EE35003B72F8 /* NKMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMesh.h; sourceTree = "<group>"; };
+		6181275218E0EE35003B72F8 /* NKMesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKMesh.mm; sourceTree = "<group>"; };
 		6183B7D418D90B1F002D426F /* touch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = touch.wav; sourceTree = "<group>"; };
 		618E1D3118C01E620038AD46 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		618E1D3318C0217F0038AD46 /* BoardLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardLocation.h; sourceTree = "<group>"; };
@@ -842,6 +845,8 @@
 				61D0174318D7CD4C0085D7F9 /* NKSpriteNode.mm */,
 				61D0174418D7CD4C0085D7F9 /* NKTexture.h */,
 				61D0174518D7CD4C0085D7F9 /* NKTexture.mm */,
+				6181275118E0EE35003B72F8 /* NKMesh.h */,
+				6181275218E0EE35003B72F8 /* NKMesh.mm */,
 				61D0174618D7CD4C0085D7F9 /* NKViewController.h */,
 				61D0174718D7CD4C0085D7F9 /* NKViewController.mm */,
 				61D0174818D7CD4C0085D7F9 /* ofxNodeKitten.h */,
@@ -1169,6 +1174,7 @@
 				61D0177218D7CD4C0085D7F9 /* NKGaussianBlur.mm in Sources */,
 				61D0177418D7CD4C0085D7F9 /* NKZBlur.mm in Sources */,
 				61D0177318D7CD4C0085D7F9 /* NKGaussianZ.mm in Sources */,
+				6181275318E0EE35003B72F8 /* NKMesh.mm in Sources */,
 				61D0177118D7CD4C0085D7F9 /* NKDrawDepthShader.mm in Sources */,
 				6124554B18D91866003FF53D /* NKEmitterNode.mm in Sources */,
 				6124554E18D91DB3003FF53D /* ActionWindow.mm in Sources */,
@@ -1279,7 +1285,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
