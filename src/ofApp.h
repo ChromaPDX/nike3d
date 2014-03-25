@@ -5,6 +5,8 @@
 #import "ofxNodeKitten.h"
 #import <CoreMotion/CoreMotion.h>
 
+#import "DevMenu.h"
+
 @class GameScene;
 @class Game;
 
@@ -38,8 +40,7 @@ public:
     
     NSTimeInterval lastTime;
     
-    Game *game;
-    GameScene *scene;
+    NKSceneNode *scene;
     NKNode *pivot;
     NKNode *emitter;
     

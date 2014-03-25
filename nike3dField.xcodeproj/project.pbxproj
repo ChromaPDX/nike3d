@@ -113,6 +113,7 @@
 		6134208718C6ABA4003D7C9E /* theball.png in Resources */ = {isa = PBXBuildFile; fileRef = 6134207D18C6ABA4003D7C9E /* theball.png */; };
 		6134208818C6ABA4003D7C9E /* thirtypercentwhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 6134207E18C6ABA4003D7C9E /* thirtypercentwhite.png */; };
 		6134208E18C6ABD4003D7C9E /* MiniGameNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */; };
+		6160991118E247450004A938 /* MiniGameScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6160991018E247450004A938 /* MiniGameScene.mm */; };
 		61744C1E18DB9E1600C925B2 /* CardType_HUD.png in Resources */ = {isa = PBXBuildFile; fileRef = 61744C1D18DB9E1600C925B2 /* CardType_HUD.png */; };
 		61744C2018DBB86B00C925B2 /* Field_Goal.png in Resources */ = {isa = PBXBuildFile; fileRef = 61744C1F18DBB86B00C925B2 /* Field_Goal.png */; };
 		617BDD0718D92491005EC4B1 /* BallSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0618D92491005EC4B1 /* BallSprite.mm */; };
@@ -164,6 +165,7 @@
 		61D0177418D7CD4C0085D7F9 /* NKZBlur.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61D0175418D7CD4C0085D7F9 /* NKZBlur.mm */; };
 		61D0177E18D7CD7E0085D7F9 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D0177D18D7CD7D0085D7F9 /* CoreText.framework */; };
 		61D6E10218DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E10118DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png */; };
+		61EF6FB518E23259002B9814 /* DevMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61EF6FB418E23259002B9814 /* DevMenu.mm */; };
 		61F9C4F018D7D3DB005F849D /* NKCoreTextNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61F9C4EF18D7D3DB005F849D /* NKCoreTextNode.mm */; };
 		678E130817951530005B6D19 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130717951530005B6D19 /* Icon@2x.png */; };
 		678E130A17951536005B6D19 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130917951536005B6D19 /* Icon.png */; };
@@ -322,6 +324,8 @@
 		6134208918C6ABB3003D7C9E /* MiniGames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniGames.h; sourceTree = "<group>"; };
 		6134208C18C6ABD4003D7C9E /* MiniGameNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniGameNode.h; path = mini_games/MiniGameNode.h; sourceTree = SOURCE_ROOT; };
 		6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniGameNode.mm; path = mini_games/MiniGameNode.mm; sourceTree = SOURCE_ROOT; };
+		6160990F18E247450004A938 /* MiniGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniGameScene.h; sourceTree = "<group>"; };
+		6160991018E247450004A938 /* MiniGameScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MiniGameScene.mm; sourceTree = "<group>"; };
 		61744C1D18DB9E1600C925B2 /* CardType_HUD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CardType_HUD.png; sourceTree = "<group>"; };
 		61744C1F18DBB86B00C925B2 /* Field_Goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Field_Goal.png; sourceTree = "<group>"; };
 		617BDD0518D92491005EC4B1 /* BallSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallSprite.h; sourceTree = "<group>"; };
@@ -418,6 +422,8 @@
 		61D0175418D7CD4C0085D7F9 /* NKZBlur.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKZBlur.mm; sourceTree = "<group>"; };
 		61D0177D18D7CD7D0085D7F9 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		61D6E10118DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayerIndicator_PlayerSHADOW.png; sourceTree = "<group>"; };
+		61EF6FB318E23259002B9814 /* DevMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevMenu.h; sourceTree = "<group>"; };
+		61EF6FB418E23259002B9814 /* DevMenu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DevMenu.mm; sourceTree = "<group>"; };
 		61F9C4EE18D7D3DB005F849D /* NKCoreTextNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCoreTextNode.h; sourceTree = "<group>"; };
 		61F9C4EF18D7D3DB005F849D /* NKCoreTextNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKCoreTextNode.mm; sourceTree = "<group>"; };
 		678E130717951530005B6D19 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "bin/data/Icon@2x.png"; sourceTree = "<group>"; };
@@ -923,6 +929,10 @@
 				61B289E318D8FB8500102278 /* utility */,
 				E4D8936C11527B74007E1F53 /* ofApp.h */,
 				E4D8936D11527B74007E1F53 /* ofApp.mm */,
+				61EF6FB318E23259002B9814 /* DevMenu.h */,
+				61EF6FB418E23259002B9814 /* DevMenu.mm */,
+				6160990F18E247450004A938 /* MiniGameScene.h */,
+				6160991018E247450004A938 /* MiniGameScene.mm */,
 				E4D8936B11527B74007E1F53 /* main.mm */,
 				6134207218C6ABA4003D7C9E /* mini_games */,
 				6116FB1E18C54CEA00BBD1CB /* FieldGameModel */,
@@ -1159,6 +1169,7 @@
 				E4D8936F11527B74007E1F53 /* ofApp.mm in Sources */,
 				61D0176D18D7CD4C0085D7F9 /* NKSpriteNode.mm in Sources */,
 				61F9C4F018D7D3DB005F849D /* NKCoreTextNode.mm in Sources */,
+				6160991118E247450004A938 /* MiniGameScene.mm in Sources */,
 				61B28A0B18D8FB8500102278 /* inffast.c in Sources */,
 				618E1D3F18C024200038AD46 /* GameScene.mm in Sources */,
 				61B289D418D8FAC700102278 /* Game.m in Sources */,
@@ -1182,6 +1193,7 @@
 				61B28A0C18D8FB8500102278 /* inflate.c in Sources */,
 				61D0176718D7CD4C0085D7F9 /* NKNode.mm in Sources */,
 				61B28A0D18D8FB8500102278 /* inftrees.c in Sources */,
+				61EF6FB518E23259002B9814 /* DevMenu.mm in Sources */,
 				61B28A0518D8FB8500102278 /* deflate.c in Sources */,
 				61D0176818D7CD4C0085D7F9 /* NKNodeAnimationHandler.mm in Sources */,
 				61B28A0418D8FB8500102278 /* crc32.c in Sources */,

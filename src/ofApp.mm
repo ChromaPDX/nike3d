@@ -2,6 +2,8 @@
 #include "NikeNodeHeaders.h"
 #include "Game.h"
 
+#include "DevMenu.h"
+
 // HERE IS AN EXAMPLE SUBCLASS OF A TABLE VIEW CELL
 
 
@@ -17,15 +19,19 @@ void ofApp::setup(){
     
     lastTime = CFAbsoluteTimeGetCurrent();
     
-    game = [[Game alloc] init];
+    scene =  [[DevMenu alloc] initWithSize:CGSizeMake(ofGetWidth(), ofGetHeight())];
     
-    scene = [[GameScene alloc]initWithSize:CGSizeMake(ofGetWidth(), ofGetHeight())];
+    scene.view = (void*)this;
     
-    game.gameScene = scene;
-    
-    scene.game = game;
-    
-    [game startSinglePlayerGame];
+//    game = [[Game alloc] init];
+//    
+//    scene = [[GameScene alloc]initWithSize:CGSizeMake(ofGetWidth(), ofGetHeight())];
+//    
+//    game.gameScene = scene;
+//    
+//    scene.game = game;
+//    
+//    [game startSinglePlayerGame];
     
 //    setupCM();
 
