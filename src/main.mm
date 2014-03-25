@@ -9,7 +9,7 @@ int main(int argc, char * argv[])
    // window->enableRendererES2();
     window->enableRetina();
     window->enableDepthBuffer();
-    window->enableAntiAliasing(2);
+    //window->enableAntiAliasing(2);
     
     ofSetupOpenGL(1024,768,OF_FULLSCREEN);			// <-------- setup the GL context
     

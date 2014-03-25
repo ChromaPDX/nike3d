@@ -9,17 +9,17 @@
 #import "NikeNodeHeaders.h"
 
 @implementation GameBoardNode
-
--(instancetype)initWithColor:(UIColor *)color size:(CGSize)size {
-    self = [super initWithColor:color size:size];
-    
-    if(self){
-        
-    }
-    
-    return self;
-    
-}
+//
+//-(instancetype)initWithColor:(UIColor *)color size:(CGSize)size {
+//    self = [super initWithColor:color size:size];
+//    
+//    if(self){
+//        
+//    }
+//    
+//    return self;
+//    
+//}
 
 
 @end
