@@ -22,6 +22,7 @@
     if (self) {
         self.size = size;
         [self setUserInteractionEnabled:YES];
+        self.name = @"miniGame Node";
     }
     
     return self;
@@ -77,8 +78,9 @@
     ofEnableDepthTest();
 }
 
--(bool)touchDown:(CGPoint)location id:(int)touchId {
-    if ([super touchDown:location id:touchId]){
+-(NKTouchState)touchDown:(CGPoint)location id:(int)touchId {
+    NKTouchState touchState = [super touchDown:location id:touchId]; // this queries children first returns 2 if no children, 1 if active child
+    if (touchState == 2){
         NSLog(@"TOUCH X:%.1f  Y:%.1f",location.x, location.y);
         if(activeMiniGame == 0)
             ;//_miniMaze->touchDownCoords(location.x, location.y);
@@ -87,7 +89,7 @@
         else if(activeMiniGame == 2)
             _miniCups->touchDownCoords(location.x, location.y);
     }
-    return true;
+    return touchState;
 }
 
 -(void)dealloc {
