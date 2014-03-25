@@ -8,6 +8,12 @@
 
 #import "NikeNodeHeaders.h"
 
+@interface MiniGameNode (){
+    int activeMiniGame; // 0:maze, 1:touch, 2:cups
+}
+
+@end
+
 @implementation MiniGameNode
 
 -(instancetype)initWithSize:(CGSize) size {
@@ -15,21 +21,39 @@
     
     if (self) {
         self.size = size;
-           }
+        [self setUserInteractionEnabled:YES];
+    }
     
     return self;
 }
 
 -(void)startMiniGame {
-    _miniMaze = new MiniMaze();
-    _miniMaze->objDelegate = (GameScene*)self.scene;
+    activeMiniGame = arc4random()%3;
     ofRectangle d = [self getDrawFrame];
-    _miniMaze->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8);
-    
+    if(activeMiniGame == 0){
+        _miniMaze = new MiniMaze();
+        _miniMaze->objDelegate = (id)self.scene;
+        _miniMaze->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8);
+    }
+    else if(activeMiniGame == 1){
+        _miniTouch = new MiniTouch();
+        _miniTouch->objDelegate = (id)self.scene;
+        _miniTouch->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8);
+    }
+    else if(activeMiniGame == 2){
+        _miniCups = new MiniCups();
+        _miniCups->objDelegate = (id)self.scene;
+        _miniCups->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8);
+    }
 }
 
 -(void)updateWithTimeSinceLast:(NSTimeInterval)dt {
-    _miniMaze->update();
+    if(activeMiniGame == 0)
+        _miniMaze->update();
+    else if(activeMiniGame == 1)
+        _miniTouch->update();
+    else if(activeMiniGame == 2)
+        _miniCups->update();
     [super updateWithTimeSinceLast:dt];
 }
 
@@ -42,14 +66,37 @@
     ofSetColor(0, 0, 0, 180);
     ofRect([self getDrawFrame]);
     ofSetColor(255);
-    _miniMaze->draw();
+    if(activeMiniGame == 0)
+        _miniMaze->draw();
+    else if(activeMiniGame == 1)
+        _miniTouch->draw();
+    else if(activeMiniGame == 2)
+        _miniCups->draw();
     ofPopMatrix();
     glEnable(GL_CULL_FACE);
     ofEnableDepthTest();
 }
 
+-(bool)touchDown:(CGPoint)location id:(int)touchId {
+    if ([super touchDown:location id:touchId]){
+        NSLog(@"TOUCH X:%.1f  Y:%.1f",location.x, location.y);
+        if(activeMiniGame == 0)
+            ;//_miniMaze->touchDownCoords(location.x, location.y);
+        else if(activeMiniGame == 1)
+            _miniTouch->touchDownCoords(location.x, location.y);
+        else if(activeMiniGame == 2)
+            _miniCups->touchDownCoords(location.x, location.y);
+    }
+    return true;
+}
+
 -(void)dealloc {
-    delete _miniMaze;
+    if(activeMiniGame == 0)
+        delete _miniMaze;
+    else if(activeMiniGame == 1)
+        delete _miniTouch;
+    else if(activeMiniGame == 2)
+        delete _miniCups;
 }
 
 @end

@@ -172,6 +172,8 @@
 		BB16EBD20F2B2A9500518274 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD10F2B2A9500518274 /* OpenGLES.framework */; };
 		BB16EBD90F2B2AB500518274 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD80F2B2AB500518274 /* QuartzCore.framework */; };
 		BBE5EAB80F49AD8400F28951 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */; };
+		D5BC8C9018E0F3A9005E2F52 /* MiniTouch.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5BC8C8F18E0F3A9005E2F52 /* MiniTouch.mm */; };
+		D5BC8C9318E0F8CE005E2F52 /* MiniCups.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5BC8C9218E0F8CE005E2F52 /* MiniCups.mm */; };
 		E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3ED613B38FB500A75A5D /* Project.xcconfig */; };
 		E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */; };
 		E41D400B13B39D2100A75A5D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400613B39D2100A75A5D /* AVFoundation.framework */; };
@@ -312,8 +314,8 @@
 		6134207818C6ABA4003D7C9E /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		6134207918C6ABA4003D7C9E /* blackPixel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackPixel.png; sourceTree = "<group>"; };
 		6134207A18C6ABA4003D7C9E /* footlong.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = footlong.png; sourceTree = "<group>"; };
-		6134207B18C6ABA4003D7C9E /* MiniMaze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMaze.h; sourceTree = "<group>"; };
-		6134207C18C6ABA4003D7C9E /* MiniMaze.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MiniMaze.mm; sourceTree = "<group>"; };
+		6134207B18C6ABA4003D7C9E /* MiniMaze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniMaze.h; path = mini_maze/MiniMaze.h; sourceTree = "<group>"; };
+		6134207C18C6ABA4003D7C9E /* MiniMaze.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniMaze.mm; path = mini_maze/MiniMaze.mm; sourceTree = "<group>"; };
 		6134207D18C6ABA4003D7C9E /* theball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = theball.png; sourceTree = "<group>"; };
 		6134207E18C6ABA4003D7C9E /* thirtypercentwhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thirtypercentwhite.png; sourceTree = "<group>"; };
 		6134208918C6ABB3003D7C9E /* MiniGames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniGames.h; sourceTree = "<group>"; };
@@ -424,6 +426,10 @@
 		BB16EBD80F2B2AB500518274 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BB24DDC910DA781C00E9C588 /* ofxiOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ofxiOS-Info.plist"; sourceTree = "<group>"; };
 		BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		D5BC8C8E18E0F3A9005E2F52 /* MiniTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniTouch.h; path = mini_maze/MiniTouch.h; sourceTree = "<group>"; };
+		D5BC8C8F18E0F3A9005E2F52 /* MiniTouch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniTouch.mm; path = mini_maze/MiniTouch.mm; sourceTree = "<group>"; };
+		D5BC8C9118E0F8CE005E2F52 /* MiniCups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniCups.h; sourceTree = "<group>"; };
+		D5BC8C9218E0F8CE005E2F52 /* MiniCups.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MiniCups.mm; sourceTree = "<group>"; };
 		E41D3ED613B38FB500A75A5D /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/ios/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E41D400613B39D2100A75A5D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -717,7 +723,13 @@
 		6134207218C6ABA4003D7C9E /* mini_games */ = {
 			isa = PBXGroup;
 			children = (
-				6134207318C6ABA4003D7C9E /* mini_maze */,
+				6134207318C6ABA4003D7C9E /* resources */,
+				D5BC8C8E18E0F3A9005E2F52 /* MiniTouch.h */,
+				D5BC8C8F18E0F3A9005E2F52 /* MiniTouch.mm */,
+				D5BC8C9118E0F8CE005E2F52 /* MiniCups.h */,
+				D5BC8C9218E0F8CE005E2F52 /* MiniCups.mm */,
+				6134207B18C6ABA4003D7C9E /* MiniMaze.h */,
+				6134207C18C6ABA4003D7C9E /* MiniMaze.mm */,
 				6134208C18C6ABD4003D7C9E /* MiniGameNode.h */,
 				6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */,
 				6134208918C6ABB3003D7C9E /* MiniGames.h */,
@@ -725,7 +737,7 @@
 			path = mini_games;
 			sourceTree = SOURCE_ROOT;
 		};
-		6134207318C6ABA4003D7C9E /* mini_maze */ = {
+		6134207318C6ABA4003D7C9E /* resources */ = {
 			isa = PBXGroup;
 			children = (
 				6134207418C6ABA4003D7C9E /* arrow.png */,
@@ -735,11 +747,10 @@
 				6134207818C6ABA4003D7C9E /* background.png */,
 				6134207918C6ABA4003D7C9E /* blackPixel.png */,
 				6134207A18C6ABA4003D7C9E /* footlong.png */,
-				6134207B18C6ABA4003D7C9E /* MiniMaze.h */,
-				6134207C18C6ABA4003D7C9E /* MiniMaze.mm */,
 				6134207D18C6ABA4003D7C9E /* theball.png */,
 				6134207E18C6ABA4003D7C9E /* thirtypercentwhite.png */,
 			);
+			name = resources;
 			path = mini_maze;
 			sourceTree = "<group>";
 		};
@@ -1122,6 +1133,7 @@
 				618E1D3918C0231C0038AD46 /* GameBoardNode.mm in Sources */,
 				6124555118D91EB4003FF53D /* CardSprite.mm in Sources */,
 				61D0176618D7CD4C0085D7F9 /* NKLabelNode.mm in Sources */,
+				D5BC8C9318E0F8CE005E2F52 /* MiniCups.mm in Sources */,
 				61B289E218D8FB2100102278 /* Actions.m in Sources */,
 				61B28A0818D8FB8500102278 /* gzread.c in Sources */,
 				61B28A0318D8FB8500102278 /* compress.c in Sources */,
@@ -1169,6 +1181,7 @@
 				61B28A0418D8FB8500102278 /* crc32.c in Sources */,
 				61B28A0F18D8FB8500102278 /* uncompr.c in Sources */,
 				6116FB1C18C54CC200BBD1CB /* BoardTile.mm in Sources */,
+				D5BC8C9018E0F3A9005E2F52 /* MiniTouch.mm in Sources */,
 				61D0177018D7CD4C0085D7F9 /* NKBlendShader.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
