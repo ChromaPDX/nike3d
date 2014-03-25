@@ -194,61 +194,18 @@
     
 }
 
--(bool)touchDown:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
     
-    if ([super touchDown:location id:touchId]){
-        if (touches.count == 1) {
-            
-            
-            //  NSLog(@"remove alerts");
-            //[_delegate removeAlerts];
-            //  NSLog(@"request player");
-            
-
-            
-        }
-    }
-
-    return 1;
+    NKTouchState touchState = [super touchUp:location id:touchId];
     
-}
-
-
--(bool)touchMoved:(CGPoint)location id:(int)touchId {
-    //UILog(@"PlayerSprite.m : touchesMoved");
-    if (touches.count == 1) {
-        
-        [self setPosition:location];
-        //[_delegate movingPlayer:_model at
-        
-    }
-    return 1;
-}
-
--(bool)touchUp:(CGPoint)location id:(int)touchId {
-    
-    if ([super touchUp:location id:touchId]){
+    if (touchState == NKTouchIsFirstResponder){
         if ([_delegate requestActionWithPlayer:self]){
             // [_delegate movingPlayer:_model withTouch:[touches anyObject]];
             [_delegate setSelectedPlayer:self.model];
         }
     }
-//    if (touches.count == 1) {
-//        
-//        UILog(@"PlayerSprite.m : touchesEnded");
-//        
-//        [_delegate resetFingerLocation];
-//        
-//        if (![_delegate validatePlayerMove:_model]) {
-//            
-//            
-//            [_delegate.infoHUD setPlayer:_model];
-//            
-//        }
-//        
-//    }
-//
-    return 1;
+
+    return touchState;
 }
 
 

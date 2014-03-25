@@ -104,7 +104,7 @@ float PARTICLE_SCALE;
     
     [self addChild:_pivot];
     
-    //[_pivot setPosition3d:(ofPoint(0,-h*.5,0))];
+    [_pivot setPosition3d:(ofPoint(0,-h*.5,0))];
     
 //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:CGSizeMake(TILE_WIDTH*4, TILE_WIDTH*5.2)];
 //    [_pivot addChild:logo];
@@ -121,7 +121,7 @@ float PARTICLE_SCALE;
     
     [_pivot addChild:_gameBoardNode];
     
-    [_gameBoardNode setPosition3d:ofPoint(0,0,0)];
+    [_gameBoardNode setPosition3d:ofPoint(0,h*.5,0)];
     
     _gameBoardNode.userInteractionEnabled = true;
     
@@ -168,8 +168,8 @@ float PARTICLE_SCALE;
 //                                                                         
 //                                                     ]]];
 //    
-//    [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
-//    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.35,0) duration:2.]];
+    [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
+    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.35,0) duration:2.]];
 }
 
 -(void)startMiniGame {
@@ -1646,16 +1646,16 @@ float PARTICLE_SCALE;
 
 }
 
--(int)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
 
-    if ([super touchUp:location id:touchId] == 2) {
+    if ([super touchUp:location id:touchId] == NKTouchIsFirstResponder) {
         if (!_miniGameNode) {
             [self startMiniGame];
         }
-        return 2;
+        return NKTouchIsFirstResponder;
     };
 
-    return 0;
+    return NKTouchNone;
     
 }
 
