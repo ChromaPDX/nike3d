@@ -12,6 +12,8 @@
 // GAMES
 
 #import "MiniMaze.h"
+#import "MiniTouch.h"
+#import "MiniCups.h"
 
 //
 //typedef NS_ENUM(NSInteger, NKMiniGameType) {

@@ -18,7 +18,7 @@
 
 
 
-@interface GameScene : NKSceneNode <MiniMazeObjDelegate, GameSceneProtocol>
+@interface GameScene : NKSceneNode <GameSceneProtocol>
 
 {
 

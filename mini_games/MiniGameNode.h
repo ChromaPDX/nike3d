@@ -11,11 +11,19 @@
 class MiniMaze;
 class MiniMazeDelegate;
 
+class MiniTouch;
+class MiniTouchDelegate;
+
+class MiniCups;
+class MiniCupsDelegate;
+
 @interface MiniGameNode : NKNode
 
 -(instancetype)initWithSize:(CGSize) size;
 
 @property (nonatomic) MiniMaze *miniMaze;
+@property (nonatomic) MiniTouch *miniTouch;
+@property (nonatomic) MiniCups *miniCups;
 
 -(void)startMiniGame;
 
