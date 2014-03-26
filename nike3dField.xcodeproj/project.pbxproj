@@ -115,6 +115,37 @@
 		6134208818C6ABA4003D7C9E /* thirtypercentwhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 6134207E18C6ABA4003D7C9E /* thirtypercentwhite.png */; };
 		6134208E18C6ABD4003D7C9E /* MiniGameNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */; };
 		6160991118E247450004A938 /* MiniGameScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6160991018E247450004A938 /* MiniGameScene.mm */; };
+		616BB2D818E39C3F00A680D3 /* MenuScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 616BB2D718E39C3F00A680D3 /* MenuScene.mm */; };
+		616BB2DD18E39C4600A680D3 /* MenuNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 616BB2DB18E39C4600A680D3 /* MenuNode.mm */; };
+		616BB2FC18E39D2500A680D3 /* Background_Field.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2DF18E39D2500A680D3 /* Background_Field.png */; };
+		616BB2FD18E39D2500A680D3 /* bosnia.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E018E39D2500A680D3 /* bosnia.1.png */; };
+		616BB2FE18E39D2500A680D3 /* cameroon.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E118E39D2500A680D3 /* cameroon.1.png */; };
+		616BB2FF18E39D2500A680D3 /* card.0001.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E218E39D2500A680D3 /* card.0001.png */; };
+		616BB30018E39D2500A680D3 /* Challenge_L1a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E318E39D2500A680D3 /* Challenge_L1a.1.png */; };
+		616BB30118E39D2500A680D3 /* Challenge_L2a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E418E39D2500A680D3 /* Challenge_L2a.1.png */; };
+		616BB30218E39D2500A680D3 /* Challenge_L3a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E518E39D2500A680D3 /* Challenge_L3a.1.png */; };
+		616BB30318E39D2500A680D3 /* colombia.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E618E39D2500A680D3 /* colombia.1.png */; };
+		616BB30418E39D2500A680D3 /* create_profile_bg.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E718E39D2500A680D3 /* create_profile_bg.1.png */; };
+		616BB30518E39D2500A680D3 /* create_profile_button.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E818E39D2500A680D3 /* create_profile_button.1.png */; };
+		616BB30618E39D2500A680D3 /* flag_Bolivia.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2E918E39D2500A680D3 /* flag_Bolivia.1.png */; };
+		616BB30718E39D2500A680D3 /* Flag_of_Chile.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2EA18E39D2500A680D3 /* Flag_of_Chile.1.png */; };
+		616BB30818E39D2500A680D3 /* flag_USA.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2EB18E39D2500A680D3 /* flag_USA.1.png */; };
+		616BB30918E39D2500A680D3 /* Kick_L1a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2EC18E39D2500A680D3 /* Kick_L1a.1.png */; };
+		616BB30A18E39D2500A680D3 /* Kick_L2a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2ED18E39D2500A680D3 /* Kick_L2a.1.png */; };
+		616BB30B18E39D2500A680D3 /* Kick_L3a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2EE18E39D2500A680D3 /* Kick_L3a.1.png */; };
+		616BB30C18E39D2500A680D3 /* level_meter.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2EF18E39D2500A680D3 /* level_meter.1.png */; };
+		616BB30D18E39D2500A680D3 /* menu1_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F018E39D2500A680D3 /* menu1_a.png */; };
+		616BB30E18E39D2500A680D3 /* menu1_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F118E39D2500A680D3 /* menu1_b.png */; };
+		616BB30F18E39D2500A680D3 /* menu1_c.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F218E39D2500A680D3 /* menu1_c.png */; };
+		616BB31018E39D2500A680D3 /* menu1_d.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F318E39D2500A680D3 /* menu1_d.png */; };
+		616BB31118E39D2500A680D3 /* Move_L1a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F418E39D2500A680D3 /* Move_L1a.1.png */; };
+		616BB31218E39D2500A680D3 /* Move_L2a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F518E39D2500A680D3 /* Move_L2a.1.png */; };
+		616BB31318E39D2500A680D3 /* Move_L3a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F618E39D2500A680D3 /* Move_L3a.1.png */; };
+		616BB31418E39D2500A680D3 /* proto_char_card.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F718E39D2500A680D3 /* proto_char_card.1.png */; };
+		616BB31518E39D2500A680D3 /* Special_L1a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F818E39D2500A680D3 /* Special_L1a.1.png */; };
+		616BB31618E39D2500A680D3 /* Special_L2a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F918E39D2500A680D3 /* Special_L2a.1.png */; };
+		616BB31718E39D2500A680D3 /* Special_L3a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2FA18E39D2500A680D3 /* Special_L3a.1.png */; };
+		616BB31818E39D2500A680D3 /* Special_L3b.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2FB18E39D2500A680D3 /* Special_L3b.1.png */; };
 		61744C1E18DB9E1600C925B2 /* CardType_HUD.png in Resources */ = {isa = PBXBuildFile; fileRef = 61744C1D18DB9E1600C925B2 /* CardType_HUD.png */; };
 		61744C2018DBB86B00C925B2 /* Field_Goal.png in Resources */ = {isa = PBXBuildFile; fileRef = 61744C1F18DBB86B00C925B2 /* Field_Goal.png */; };
 		617BDD0718D92491005EC4B1 /* BallSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0618D92491005EC4B1 /* BallSprite.mm */; };
@@ -331,6 +362,40 @@
 		6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniGameNode.mm; path = mini_games/MiniGameNode.mm; sourceTree = SOURCE_ROOT; };
 		6160990F18E247450004A938 /* MiniGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniGameScene.h; sourceTree = "<group>"; };
 		6160991018E247450004A938 /* MiniGameScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MiniGameScene.mm; sourceTree = "<group>"; };
+		616BB2D618E39C3F00A680D3 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
+		616BB2D718E39C3F00A680D3 /* MenuScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuScene.mm; sourceTree = "<group>"; };
+		616BB2DA18E39C4600A680D3 /* MenuNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuNode.h; sourceTree = "<group>"; };
+		616BB2DB18E39C4600A680D3 /* MenuNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuNode.mm; sourceTree = "<group>"; };
+		616BB2DC18E39C4600A680D3 /* Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
+		616BB2DF18E39D2500A680D3 /* Background_Field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background_Field.png; sourceTree = "<group>"; };
+		616BB2E018E39D2500A680D3 /* bosnia.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bosnia.1.png; sourceTree = "<group>"; };
+		616BB2E118E39D2500A680D3 /* cameroon.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cameroon.1.png; sourceTree = "<group>"; };
+		616BB2E218E39D2500A680D3 /* card.0001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = card.0001.png; sourceTree = "<group>"; };
+		616BB2E318E39D2500A680D3 /* Challenge_L1a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Challenge_L1a.1.png; sourceTree = "<group>"; };
+		616BB2E418E39D2500A680D3 /* Challenge_L2a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Challenge_L2a.1.png; sourceTree = "<group>"; };
+		616BB2E518E39D2500A680D3 /* Challenge_L3a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Challenge_L3a.1.png; sourceTree = "<group>"; };
+		616BB2E618E39D2500A680D3 /* colombia.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = colombia.1.png; sourceTree = "<group>"; };
+		616BB2E718E39D2500A680D3 /* create_profile_bg.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_profile_bg.1.png; sourceTree = "<group>"; };
+		616BB2E818E39D2500A680D3 /* create_profile_button.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_profile_button.1.png; sourceTree = "<group>"; };
+		616BB2E918E39D2500A680D3 /* flag_Bolivia.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flag_Bolivia.1.png; sourceTree = "<group>"; };
+		616BB2EA18E39D2500A680D3 /* Flag_of_Chile.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flag_of_Chile.1.png; sourceTree = "<group>"; };
+		616BB2EB18E39D2500A680D3 /* flag_USA.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flag_USA.1.png; sourceTree = "<group>"; };
+		616BB2EC18E39D2500A680D3 /* Kick_L1a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Kick_L1a.1.png; sourceTree = "<group>"; };
+		616BB2ED18E39D2500A680D3 /* Kick_L2a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Kick_L2a.1.png; sourceTree = "<group>"; };
+		616BB2EE18E39D2500A680D3 /* Kick_L3a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Kick_L3a.1.png; sourceTree = "<group>"; };
+		616BB2EF18E39D2500A680D3 /* level_meter.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = level_meter.1.png; sourceTree = "<group>"; };
+		616BB2F018E39D2500A680D3 /* menu1_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu1_a.png; sourceTree = "<group>"; };
+		616BB2F118E39D2500A680D3 /* menu1_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu1_b.png; sourceTree = "<group>"; };
+		616BB2F218E39D2500A680D3 /* menu1_c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu1_c.png; sourceTree = "<group>"; };
+		616BB2F318E39D2500A680D3 /* menu1_d.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu1_d.png; sourceTree = "<group>"; };
+		616BB2F418E39D2500A680D3 /* Move_L1a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Move_L1a.1.png; sourceTree = "<group>"; };
+		616BB2F518E39D2500A680D3 /* Move_L2a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Move_L2a.1.png; sourceTree = "<group>"; };
+		616BB2F618E39D2500A680D3 /* Move_L3a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Move_L3a.1.png; sourceTree = "<group>"; };
+		616BB2F718E39D2500A680D3 /* proto_char_card.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = proto_char_card.1.png; sourceTree = "<group>"; };
+		616BB2F818E39D2500A680D3 /* Special_L1a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Special_L1a.1.png; sourceTree = "<group>"; };
+		616BB2F918E39D2500A680D3 /* Special_L2a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Special_L2a.1.png; sourceTree = "<group>"; };
+		616BB2FA18E39D2500A680D3 /* Special_L3a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Special_L3a.1.png; sourceTree = "<group>"; };
+		616BB2FB18E39D2500A680D3 /* Special_L3b.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Special_L3b.1.png; sourceTree = "<group>"; };
 		61744C1D18DB9E1600C925B2 /* CardType_HUD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CardType_HUD.png; sourceTree = "<group>"; };
 		61744C1F18DBB86B00C925B2 /* Field_Goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Field_Goal.png; sourceTree = "<group>"; };
 		617BDD0518D92491005EC4B1 /* BallSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallSprite.h; sourceTree = "<group>"; };
@@ -591,6 +656,7 @@
 		6116FB1F18C554B600BBD1CB /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				616BB2DE18E39D2500A680D3 /* Menus */,
 				6183B7D318D90B0E002D426F /* SFX_BOARD */,
 				61341FBB18C6A4B1003D7C9E /* UI_Buttons */,
 				61341FCF18C6A4B1003D7C9E /* UI_Cards */,
@@ -774,6 +840,52 @@
 			path = mini_maze;
 			sourceTree = "<group>";
 		};
+		616BB2D918E39C4600A680D3 /* menus */ = {
+			isa = PBXGroup;
+			children = (
+				616BB2DA18E39C4600A680D3 /* MenuNode.h */,
+				616BB2DB18E39C4600A680D3 /* MenuNode.mm */,
+				616BB2DC18E39C4600A680D3 /* Menus.h */,
+			);
+			path = menus;
+			sourceTree = "<group>";
+		};
+		616BB2DE18E39D2500A680D3 /* Menus */ = {
+			isa = PBXGroup;
+			children = (
+				616BB2DF18E39D2500A680D3 /* Background_Field.png */,
+				616BB2E018E39D2500A680D3 /* bosnia.1.png */,
+				616BB2E118E39D2500A680D3 /* cameroon.1.png */,
+				616BB2E218E39D2500A680D3 /* card.0001.png */,
+				616BB2E318E39D2500A680D3 /* Challenge_L1a.1.png */,
+				616BB2E418E39D2500A680D3 /* Challenge_L2a.1.png */,
+				616BB2E518E39D2500A680D3 /* Challenge_L3a.1.png */,
+				616BB2E618E39D2500A680D3 /* colombia.1.png */,
+				616BB2E718E39D2500A680D3 /* create_profile_bg.1.png */,
+				616BB2E818E39D2500A680D3 /* create_profile_button.1.png */,
+				616BB2E918E39D2500A680D3 /* flag_Bolivia.1.png */,
+				616BB2EA18E39D2500A680D3 /* Flag_of_Chile.1.png */,
+				616BB2EB18E39D2500A680D3 /* flag_USA.1.png */,
+				616BB2EC18E39D2500A680D3 /* Kick_L1a.1.png */,
+				616BB2ED18E39D2500A680D3 /* Kick_L2a.1.png */,
+				616BB2EE18E39D2500A680D3 /* Kick_L3a.1.png */,
+				616BB2EF18E39D2500A680D3 /* level_meter.1.png */,
+				616BB2F018E39D2500A680D3 /* menu1_a.png */,
+				616BB2F118E39D2500A680D3 /* menu1_b.png */,
+				616BB2F218E39D2500A680D3 /* menu1_c.png */,
+				616BB2F318E39D2500A680D3 /* menu1_d.png */,
+				616BB2F418E39D2500A680D3 /* Move_L1a.1.png */,
+				616BB2F518E39D2500A680D3 /* Move_L2a.1.png */,
+				616BB2F618E39D2500A680D3 /* Move_L3a.1.png */,
+				616BB2F718E39D2500A680D3 /* proto_char_card.1.png */,
+				616BB2F818E39D2500A680D3 /* Special_L1a.1.png */,
+				616BB2F918E39D2500A680D3 /* Special_L2a.1.png */,
+				616BB2FA18E39D2500A680D3 /* Special_L3a.1.png */,
+				616BB2FB18E39D2500A680D3 /* Special_L3b.1.png */,
+			);
+			path = Menus;
+			sourceTree = "<group>";
+		};
 		6183B7D318D90B0E002D426F /* SFX_BOARD */ = {
 			isa = PBXGroup;
 			children = (
@@ -942,9 +1054,12 @@
 				E4D8936D11527B74007E1F53 /* ofApp.mm */,
 				61EF6FB318E23259002B9814 /* DevMenu.h */,
 				61EF6FB418E23259002B9814 /* DevMenu.mm */,
+				616BB2D618E39C3F00A680D3 /* MenuScene.h */,
+				616BB2D718E39C3F00A680D3 /* MenuScene.mm */,
 				6160990F18E247450004A938 /* MiniGameScene.h */,
 				6160991018E247450004A938 /* MiniGameScene.mm */,
 				E4D8936B11527B74007E1F53 /* main.mm */,
+				616BB2D918E39C4600A680D3 /* menus */,
 				6134207218C6ABA4003D7C9E /* mini_games */,
 				6116FB1E18C54CEA00BBD1CB /* FieldGameModel */,
 				6116FB1D18C54CD400BBD1CB /* FieldGameView */,
@@ -1025,12 +1140,17 @@
 			files = (
 				6134203318C6A4B1003D7C9E /* BoostBarEmpty.png in Resources */,
 				6134208318C6ABA4003D7C9E /* background.png in Resources */,
+				616BB30518E39D2500A680D3 /* create_profile_button.1.png in Resources */,
+				616BB31718E39D2500A680D3 /* Special_L3a.1.png in Resources */,
 				6134203818C6A4B1003D7C9E /* player_popup_dark.png in Resources */,
 				6134203B18C6A4B1003D7C9E /* white_select_circle.png in Resources */,
+				616BB2FE18E39D2500A680D3 /* cameroon.1.png in Resources */,
 				6134201418C6A4B1003D7C9E /* Button_BlankGray_ON.png in Resources */,
+				616BB30718E39D2500A680D3 /* Flag_of_Chile.1.png in Resources */,
 				6134201518C6A4B1003D7C9E /* Button_BlankGreen_OFF.png in Resources */,
 				6134204C18C6A4B1003D7C9E /* LogIn_Noticebox_.png in Resources */,
 				6134205518C6A4B1003D7C9E /* Icon_Gear.png in Resources */,
+				616BB30618E39D2500A680D3 /* flag_Bolivia.1.png in Resources */,
 				6134200F18C6A4B1003D7C9E /* BoostButton_Empty.png in Resources */,
 				6134205318C6A4B1003D7C9E /* Icon_Dribble.png in Resources */,
 				E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */,
@@ -1040,8 +1160,11 @@
 				6134202B18C6A4B1003D7C9E /* CardPlayerBlue.png in Resources */,
 				6134201718C6A4B1003D7C9E /* Button_Confirm.png in Resources */,
 				6134204718C6A4B1003D7C9E /* LogIn_ButtonNewgameOn.png in Resources */,
+				616BB30318E39D2500A680D3 /* colombia.1.png in Resources */,
+				616BB31118E39D2500A680D3 /* Move_L1a.1.png in Resources */,
 				6134201318C6A4B1003D7C9E /* Button_BlankGray_OFF.png in Resources */,
 				6134201818C6A4B1003D7C9E /* Button_DrawCardOFF.png in Resources */,
+				616BB31818E39D2500A680D3 /* Special_L3b.1.png in Resources */,
 				6134201F18C6A4B1003D7C9E /* Button_SubmitOFF.png in Resources */,
 				6134208218C6ABA4003D7C9E /* arrowRight.png in Resources */,
 				6134202318C6A4B1003D7C9E /* Card_Adrenal_Flood.png in Resources */,
@@ -1050,21 +1173,26 @@
 				6134203A18C6A4B1003D7C9E /* star_yellow.png in Resources */,
 				6134203E18C6A4B1003D7C9E /* Halo_Marks_glow.png in Resources */,
 				6134203418C6A4B1003D7C9E /* BoostBarFull.png in Resources */,
+				616BB31518E39D2500A680D3 /* Special_L1a.1.png in Resources */,
 				6134201D18C6A4B1003D7C9E /* Button_IndicatorMed.png in Resources */,
 				6134205418C6A4B1003D7C9E /* Icon_Enchant.png in Resources */,
 				6134208718C6ABA4003D7C9E /* theball.png in Resources */,
 				61D6E10218DA63C000A9E86C /* PlayerIndicator_PlayerSHADOW.png in Resources */,
 				6134202F18C6A4B1003D7C9E /* CardPlayerOffenseRED.png in Resources */,
 				6116FB2618C554B600BBD1CB /* Background_Field.png in Resources */,
+				616BB30F18E39D2500A680D3 /* menu1_c.png in Resources */,
 				6134204218C6A4B1003D7C9E /* GAMELOGO.png in Resources */,
 				6134203F18C6A4B1003D7C9E /* PlayerPawn.png in Resources */,
 				6134205118C6A4B1003D7C9E /* Icon_Boost.png in Resources */,
 				6134204418C6A4B1003D7C9E /* loadingScreenIpad.png in Resources */,
 				6134203718C6A4B1003D7C9E /* move_select_circle.png in Resources */,
 				678E130817951530005B6D19 /* Icon@2x.png in Resources */,
+				616BB30D18E39D2500A680D3 /* menu1_a.png in Resources */,
 				61744C2018DBB86B00C925B2 /* Field_Goal.png in Resources */,
+				616BB31618E39D2500A680D3 /* Special_L2a.1.png in Resources */,
 				678E130A17951536005B6D19 /* Icon.png in Resources */,
 				6134201918C6A4B1003D7C9E /* Button_DrawCardON.png in Resources */,
+				616BB31318E39D2500A680D3 /* Move_L3a.1.png in Resources */,
 				61D0176518D7CD4C0085D7F9 /* README.md in Resources */,
 				6134201C18C6A4B1003D7C9E /* Button_Fail.png in Resources */,
 				678E130C1795153C005B6D19 /* Default.png in Resources */,
@@ -1073,17 +1201,21 @@
 				6134202218C6A4B1003D7C9E /* Card_Adrenal_Boost.png in Resources */,
 				6134204318C6A4B1003D7C9E /* GAMELOGOBig.png in Resources */,
 				6134204118C6A4B1003D7C9E /* PlayerShadow.png in Resources */,
+				616BB30918E39D2500A680D3 /* Kick_L1a.1.png in Resources */,
 				6134204918C6A4B1003D7C9E /* LogIn_ButtonResumeOn.png in Resources */,
 				6134205618C6A4B1003D7C9E /* icon_Pass.png in Resources */,
 				6134203118C6A4B1003D7C9E /* CardReplay.png in Resources */,
 				6134204A18C6A4B1003D7C9E /* LogIn_ButtonSyncOff.png in Resources */,
+				616BB2FD18E39D2500A680D3 /* bosnia.1.png in Resources */,
 				6134202A18C6A4B1003D7C9E /* CardGear.png in Resources */,
+				616BB31218E39D2500A680D3 /* Move_L2a.1.png in Resources */,
 				6134208018C6ABA4003D7C9E /* arrowDown.png in Resources */,
 				6134207F18C6ABA4003D7C9E /* arrow.png in Resources */,
 				6134201618C6A4B1003D7C9E /* Button_BlankGreen_ON.png in Resources */,
 				6183B7D518D90B1F002D426F /* touch.wav in Resources */,
 				6134203518C6A4B1003D7C9E /* HUD_away.png in Resources */,
 				6134204D18C6A4B1003D7C9E /* LogIn_Noticebox_Cheat_.png in Resources */,
+				616BB31418E39D2500A680D3 /* proto_char_card.1.png in Resources */,
 				6134202018C6A4B1003D7C9E /* Button_SubmitON.png in Resources */,
 				6134202118C6A4B1003D7C9E /* Button_Success.png in Resources */,
 				6134202D18C6A4B1003D7C9E /* CardPlayerDefenseRED.png in Resources */,
@@ -1092,34 +1224,46 @@
 				6116FB2718C554B600BBD1CB /* Field_Layer01.png in Resources */,
 				6134201218C6A4B1003D7C9E /* Button_BlankBlue_ON.png in Resources */,
 				6134205018C6A4B1003D7C9E /* icon_ball.png in Resources */,
+				616BB30818E39D2500A680D3 /* flag_USA.1.png in Resources */,
 				6134201118C6A4B1003D7C9E /* Button_BlankBlue_OFF.png in Resources */,
 				6134204618C6A4B1003D7C9E /* LogIn_ButtonNewgameOff.png in Resources */,
 				6134205918C6A4B1003D7C9E /* Icon_Run.png in Resources */,
 				678E130E17951540005B6D19 /* Default@2x.png in Resources */,
 				6134201B18C6A4B1003D7C9E /* Button_EndTurnON.png in Resources */,
+				616BB30418E39D2500A680D3 /* create_profile_bg.1.png in Resources */,
 				61341FBA18C6A4A3003D7C9E /* Images.xcassets in Resources */,
 				6116FB2B18C554B600BBD1CB /* PlayerIndicator_PlayerON.png in Resources */,
 				6134204018C6A4B1003D7C9E /* PlayerPreviewPawn.png in Resources */,
 				6134202418C6A4B1003D7C9E /* Card_Captains_Band.png in Resources */,
+				616BB31018E39D2500A680D3 /* menu1_d.png in Resources */,
 				61D0175518D7CD4C0085D7F9 /* chromeKitten.png in Resources */,
 				6134201018C6A4B1003D7C9E /* BoostButton_Full.png in Resources */,
 				D5319E4B18E35F7800B3DC5D /* soccerball.png in Resources */,
 				6134202E18C6A4B1003D7C9E /* CardPlayerOffense.png in Resources */,
 				6134204B18C6A4B1003D7C9E /* LogIn_ButtonSyncOn.png in Resources */,
+				616BB30018E39D2500A680D3 /* Challenge_L1a.1.png in Resources */,
 				6134202518C6A4B1003D7C9E /* Card_Ipad_shadow.png in Resources */,
 				6134203D18C6A4B1003D7C9E /* Halo_Marks.png in Resources */,
+				616BB30A18E39D2500A680D3 /* Kick_L2a.1.png in Resources */,
+				616BB30C18E39D2500A680D3 /* level_meter.1.png in Resources */,
 				6134205A18C6A4B1003D7C9E /* Icon_Shoot.png in Resources */,
+				616BB30B18E39D2500A680D3 /* Kick_L3a.1.png in Resources */,
+				616BB30E18E39D2500A680D3 /* menu1_b.png in Resources */,
+				616BB30218E39D2500A680D3 /* Challenge_L3a.1.png in Resources */,
 				6134203018C6A4B1003D7C9E /* CardPlayerRed.png in Resources */,
+				616BB2FF18E39D2500A680D3 /* card.0001.png in Resources */,
 				6134208418C6ABA4003D7C9E /* blackPixel.png in Resources */,
 				6134208118C6ABA4003D7C9E /* arrowLeft.png in Resources */,
 				6134201A18C6A4B1003D7C9E /* Button_EndTurnOFF.png in Resources */,
 				6134203618C6A4B1003D7C9E /* HUD_home.png in Resources */,
+				616BB2FC18E39D2500A680D3 /* Background_Field.png in Resources */,
 				6134202918C6A4B1003D7C9E /* CardBoost.png in Resources */,
 				6134202C18C6A4B1003D7C9E /* CardPlayerDefense.png in Resources */,
 				6134203218C6A4B1003D7C9E /* CardSkill.png in Resources */,
 				6134203918C6A4B1003D7C9E /* star_blue.png in Resources */,
 				6134202718C6A4B1003D7C9E /* Card_Player_Male.png in Resources */,
 				61744C1E18DB9E1600C925B2 /* CardType_HUD.png in Resources */,
+				616BB30118E39D2500A680D3 /* Challenge_L2a.1.png in Resources */,
 				6116FB2A18C554B600BBD1CB /* PlayerIndicator_PlayerOFF.png in Resources */,
 				6134205818C6A4B1003D7C9E /* Icon_Possesion.png in Resources */,
 				6134205B18C6A4B1003D7C9E /* Icons_Skill.png in Resources */,
@@ -1167,6 +1311,7 @@
 				61B28A0318D8FB8500102278 /* compress.c in Sources */,
 				61D0176A18D7CD4C0085D7F9 /* NKSceneNode.mm in Sources */,
 				6134208E18C6ABD4003D7C9E /* MiniGameNode.mm in Sources */,
+				616BB2DD18E39C4600A680D3 /* MenuNode.mm in Sources */,
 				61B28A0A18D8FB8500102278 /* infback.c in Sources */,
 				61B289DB18D8FAEB00102278 /* Card.m in Sources */,
 				6102DCFE18E24EAE00AB39D1 /* Player.m in Sources */,
@@ -1199,6 +1344,7 @@
 				61D0177218D7CD4C0085D7F9 /* NKGaussianBlur.mm in Sources */,
 				61D0177418D7CD4C0085D7F9 /* NKZBlur.mm in Sources */,
 				61D0177318D7CD4C0085D7F9 /* NKGaussianZ.mm in Sources */,
+				616BB2D818E39C3F00A680D3 /* MenuScene.mm in Sources */,
 				6181275318E0EE35003B72F8 /* NKMesh.mm in Sources */,
 				61D0177118D7CD4C0085D7F9 /* NKDrawDepthShader.mm in Sources */,
 				6124554B18D91866003FF53D /* NKEmitterNode.mm in Sources */,

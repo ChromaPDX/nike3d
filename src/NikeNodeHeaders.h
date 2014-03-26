@@ -11,7 +11,7 @@
 
 #import "GameBoardNode.h"
 #import "BoardTile.h"
-#import "GameScene.h"]
+#import "GameScene.h"
 
 #import "ActionWindow.h"
 
@@ -22,6 +22,7 @@
 #import "AlertSprite.h"
 
 #import "MiniGames.h"
+#import "Menus.h"
 
 // STRINGS
 

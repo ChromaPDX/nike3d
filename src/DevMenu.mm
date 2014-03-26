@@ -11,6 +11,7 @@
 #import "ofxNodeKitten.h"
 #import "MiniGameScene.h"
 #import "GameScene.h"
+#import "MenuScene.h"
 
 @implementation DevMenu 
 
@@ -69,6 +70,12 @@
         ((ofApp*)ofGetAppPtr())->scene = newScene;
         
     }
+    else if ([cell.name isEqualToString:@"ERIC"]) {
+        MenuScene* newScene = [[MenuScene alloc]initWithSize:self.size];
+        ((ofApp*)ofGetAppPtr())->scene = newScene;
+        
+    }
+    
     else if ([cell.name isEqualToString:@"LEIF"]) {
         GameScene* newScene = [[GameScene alloc]initWithSize:self.size];
         ((ofApp*)ofGetAppPtr())->scene = newScene;
