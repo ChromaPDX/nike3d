@@ -29,22 +29,22 @@
 }
 
 -(void)startMiniGame {
-    activeMiniGame = arc4random()%3;
+    activeMiniGame = 1;//arc4random()%3;
     ofRectangle d = [self getDrawFrame];
     if(activeMiniGame == 0){
         _miniMaze = new MiniMaze();
         _miniMaze->objDelegate = (id)self.scene;
-        _miniMaze->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8);
+        _miniMaze->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8 * 1.17);
     }
     else if(activeMiniGame == 1){
         _miniTouch = new MiniTouch();
         _miniTouch->objDelegate = (id)self.scene;
-        _miniTouch->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8);
+        _miniTouch->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8 * 1.17);
     }
     else if(activeMiniGame == 2){
         _miniCups = new MiniCups();
         _miniCups->objDelegate = (id)self.scene;
-        _miniCups->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8);
+        _miniCups->setup(d.x + d.width*.1, d.y + (d.height*.5 - d.width*.4), d.width*.8, d.width*.8 * 1.17);
     }
 }
 
@@ -61,9 +61,10 @@
 -(void)customDraw {
     ofDisableDepthTest();
     glDisable(GL_CULL_FACE);
+    ofDisableNormalizedTexCoords();
     ofPushMatrix();
-    ofRotate(180, 0, 1, 0);
-    ofRotate(180, 0, 0, 1);
+//    ofRotate(180, 0, 1, 0);
+//    ofRotate(180, 0, 0, 1);
     ofSetColor(0, 0, 0, 180);
     ofRect([self getDrawFrame]);
     ofSetColor(255);
@@ -74,6 +75,7 @@
     else if(activeMiniGame == 2)
         _miniCups->draw();
     ofPopMatrix();
+    ofEnableNormalizedTexCoords();
     glEnable(GL_CULL_FACE);
     ofEnableDepthTest();
 }

@@ -176,6 +176,8 @@
 		BB16EBD20F2B2A9500518274 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD10F2B2A9500518274 /* OpenGLES.framework */; };
 		BB16EBD90F2B2AB500518274 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD80F2B2AB500518274 /* QuartzCore.framework */; };
 		BBE5EAB80F49AD8400F28951 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */; };
+		D5319E4B18E35F7800B3DC5D /* soccerball.png in Resources */ = {isa = PBXBuildFile; fileRef = D5319E4A18E35F7800B3DC5D /* soccerball.png */; };
+		D5319E4F18E36B2000B3DC5D /* Avenir.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5319E4E18E36B2000B3DC5D /* Avenir.ttf */; };
 		D5BC8C9018E0F3A9005E2F52 /* MiniTouch.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5BC8C8F18E0F3A9005E2F52 /* MiniTouch.mm */; };
 		D5BC8C9318E0F8CE005E2F52 /* MiniCups.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5BC8C9218E0F8CE005E2F52 /* MiniCups.mm */; };
 		E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3ED613B38FB500A75A5D /* Project.xcconfig */; };
@@ -438,6 +440,8 @@
 		BB16EBD80F2B2AB500518274 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BB24DDC910DA781C00E9C588 /* ofxiOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ofxiOS-Info.plist"; sourceTree = "<group>"; };
 		BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		D5319E4A18E35F7800B3DC5D /* soccerball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soccerball.png; sourceTree = "<group>"; };
+		D5319E4E18E36B2000B3DC5D /* Avenir.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Avenir.ttf; sourceTree = SOURCE_ROOT; };
 		D5BC8C8E18E0F3A9005E2F52 /* MiniTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniTouch.h; path = mini_maze/MiniTouch.h; sourceTree = "<group>"; };
 		D5BC8C8F18E0F3A9005E2F52 /* MiniTouch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniTouch.mm; path = mini_maze/MiniTouch.mm; sourceTree = "<group>"; };
 		D5BC8C9118E0F8CE005E2F52 /* MiniCups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniCups.h; sourceTree = "<group>"; };
@@ -755,11 +759,13 @@
 			isa = PBXGroup;
 			children = (
 				6134207418C6ABA4003D7C9E /* arrow.png */,
+				D5319E4E18E36B2000B3DC5D /* Avenir.ttf */,
 				6134207518C6ABA4003D7C9E /* arrowDown.png */,
 				6134207618C6ABA4003D7C9E /* arrowLeft.png */,
 				6134207718C6ABA4003D7C9E /* arrowRight.png */,
 				6134207818C6ABA4003D7C9E /* background.png */,
 				6134207918C6ABA4003D7C9E /* blackPixel.png */,
+				D5319E4A18E35F7800B3DC5D /* soccerball.png */,
 				6134207A18C6ABA4003D7C9E /* footlong.png */,
 				6134207D18C6ABA4003D7C9E /* theball.png */,
 				6134207E18C6ABA4003D7C9E /* thirtypercentwhite.png */,
@@ -1097,6 +1103,7 @@
 				6134202418C6A4B1003D7C9E /* Card_Captains_Band.png in Resources */,
 				61D0175518D7CD4C0085D7F9 /* chromeKitten.png in Resources */,
 				6134201018C6A4B1003D7C9E /* BoostButton_Full.png in Resources */,
+				D5319E4B18E35F7800B3DC5D /* soccerball.png in Resources */,
 				6134202E18C6A4B1003D7C9E /* CardPlayerOffense.png in Resources */,
 				6134204B18C6A4B1003D7C9E /* LogIn_ButtonSyncOn.png in Resources */,
 				6134202518C6A4B1003D7C9E /* Card_Ipad_shadow.png in Resources */,
@@ -1123,6 +1130,7 @@
 				6134202618C6A4B1003D7C9E /* Card_Player_Female.png in Resources */,
 				6134201E18C6A4B1003D7C9E /* Button_IndicatorOFF.png in Resources */,
 				6134204F18C6A4B1003D7C9E /* ActionPointsIconSM.png in Resources */,
+				D5319E4F18E36B2000B3DC5D /* Avenir.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

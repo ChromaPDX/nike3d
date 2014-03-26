@@ -27,16 +27,17 @@ void MiniCups::setup(int xIn, int yIn, int width, int height){
     y = yIn;
     w = width;
     h = height;
+    font.loadFont("Avenir.ttf", ofGetWidth() / 20., true, true);   // 4.2
     
     centerX = x+w*.5;
-    centerY = y+h*.42;  // because of the text box
+    centerY = y+h*.6;  // because of the text box
     CELLSIZE = height/9.5f;
     
     ofLoadImage(backgroundTexture, "background.png");
     ofLoadImage(white30Texture, "thirtypercentwhite.png");
-    ofLoadImage(ball1Texture, "theball.png");
-    ofLoadImage(ball2Texture, "theball.png");
-    ofLoadImage(ball3Texture, "theball.png");
+    ofLoadImage(ball1Texture, "soccerball.png");
+    ofLoadImage(ball2Texture, "soccerball.png");
+    ofLoadImage(ball3Texture, "soccerball.png");
 
     ball1Texture.setAnchorPercent(0.5, 0.5);
     ball2Texture.setAnchorPercent(0.5, 0.5);
@@ -54,19 +55,24 @@ void MiniCups::setup(int xIn, int yIn, int width, int height){
     
     angleVelocity = 0;
     
-    gameState = cupsGameStateWaiting;
+    gameState = cupsGameStateGetReady;
     nextStartTime = 3000;
+    
+    ///
+//    ofLoadImage(touchTexture, "theball.png");
+//    touchLocation[X] = touchLocation[Y] = 0.0;
 }
 
 void MiniCups::update(){
     
-    if(gameState == cupsGameStateWaiting && ofGetElapsedTimeMillis() > nextStartTime){
+    if(gameState == cupsGameStateGetReady && ofGetElapsedTimeMillis() > nextStartTime){
         angleVelocity = 0;
         angleAcceleration = .005;
         spinTime = ofRandom(1000, 1200);
         gameState = cupsGameStateAccelerating;
         nextStartTime = ofGetElapsedTimeMillis() + spinTime;
         showBall = false;
+        win = false;
     }
     if(gameState == cupsGameStateAccelerating && ofGetElapsedTimeMillis() > nextStartTime){
         gameState = cupsGameStateSlowing;
@@ -79,6 +85,12 @@ void MiniCups::update(){
         angleVelocity = 0;
         nextStartTime = ofGetElapsedTimeMillis() + 3000;
     }
+    // repeat game
+    if(gameState == cupsGameStateReveal && ofGetElapsedTimeMillis() > nextStartTime){
+        gameState = cupsGameStateGetReady;
+        nextStartTime = ofGetElapsedTimeMillis() + 1000;
+    }
+
     angleVelocity += angleAcceleration;
     
     ball1Angle += angleVelocity;
@@ -103,22 +115,50 @@ void MiniCups::update(){
 }
 
 void MiniCups::touchDownCoords(float x, float y){
-    if(gameState == cupsGameStatePicking){
-        gameState = cupsGameStateWaiting;
-        nextStartTime = ofGetElapsedTimeMillis() + 1000;
-        showBall = true;
+//    touchLocation[X] = x;
+//    touchLocation[Y] = y;
+    int ballSelection = 0;
+    float TOUCH_SIZE = 75.;
+    float r1 = sqrt( pow( x-ball1Position[X], 2 ) + pow( y-ball1Position[Y], 2 ) );
+    float r2 = sqrt( pow( x-ball2Position[X], 2 ) + pow( y-ball2Position[Y], 2 ) );
+    float r3 = sqrt( pow( x-ball3Position[X], 2 ) + pow( y-ball3Position[Y], 2 ) );
+    if(r1 < TOUCH_SIZE)
+        ballSelection = 1;
+    if(r2 < TOUCH_SIZE)
+        ballSelection = 2;
+    if(r3 < TOUCH_SIZE)
+        ballSelection = 3;
+    printf("RADIUSES(%d): %f, %f, %f\n",ballSelection,r1, r2, r3);
+    
+    if(ballSelection != 0){
+        if(ballSelection == 1){ // you win
+        printf("WIN\n");
+        win = true;
+//        if(delegate)
+//            delegate->gameDidFinishWithWin();
+//        if(objDelegate)
+//            [objDelegate gameDidFinishWithWin];
+        }
+        else if (ballSelection == 2 || ballSelection == 3){ // you lose
+            printf("LOSE\n");
+//        if(delegate)
+//            delegate->gameDidFinishWithLose();
+//        if(objDelegate)
+//            [objDelegate gameDidFinishWithLose];
+        }
+
+        if(gameState == cupsGameStatePicking){
+            gameState = cupsGameStateReveal;
+            nextStartTime = ofGetElapsedTimeMillis() + 1000;
+            showBall = true;
+        }
     }
     fingerTouchDown = true;
 }
 
 void MiniCups::touchDown(ofTouchEventArgs &touch){
     
-    if(gameState == cupsGameStatePicking){
-        gameState = cupsGameStateWaiting;
-        nextStartTime = ofGetElapsedTimeMillis() + 1000;
-        showBall = true;
-    }
-    fingerTouchDown = true;
+    //touchDownCoords(xtouch, ytouch);
 }
 
 void MiniCups::touchMoved(ofTouchEventArgs &touch){
@@ -155,6 +195,7 @@ void MiniCups::drawTimer(int centerX, int centerY){
 void MiniCups::draw(){
     backgroundTexture.draw(x, y, w, h);
 
+//    touchTexture.draw(touchLocation[X], touchLocation[Y], 40, 40);
     if(showBall){
         ofSetColor(255, 100);
         ball2Texture.draw(ball2Position[X], ball2Position[Y]);
@@ -168,5 +209,15 @@ void MiniCups::draw(){
         ball2Texture.draw(ball2Position[X], ball2Position[Y]);
         ball3Texture.draw(ball3Position[X], ball3Position[Y]);
     }
-
+    
+    if(gameState == cupsGameStateGetReady)
+        font.drawString("follow the red ball", centerX - font.stringWidth("follow the red ball")*.5, centerY-h*.55);
+    if(gameState == cupsGameStatePicking)
+        font.drawString("which one?", centerX - font.stringWidth("which one?")*.5, centerY-h*.55);
+    if(gameState == cupsGameStateReveal){
+        if(win)
+            font.drawString("good job!", centerX - font.stringWidth("good job!")*.5, centerY-h*.55);
+        else
+            font.drawString("sorry", centerX - font.stringWidth("sorry")*.5, centerY-h*.55);
+    }
 }

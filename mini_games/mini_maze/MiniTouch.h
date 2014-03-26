@@ -52,6 +52,7 @@ private:
     ofTexture white30Texture;
     ofTexture ballTexture;
     float ballIncrement;
+    ofTrueTypeFont font;
     
     int w, h, x, y;
     int centerX, centerY;

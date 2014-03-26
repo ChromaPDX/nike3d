@@ -23,10 +23,11 @@ public:
 @end
 
 typedef enum {
-    cupsGameStateWaiting,
+    cupsGameStateGetReady,
     cupsGameStateAccelerating,
     cupsGameStateSlowing,
-    cupsGameStatePicking
+    cupsGameStatePicking,
+    cupsGameStateReveal
 } CupsGameState;
 
 class MiniCups {
@@ -53,6 +54,8 @@ private:
     ofTexture backgroundTexture;
     ofTexture white30Texture;
     
+    ofTrueTypeFont font;
+    
     int w, h, x, y;
     int centerX, centerY;
     int CELLSIZE;
@@ -61,6 +64,9 @@ private:
     long nextStartTime;
     
     ofTexture ball1Texture, ball2Texture, ball3Texture;
+    
+//    ofTexture touchTexture;
+//    float touchLocation[2];
     
     float ball1Position[2];
     float ball2Position[2];

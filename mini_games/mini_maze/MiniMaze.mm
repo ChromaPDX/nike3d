@@ -62,7 +62,7 @@ void MiniMaze::setup(int xIn, int yIn, int width, int height){
     ofLoadImage(ballTexture, "theball.png");
     ofLoadImage(backgroundTexture, "background.png");
     ofLoadImage(white30Texture, "thirtypercentwhite.png");
-    ofLoadImage(startArrowTexture, "arrow.png");
+    ofLoadImage(startArrowTexture, "arrowDown.png");
     ofLoadImage(endArrowTexture, "arrowLeft.png");
 
     ballTexture.setAnchorPercent(.5, .5);
@@ -107,7 +107,7 @@ void MiniMaze::setup(int xIn, int yIn, int width, int height){
     
     for(int i = 0; i < 6; i++){
         wall[i].x = x+wall[i].x*CELLSIZE+(w-CELLSIZE*5)*.5;
-        wall[i].y = y+wall[i].y*CELLSIZE + CELLSIZE*.5;
+        wall[i].y = y+wall[i].y*CELLSIZE + CELLSIZE*.5 + h*.17;
         wall[i].width = wall[i].width*CELLSIZE;
         wall[i].height = wall[i].height*CELLSIZE;
     }
@@ -120,7 +120,7 @@ void MiniMaze::update(){
         // start a new round
         gameState = gameStateRunning;
         ballPosition[X] = x+(.5+startCell[X])*CELLSIZE+(w-CELLSIZE*5)*.5;
-        ballPosition[Y] = y+(.5+startCell[Y])*CELLSIZE + CELLSIZE*.5;
+        ballPosition[Y] = y+(.5+startCell[Y])*CELLSIZE + CELLSIZE*.5 + h*.17;
         ballVelocity[X] = 0.0f;
         ballVelocity[Y] = 0.0f;
         nextStartTime = ofGetElapsedTimeMillis() + 10000;
@@ -138,7 +138,7 @@ void MiniMaze::update(){
     }
     // update ball position, velocity, acceleration
     ballAcceleration[X] = -attitude.g;
-    ballAcceleration[Y] = attitude.h;
+    ballAcceleration[Y] = -attitude.h;
     if(ballAcceleration[X] < STATIC && ballAcceleration[X] > -STATIC) ballAcceleration[X] = 0.0f;
     if(ballAcceleration[Y] < STATIC && ballAcceleration[Y] > -STATIC) ballAcceleration[Y] = 0.0f;
     ballVelocity[X] += ballAcceleration[X];
@@ -207,8 +207,8 @@ void MiniMaze::update(){
     }
     // keep it from going outside the entrance
     
-    if(ballPosition[Y] > y+7*CELLSIZE-ballRadius + CELLSIZE*.5){
-        ballPosition[Y] = y+7*CELLSIZE-ballRadius + CELLSIZE*.5;
+    if(ballPosition[Y] > y+7*CELLSIZE-ballRadius + CELLSIZE*.5 + h*.17){
+        ballPosition[Y] = y+7*CELLSIZE-ballRadius + CELLSIZE*.5 + h*.17;
         ballVelocity[Y] *= -ELASTIC;
     }
 }
@@ -218,7 +218,7 @@ void MiniMaze::drawTimer(int centerX, int centerY){
     ofSetColor(255, 255, 255, 60);
     ofBeginShape();
     ofVertex(centerX,centerY);
-    static float outerRadius = 20;
+    static float outerRadius = 30;
     static float resolution = 256;
     static float deltaAngle = TWO_PI / resolution;
     float angle = 0;
@@ -226,7 +226,7 @@ void MiniMaze::drawTimer(int centerX, int centerY){
     for(int i = 0; i <= resolution; i++){
         if((float)i/resolution <= roundProgress){
             float x = centerX + outerRadius * sin(angle);
-            float y = centerY + outerRadius * -cos(angle);
+            float y = centerY + outerRadius * cos(angle);
             ofVertex(x,y);
             angle += deltaAngle;
         }
@@ -241,8 +241,12 @@ void MiniMaze::draw(){
     for(int i = 0; i < 6; i++)
         white30Texture.draw(wall[i].x, wall[i].y, wall[i].width, wall[i].height);
     ballTexture.draw(ballPosition[X], ballPosition[Y], ballRadius+ballRadius, ballRadius+ballRadius);
-    startArrowTexture.draw( x+(.5+startCell[X])*CELLSIZE+(w-CELLSIZE*5)*.5, y+(.5+startCell[Y])*CELLSIZE + CELLSIZE*.5, CELLSIZE*.5, CELLSIZE*.5);
-    endArrowTexture.draw( x+(.5+endCell[X])*CELLSIZE+(w-CELLSIZE*5)*.5, y+(.5+endCell[Y])*CELLSIZE + CELLSIZE*.5, CELLSIZE*.5, CELLSIZE*.5);
+    startArrowTexture.draw( x+(.5+startCell[X])*CELLSIZE+(w-CELLSIZE*5)*.5,
+                           y+(.5+startCell[Y])*CELLSIZE + CELLSIZE*.5 + h*.17,
+                           CELLSIZE*.5, CELLSIZE*.5);
+    endArrowTexture.draw( x+(.5+endCell[X])*CELLSIZE+(w-CELLSIZE*5)*.5,
+                         y+(.5+endCell[Y])*CELLSIZE + CELLSIZE*.5 + h*.17,
+                         CELLSIZE*.5, CELLSIZE*.5);
     if(gameState == gameStateRunning && !win)
-        drawTimer(x+w-30, y+30);
+        drawTimer(x+w-45, y+h-45);
 }
