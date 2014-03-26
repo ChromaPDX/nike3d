@@ -9,12 +9,12 @@
 #import "ModelHeaders.h"
 
 
-@implementation GameAction
+@implementation GameSequence
 
 +(instancetype) action {
     
-    GameAction *newAction = [[GameAction alloc]init];
-    newAction.skillEvents = [NSMutableArray arrayWithCapacity:12];
+    GameSequence *newAction = [[GameSequence alloc]init];
+    newAction.GameEvents = [NSMutableArray arrayWithCapacity:12];
     
     return newAction;
 }
@@ -31,7 +31,7 @@
     _boost = [decoder decodeIntForKey:@"boost"];
     _tag = [decoder decodeIntForKey:@"tag"];
     
-    _skillEvents = [[decoder decodeObjectForKey:@"events"] mutableCopy];
+    _GameEvents = [[decoder decodeObjectForKey:@"events"] mutableCopy];
     
     return self;
 }
@@ -42,7 +42,7 @@
     [encoder encodeInt:_boost forKey:@"boost"];
     [encoder encodeBool:_wasSuccessful forKey:@"wasSuccessful"];
     
-    [encoder encodeObject:_skillEvents forKey:@"events"];
+    [encoder encodeObject:_GameEvents forKey:@"events"];
     
 }
 
@@ -52,8 +52,8 @@
     
     if (self.isRunningAction) {
         
-        for (int i = 0; i < self.skillEvents.count; i++) {
-            SkillEvent *e = self.skillEvents[i];
+        for (int i = 0; i < self.GameEvents.count; i++) {
+            GameEvent *e = self.GameEvents[i];
             if(e.totalModifier != 0){
                 //if(e.success < e.totalModifier) return 0; // modifiers within one event bring chance of success below 0
                 totalModifier += e.totalModifier; // cumulatively reduce chance of success
@@ -65,7 +65,7 @@
     }
     
     else {
-        totalModifier = [self.skillEvents.lastObject totalModifier];
+        totalModifier = [self.GameEvents.lastObject totalModifier];
     }
     
     _totalModifier = totalModifier;
@@ -81,8 +81,8 @@
     if (self.isRunningAction) {
         
         
-        for (int i = 0; i < self.skillEvents.count; i++) {
-            SkillEvent *e = self.skillEvents[i];
+        for (int i = 0; i < self.GameEvents.count; i++) {
+            GameEvent *e = self.GameEvents[i];
             if(e.totalModifier != 0){
                 //if(e.success < e.totalModifier) return 0; // modifiers within one event bring chance of success below 0
                 totalSuccess *= e.success; // cumulatively reduce chance of success
@@ -94,7 +94,7 @@
     }
     
     else {
-        totalSuccess = [self.skillEvents.lastObject success];
+        totalSuccess = [self.GameEvents.lastObject success];
     }
     
    
@@ -119,15 +119,15 @@
     
     if (self.isRunningAction) {
         
-        for (int i = 0; i < self.skillEvents.count; i++) {
-            SkillEvent *e = self.skillEvents[i];
+        for (int i = 0; i < self.GameEvents.count; i++) {
+            GameEvent *e = self.GameEvents[i];
             totalCost += e.actionCost;
         }
         
     }
     
     else {
-        totalCost = [self.skillEvents.lastObject actionCost];
+        totalCost = [self.GameEvents.lastObject actionCost];
     }
     
     totalCost += _boost;
@@ -138,13 +138,13 @@
     
 }
 
--(Card*)playerPerformingAction {
-    if (_skillEvents.count) {
+-(Player*)playerPerformingAction {
+    if (_GameEvents.count) {
         
-        if (![_skillEvents[0] playerPerformingAction]) {
+        if (![_GameEvents[0] playerPerformingAction]) {
             NSLog(@"action.m could not infer player from events");
         }
-        return [_skillEvents[0] playerPerformingAction];
+        return [_GameEvents[0] playerPerformingAction];
         
     }
     else {
@@ -154,12 +154,12 @@
 }
 
 -(Card*)playerReceivingAction {
-    if (_skillEvents.count) {
+    if (_GameEvents.count) {
         
-        if (![_skillEvents.lastObject playerPerformingAction]) {
+        if (![_GameEvents.lastObject playerPerformingAction]) {
             NSLog(@"action.m could not infer player from events");
         }
-        return [_skillEvents.lastObject playerPerformingAction];
+        return [_GameEvents.lastObject playerPerformingAction];
     }
     else {
         NSLog(@"no player yet on this aciton");
@@ -168,33 +168,33 @@
 }
 
 -(BOOL)isRunningAction {
-    return [[_skillEvents lastObject] isRunningEvent];
+    return [[_GameEvents lastObject] isRunningEvent];
 }
 
--(ActionType)type {
+-(EventType)type {
     
-return [(SkillEvent*)[_skillEvents lastObject] type];
+return [(GameEvent*)[_GameEvents lastObject] type];
     
 }
 
 -(NSString*)nameForAction{
 
-    return [[_skillEvents lastObject] nameForAction];
+    return [[_GameEvents lastObject] nameForAction];
     
 }
 
 -(Manager*)manager {
     
-    return [[_skillEvents lastObject] manager];
+    return [[_GameEvents lastObject] manager];
     
 }
 
 @end
 
-@implementation SkillEvent
+@implementation GameEvent
 
-+(instancetype) eventForAction:(GameAction*)action{
-    SkillEvent *newEvent = [[SkillEvent alloc]init];
++(instancetype) eventForAction:(GameSequence*)action{
+    GameEvent *newEvent = [[GameEvent alloc]init];
     newEvent.parent = action;
     newEvent.seed = [newEvent newSeed];
     
@@ -203,79 +203,78 @@ return [(SkillEvent*)[_skillEvents lastObject] type];
 
 -(BOOL)isRunningEvent {
     
-    if (_type == kRunningAction || _type == kDribbleAction || _type == kChallengeAction) {
+    if (_type == kEventMove || _type == kEventChallenge ) {
         return 1;
     }
     
     else return 0;
 }
 
--(BOOL)isDeployEvent {
-    
-    if (_type == kDeployEvent || _type == kSpawnPlayerEvent || _type == kSpawnKeeperEvent) {
-        return 1;
-    }
-    
-    else return 0;
-}
+//-(BOOL)isDeployEvent {
+//    
+//    if (_type == kDeployEvent || _type == kSpawnPlayerEvent || _type == kSpawnKeeperEvent) {
+//        return 1;
+//    }
+//    
+//    else return 0;
+//}
+
+
 
 -(NSString*)nameForAction{
     
-    ActionType actionType = [self type];
+    EventType actionType = [self type];
     
-    if(actionType == kPassAction)
-        return @"PASS";
-    if(actionType == kDribbleAction)
-        return @"DRIBBLE";
-    if(actionType == kRunningAction)
-        return  @"RUN";
-    if(actionType == kChallengeAction)
-        return @"CHALL";
-    if(actionType == kShootAction)
-        return @"SHOOT";
-    if(actionType == kDeployEvent)
-        return @"DEPLOY";
-    if(actionType == kSpawnKeeperEvent)
-        return @"SPAWN KEEPER";
-    if(actionType == kSpawnPlayerEvent)
-        return @"SPAWN PLAYER";
-    if(actionType == kDeployEvent)
-        return @"DEPLOY";
-    if(actionType == kEnchantAction)
-        return @"INSTALL";
-    if(actionType == kStartingAction)
-        return @"BEGIN PLAYER MOVE";
-    if(actionType == kPlayCardAction)
-        return @"PLAY CARD";
-    if(actionType == kEndTurnAction)
-        return @"END TURN ACTION";
-    if(actionType == kRemovePlayerAction)
-        return @"REMOVE PLAYER";
-    if(actionType == kDrawAction)
-        return @"DRAW CARD";
-    if(actionType == kTurnDrawAction)
-        return @"START TURN DRAW";
-    if(actionType == kStartTurnAction)
-        return @"START TURN";
-    if(actionType == kSetBallAction)
-        return @"SET BALL";
-    if(actionType == kShuffleAction)
-        return @"SHUFFLE";
-    if(actionType == kGoaliePass)
-        return @"GOAL KICK!";
-    if(actionType == kGraveyardShuffleAction)
-        return @"RESHUFFLE";
-    if (actionType == kPurgeEnchantmentsAction)
-        return @"WIPE TEMP ENCHANTMENTS";
-    if (actionType == kMoveFieldAction)
-        return @"MOVING ACTIVE ZONE";
-    
+    switch (actionType) {
+            case kNullAction: return @"NULL";
+            // Player Actions
+            case kEventAddPlayer: return @"ADD PLAYER";
+            case kEventRemovePlayer: return @"REMOVE PLAYER";
+
+            // Field Actions
+            case kEventSetBallLocation: return @"MOVE BALL";
+            case kEventResetPlayers: return @"RESET PLAYERS";
+            case kEventGoalKick: return @"GOALIE KICK";
+            
+            // Cards / Card Actions
+            case kEventDraw: return @"DRAW A CARD";
+            case kEventPlayCard: return @"PLAY A CARD";
+            case kEventKickPass: return @"PASSES !";
+            case kEventKickGoal: return @"SHOOTS !!";
+            case kEventChallenge: return @"CHALLENGING !";
+            case kEventMove: return @"MOVING";
+            case kEventAddSpecial: return @"SPECIAL CARD";
+            case kEventRemoveSpecial: return @"REMOVE SPECIAL";
+            
+            // Deck
+            case kEventShuffleDeck: return [NSString stringWithFormat:@"SHUFFLING %@", self.deck.name];
+            case kEventReShuffleDeck: return [NSString stringWithFormat:@"RE-SHUFFLING %@", self.deck.name];
+            
+            // Turn State
+            case kEventStartTurn: return @"START TURN";
+            case kEventStartTurnDraw: return @"START DRAW CARDS";
+
+            case kEventEndTurn: return @"END TURN";
+            
+            // Camera
+            case kEventMoveCamera: return @"MOVING CAMERA";
+            case kEventMoveBoard: return @"MOVING CAMERA";
+            
+            
+         
+    }
     
     return @"FAIL!";
     
 }
 
--(void)setPlayerPerformingAction:(Card *)playerPerformingAction {
+-(void)setCard:(Card *)card {
+    _deck = card.deck;
+    _playerPerformingAction = card.player;
+    self.manager = _playerPerformingAction.manager;
+}
+
+-(void)setPlayerPerformingAction:(Player *)playerPerformingAction {
     _playerPerformingAction = playerPerformingAction;
     self.manager = playerPerformingAction.manager;
 }
@@ -286,14 +285,12 @@ return [(SkillEvent*)[_skillEvents lastObject] type];
 }
 
 -(void)setManager:(Manager *)manager {
-    
     _manager = manager;
     _teamSide = manager.teamSide;
-    
 }
 
 -(int)actionSlot {
-    return [_parent.skillEvents indexOfObject:self];
+    return [_parent.GameEvents indexOfObject:self];
 }
 
 //

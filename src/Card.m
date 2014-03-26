@@ -28,219 +28,127 @@
         _abilities = [[Abilities alloc]init];
         _actionPointEarn = 0;
         _actionPointCost = 0;
-        
-        if([self isTypeKeeper]){
-            _abilities.save = .5 + (arc4random()%2)/5.0-.1;  //   .5  +/-  .1
-            _abilities.pass = _abilities.kick = .5;
-            _abilities.handling = .5;
-            _actionPointCost = 0;
-            _actionPointEarn = 2;
-        }
-        
-        if([self isTypePlayer]){
-            _actionPointCost = _actionPointEarn = arc4random()%2 + 1;
-            
-            _abilities.handling = .3 + (_actionPointCost*.1) + (arc4random()%2)*.1;  //   .5  +/-  .1
-            _abilities.kick = .3 + (_actionPointCost*.1) + (arc4random()%2)*.1;  //   .5  +/-  .1
-            _abilities.pass = _abilities.shoot = _abilities.kick;
-            _abilities.dribble = _abilities.challenge = _abilities.handling;
-            
-            //_actionPointEarn = arc4random()%2 + 1;
-        }
-        
-        if([self isTypeAction]){
 
-            
-            _actionPointCost = 2; // DEFAULT, CAN OVERRIDE
-            
-//            _nearTeamModifiers = [[Abilities alloc] init];
-//            _nearOpponentModifiers = [[Abilities alloc] init];
-//            _opponentModifiers = [[Abilities alloc] init];
-            
-            if(_cardType == kCardTypeActionCaptainsBand){
-                _teamModifiers = [[Abilities alloc] init];
-                _teamModifiers.kick = .1;
-                _teamModifiers.handling = .1;
-            }
-            
-            else if(_cardType == kCardTypeActionAdrenalBoost){
-                _actionPointCost = 0;
-                _actionPointEarn = 2;
-            }
-            else if(_cardType == kCardTypeActionAdrenalFlood) {
-                _actionPointCost = 1;
-                _actionPointEarn = 3;
-            }
-            
-            else if(_cardType == kCardTypeActionPredictiveAnalysis1){
-                _actionPointCost = 1;
-                _abilities.handling += .35;
-            }
-            
-            else if(_cardType == kCardTypeActionPredictiveAnalysis2){
-                _actionPointCost = 2;
-                _abilities.handling += .4;
-            }
-
-        }
-    }
-    return self;
-}
-
--(id) initWithType:(CardType)cType Manager:(Manager*)m{
-    self = [self initWithType:cType];
-    if(self){
-        //_uid = [[NSUUID UUID] UUIDString];
-        self.manager = m;
-        //NSLog(@"UID: %@", _uid);
     }
     return self;
 }
 
 
--(BOOL)isTypePlayer{
-    if(_cardType == kCardTypePlayerDefender ||
-       _cardType == kCardTypePlayerForward ||
-       _cardType == kCardTypePlayerMidFielder)
-        return YES;
-    return NO;
+-(BOOL)isTypeCard{
+    return (_cardType == kCardTypeKick || _cardType == kCardTypeMove || _cardType == kCardTypeChallenge || _cardType == kCardTypeSpecial);
 }
 
--(BOOL)isTypeKeeper{
-    return (_cardType == kCardTypePlayerKeeper);
-}
-
--(BOOL)isTypeBall{
-    return (_cardType == kBall);
-}
-
--(BOOL)isTypeAction{
-    return !([self isTypePlayer] || [self isTypeKeeper] || [self isTypeBall]);
-}
-
-
--(BOOL)isTypeSkill { // NOT ENCHANT CARD
-    
-    if(_cardType == kCardTypeActionHeader) return YES;
-    if(_cardType == kCardTypeActionSlideTackle) return YES;
-    if(_cardType == kCardTypeActionKamikazeKick) return YES;
-    if(_cardType == kCardTypeActionCaptainsBand) return NO;
-    if(_cardType == kCardTypeActionAdrenalBoost) return NO;
-    if(_cardType == kCardTypeActionAdrenalFlood) return NO;
-    if(_cardType == kCardTypeActionMercurialAcceleration) return YES;
-    if(_cardType == kCardTypeActionPredictiveAnalysis1) return NO;
-    if(_cardType == kCardTypeActionPredictiveAnalysis2) return NO;
-    if(_cardType == kCardTypeActionNeuralTriggerFear) return NO;
-    if(_cardType == kCardTypeActionAutoPlayerTrackingSystem) return NO;
-    
-    return NO;
-    
-}
-
--(BOOL)isTypeGear{
-    return (![self isTypeSkill] && [self isTypeAction] && ![self isTypeBoost]);
-}
-
--(BOOL)isTypeBoost{
-    if(_cardType == kCardTypeActionAdrenalBoost) return YES;
-    if(_cardType == kCardTypeActionAdrenalFlood) return YES;
-    return NO;
+-(void)setDeck:(Deck *)deck {
+    _deck = deck;
+    _player = deck.player;
 }
 
 -(void)setLocation:(BoardLocation *)location {
     _location = [location copy];
-    
-    for (Card* c in _enchantments) {
-        c.location = location;
-    }
-    
 }
 
 
+-(EventType)discardAfterEventType {
 
--(ActionType)discardAfterActionType {
-    
-    if(_cardType == kCardTypeActionPredictiveAnalysis1) return kChallengeAction;
-    if(_cardType == kCardTypeActionPredictiveAnalysis2) return kChallengeAction;
-    
-    
     return kNullAction;
 }
 
 -(BOOL)isTemporary {
-    if(_cardType == kCardTypeActionPredictiveAnalysis1) return YES;
-    if(_cardType == kCardTypeActionPredictiveAnalysis2) return YES;
+
     return NO;
-}
-
-
--(NSString*) positionForCard{
-    if(_cardType == kBall) return @"the Ball";
-
-    if(_cardType == kCardTypePlayerForward) return @"Forward";
-    if(_cardType == kCardTypePlayerMidFielder) return @"MidFielder";
-    if(_cardType == kCardTypePlayerDefender) return @"Defender";
-    if(_cardType == kCardTypePlayerKeeper) return @"Keeper";
-    
-    return @"";
 }
 
 -(NSString*)nameOrGeneric {
     if (_name) {
         return _name;
     }
+    
     else {
-        if(_cardType == kCardTypePlayerForward) return @"Forward";
-        if(_cardType == kCardTypePlayerMidFielder) return @"Midfielder";
-        if(_cardType == kCardTypePlayerDefender) return @"Defender";
-        if(_cardType == kCardTypePlayerKeeper) return @"Keeper";
+        switch (_cardType) {
+            case kCardTypeKick:
+                return @"KICK";
+                break;
+                
+            case kCardTypeMove:
+                return @"MOVE";
+                break;
+                
+            case kCardTypeChallenge:
+                return @"CHALLENGE";
+                break;
+                
+            case kCardTypeSpecial:
+                return @"SPECIAL";
+                break;
+                
+            case kCardTypeBall:
+                return @"THE BALL";
+                break;
+                
+            case kCardTypePlayer:
+                return @"PLAYER";
+                break;
+                
+
+            default:
+                return @"ERROR, fix name or generic";
+                break;
+        }
+   
     }
-    return Nil;
+
 }
 
+-(void)play {
+    if ([_deck.inHand containsObject:self]){
+        [_deck playCardFromHand:self];
+    }
+    else if ([_deck.theDeck containsObject:self]){
+        [_deck playCardFromDeck:self];
+    }
+}
+
+-(void)discard {
+    
+    if ([_deck.inGame containsObject:self]) {
+          [_deck discardCardFromGame:self];
+    }
+    else if ([_deck.inHand containsObject:self]){
+           [_deck discardCardFromHand:self];
+    }
+    else if ([_deck.theDeck containsObject:self]){
+        [_deck discardCardFromDeck:self];
+    }
+    else {
+        NSLog(@"discarding card that isn't located anywhere . . .");
+    }
+  
+}
+
+
 -(NSString*) nameForCard{
-    if(_cardType == kBall) return @"the Ball";
     
-    if(_cardType == kCardTypePlayerForward) return [self nameOrGeneric];
-    if(_cardType == kCardTypePlayerMidFielder) return [self nameOrGeneric];
-    if(_cardType == kCardTypePlayerDefender) return [self nameOrGeneric];
-    if(_cardType == kCardTypePlayerKeeper) return [self nameOrGeneric];
+    return [self nameOrGeneric];
     
-    if(_cardType == kCardTypeActionHeader) return @"Header";
-    if(_cardType == kCardTypeActionSlideTackle) return @"Slide Tackle";
-    if(_cardType == kCardTypeActionKamikazeKick) return @"Kamikaze Kick";
-    if(_cardType == kCardTypeActionCaptainsBand) return @"Captains Band";
-    if(_cardType == kCardTypeActionAdrenalBoost) return @"Adrenal Boost";
-    if(_cardType == kCardTypeActionAdrenalFlood) return @"Adrenal Flood";
-    if(_cardType == kCardTypeActionMercurialAcceleration) return @"Mercurial Acceleration";
-    if(_cardType == kCardTypeActionPredictiveAnalysis1) return @"Predictive Analysis";
-    if(_cardType == kCardTypeActionPredictiveAnalysis2) return @"Predictive Analysis";
-    if(_cardType == kCardTypeActionNeuralTriggerFear) return @"Neural Trigger Fear";
-    if(_cardType == kCardTypeActionAutoPlayerTrackingSystem) return @"Auto Player  Tracking System";
-    
-    return @"";
 }
 
 -(NSString*) descriptionForCard  {
     
-    if(_cardType == kCardTypeActionHeader) return @"GOAL KICK ON \n SUCCESSFUL PASS";
-    if(_cardType == kCardTypeActionSlideTackle) return @"Slide Tackle";
-    if(_cardType == kCardTypeActionKamikazeKick) return @"Kamikaze Kick";
-    
-    if(_cardType == kCardTypeActionCaptainsBand) return [NSString stringWithFormat:@"TEAM BONUS \n +%@/ +%@", [self pP:_teamModifiers.kick], [self pP:_teamModifiers.handling]];
-    
-    if(_cardType == kCardTypeActionAdrenalBoost) return [NSString stringWithFormat:@"GET %d BONUS \n AP", _actionPointEarn];
-    if(_cardType == kCardTypeActionAdrenalFlood) return [NSString stringWithFormat:@"GET %d BONUS \n AP", _actionPointEarn];
-    
-    if(_cardType == kCardTypeActionMercurialAcceleration) return @"Mercurial Acceleration";
-    
-    if(_cardType == kCardTypeActionPredictiveAnalysis1) return [NSString stringWithFormat:@"CHALLENGE \n WITH +%@", [self pP:_abilities.handling]];
-    if(_cardType == kCardTypeActionPredictiveAnalysis2) return [NSString stringWithFormat:@"CHALLENGE \n WITH +%@", [self pP:_abilities.handling]];
-    
-    if(_cardType == kCardTypeActionNeuralTriggerFear) return @"Neural Trigger Fear";
-    if(_cardType == kCardTypeActionAutoPlayerTrackingSystem) return @"Auto Player  Tracking System";
-    
-    return @"";
+//    if(_cardType == kCardTypeActionHeader) return @"GOAL KICK ON \n SUCCESSFUL PASS";
+//    if(_cardType == kCardTypeActionSlideTackle) return @"Slide Tackle";
+//    if(_cardType == kCardTypeActionKamikazeKick) return @"Kamikaze Kick";
+//      if(_cardType == kCardTypeActionAdrenalBoost) return [NSString stringWithFormat:@"GET %d BONUS \n AP", _actionPointEarn];
+//    if(_cardType == kCardTypeActionAdrenalFlood) return [NSString stringWithFormat:@"GET %d BONUS \n AP", _actionPointEarn];
+//    
+//    if(_cardType == kCardTypeActionMercurialAcceleration) return @"Mercurial Acceleration";
+//    
+//    if(_cardType == kCardTypeActionPredictiveAnalysis1) return [NSString stringWithFormat:@"CHALLENGE \n WITH +%@", [self pP:_abilities.handling]];
+//    if(_cardType == kCardTypeActionPredictiveAnalysis2) return [NSString stringWithFormat:@"CHALLENGE \n WITH +%@", [self pP:_abilities.handling]];
+//    
+//    if(_cardType == kCardTypeActionNeuralTriggerFear) return @"Neural Trigger Fear";
+//    if(_cardType == kCardTypeActionAutoPlayerTrackingSystem) return @"Auto Player  Tracking System";
+//    
+    return @"add card descriptions";
     
     
 }
@@ -251,79 +159,8 @@
 
 }
 
--(void)addEnchantment:(Card*)enchantment {
-
-    
-    
-    NSMutableArray *enchantmentsMutable;
-    
-    if (!_enchantments) enchantmentsMutable = [NSMutableArray arrayWithCapacity:3];
-    else enchantmentsMutable = [_enchantments mutableCopy];
-    
-   
-    [enchantmentsMutable addObject:enchantment];
-    _enchantments = enchantmentsMutable;
-    
-    enchantment.player = self;
-    
-}
-
--(void)removeEnchantment:(Card*)enchantment {
-    
-    NSMutableArray *enchantmentsMutable = [_enchantments mutableCopy];
-    [enchantmentsMutable removeObject:enchantment];
-    
-    if (!enchantmentsMutable.count) _enchantments = Nil;
-    else _enchantments = enchantmentsMutable;
-    
-}
 
 
--(void)removeLastEnchantment {
-    
-    NSMutableArray *enchantmentsMutable = [_enchantments mutableCopy];
-    [enchantmentsMutable removeLastObject];
-    _enchantments = enchantmentsMutable;
-    
-}
-
--(void)setBall:(Card *)ball {
-    
-    if (ball) { // not setting to nil
-        
-        
-        if (ball.player && ![ball.player isEqual:self]) {
-            [ball.player setBall:nil];
-            ball.player = self;
-            
-        }
-        
-        else {
-            ball.player = self;
-        }
-
-        _ball = ball;
-        
-    }
-    
-    else {
-       _ball = Nil;
-    }
-    
-}
-
-#pragma mark NSCODER
-
-#define NSFWKeyType @"type"
-#define NSFWKeyManager @"manager"
-#define NSFWKeyName @"name"
-#define NSFWKeyActionPointEarn @"actionPointEarn"
-#define NSFWKeyActionPointCost @"actionPointCost"
-#define NSFWKeyAbilities @"abilities"
-#define NSFWKeyNearOpponentModifiers @"nearOpponentModifiers"
-#define NSFWKeyNearTeamModifiers @"nearTeamModifiers"
-#define NSFWKeyOpponentModifiers @"opponentModifiers"
-#define NSFWKeyTeamModifiers @"teamModifiers"
 
 //-(NSArray*)aArray {
 //    
@@ -349,7 +186,7 @@
     if (self) {
    
     _cardType = [decoder decodeIntForKey:NSFWKeyType];
-    _manager = [decoder decodeObjectForKey:NSFWKeyManager];
+    _player = [decoder decodeObjectForKey:NSFWKeyPlayer];
     
     _name = [decoder decodeObjectForKey:NSFWKeyName];
         
@@ -371,7 +208,7 @@
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
     [encoder encodeInt:_cardType forKey:NSFWKeyType];
-    [encoder encodeObject:_manager forKey:NSFWKeyManager];
+    [encoder encodeObject:_player forKey:NSFWKeyPlayer];
 
     [encoder encodeObject:_name forKey:NSFWKeyName];
     
@@ -402,7 +239,7 @@
 -(NSArray*)aArray {
     
     return @[@"kick",
-             @"handling",
+             @"move",
              @"challenge",
              @"dribble",
              @"pass",
@@ -430,15 +267,15 @@
     
     if (self) {
         NSArray *a = [self aArray];
-        
+
         _persist = persist;
-        _kick = [decoder decodeFloatForKey:a[0]];
-        _handling = [decoder decodeFloatForKey:a[1]];
-        _challenge = [decoder decodeFloatForKey:a[2]];
-        _dribble = [decoder decodeFloatForKey:a[3]];
-        _pass = [decoder decodeFloatForKey:a[4]];
-        _shoot = [decoder decodeFloatForKey:a[5]];
-        _save = [decoder decodeFloatForKey:a[6]];
+        _kick = [decoder decodeInt32ForKey:a[0]];
+        _move = [decoder decodeInt32ForKey:a[1]];
+        _challenge = [decoder decodeInt32ForKey:a[2]];
+        _dribble = [decoder decodeInt32ForKey:a[3]];
+        _pass = [decoder decodeInt32ForKey:a[4]];
+        _shoot = [decoder decodeInt32ForKey:a[5]];
+        _save = [decoder decodeInt32ForKey:a[6]];
         
     }
 
@@ -456,13 +293,13 @@
     NSArray *a = [self aArray];
     
     [encoder encodeBool:YES forKey:@"persist"];
-    [encoder encodeFloat:_kick forKey:a[0]];
-    [encoder encodeFloat:_handling forKey:a[1]];
-    [encoder encodeFloat:_challenge forKey:a[2]];
-    [encoder encodeFloat:_dribble forKey:a[3]];
-    [encoder encodeFloat:_pass forKey:a[4]];
-    [encoder encodeFloat:_shoot forKey:a[5]];
-    [encoder encodeFloat:_save forKey:a[6]];
+    [encoder encodeInt32:_kick forKey:a[0]];
+    [encoder encodeInt32:_move forKey:a[1]];
+    [encoder encodeInt32:_challenge forKey:a[2]];
+    [encoder encodeInt32:_dribble forKey:a[3]];
+    [encoder encodeInt32:_pass forKey:a[4]];
+    [encoder encodeInt32:_shoot forKey:a[5]];
+    [encoder encodeInt32:_save forKey:a[6]];
     
 }
 
@@ -470,7 +307,7 @@
     Abilities *a = [[Abilities alloc] init];
     
     a.kick = _kick;
-    a.handling = _handling;
+    a.move = _move;
     a.challenge = _challenge;
     a.dribble = _dribble;
     a.pass = _pass;
@@ -483,7 +320,7 @@
 -(void)add:(Abilities*)modifier {
     
     _kick += modifier.kick;
-    _handling += modifier.handling;
+    _move += modifier.move;
     _challenge += modifier.challenge;
     _dribble += modifier.dribble;
     _pass += modifier.pass;

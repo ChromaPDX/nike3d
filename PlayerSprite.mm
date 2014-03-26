@@ -38,8 +38,7 @@
         //        cardName.text = [model.nameForCard substringToIndex:1];
         //        [self addChild:cardName];
         
-        if ([_model isTypePlayer] || [_model isTypeKeeper]){
-            
+
             UIColor *playerColor =  NKWHITE;
             
             if([_model.manager isEqual:_delegate.game.me]){
@@ -63,7 +62,7 @@
             
             self.name = model.nameForCard;
             self.userInteractionEnabled = true;
-        }
+        
     }
     else NSLog(@"CAN'T ASSIGN NIL MODEL TO CARDSPRITE");
 }

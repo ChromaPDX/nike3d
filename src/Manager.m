@@ -17,15 +17,24 @@
     self = [super init];
     if(self){
         NSLog(@"new manager init");
-       
+        _playersMutable = [[NSMutableArray alloc]init];
+        
+        for (int p = 0; p < 3; p++) {
+            Player* player = [[Player alloc]initWithManager:self];
+            player.name = [NSString stringWithFormat:@"PLAYER %d",p+1];
+            [_playersMutable addObject:player];
+        }
+        
+        _players = [_playersMutable copy];
     }
+    
     return self;
 }
 
 -(void)setTeamSide:(int)teamSide {
     _teamSide = teamSide;
     
-    _deck = [[Deck alloc] initWithManager:self];
+   // _deck = [[Deck alloc] initWithManager:self];
     
 }
 
@@ -39,10 +48,12 @@
     
     NSLog(@"unarchive manager");
     
+  
+    
     _teamSide = [decoder decodeIntForKey:@"side"];
     _name = [decoder decodeObjectForKey:@"name"];
     _color = [decoder decodeObjectForKey:@"color"];
-    _deck = [decoder decodeObjectForKey:@"deck"];
+   // _deck = [decoder decodeObjectForKey:@"deck"];
     
     _actionPointsEarned = [decoder decodeIntForKey:@"actionPointsEarned"];
     _actionPointsSpent = [decoder decodeIntForKey:@"actionPointsSpent"];
@@ -56,6 +67,8 @@
     _cardsDrawn = [decoder decodeIntForKey:@"cardsDrawn"];
     _cardsPlayed = [decoder decodeIntForKey:@"cardsPlayed"];
     
+    _players = [decoder decodeObjectForKey:@"players"];
+    
     return self;
 }
 
@@ -63,7 +76,7 @@
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
     [encoder encodeInt:_teamSide forKey:@"side"];
-    [encoder encodeObject:_deck forKey:@"deck"];
+  //  [encoder encodeObject:_deck forKey:@"deck"];
     // META
     
     [encoder encodeObject:_name forKey:@"name"];
@@ -80,10 +93,21 @@
     [encoder encodeInt:_cardsDrawn forKey:@"cardsDrawn"];
     [encoder encodeInt:_cardsPlayed forKey:@"cardsPlayed"];
 
+    [encoder encodeObject:_players forKey:@"players"];
 }
+
 
 -(BOOL)isEqual:(id)object {
     return (self.teamSide == [object teamSide]);
+}
+
+-(bool)hasPossesion {
+    for (Player* p in _players) {
+        if (p.ball) {
+            return true;
+        }
+    }
+    return false;
 }
 
 -(instancetype)copy {

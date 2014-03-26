@@ -25,7 +25,7 @@
 }
 // SHARE GAME / UI PROPS
 
-@property (nonatomic, weak) Game* game;
+@property (nonatomic, strong) Game* game;
 @property (nonatomic, weak) Card* selectedCard;
 @property (nonatomic, weak) Card* selectedPlayer;
 
