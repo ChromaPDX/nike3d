@@ -62,6 +62,9 @@ private:
     
     ofTexture ball1Texture, ball2Texture, ball3Texture;
     
+    ofTexture touchTexture;
+    float touchLocation[2];
+    
     float ball1Position[2];
     float ball2Position[2];
     float ball3Position[2];

@@ -56,6 +56,10 @@ void MiniCups::setup(int xIn, int yIn, int width, int height){
     
     gameState = cupsGameStateWaiting;
     nextStartTime = 3000;
+    
+    ///
+    ofLoadImage(touchTexture, "theball.png");
+    touchLocation[X] = touchLocation[Y] = 0.0;
 }
 
 void MiniCups::update(){
@@ -103,6 +107,40 @@ void MiniCups::update(){
 }
 
 void MiniCups::touchDownCoords(float x, float y){
+    touchLocation[X] = x;
+    touchLocation[Y] = y;
+    int ballSelection = 0;
+    float TOUCH_SIZE = 75.;
+    float r1 = sqrt( pow( x-ball1Position[X], 2 ) + pow( y-ball1Position[Y], 2 ) );
+    float r2 = sqrt( pow( x-ball2Position[X], 2 ) + pow( y-ball2Position[Y], 2 ) );
+    float r3 = sqrt( pow( x-ball3Position[X], 2 ) + pow( y-ball3Position[Y], 2 ) );
+    if(r1 < TOUCH_SIZE)
+        ballSelection = 1;
+    if(r2 < TOUCH_SIZE)
+        ballSelection = 2;
+    if(r3 < TOUCH_SIZE)
+        ballSelection = 3;
+    printf("RADIUSES(%d): %f, %f, %f\n",ballSelection,r1, r2, r3);
+    
+    if(ballSelection == 1){
+        // you win
+        printf("WIN\n");
+        win = true;
+//        if(delegate)
+//            delegate->gameDidFinishWithWin();
+//        if(objDelegate)
+//            [objDelegate gameDidFinishWithWin];
+    }
+    else if (ballSelection == 2 || ballSelection == 3){
+        // you lose
+        printf("LOSE\n");
+//        if(delegate)
+//            delegate->gameDidFinishWithLose();
+//        if(objDelegate)
+//            [objDelegate gameDidFinishWithLose];
+    }
+    
+    // repeat game
     if(gameState == cupsGameStatePicking){
         gameState = cupsGameStateWaiting;
         nextStartTime = ofGetElapsedTimeMillis() + 1000;
@@ -113,12 +151,7 @@ void MiniCups::touchDownCoords(float x, float y){
 
 void MiniCups::touchDown(ofTouchEventArgs &touch){
     
-    if(gameState == cupsGameStatePicking){
-        gameState = cupsGameStateWaiting;
-        nextStartTime = ofGetElapsedTimeMillis() + 1000;
-        showBall = true;
-    }
-    fingerTouchDown = true;
+    //touchDownCoords(xtouch, ytouch);
 }
 
 void MiniCups::touchMoved(ofTouchEventArgs &touch){
@@ -155,6 +188,7 @@ void MiniCups::drawTimer(int centerX, int centerY){
 void MiniCups::draw(){
     backgroundTexture.draw(x, y, w, h);
 
+    touchTexture.draw(touchLocation[X], touchLocation[Y], 40, 40);
     if(showBall){
         ofSetColor(255, 100);
         ball2Texture.draw(ball2Position[X], ball2Position[Y]);

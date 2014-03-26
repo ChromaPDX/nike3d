@@ -29,7 +29,7 @@
 }
 
 -(void)startMiniGame {
-    activeMiniGame = arc4random()%3;
+    activeMiniGame = 2;//arc4random()%3;
     ofRectangle d = [self getDrawFrame];
     if(activeMiniGame == 0){
         _miniMaze = new MiniMaze();
@@ -81,6 +81,7 @@
 -(NKTouchState)touchDown:(CGPoint)location id:(int)touchId {
     NKTouchState touchState = [super touchDown:location id:touchId]; // this queries children first returns 2 if no children, 1 if active child
     if (touchState == 2){
+        location.y = -location.y;
         NSLog(@"TOUCH X:%.1f  Y:%.1f",location.x, location.y);
         if(activeMiniGame == 0)
             ;//_miniMaze->touchDownCoords(location.x, location.y);
