@@ -15,6 +15,7 @@
 #define NSFWKeyType @"type"
 #define NSFWKeyManager @"manager"
 #define NSFWKeyPlayer @"player"
+#define NSFWKeyDeck @"deck"
 #define NSFWKeyName @"name"
 #define NSFWKeyActionPointEarn @"actionPointEarn"
 #define NSFWKeyActionPointCost @"actionPointCost"
@@ -31,7 +32,9 @@
 
 @interface Card : NSObject <NSCopying, NSCoding>
 
--(id) initWithType:(CardType)cType;
+-(id) initWithDeck:(Deck*)deck;
+
+-(DeckType)deckType;
 
 // PERSISTENT
 
@@ -49,7 +52,6 @@
 @property (nonatomic,strong) Abilities *nearOpponentModifiers;
 @property (nonatomic,strong) Abilities *opponentModifiers;
 
--(BOOL)isTypeCard;
 
 -(BOOL)isTemporary;
 
@@ -59,7 +61,6 @@
 -(NSString*) descriptionForCard;
 
 @property (nonatomic, weak) Deck *deck;
-@property (nonatomic, weak) Player *player;
 @property (nonatomic, weak) Player *enchantee;
 
 -(void)play;

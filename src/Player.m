@@ -11,21 +11,30 @@
 @implementation Player
 
 -(id) initWithManager:(Manager*)m {
-    self = [super initWithType:kCardTypePlayer];
+    self = [super initWithDeck:m.players];
     if (self) {
         _manager = m;
     }
     return self;
 }
 
+-(void)generateDefaultCards {
+    
+    _moveDeck = [[Deck alloc]initWithPlayer:self type:_moveDeck];
+    _kickDeck = [[Deck alloc]initWithPlayer:self type:_kickDeck];
+    _challengeDeck = [[Deck alloc]initWithPlayer:self type:_challengeDeck];
+    _specialDeck = [[Deck alloc]initWithPlayer:self type:_specialDeck];
+    
+}
+
 -(void)encodeWithCoder:(NSCoder *)aCoder {
     [super encodeWithCoder:aCoder];
     
     [aCoder encodeObject:_manager forKey:NSFWKeyManager];
-    [aCoder encodeObject:_kickDeck forKey:@"kickDeck"];
-     [aCoder encodeObject:_challengeDeck forKey:@"challengeDeck"];
     [aCoder encodeObject:_moveDeck forKey:@"moveDeck"];
-      [aCoder encodeObject:_specialDeck forKey:@"specialDeck"];
+    [aCoder encodeObject:_kickDeck forKey:@"kickDeck"];
+    [aCoder encodeObject:_challengeDeck forKey:@"challengeDeck"];
+    [aCoder encodeObject:_specialDeck forKey:@"specialDeck"];
     
 }
 

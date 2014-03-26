@@ -561,7 +561,9 @@
 }
 
 -(void)wipeBoard {
-    _ball = [[Card alloc]initWithType:kCardTypeBall];
+    _ball = [[Card alloc] init];
+    _ball.cardType = kCardTypeBall;
+    
     gameBoard = [NSMutableDictionary dictionary];
     [_gameScene cleanupGameBoard];
 }
@@ -583,13 +585,14 @@
     
     // FIRST SHUFFLE CARDS SO WE HAVE A VALID ORDER
     
-    _ball = [[Card alloc]initWithType:kCardTypeBall];
+    _ball = [[Card alloc] init];
+    _ball.cardType = kCardTypeBall;
     
     _currentAction = [GameSequence action];
     
-//    [self addShuffleEventToAction:_currentAction forManager:_me];
-//    
-//    [self addShuffleEventToAction:_currentAction forManager:_opponent];
+    [self addShuffleEventToAction:_currentAction forDeck:_me.players];
+    
+    [self addShuffleEventToAction:_currentAction forDeck:_opponent.players];
     
     [self setupCoinTossPositionsForAction:_currentAction];
     
@@ -631,9 +634,9 @@
     NSLog(@"---***---*** UI RESTORE ---***---***");
     
     
-    NSLog(@"I have %d players on the board", [_me players].count);
+    NSLog(@"I have %d players on the board", [_me players].inGame.count);
     
-    for (Player *p in [_me players]) {
+    for (Player *p in [_me players].inGame) {
         
         
         
@@ -646,9 +649,9 @@
     }
     
     
-    NSLog(@"They have %d players on the board", [_me players].count);
+    NSLog(@"They have %d players on the board", [_me players].inGame.count);
     
-    for (Player *p in [_opponent players]) {
+    for (Player *p in [_opponent players].inGame) {
         
         if ([p.location isEqual:_ball.location]) {
             [p setBall:_ball];
@@ -708,11 +711,11 @@
             
             if ([player.manager isEqual:_me]) {
                 
-                
                 if (_currentAction) {
                     [_gameScene cleanUpUIForAction:_currentAction];
                 }
-                _currentAction = [GameSequence action];
+                
+                [_gameScene refreshActionWindowForPlayer:player withCompletionBlock:nil];
                 
                 return 1;
                 
@@ -729,12 +732,13 @@
                 
             }
             
+          
+            
         }
         
         _currentAction = nil;
         
     }
-    
     
     return 0;
 }
@@ -1522,6 +1526,8 @@
     
     GameEvent *shuffle = [GameEvent eventForAction:action];
     shuffle.deck = d;
+    shuffle.playerPerformingAction = d.player;
+    shuffle.manager = d.player.manager;
     shuffle.type = kEventShuffleDeck;
     
     
@@ -2261,8 +2267,6 @@
 
 -(void)logEvent:(GameEvent*)event{
     
-    
-    
     if (event.playerPerformingAction) {
         NSLog(@">>%d %@ is %@ >> %d,%d to %d,%d", event.actionSlot, event.playerPerformingAction.nameForCard, event.nameForAction, event.startingLocation.x, event.startingLocation.y, event.location.x, event.location.y);
     }
@@ -2290,7 +2294,6 @@
 
 -(BOOL)performEvent:(GameEvent*)event {
     
-    NSLog(@"perform event !!");
     // FIRST INHERIT WHO IS INVOLVED FROM PERSISTENT LOCATIONS
     
     [self getPlayerPointersForEvent:event];
@@ -2299,7 +2302,30 @@
     
 #pragma mark - CARD / SYSTEM EVENTS
     
-    if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
+    
+    if (event.type == kEventStartTurn){
+        
+        //NSLog(@"performing start turn");
+        // event.manager.ActionPoints = [self getActionPointsForManager:event.manager];
+        
+        
+        //        [self assignBallIfPossible];
+        //        [self updateActiveZone];
+        
+        //NSLog(@"%@ has %d AP",event.manager.name, event.manager.ActionPoints);
+        
+
+        
+    }
+    
+    else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
+        
+        for (Player* p in event.manager.players.inGame) {
+            [p.moveDeck turnOverNextCard];
+            [p.kickDeck turnOverNextCard];
+            [p.specialDeck turnOverNextCard];
+            [p.specialDeck turnOverNextCard];
+        }
         
 //        if (event.manager.deck.inHand.count < 7) {
 //            
@@ -2326,9 +2352,8 @@
     
     else if (event.type == kEventSetBallLocation) {
         
-        if (_ball.player) {
-            [_ball.player setBall:nil];
-            
+        if (_ball.enchantee) {
+            [_ball.enchantee setBall:nil];
         }
         
         _ball.location = event.location;
@@ -2341,13 +2366,20 @@
     
     else if (event.type == kEventAddPlayer){
         
-        Player *newPlayer = [event.manager.playersMutable lastObject];
+        Player *newPlayer = [event.manager.players.theDeck lastObject];
         
-        [event.manager.playersMutable removeLastObject];
+        if ([event.manager.players playCardFromDeck:newPlayer]){
+            NSLog (@"putting player on field, shufflingcards");
+            [newPlayer.moveDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
+            [newPlayer.kickDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
+            [newPlayer.challengeDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
+            [newPlayer.specialDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
+        }
         
         event.playerPerformingAction = newPlayer;
         
         event.playerPerformingAction.location = [event.location copy];
+        
         [gameBoard setObject:[event.location copy] forKey:event.playerPerformingAction];
         
     }
@@ -2406,6 +2438,12 @@
 
     else if (event.type == kEventEndTurn){
         
+        for (Player *p in event.manager.players.inGame) {
+            for (Card* c in [p allCardsInHand]) {
+                [c discard];
+            }
+            
+        }
         //[self updateActiveZone];
         
         //NSLog(@"performing end turn event");
@@ -2418,31 +2456,18 @@
         // NSLog(@"resetting coin toss position");
         
         _ball.location = nil;
-        _ball.player = nil;
+        _ball.enchantee = nil;
         
         
     }
     
-    
-    else if (event.type == kEventStartTurn){
-        
-        //NSLog(@"performing start turn");
-       // event.manager.ActionPoints = [self getActionPointsForManager:event.manager];
-        
-        
-        //        [self assignBallIfPossible];
-        //        [self updateActiveZone];
-        
-        //NSLog(@"%@ has %d AP",event.manager.name, event.manager.ActionPoints);
-        
-    }
+
     
     else if (event.type == kEventShuffleDeck) {
         
-        //NSLog(@"shuffling %@'s deck", event.manager);
+       // NSLog(@"shuffling %@'s deck", event.manager);
         
         [event.deck shuffleWithSeed:event.seed fromDeck:event.deck.allCards];
-        
         
         // START TEST
         
@@ -2477,7 +2502,7 @@
             
             //NSLog(@"%d Game.m : Start Player Events", event.actionSlot);
             
-            if (!_ball.player) { // NO ONE HAS BALL, PICK UP IF THERE
+            if (!_ball.enchantee) { // NO ONE HAS BALL, PICK UP IF THERE
                 
                 if ([_ball.location isEqual:event.location]) {
                     // NSLog(@"Take Posession");
@@ -2517,7 +2542,7 @@
             
             // RUN
             
-            if (!_ball.player) { // NO ONE HAS BALL, PICK UP IF THERE
+            if (!_ball.enchantee) { // NO ONE HAS BALL, PICK UP IF THERE
                 
                 if ([_ball.location isEqual:event.location]) {
                     //NSLog(@"Game.m : performEvent : picking up ball");
@@ -2598,7 +2623,7 @@
             if (event.playerPerformingAction.ball) {
                 
                 [event.playerPerformingAction setBall:Nil];
-                _ball.player = Nil;
+                _ball.enchantee = Nil;
                 
             }
             
@@ -2620,7 +2645,7 @@
         
         else if (event.type == kEventKickPass){ // FAILED PASS
             [event.playerPerformingAction setBall:Nil];
-            _ball.player = Nil;
+            _ball.enchantee = Nil;
             _ball.location = [self passFail:event];
             
         }

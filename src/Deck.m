@@ -26,40 +26,42 @@
     if(self){
         _type = type;
         
+      
+        
         switch (type) {
             case DeckTypeKick:
-                _allCards = @[[[Card alloc] initWithType:kCardTypeKick],
-                             [[Card alloc] initWithType:kCardTypeKick],
-                              [[Card alloc] initWithType:kCardTypeKick]];
+                _allCards = @[[[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self]];
                 break;
                 
             case DeckTypeChallenge:
-                _allCards = @[[[Card alloc] initWithType:kCardTypeChallenge],
-                              [[Card alloc] initWithType:kCardTypeChallenge],
-                              [[Card alloc] initWithType:kCardTypeChallenge]];
+                _allCards = @[[[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self]];
                 break;
                 
             case DeckTypeMove:
-                _allCards = @[[[Card alloc] initWithType:kCardTypeMove],
-                              [[Card alloc] initWithType:kCardTypeMove],
-                              [[Card alloc] initWithType:kCardTypeMove]];
+                _allCards = @[[[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self]];
                 break;
                 
                 
             case DeckTypeSpecial:
-                _allCards = @[[[Card alloc] initWithType:kCardTypeSpecial],
-                              [[Card alloc] initWithType:kCardTypeSpecial],
-                              [[Card alloc] initWithType:kCardTypeSpecial]];
+                _allCards = @[[[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self]];
                 break;
                 
                 
             default:
                 break;
-
+                
         }
         
-        [self setPlayer:p];
         
+          [self setPlayer:p];
         
 //        _allCards = @[[[Card alloc] initWithType:kCardTypePlayerKeeper Manager:m],
 //                    [[Card alloc] initWithType:kCardTypePlayerForward Manager:m],

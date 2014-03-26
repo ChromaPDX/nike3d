@@ -17,15 +17,21 @@
     self = [super init];
     if(self){
         NSLog(@"new manager init");
-        _playersMutable = [[NSMutableArray alloc]init];
+        NSMutableArray *playersMutable = [[NSMutableArray alloc]init];
+        
+        _players = [[Deck alloc]init];
         
         for (int p = 0; p < 3; p++) {
             Player* player = [[Player alloc]initWithManager:self];
             player.name = [NSString stringWithFormat:@"PLAYER %d",p+1];
-            [_playersMutable addObject:player];
+            player.deck = _players;
+            [player generateDefaultCards];
+            
+            [playersMutable addObject:player];
+           
         }
         
-        _players = [_playersMutable copy];
+        _players.allCards = [playersMutable copy];
     }
     
     return self;
@@ -102,7 +108,7 @@
 }
 
 -(bool)hasPossesion {
-    for (Player* p in _players) {
+    for (Player* p in _players.inGame) {
         if (p.ball) {
             return true;
         }

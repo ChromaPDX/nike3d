@@ -19,28 +19,23 @@
     return self;
 }
 
--(id)initWithType:(CardType)cType{
+-(id)initWithDeck:(Deck*)deck {
     self = [super init];
     if(self){
-
-        _cardType = cType;
-        
+        _deck = deck;
         _abilities = [[Abilities alloc]init];
         _actionPointEarn = 0;
         _actionPointCost = 0;
-
     }
     return self;
 }
 
-
--(BOOL)isTypeCard{
-    return (_cardType == kCardTypeKick || _cardType == kCardTypeMove || _cardType == kCardTypeChallenge || _cardType == kCardTypeSpecial);
+-(DeckType)deckType{
+    return _deck.type;
 }
 
 -(void)setDeck:(Deck *)deck {
     _deck = deck;
-    _player = deck.player;
 }
 
 -(void)setLocation:(BoardLocation *)location {
@@ -186,7 +181,7 @@
     if (self) {
    
     _cardType = [decoder decodeIntForKey:NSFWKeyType];
-    _player = [decoder decodeObjectForKey:NSFWKeyPlayer];
+    _deck = [decoder decodeObjectForKey:NSFWKeyPlayer];
     
     _name = [decoder decodeObjectForKey:NSFWKeyName];
         
@@ -208,7 +203,7 @@
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
     [encoder encodeInt:_cardType forKey:NSFWKeyType];
-    [encoder encodeObject:_player forKey:NSFWKeyPlayer];
+    [encoder encodeObject:_deck forKey:NSFWKeyPlayer];
 
     [encoder encodeObject:_name forKey:NSFWKeyName];
     

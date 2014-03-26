@@ -270,7 +270,7 @@ return [(GameEvent*)[_GameEvents lastObject] type];
 
 -(void)setCard:(Card *)card {
     _deck = card.deck;
-    _playerPerformingAction = card.player;
+    _playerPerformingAction = card.deck.player;
     self.manager = _playerPerformingAction.manager;
 }
 

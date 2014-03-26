@@ -15,25 +15,18 @@
 
 -(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size {
     
-    self = [super initWithTexture:Nil color:color size:size];
+    self = [super initWithTexture:texture color:color size:size];
     
     if (self) {
         
-        //self.userInteractionEnabled = YES;
-        
-        w = size.width;
-        h = size.height;
-        
         //self.color = [NKColor colorWithRed:.7 green:.7 blue:.7 alpha:1.];
-        
-        
         
         _myCards = [NSMutableOrderedSet orderedSetWithCapacity:7];
         _opCards = [NSMutableOrderedSet orderedSetWithCapacity:7];
         _cardSprites = [NSMutableDictionary dictionary];
         
-        cardSize.width = w;
-        cardSize.height = w*1.4;
+        cardSize.width = w*.25;
+        cardSize.height = h;
         
 //        
 //        NKLabelNode *yourCards = [[NKLabelNode alloc] initWithFontNamed:@"TradeGothicLTStd-BdCn20"];
@@ -100,14 +93,14 @@
 //        [_opTokenCount setZPosition:8];
         
         
-        ButtonSprite *ap = [ButtonSprite buttonWithNames:@[@"", @""] color:@[[NKColor clearColor],[NKColor clearColor]] type:ButtonTypePush size:CGSizeMake(size.width*.66, cardSize.height/3)];
-        [ap setPosition:CGPointMake(0, _turnTokensWindow.size.height*.23)];
-        
-        ap.delegate = self;
-        ap.method = @selector(cheatGetPoints:);
-        [_turnTokensWindow addChild:ap];
-        
-        [_turnTokensWindow setZPosition:8];
+//        ButtonSprite *ap = [ButtonSprite buttonWithNames:@[@"", @""] color:@[[NKColor clearColor],[NKColor clearColor]] type:ButtonTypePush size:CGSizeMake(size.width*.66, cardSize.height/3)];
+//        [ap setPosition:CGPointMake(0, _turnTokensWindow.size.height*.23)];
+//        
+//        ap.delegate = self;
+//        ap.method = @selector(cheatGetPoints:);
+//        [_turnTokensWindow addChild:ap];
+//        
+//        [_turnTokensWindow setZPosition:8];
         
         
     }
@@ -341,7 +334,7 @@
 
 -(BOOL)cardIsMine:(Card*)card {
     
-    if ([card.player.manager isEqual:_delegate.game.me]) return 1;
+    if ([card.deck.player.manager isEqual:_delegate.game.me]) return 1;
     return 0;
 }
 
@@ -469,7 +462,9 @@
     if (animated) {
         
         [self runAction:[NKAction moveByX:0 y:0 duration:FAST_ANIM_DUR] completion:^{
-            block();
+            if (block) {
+                block();
+            }
         }];
     }
     

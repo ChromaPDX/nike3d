@@ -23,8 +23,7 @@
 
 // Meta Data
 
-@property (nonatomic) NSArray *players;
-@property (nonatomic) NSMutableArray *playersMutable;
+@property (nonatomic) Deck* players;
 @property (nonatomic) NSMutableArray *cardsInGame;
 
 @property (nonatomic, strong) SKColor *color;

@@ -67,13 +67,8 @@ float PARTICLE_SCALE;
 
         boardScale = 1.;
         
-//        _actionWindow = [[ActionWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:1.] size:CGSizeMake(WINDOW_WIDTH, self.size.height)];
-//        
-//        [_actionWindow setPosition:CGPointMake(WINDOW_WIDTH*.5, self.size.height / 2.)];
-//        _actionWindow.delegate = self;
-//        [self addChild:_actionWindow];
-//        [_actionWindow setZPosition:Z_INDEX_BOARD];
-//        
+        
+//
 //        _scoreBoard = [[ScoreBoard alloc] initWithTexture:nil color:nil size:CGSizeMake(WINDOW_WIDTH*2., WINDOW_WIDTH*.5)];
 //        [_scoreBoard setPosition:CGPointMake(ANCHOR_WIDTH, self.size.height*.978333)];
 //        [_scoreBoard setDelegate:self];
@@ -102,6 +97,11 @@ float PARTICLE_SCALE;
 }
 
 -(void)setupGameBoard {
+    
+    _actionWindow = [[ActionWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:1.] size:CGSizeMake(w, h*.2)];
+    [_actionWindow setPosition3d:ofPoint(w*.5,h*.9,10)];
+    _actionWindow.delegate = self;
+    [self addChild:_actionWindow];
     
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
     _gameTiles = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
@@ -175,7 +175,10 @@ float PARTICLE_SCALE;
 //                                                                         ]
 //                                                                         
 //                                                     ]]];
-//    
+//
+    
+
+    
     [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
     [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.35,0) duration:2.]];
 }
@@ -906,7 +909,7 @@ float PARTICLE_SCALE;
             
             for (Card *c in enchantments) {
                 
-                PlayerSprite *p = [playerSprites objectForKey:c.player];
+                PlayerSprite *p = [playerSprites objectForKey:c.enchantee];
                 
                 NKEmitterNode *glow = [self ballGlowWithColor:[NKColor colorWithRed:.6 green:1. blue:.6 alpha:.5]];
                 
@@ -996,6 +999,8 @@ float PARTICLE_SCALE;
 
 -(void)refreshActionWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
     
+    NSLog(@"show cards for: %@",p.name);
+    
     [_actionWindow cleanup];
     
     for (Card* c in p.moveDeck.inHand) {
@@ -1012,7 +1017,9 @@ float PARTICLE_SCALE;
         [_actionWindow addCard:c];
     }
 
-    [self refreshActionPoints];
+    [_actionWindow sortMyCards:YES WithCompletionBlock:nil];
+    
+    //[self refreshActionPoints];
     
 }
 

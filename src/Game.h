@@ -94,7 +94,7 @@ typedef enum RTMessageType {
 -(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block;
 -(void)rollEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
--(void)refreshActionWindowForManager:(Manager*)m withCompletionBlock:(void (^)())block;
+-(void)refreshActionWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block;
 -(void)refreshActionPoints;
 -(void)presentTrophyWithCompletionBlock:(void (^)())block;
 -(void)fadeOutHUD;
