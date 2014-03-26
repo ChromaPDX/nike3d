@@ -19,10 +19,13 @@
 // Game Engine
 
 @property (nonatomic) int teamSide;
-@property (nonatomic, strong) Deck *deck;
 @property (nonatomic) int ActionPoints;
 
 // Meta Data
+
+@property (nonatomic) NSArray *players;
+@property (nonatomic) NSMutableArray *playersMutable;
+@property (nonatomic) NSMutableArray *cardsInGame;
 
 @property (nonatomic, strong) SKColor *color;
 
@@ -40,6 +43,8 @@
 
 @property (nonatomic, weak) Manager *opponent;
 
-
+-(bool)hasPossesion;
+-(Card*)cardInDeckAtLocation:(BoardLocation*)location;
+-(Card*)cardInHandAtlocation:(BoardLocation*)location;
 
 @end

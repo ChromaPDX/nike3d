@@ -10,15 +10,15 @@
 #import "CardTypes.h"
 
 @class Manager;
-@class SkillEvent;
+@class GameEvent;
 @class Card;
 @class BoardLocation;
 
-@interface GameAction : NSObject <NSCoding>
+@interface GameSequence : NSObject <NSCoding>
 
 +(instancetype) action;
 
-@property (nonatomic, strong) NSMutableArray *skillEvents;
+@property (nonatomic, strong) NSMutableArray *GameEvents;
 
 @property (nonatomic) float totalModifier;
 @property (nonatomic) float totalSucess;
@@ -29,9 +29,9 @@
 
 @property (nonatomic) float roll;
 
--(ActionType)type;
--(Card*)playerPerformingAction;
--(Card*)playerReceivingAction;
+-(EventType)type;
+-(Player*)playerPerformingAction;
+-(Player*)playerReceivingAction;
 
 -(BOOL)isRunningAction;
 -(Manager*)manager;
@@ -39,18 +39,22 @@
 
 @end
 
-@interface SkillEvent : NSObject <NSCoding>
+@interface GameEvent : NSObject <NSCoding>
 
 // NON-PERSISTENT
-@property (nonatomic, weak) Card *playerPerformingAction;
-@property (nonatomic, weak) Card *playerReceivingAction;
+@property (nonatomic, weak) Player *playerPerformingAction;
+@property (nonatomic, weak) Player *playerReceivingAction;
+
+@property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Manager *manager;
-@property (nonatomic, weak) GameAction *parent;
+@property (nonatomic, weak) Card *card;
+
+@property (nonatomic, weak) GameSequence *parent;
 @property (nonatomic) float totalModifier;
 @property (nonatomic) float success;
 
 //PERSISTENT
-@property (nonatomic) ActionType type;
+@property (nonatomic) EventType type;
 @property (nonatomic) int teamSide;
 @property (nonatomic) int actionSlot;
 @property (nonatomic) int actionCost;
@@ -60,7 +64,7 @@
 @property (nonatomic) NSInteger seed;
 //@property (nonatomic) BOOL wasSuccessful;
 
-+(instancetype) eventForAction:(GameAction*)action;
++(instancetype) eventForAction:(GameSequence*)action;
 -(NSString*)nameForAction;
 -(BOOL)isRunningEvent;
 -(BOOL)isDeployEvent;

@@ -14,6 +14,7 @@
 #import "Manager.h"
 #import "Deck.h"
 #import "Card.h"
+#import "Player.h"
 #import "BoardLocation.h"
 #import "Actions.h"
 #import "NSData+CocoaDevUsersAdditions.h"

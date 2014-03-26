@@ -9,24 +9,39 @@
 #import <Foundation/Foundation.h>
 @class Card;
 @class Manager;
+@class Player;
+
+typedef NS_ENUM(int, DeckType){
+    
+    DeckTypeKick,
+    DeckTypeChallenge,
+    DeckTypeMove,
+    DeckTypeSpecial
+    
+};
 
 @interface Deck : NSObject <NSCoding, NSCopying>
 
 {
     int shuffleCount;
 }
-@property (nonatomic,strong) NSArray *allCards;
 
+-(id)initWithPlayer:(Player*)p type:(DeckType)type;
+
+// PERSISTENT
+@property (nonatomic,strong) NSArray *allCards;
+@property (nonatomic,weak) Player *player;
+@property (nonatomic) DeckType type;
+
+// NON-PERSISTENT
 @property (nonatomic,strong) NSArray *theDeck;
 @property (nonatomic,strong) NSArray *discarded;
 @property (nonatomic,strong) NSArray *inGame;
 @property (nonatomic,strong) NSArray *inHand;
 
-@property (nonatomic,weak) Manager *manager;
+@property (nonatomic,strong) NSString *name;
 
 @property (nonatomic) NSInteger seed;
-
--(id)initWithManager:(Manager*)m;
 
 -(BOOL)discardCardFromGame:(Card*)card;
 -(BOOL)discardCardFromDeck:(Card*)card;

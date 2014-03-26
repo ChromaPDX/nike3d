@@ -10,6 +10,7 @@
 #import "DevMenu.h"
 #import "ofxNodeKitten.h"
 #import "MiniGameScene.h"
+#import "GameScene.h"
 
 @implementation DevMenu 
 
@@ -65,6 +66,11 @@
     
     if ([cell.name isEqualToString:@"ROBBY"]) {
         MiniGameScene* newScene = [[MiniGameScene alloc]initWithSize:self.size];
+        ((ofApp*)ofGetAppPtr())->scene = newScene;
+        
+    }
+    else if ([cell.name isEqualToString:@"LEIF"]) {
+        GameScene* newScene = [[GameScene alloc]initWithSize:self.size];
         ((ofApp*)ofGetAppPtr())->scene = newScene;
         
     }

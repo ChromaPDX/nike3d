@@ -9,55 +9,54 @@
 #ifndef ChromaNSFW_CardTypes_h
 #define ChromaNSFW_CardTypes_h
 
-typedef enum CardType {
+typedef NS_ENUM(int32_t, CardType) {
     kCardTypeNull,
-    kCardTypePlayerForward,
-    kCardTypePlayerMidFielder,
-    kCardTypePlayerDefender,
-    kCardTypePlayerKeeper,
-    kCardTypeActionHeader,
-    kCardTypeActionSlideTackle,
-    kCardTypeActionKamikazeKick,
-    kCardTypeActionCaptainsBand,
-    kCardTypeActionAdrenalBoost,
-    kCardTypeActionAdrenalFlood,
-    kCardTypeActionMercurialAcceleration,
-    kCardTypeActionPredictiveAnalysis1,
-    kCardTypeActionPredictiveAnalysis2,
-    kCardTypeActionNeuralTriggerFear,
-    kCardTypeActionAutoPlayerTrackingSystem,
-    kBall
-} CardType;
-
-typedef enum ActionType {
-    kNullAction,
-    kRunningAction,
-    kDribbleAction,
-    kPassAction,
-    kShootAction,
-    kChallengeAction,
-    kDeployEvent,
-    kSpawnPlayerEvent,
-    kSpawnKeeperEvent,
-    kRemovePlayerAction,
-    kEnchantAction,
-    kPlayCardAction,
-    kDrawAction,
-    kTurnDrawAction,
-    kStartingAction,
-    kEndTurnAction,
-    kPurgeEnchantmentsAction,
-    kMoveFieldAction,
-    kStartTurnAction,
-    kShuffleAction,
-    kGraveyardShuffleAction,
-    kReSuffleAction,
-    kSetBallAction,
-    kGoalResetAction,
-    kGoalKickSetup,
-    kRandomDeployAction,
-    kGoaliePass
     
-} ActionType;
+    kCardTypePlayer,
+    kCardTypeBall,
+    
+    kCardTypeKick,
+    kCardTypeChallenge,
+    kCardTypeMove,
+    kCardTypeSpecial
+    
+};
+
+typedef NS_ENUM(int32_t, EventType) {
+    kNullAction,
+    // Player Actions
+    kEventAddPlayer,
+    kEventRemovePlayer,
+    
+    // Field Actions
+    kEventSetBallLocation,
+    kEventResetPlayers,
+    kEventGoalKick,
+    
+    // Cards / Card Actions
+    kEventSequence,
+    kEventDraw,
+    kEventPlayCard,
+    kEventKickPass,
+    kEventKickGoal,
+    kEventChallenge,
+    kEventMove,
+    kEventAddSpecial,
+    kEventRemoveSpecial,
+    
+    // Deck
+    kEventShuffleDeck,
+    kEventReShuffleDeck,
+    
+    // Turn State
+    kEventStartTurn,
+    kEventStartTurnDraw,
+    kEventEndTurn,
+    
+    // Camera
+    kEventMoveCamera,
+    kEventMoveBoard,
+ 
+};
 
 #endif

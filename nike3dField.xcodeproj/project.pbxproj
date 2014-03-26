@@ -12,6 +12,7 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		5326AEA810A23A0500278DE6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5326AEA710A23A0500278DE6 /* CoreLocation.framework */; };
 		53F323EB10A20EDB00E0DAE4 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F323EA10A20EDB00E0DAE4 /* OpenAL.framework */; };
+		6102DCFE18E24EAE00AB39D1 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 6102DCFD18E24EAE00AB39D1 /* Player.m */; };
 		6116FB1C18C54CC200BBD1CB /* BoardTile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6116FB1B18C54CC200BBD1CB /* BoardTile.mm */; };
 		6116FB2618C554B600BBD1CB /* Background_Field.png in Resources */ = {isa = PBXBuildFile; fileRef = 6116FB2018C554B600BBD1CB /* Background_Field.png */; };
 		6116FB2718C554B600BBD1CB /* Field_Layer01.png in Resources */ = {isa = PBXBuildFile; fileRef = 6116FB2118C554B600BBD1CB /* Field_Layer01.png */; };
@@ -214,6 +215,8 @@
 		32CA4F630368D1EE00C91783 /* ofxiOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxiOS_Prefix.pch; sourceTree = "<group>"; };
 		5326AEA710A23A0500278DE6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		53F323EA10A20EDB00E0DAE4 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		6102DCFC18E24EAE00AB39D1 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		6102DCFD18E24EAE00AB39D1 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		6116FB1A18C54CC200BBD1CB /* BoardTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BoardTile.h; path = src/BoardTile.h; sourceTree = "<group>"; };
 		6116FB1B18C54CC200BBD1CB /* BoardTile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BoardTile.mm; path = src/BoardTile.mm; sourceTree = "<group>"; };
 		6116FB2018C554B600BBD1CB /* Background_Field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background_Field.png; sourceTree = "<group>"; };
@@ -560,6 +563,8 @@
 		6116FB1E18C54CEA00BBD1CB /* FieldGameModel */ = {
 			isa = PBXGroup;
 			children = (
+				61B289D218D8FAC700102278 /* Game.h */,
+				61B289D318D8FAC700102278 /* Game.m */,
 				618E1D3618C0219E0038AD46 /* GlobalTypes.h */,
 				61B289E018D8FB2100102278 /* Actions.h */,
 				61B289E118D8FB2100102278 /* Actions.m */,
@@ -567,12 +572,12 @@
 				61B289DE18D8FAF900102278 /* CardTypes.h */,
 				61B289D518D8FAEB00102278 /* Card.h */,
 				61B289D618D8FAEB00102278 /* Card.m */,
+				6102DCFC18E24EAE00AB39D1 /* Player.h */,
+				6102DCFD18E24EAE00AB39D1 /* Player.m */,
 				61B289D718D8FAEB00102278 /* Deck.h */,
 				61B289D818D8FAEB00102278 /* Deck.m */,
 				61B289D918D8FAEB00102278 /* Manager.h */,
 				61B289DA18D8FAEB00102278 /* Manager.m */,
-				61B289D218D8FAC700102278 /* Game.h */,
-				61B289D318D8FAC700102278 /* Game.m */,
 				618E1D3318C0217F0038AD46 /* BoardLocation.h */,
 				618E1D3418C0217F0038AD46 /* BoardLocation.m */,
 			);
@@ -1156,6 +1161,7 @@
 				6134208E18C6ABD4003D7C9E /* MiniGameNode.mm in Sources */,
 				61B28A0A18D8FB8500102278 /* infback.c in Sources */,
 				61B289DB18D8FAEB00102278 /* Card.m in Sources */,
+				6102DCFE18E24EAE00AB39D1 /* Player.m in Sources */,
 				617BDD0A18D9298E005EC4B1 /* AlertSprite.mm in Sources */,
 				61B28A0218D8FB8500102278 /* adler32.c in Sources */,
 				61B28A0E18D8FB8500102278 /* trees.c in Sources */,

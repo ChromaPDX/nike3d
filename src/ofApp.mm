@@ -23,16 +23,6 @@ void ofApp::setup(){
     
     scene.view = (void*)this;
     
-//    game = [[Game alloc] init];
-//    
-//    scene = [[GameScene alloc]initWithSize:CGSizeMake(ofGetWidth(), ofGetHeight())];
-//    
-//    game.gameScene = scene;
-//    
-//    scene.game = game;
-//    
-//    [game startSinglePlayerGame];
-    
 //    setupCM();
 
 }

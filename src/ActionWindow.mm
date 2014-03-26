@@ -341,7 +341,7 @@
 
 -(BOOL)cardIsMine:(Card*)card {
     
-    if ([card.manager isEqual:_delegate.game.me]) return 1;
+    if ([card.player.manager isEqual:_delegate.game.me]) return 1;
     return 0;
 }
 

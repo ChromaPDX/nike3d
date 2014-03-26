@@ -23,7 +23,7 @@
 
 @property (nonatomic, weak) BallSprite *ball;
 @property (nonatomic, weak) GameScene *delegate;
-@property (nonatomic, weak) Card* model;
+@property (nonatomic, weak) Player* model;
 
 @property (nonatomic, weak) UITouch *touch;
 

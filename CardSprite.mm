@@ -117,38 +117,38 @@
         
         [self setCorrectTexture];
         
-        if ([_model isTypePlayer]){
-            
-            kick = [self styledLabelNode];
-            kick.text = [NSString stringWithFormat:@"%d / %d", (int)(_model.abilities.kick * 100),  (int)(_model.abilities.handling * 100)];
-            kick.position = CGPointMake(0, (int)-h*.32);
-            kick.fontSize = (int)(h/6.);
-            
-            //            dribble = [self styledLabelNode];
-            //            dribble.text = [NSString stringWithFormat:@"%d%%", (int)(_model.abilities.handling * 100)];
-            //            dribble.position = CGPointMake(w*.2, (int)(-h*.32));
-            //            dribble.fontSize = (int)(h/6.);
-            
-            [self addChild:kick];
-            //  [self addChild:dribble];
-            
-            //            NKSpriteNode *ballIcon = [NKSpriteNode spriteNodeWithTexture:[[_delegate sharedAtlas] textureNamed:@"icon_pass"] size:CGSizeMake(w*.3, w*.3)];
-            //            NKSpriteNode *passIcon = [NKSpriteNode spriteNodeWithTexture:[[_delegate sharedAtlas] textureNamed:@"icon_ball"] size:CGSizeMake(w*.3, w*.3)];
-            //            [ballIcon setPosition:CGPointMake(-.25*w, .05*w)];
-            //            [passIcon setPosition:CGPointMake(-.25*w, -.3*w)];
-            //            [self addChild:ballIcon];
-            //            [self addChild:passIcon];
-            
-            
-            //            if (_model.female) {
-            //                [_art setTexture:[NKTexture textureWithImageNamed:@"Card_Player_Female"]];
-            //            }
-            //
-            //            else {
-            //                [_art setTexture:[NKTexture textureWithImageNamed:@"Card_Player_Male"]];
-            //            }
-            
-        }
+//        if ([_model isTypePlayer]){
+//            
+//            kick = [self styledLabelNode];
+//            kick.text = [NSString stringWithFormat:@"%d / %d", (int)(_model.abilities.kick * 100),  (int)(_model.abilities.handling * 100)];
+//            kick.position = CGPointMake(0, (int)-h*.32);
+//            kick.fontSize = (int)(h/6.);
+//            
+//            //            dribble = [self styledLabelNode];
+//            //            dribble.text = [NSString stringWithFormat:@"%d%%", (int)(_model.abilities.handling * 100)];
+//            //            dribble.position = CGPointMake(w*.2, (int)(-h*.32));
+//            //            dribble.fontSize = (int)(h/6.);
+//            
+//            [self addChild:kick];
+//            //  [self addChild:dribble];
+//            
+//            //            NKSpriteNode *ballIcon = [NKSpriteNode spriteNodeWithTexture:[[_delegate sharedAtlas] textureNamed:@"icon_pass"] size:CGSizeMake(w*.3, w*.3)];
+//            //            NKSpriteNode *passIcon = [NKSpriteNode spriteNodeWithTexture:[[_delegate sharedAtlas] textureNamed:@"icon_ball"] size:CGSizeMake(w*.3, w*.3)];
+//            //            [ballIcon setPosition:CGPointMake(-.25*w, .05*w)];
+//            //            [passIcon setPosition:CGPointMake(-.25*w, -.3*w)];
+//            //            [self addChild:ballIcon];
+//            //            [self addChild:passIcon];
+//            
+//            
+//            //            if (_model.female) {
+//            //                [_art setTexture:[NKTexture textureWithImageNamed:@"Card_Player_Female"]];
+//            //            }
+//            //
+//            //            else {
+//            //                [_art setTexture:[NKTexture textureWithImageNamed:@"Card_Player_Male"]];
+//            //            }
+//            
+//        }
     }
 }
 
@@ -156,45 +156,43 @@
     
     if (!_flipped) {
         
-        if ([_model isTypePlayer]){ // Player
-            if ([_model.manager isEqual:_delegate.game.me]) {
-                self.texture = [NKTexture textureWithImageNamed:@"CardPlayerBlue"];
-                self.color = V2BLUE;
-            }
-            else {
-                
-                self.texture = [NKTexture textureWithImageNamed:@"CardPlayerRed"];
-                self.color = V2RED;
-            }
-            
-        }
-        else if([_model isTypeAction]){
-            
-            NKColor *color;
-            
-            
-            if([_model isTypeSkill]){
-                self.texture = [NKTexture textureWithImageNamed:@"CardSkill"];
-                color = V2SKILL;
-            }
-            
-            else if([_model isTypeGear]){
-                self.texture = [NKTexture textureWithImageNamed:@"CardGear"];
-                color = V2GEAR;
-            }
-            
-            else if([_model isTypeBoost]){
-                self.texture = [NKTexture textureWithImageNamed:@"CardBoost"];
-                color = V2BOOST;
-            }
-            
-            
-            self.color = color;
-            
-            
-            [_art setTexture:[NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Card_%@", [[_model nameForCard] stringByReplacingOccurrencesOfString:@" " withString:@"_"]]]];
-            
-        }
+//        if ([_model isTypePlayer]){ // Player
+//            if ([_model.manager isEqual:_delegate.game.me]) {
+//                self.texture = [NKTexture textureWithImageNamed:@"CardPlayerBlue"];
+//                self.color = V2BLUE;
+//            }
+//            else {
+//                
+//                self.texture = [NKTexture textureWithImageNamed:@"CardPlayerRed"];
+//                self.color = V2RED;
+//            }
+//            
+//        }
+
+        NKColor *color;
+        
+        
+//        if([_model isTypeSkill]){
+//            self.texture = [NKTexture textureWithImageNamed:@"CardSkill"];
+//            color = V2SKILL;
+//        }
+//        
+//        else if([_model isTypeGear]){
+//            self.texture = [NKTexture textureWithImageNamed:@"CardGear"];
+//            color = V2GEAR;
+//        }
+//        
+//        else if([_model isTypeBoost]){
+//            self.texture = [NKTexture textureWithImageNamed:@"CardBoost"];
+//            color = V2BOOST;
+//        }
+//        
+        
+        self.color = color;
+        
+        
+        [_art setTexture:[NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Card_%@", [[_model nameForCard] stringByReplacingOccurrencesOfString:@" " withString:@"_"]]]];
+
         
         [_art setColor:self.color];
         [_art setColorBlendFactor:1.];

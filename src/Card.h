@@ -10,23 +10,30 @@
 #import <Foundation/Foundation.h>
 #import "CardTypes.h"
 
+#pragma mark NSCODER
+
+#define NSFWKeyType @"type"
+#define NSFWKeyManager @"manager"
+#define NSFWKeyPlayer @"player"
+#define NSFWKeyName @"name"
+#define NSFWKeyActionPointEarn @"actionPointEarn"
+#define NSFWKeyActionPointCost @"actionPointCost"
+#define NSFWKeyAbilities @"abilities"
+#define NSFWKeyNearOpponentModifiers @"nearOpponentModifiers"
+#define NSFWKeyNearTeamModifiers @"nearTeamModifiers"
+#define NSFWKeyOpponentModifiers @"opponentModifiers"
+#define NSFWKeyTeamModifiers @"teamModifiers"
+
 @class BoardLocation;
-
-
-
-
 @class Manager;
 @class Abilities;
+
 
 @interface Card : NSObject <NSCopying, NSCoding>
 
 -(id) initWithType:(CardType)cType;
--(id) initWithType:(CardType)cType Manager:(Manager*)m;
-
-
 
 // PERSISTENT
-
 
 @property (nonatomic) CardType cardType;
 
@@ -35,59 +42,41 @@
 @property NSInteger actionPointCost;
 @property NSInteger actionPointEarn;
 
-@property (nonatomic, strong) BoardLocation *location;
+@property (nonatomic, strong)BoardLocation *location;
 @property (nonatomic,strong) Abilities *abilities;
 @property (nonatomic,strong) Abilities *nearTeamModifiers;
 @property (nonatomic,strong) Abilities *teamModifiers;
 @property (nonatomic,strong) Abilities *nearOpponentModifiers;
 @property (nonatomic,strong) Abilities *opponentModifiers;
 
-@property (nonatomic) BOOL female;
+-(BOOL)isTypeCard;
 
-// NON-PERSISTENT
-
-@property (nonatomic, weak) Manager *manager;
-
-// INTERROGATION
-
--(BOOL)isTypePlayer;
--(BOOL)isTypeKeeper;
--(BOOL)isTypeAction;
-
--(BOOL)isTypeBoost;
--(BOOL)isTypeSkill;
--(BOOL)isTypeGear;
 -(BOOL)isTemporary;
--(ActionType)discardAfterActionType;
+
+-(EventType)discardAfterEventType;
 
 -(NSString*) nameForCard;
 -(NSString*) descriptionForCard;
--(NSString*) positionForCard;
 
+@property (nonatomic, weak) Deck *deck;
+@property (nonatomic, weak) Player *player;
+@property (nonatomic, weak) Player *enchantee;
 
-// this shit's new, and not plugged into anything yet
-@property (nonatomic, weak) Card *ball;  // if I'm a player, do i have the ball? (or, NIL)
-@property (nonatomic, weak) Card *player;  // if I'm a player, do i have the ball? (or, NIL)
-@property (nonatomic, strong) NSArray *enchantments; // array of (Card*) types, cards currently modifying a player card. only used ifTypePlayer
-
-// Enchantment Methods
-
--(void)addEnchantment:(Card*)enchantment;
--(void)removeEnchantment:(Card*)enchantment;
--(void)removeLastEnchantment;
+-(void)play;
+-(void)discard;
 
 @end
 
 @interface Abilities : NSObject <NSCopying, NSCoding>
 
 @property (nonatomic) BOOL persist;
-@property (nonatomic) float kick;      // Player
-@property (nonatomic) float handling;  // Player
-@property (nonatomic) float challenge; // Player (handling)
-@property (nonatomic) float dribble;   // Player (handling)
-@property (nonatomic) float pass;      // Player (kick)
-@property (nonatomic) float shoot;     // Player (kick)
-@property (nonatomic) float save;      // Keeper
+@property (nonatomic) int32_t kick;      // Player
+@property (nonatomic) int32_t move;      // Player
+@property (nonatomic) int32_t challenge; // Player (handling)
+@property (nonatomic) int32_t dribble;   // Player (handling)
+@property (nonatomic) int32_t pass;      // Player (kick)
+@property (nonatomic) int32_t shoot;     // Player (kick)
+@property (nonatomic) int32_t save;      // Keeper
 
 -(void)add:(Abilities*)modifier;
 

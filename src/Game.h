@@ -24,13 +24,14 @@
 @class BallSprite;
 @class FuelBar;
 @class ActionWindow;
-@class SkillEvent;
-@class GameAction;
+@class GameEvent;
+@class GameSequence;
 @class Manager;
 @class Card;
 @class BoardLocation;
 @class ScoreBoard;
 @class Abilities;
+@class Player;
 
 typedef enum RTMessageType {
     RTMessageNone,
@@ -65,8 +66,8 @@ typedef enum RTMessageType {
 -(void)rtIsActive:(BOOL)active;
 -(void)receiveRTPacket;
 
--(void)addNetworkUIForEvent:(SkillEvent*)event;
--(void)cleanUpUIForAction:(GameAction*)action;
+-(void)addNetworkUIForEvent:(GameEvent*)event;
+-(void)cleanUpUIForAction:(GameSequence*)action;
 
 -(void)opponentBeganCardTouch:(Card*)card atPoint:(CGPoint)point;
 -(void)opponentMovedCardTouch:(Card*)card atPoint:(CGPoint)point;
@@ -90,9 +91,9 @@ typedef enum RTMessageType {
 
 // ANIMATION
 -(void)finishActionsWithCompletionBlock:(void (^)())block;
--(void)animateEvent:(SkillEvent*)event withCompletionBlock:(void (^)())block;
+-(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block;
--(void)rollEvent:(SkillEvent*)event withCompletionBlock:(void (^)())block;
+-(void)rollEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
 -(void)refreshActionWindowForManager:(Manager*)m withCompletionBlock:(void (^)())block;
 -(void)refreshActionPoints;
 -(void)presentTrophyWithCompletionBlock:(void (^)())block;
@@ -124,7 +125,7 @@ typedef enum RTMessageType {
 @property (nonatomic, strong) id <GameCenterProtocol> gcController;
 @property (nonatomic) NSUInteger rtmatchid;
 @property (nonatomic, strong) id <GameSceneProtocol> gameScene;
-@property (nonatomic, strong) GameAction *currentAction;
+@property (nonatomic, strong) GameSequence *currentAction;
 
 // GK TURN BASED MATCH
 @property (nonatomic, strong) GKTurnBasedMatch *match;
@@ -165,7 +166,7 @@ typedef enum RTMessageType {
 
 // RT PROTOCOL
 -(void)fetchThisTurnActions;
--(void)sendAction:(GameAction*)action perform:(BOOL)perform;
+-(void)sendAction:(GameSequence*)action perform:(BOOL)perform;
 -(void)sendRTPacketWithCard:(Card*)c point:(CGPoint)touch began:(BOOL)began;
 -(void)sendRTPacketWithType:(RTMessageType)type point:(BoardLocation*)location;
 -(void)receiveRTPacket:(NSData*)packet;
@@ -179,16 +180,16 @@ typedef enum RTMessageType {
 
 // REQUESTS FROM VIEW
 -(void)setCurrentManagerFromMatch;
--(BOOL)canUsePlayer:(Card*)player;
+-(BOOL)canUsePlayer:(Player*)player;
 -(NSSet*)temporaryEnchantments;
 
--(SkillEvent*)canPlayCard:(Card*)card atLocation:(BoardLocation*)location;
--(SkillEvent*)requestPlayerActionAtLocation:(BoardLocation*)location;
--(SkillEvent*)addPlayerEventToAction:(GameAction*)action from:(BoardLocation *)startLocation to:(BoardLocation*)location withType:(ActionType)type;
--(SkillEvent*)addGeneralEventToAction:(GameAction*)action forManager:(Manager*)m withType:(ActionType)type;
--(SkillEvent*)addCardEventToAction:(GameAction*)action fromCard:(Card*)card toLocation:(BoardLocation*)location withType:(ActionType)type;
+-(GameEvent*)canPlayCard:(Card*)card atLocation:(BoardLocation*)location;
+-(GameEvent*)requestPlayerActionAtLocation:(BoardLocation*)location;
+-(GameEvent*)addPlayerEventToAction:(GameSequence*)action from:(BoardLocation *)startLocation to:(BoardLocation*)location withType:(EventType)type;
+-(GameEvent*)addGeneralEventToAction:(GameSequence*)action forManager:(Manager*)m withType:(EventType)type;
+-(GameEvent*)addEventToSequence:(GameSequence*)sequence fromCardOrPlayer:(Card*)card toLocation:(BoardLocation*)location withType:(EventType)type;
 
--(Card*)playerAtLocation:(BoardLocation*)location;
+-(Player*)playerAtLocation:(BoardLocation*)location;
 
 -(BOOL)requestDrawAction;
 

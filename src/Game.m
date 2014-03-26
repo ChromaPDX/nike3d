@@ -17,7 +17,7 @@
 @interface Game (){
     NSMutableDictionary *gameBoard;
     SystemSoundID touchSound;
-     SystemSoundID menuLoop;
+    SystemSoundID menuLoop;
 }
 @end
 
@@ -41,55 +41,55 @@
 
 #pragma mark - GAMEBOARD / INITIAL SETUP
 
--(void)startMultiPlayerGame {
-    
-    _me = [[Manager alloc] init];
-    _opponent = [[Manager alloc] init];
-    
-    _score = [BoardLocation pX:0 Y:0];
-    
-    [_me setColor:[UIColor colorWithRed:0.0 green:80/255. blue:249/255. alpha:1.0]];
-    [_opponent setColor:[UIColor colorWithRed:1.0 green:40/255. blue:0 alpha:1.0]];
-    [_me setTeamSide:1];
-    [_opponent setTeamSide:0];
-    
-    _me.opponent = _opponent;
-    _opponent.opponent = _me;
-    
-    _rtmatchid = arc4random();
-    NSNumber *uid = [NSNumber numberWithUnsignedInteger:_rtmatchid];
-    
-    
-    _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
-                                                                 @"current player":_match.currentParticipant.playerID,
-                                                                 @"rtmatchid":uid,
-                                                                 @"boardLength": [NSNumber numberWithInt:BOARD_LENGTH]
-                                                                 }];
-    
-    
-    
-    
-    _me.name = @"CHROMA";
-    _opponent.name = @"NIKE";
-    
-    self.myTurn = YES;
-    
-    [_gameScene setupGameBoard];
-    
-    _history = [NSMutableArray array];
-    _thisTurnActions = [NSMutableArray array];
-    gameBoard = [NSMutableDictionary dictionary];
-    
-    [self setupNewPlayers];
-    
-    [self addStartTurnEventsToAction:_currentAction];
-    
-    [self refreshGameBoard];
-    
-    [self performAction:_currentAction record:YES animate:YES];
-    
-    
-}
+//-(void)startMultiPlayerGame {
+//
+//    _me = [[Manager alloc] init];
+//    _opponent = [[Manager alloc] init];
+//
+//    _score = [BoardLocation pX:0 Y:0];
+//
+//    [_me setColor:[UIColor colorWithRed:0.0 green:80/255. blue:249/255. alpha:1.0]];
+//    [_opponent setColor:[UIColor colorWithRed:1.0 green:40/255. blue:0 alpha:1.0]];
+//    [_me setTeamSide:1];
+//    [_opponent setTeamSide:0];
+//
+//    _me.opponent = _opponent;
+//    _opponent.opponent = _me;
+//
+//    _rtmatchid = arc4random();
+//    NSNumber *uid = [NSNumber numberWithUnsignedInteger:_rtmatchid];
+//
+//
+//    _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
+//                                                                 @"current player":_match.currentParticipant.playerID,
+//                                                                 @"rtmatchid":uid,
+//                                                                 @"boardLength": [NSNumber numberWithInt:BOARD_LENGTH]
+//                                                                 }];
+//
+//
+//
+//
+//    _me.name = @"CHROMA";
+//    _opponent.name = @"NIKE";
+//
+//    self.myTurn = YES;
+//
+//    [_gameScene setupGameBoard];
+//
+//    _history = [NSMutableArray array];
+//    _thisTurnActions = [NSMutableArray array];
+//    gameBoard = [NSMutableDictionary dictionary];
+//
+//    [self setupNewPlayers];
+//
+//    [self addStartTurnEventsToAction:_currentAction];
+//
+//    [self refreshGameBoard];
+//
+//    [self performAction:_currentAction record:YES animate:YES];
+//
+//
+//}
 
 -(void)startSinglePlayerGame {
     
@@ -113,7 +113,7 @@
     
     singlePlayer = 1;
     
-
+    
     _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
                                                                  @"current player":@"single player game",
                                                                  @"rtmatchid":uid,
@@ -144,7 +144,7 @@
     [self addStartTurnEventsToAction:_currentAction];
     [self refreshGameBoard];
     
-     NSLog(@"running new game action");
+    NSLog(@"running new game action");
     
     [self performAction:_currentAction record:YES animate:YES];
     
@@ -171,18 +171,18 @@
     
     [self getSortedPlayerNames];
     
-  
+    
     
     [_match loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error){
         
-    
+        
         [self restoreGameWithData:matchData];
-
+        
         singlePlayer = [[_matchInfo objectForKey:@"singlePlayerMode"] boolValue];
         [_gameScene setupGameBoard];
         
         if (!singlePlayer) {
-        [_gcController initRealTimeConnection];
+            [_gcController initRealTimeConnection];
         }
         
         [self replayLastTurn];
@@ -203,7 +203,7 @@
     
     NSLog(@"Game.m : performActionSequence : starting action sequence");
     
-    NSLog(@"Game has %d total actions", [self totalGameActions]);
+    NSLog(@"Game has %d total actions", [self totalGameSequences]);
     
     _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
     
@@ -262,7 +262,7 @@
             }
         }
         
-        NSLog(@"Game has %d total actions", [self totalGameActions]);
+        NSLog(@"Game has %d total actions", [self totalGameSequences]);
         NSLog(@"non-animate actions %d", [self actionCountForArray:allButLast]);
         NSLog(@"animate actions %d", [[_history lastObject] count] + _thisTurnActions.count);
         
@@ -286,7 +286,7 @@
     _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
     
     NSLog(@"------------ ANIMATE REPLAY ------------");
-    NSLog(@"Game has %d total actions", [self totalGameActions]);
+    NSLog(@"Game has %d total actions", [self totalGameSequences]);
     NSLog(@"already restored %d actions", [self actionCountForArray:[self allButLastTurn]]);
     NSLog(@"animate %d from last turn", [[_history lastObject] count]);
     NSLog(@"animate %d from this turn", [_thisTurnActions count]);
@@ -332,7 +332,7 @@
     
     NSMutableArray* allActions = [self allActionsLinear];
     
-    GameAction *last = [allActions lastObject];
+    GameSequence *last = [allActions lastObject];
     
     [allActions removeLastObject];
     
@@ -376,8 +376,8 @@
 -(int)totalEvents {
     
     int total = 0;
-    for (GameAction *g in [self allActionsLinear]) {
-        for (SkillEvent*e in g.skillEvents) {
+    for (GameSequence *g in [self allActionsLinear]) {
+        for (GameEvent* e in g.GameEvents) {
             total++;
         }
     }
@@ -547,7 +547,7 @@
     
     NSLog(@"starting turn %d", _history.count);
     
-    _currentAction = [GameAction action];
+    _currentAction = [GameSequence action];
     
     [self addStartTurnEventsToAction:_currentAction];
     
@@ -561,7 +561,7 @@
 }
 
 -(void)wipeBoard {
-    _ball = [[Card alloc]initWithType:kBall];
+    _ball = [[Card alloc]initWithType:kCardTypeBall];
     gameBoard = [NSMutableDictionary dictionary];
     [_gameScene cleanupGameBoard];
 }
@@ -583,22 +583,13 @@
     
     // FIRST SHUFFLE CARDS SO WE HAVE A VALID ORDER
     
-    _ball = [[Card alloc]initWithType:kBall];
+    _ball = [[Card alloc]initWithType:kCardTypeBall];
     
-    _currentAction = [GameAction action];
+    _currentAction = [GameSequence action];
     
-    [self addShuffleEventToAction:_currentAction forManager:_me];
-    
-    [self addShuffleEventToAction:_currentAction forManager:_opponent];
-    
-    SkillEvent* goalie1 = [self addCardEventToAction:_currentAction fromCard:nil toLocation:[BoardLocation pX:3 Y:0] withType:kSpawnKeeperEvent];
-    goalie1.manager = [self managerForTeamSide:1];
-    goalie1.actionCost = 0;
-    
-    SkillEvent* goalie2 = [self addCardEventToAction:_currentAction fromCard:nil toLocation:[BoardLocation pX:3 Y:BOARD_LENGTH-1] withType:kSpawnKeeperEvent];
-    goalie2.manager = [self managerForTeamSide:0];
-    goalie2.actionCost = 0;
-    
+//    [self addShuffleEventToAction:_currentAction forManager:_me];
+//    
+//    [self addShuffleEventToAction:_currentAction forManager:_opponent];
     
     [self setupCoinTossPositionsForAction:_currentAction];
     
@@ -608,30 +599,29 @@
     
     // PLAYER 1 GETS THE BALL. PLACE IT ON THE FIELD
     
-    [self addDrawEventToAction:_currentAction forManager:_me];
-    [self addDrawEventToAction:_currentAction forManager:_me];
-    
-    [self addDrawEventToAction:_currentAction forManager:_opponent];
-    [self addDrawEventToAction:_currentAction forManager:_opponent];
+//    [self addDrawEventToAction:_currentAction forManager:_me];
+//    [self addDrawEventToAction:_currentAction forManager:_me];
+//    
+//    [self addDrawEventToAction:_currentAction forManager:_opponent];
+//    [self addDrawEventToAction:_currentAction forManager:_opponent];
     
     // notify game that setup is done
 }
 
--(void) setupCoinTossPositionsForAction:(GameAction*)action {
+-(void) setupCoinTossPositionsForAction:(GameSequence*)action {
     
     // automated loop, finds your first 3 player cards
     
     // CHECK WE HAVE PLAYERS
     
     for (int i = 0; i<3; i++) {
-        SkillEvent* spawn = [self addCardEventToAction:action fromCard:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2 - 1)-!i ] withType:kSpawnPlayerEvent];
-        spawn.manager = [self managerForTeamSide:1];
-        spawn.actionCost = 0;
+
+        GameEvent* spawn = [self addEventToSequence:action fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+!i] withType:kEventAddPlayer];
+        spawn.manager = [self managerForTeamSide:0];
         
-        
-        SkillEvent* spawn2 = [self addCardEventToAction:action fromCard:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+!i] withType:kSpawnPlayerEvent];
-        spawn2.manager = [self managerForTeamSide:0];
-        spawn2.actionCost = 0;
+        GameEvent* spawn2 = [self addEventToSequence:action fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1] withType:kEventAddPlayer];
+        spawn2.manager = [self managerForTeamSide:1];
+
     }
     
 }
@@ -641,42 +631,31 @@
     NSLog(@"---***---*** UI RESTORE ---***---***");
     
     
-    NSLog(@"I have %d players on the board", [[_me deck]inGame].count);
+    NSLog(@"I have %d players on the board", [_me players].count);
     
-    for (Card *c in [[_me deck]inGame]) {
+    for (Player *p in [_me players]) {
         
-        if (c.isTypePlayer || c.isTypeKeeper) {
-            
-            if ([c.location isEqual:_ball.location]) {
-                [c setBall:_ball];
-                [self updateActiveZone];
-            }
-            [self addCardToBoard:c];
-            
+        
+        
+        if ([p.location isEqual:_ball.location]) {
+            [p setBall:_ball];
         }
+        [self addCardToBoard:p];
         
         
     }
     
-    NSLog(@"I have %d cards in my hand", [[_me deck]inHand].count);
     
-    for (Card *c in [[_me deck]inHand]) {
-        
-        [_gameScene addCardToHand:c];
-        
-    }
+    NSLog(@"They have %d players on the board", [_me players].count);
     
-    NSLog(@"They have %d players on the board", [[_opponent deck]inGame].count);
-    
-    for (Card *c in [[_opponent deck]inGame]) {
+    for (Player *p in [_opponent players]) {
         
-        if (c.isTypePlayer || c.isTypeKeeper) {
-            
-            if ([c.location isEqual:_ball.location]) {
-                [c setBall:_ball];
-            }
-            [self addCardToBoard:c];
+        if ([p.location isEqual:_ball.location]) {
+            [p setBall:_ball];
         }
+        [self addCardToBoard:p];
+        
+        
     }
     
     NSLog(@"-------- FINISH UI RESTORE --------");
@@ -687,12 +666,9 @@
 
 -(void)refreshGameBoard {
     
-   // [_gameScene setRotationForManager:_me];
+    // [_gameScene setRotationForManager:_me];
     
     [_gameScene moveBallToLocation:_ball.location];
-    
-    [_gameScene refreshActionWindowForManager:_me withCompletionBlock:^{
-    }];
     
     [_gameScene refreshScoreBoard];
     
@@ -700,7 +676,7 @@
 
 #pragma mark - UI INTERACTION
 
--(void)setCurrentAction:(GameAction *)currentAction {
+-(void)setCurrentAction:(GameSequence *)currentAction {
     
     if (_currentAction && !currentAction) {
         
@@ -724,7 +700,7 @@
 
 
 // MOVING PLAYER ON FIELD
--(BOOL)canUsePlayer:(Card*)player {
+-(BOOL)canUsePlayer:(Player*)player {
     
     if (_myTurn) {
         
@@ -736,7 +712,7 @@
                 if (_currentAction) {
                     [_gameScene cleanUpUIForAction:_currentAction];
                 }
-                _currentAction = [GameAction action];
+                _currentAction = [GameSequence action];
                 
                 return 1;
                 
@@ -765,75 +741,75 @@
 
 
 
--(SkillEvent*)canPlayCard:(Card*)card atLocation:(BoardLocation*)location {
+-(GameEvent*)canPlayCard:(Card*)card atLocation:(BoardLocation*)location {
     
     
     if (!_animating) {
         
-        _currentAction = [GameAction action];
+        _currentAction = [GameSequence action];
         
         // CHECK FOR TYPES
         
-        if ([card isTypePlayer]) { // DEPLOY
-            
-            if ([self requireEmptyLocation:location]) {
-                
-                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kPlayCardAction];
-                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kDeployEvent];
-                
-            }
-            
-        }
+        //        if ([card isTypePlayer]) { // DEPLOY
+        //
+        //            if ([self requireEmptyLocation:location]) {
+        //
+        //                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kEventPlayCard];
+        //                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kEventAddPlayer];
+        //
+        //            }
+        //
+        //        }
         
-        else if ([card isTypeSkill]) { // SKILL CARD
-            
-            // THIS NEEDS WORK
-            
-            //            if (card.cardType == kCardTypeActionHeader) {
-            //
-            //                if ([self requireLastActionSucessful] && [self requirePossesion:card.manager]) {
-            //
-            //                    SkillEvent* playCard = [self addEventToAction:_currentAction from:card.location to:location withType:kPlayCardAction];
-            //                    SkillEvent* header = [self addEventToAction:_currentAction from:card.location to:location withType:kNullAction];
-            //
-            //                    if (header.type != kPassAction && header.type != kShootAction){
-            //                        return nil;
-            //                    }
-            //
-            //                }
-            //            }
-        }
+        //        else if ([card isTypeSkill]) { // SKILL CARD
+        //
+        //            // THIS NEEDS WORK
+        //
+        //            //            if (card.cardType == kCardTypeActionHeader) {
+        //            //
+        //            //                if ([self requireLastActionSucessful] && [self requirePossesion:card.manager]) {
+        //            //
+        //            //                    GameEvent* playCard = [self addEventToAction:_currentAction from:card.location to:location withType:kEventPlayCard];
+        //            //                    GameEvent* header = [self addEventToAction:_currentAction from:card.location to:location withType:kEventNull];
+        //            //
+        //            //                    if (header.type != kEventKickPass && header.type != kEventKickGoal){
+        //            //                        return nil;
+        //            //                    }
+        //            //
+        //            //                }
+        //            //            }
+        //        }
         
-        else if ([card isTypeGear]){ // ENCHANT CARD
-            
-            if ([self requirePlayerAtLocation:location]) {
-                
-                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kPlayCardAction];
-                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kEnchantAction];
-                
-            }
-            
-            
-        }
-        
-        else if ([card isTypeBoost]){ // ENCHANT CARD
-            
-            if ([self requirePlayerAtLocation:location]) {
-                
-                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kPlayCardAction];
-                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kEnchantAction];
-                
-            }
-            
-            
-        }
-        
-        
-        if (_currentAction.skillEvents.count) {
-            if ([self canPerformCurrentAction]) {
-                return _currentAction.skillEvents.lastObject;
-            }
-        }
+        //        else if ([card isTypeGear]){ // ENCHANT CARD
+        //
+        //            if ([self requirePlayerAtLocation:location]) {
+        //
+        //                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kEventPlayCard];
+        //                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kEnchantAction];
+        //
+        //            }
+        //
+        //
+        //        }
+        //
+        //        else if ([card isTypeBoost]){ // ENCHANT CARD
+        //
+        //            if ([self requirePlayerAtLocation:location]) {
+        //
+        //                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kEventPlayCard];
+        //                [self addCardEventToAction:_currentAction fromCard:card toLocation:location withType:kEnchantAction];
+        //
+        //            }
+        //
+        //
+        //        }
+        //
+        //
+        //        if (_currentAction.GameEvents.count) {
+        //            if ([self canPerformCurrentAction]) {
+        //                return _currentAction.GameEvents.lastObject;
+        //            }
+        //        }
         
     }
     
@@ -841,98 +817,101 @@
     
 }
 
--(SkillEvent*)requestPlayerActionAtLocation:(BoardLocation*)location; {
+-(GameEvent*)requestPlayerActionAtLocation:(BoardLocation*)location; {
     
     if (!_animating) {
         
         
-        if (!_currentAction) {
-            NSLog(@"Game.m : ERROR! MOVING PLAYER WITH NO ALLOCATED ACTION!");
-            return nil;
-        }
+        //        if (!_currentAction) {
+        //            NSLog(@"Game.m : ERROR! MOVING PLAYER WITH NO ALLOCATED ACTION!");
+        //            return nil;
+        //        }
+        //
+        //        if (!_currentAction.GameEvents.count) { // deleted all of them
+        //            GameEvent *event = [self addPlayerEventToAction:_currentAction from:location to:location withType:kEventSequence];
+        //            return event;
+        //        }
+        //
+        //        Card* player;
+        //        GameEvent *previousEvent;
+        //
+        //        if (_currentAction.GameEvents.count) {
+        //            player = [self firstEvent].playerPerformingAction;
+        //            previousEvent = [_currentAction.GameEvents lastObject];
+        //        }
+        //
+        //
+        //        if ([location isEqual:[self goalieForManager:_opponent].location] && [self firstEvent].playerPerformingAction.ball) {
+        //
+        //            return [self addPlayerEventToAction:_currentAction from:player.location to:location withType:kEventKickGoal];
+        //        }
+        //
+        //
+        //        //NSLog(@"Game.m : checkForEventAtLocation (%d,%d)",location.x, location.y);
+        //        // check if touched the end of the path or middle
+        //        for (GameEvent *event in _currentAction.GameEvents){ // CHECK ALREADY EXISTING
+        //
+        //            if ([event.location isEqual:location]) {
+        //
+        //                NSInteger last = _currentAction.GameEvents.count;
+        //
+        //                if (_currentAction.GameEvents.count > 1) { // CHECK FOR DELETE
+        //
+        //                    if (![event isEqual:_currentAction.GameEvents.lastObject]) {
+        //                        for (int i = event.actionSlot; i <= last; i++){
+        //                            [_currentAction.GameEvents removeLastObject];
+        //                            //NSLog(@"removing action %d", i);
+        //                        }
+        //
+        //                        if (!_currentAction.GameEvents.count) { // deleted all of them
+        //                            GameEvent *event = [self addPlayerEventToAction:_currentAction from:location to:location withType:kEventSequence];
+        //                            return event;
+        //                        }
+        //
+        //                        GameEvent *hopefullyAdjacentEvent = _currentAction.GameEvents.lastObject;
+        //
+        //                        if ([self isAdjacent:hopefullyAdjacentEvent.location to:location]){
+        //
+        //                            GameEvent *event = [self addPlayerEventToAction:_currentAction from:previousEvent.location to:location withType:[self getPlayerEventTypeForLocation:location]];
+        //                            return event;
+        //
+        //                        }
+        //
+        //                    }
+        //                }
+        //
+        //
+        //                return Nil; // ALREADY HAVE SQUARE AND NOT GOING BACKWARDS
+        //            }
+        //        }
+        //
+        //        // CONTINUING CONFIRM ADJACENT
+        //        if (_currentAction.GameEvents.count) { // CHECK FOR CONTINUITY
+        //            GameEvent *hopefullyAdjacentEvent = _currentAction.GameEvents.lastObject;
+        //            if ([self isAdjacent:hopefullyAdjacentEvent.location to:location]){ // OK GOOD PATH, WHAT IS OUR ACTION TYPE
+        //
+        //                GameEvent *event = [self addPlayerEventToAction:_currentAction from:previousEvent.location to:location withType:[self getPlayerEventTypeForLocation:location]];
+        //                return event;
+        //
+        //            }
+        //
+        //            return nil;
+        //
+        //        }
+        //
+        //        // THEN THIS IS THE FIRST EVENT !!
+        //        GameEvent *event = [self addPlayerEventToAction:_currentAction from:location to:location withType:kEventSequence];
+        //        return event;
+        //    }
+        //
         
-        if (!_currentAction.skillEvents.count) { // deleted all of them
-            SkillEvent *event = [self addPlayerEventToAction:_currentAction from:location to:location withType:kStartingAction];
-            return event;
-        }
-        
-        Card* player;
-        SkillEvent *previousEvent;
-        
-        if (_currentAction.skillEvents.count) {
-            player = [self firstEvent].playerPerformingAction;
-            previousEvent = [_currentAction.skillEvents lastObject];
-        }
         
         
-        if ([location isEqual:[self goalieForManager:_opponent].location] && [self firstEvent].playerPerformingAction.ball) {
-            
-            return [self addPlayerEventToAction:_currentAction from:player.location to:location withType:kShootAction];
-        }
+        NSLog(@"Game.m : checkForEventAtLocation : return NIL");
         
-        
-        //NSLog(@"Game.m : checkForEventAtLocation (%d,%d)",location.x, location.y);
-        // check if touched the end of the path or middle
-        for (SkillEvent *event in _currentAction.skillEvents){ // CHECK ALREADY EXISTING
-            
-            if ([event.location isEqual:location]) {
-                
-                NSInteger last = _currentAction.skillEvents.count;
-                
-                if (_currentAction.skillEvents.count > 1) { // CHECK FOR DELETE
-                    
-                    if (![event isEqual:_currentAction.skillEvents.lastObject]) {
-                        for (int i = event.actionSlot; i <= last; i++){
-                            [_currentAction.skillEvents removeLastObject];
-                            //NSLog(@"removing action %d", i);
-                        }
-                        
-                        if (!_currentAction.skillEvents.count) { // deleted all of them
-                            SkillEvent *event = [self addPlayerEventToAction:_currentAction from:location to:location withType:kStartingAction];
-                            return event;
-                        }
-                        
-                        SkillEvent *hopefullyAdjacentEvent = _currentAction.skillEvents.lastObject;
-                        
-                        if ([self isAdjacent:hopefullyAdjacentEvent.location to:location]){
-                            
-                            SkillEvent *event = [self addPlayerEventToAction:_currentAction from:previousEvent.location to:location withType:[self getPlayerActionTypeForLocation:location]];
-                            return event;
-                            
-                        }
-                        
-                    }
-                }
-                
-                
-                return Nil; // ALREADY HAVE SQUARE AND NOT GOING BACKWARDS
-            }
-        }
-        
-        // CONTINUING CONFIRM ADJACENT
-        if (_currentAction.skillEvents.count) { // CHECK FOR CONTINUITY
-            SkillEvent *hopefullyAdjacentEvent = _currentAction.skillEvents.lastObject;
-            if ([self isAdjacent:hopefullyAdjacentEvent.location to:location]){ // OK GOOD PATH, WHAT IS OUR ACTION TYPE
-                
-                SkillEvent *event = [self addPlayerEventToAction:_currentAction from:previousEvent.location to:location withType:[self getPlayerActionTypeForLocation:location]];
-                return event;
-                
-            }
-            
-            return nil;
-            
-        }
-        
-        // THEN THIS IS THE FIRST EVENT !!
-        SkillEvent *event = [self addPlayerEventToAction:_currentAction from:location to:location withType:kStartingAction];
-        return event;
     }
-    
-    
-    
-    
-    NSLog(@"Game.m : checkForEventAtLocation : return NIL");
     return Nil;
+    
 }
 
 #pragma mark - TB NETWORK EVENTS
@@ -954,13 +933,13 @@
             
             self.myTurn = NO;
             
-          
+            
             
         }
         
     }
     
-      return NO;
+    return NO;
     
 }
 
@@ -1032,7 +1011,7 @@
             
             
             
-            GameAction *action = [unarchiver decodeObjectForKey:@"action"];
+            GameSequence *action = [unarchiver decodeObjectForKey:@"action"];
             
             
             
@@ -1060,17 +1039,17 @@
         else if (type == RTMessageShowAction) {
             
             
-            GameAction *action = [unarchiver decodeObjectForKey:@"action"];
+            GameSequence *action = [unarchiver decodeObjectForKey:@"action"];
             
             [self setUpPointersForActionArray:action];
             
-            for (SkillEvent* e in action.skillEvents) {
+            for (GameEvent* e in action.GameEvents) {
                 [self getPlayerPointersForEvent:e];
             }
             
             _currentAction = action;
             
-            [_gameScene addNetworkUIForEvent:[_currentAction.skillEvents lastObject]];
+            [_gameScene addNetworkUIForEvent:[_currentAction.GameEvents lastObject]];
             
             
         }
@@ -1099,29 +1078,29 @@
         
         else if (type == RTMessageBeginCardTouch || type == RTMessageMoveCardTouch){
             
-            BoardLocation *location = [unarchiver decodeObjectForKey:@"location"];
-            Card *c = [self cardInHandForManager:_opponent location:location];
-            
-            CGPoint touch = [unarchiver decodeCGPointForKey:@"touch"];
-            CGSize inSize = [unarchiver decodeCGSizeForKey:@"bounds"];
-            CGSize outSize = [[UIScreen mainScreen] bounds].size;
-            
-            float xScale = outSize.width / inSize.width;
-            float yScale = outSize.height / inSize.height;
-            
-            CGPoint pos = CGPointMake(touch.x * xScale, touch.y * yScale);
-            
-            if (type == RTMessageBeginCardTouch) {
-                
-                [_gameScene opponentBeganCardTouch:c atPoint:pos];
-                
-            }
-            
-            else if (type == RTMessageMoveCardTouch) {
-                
-                [_gameScene opponentMovedCardTouch:c atPoint:pos];
-                
-            }
+//            BoardLocation *location = [unarchiver decodeObjectForKey:@"location"];
+//            //Card *c = [self cardInHandForManager:_opponent location:location];
+//            
+//            CGPoint touch = [unarchiver decodeCGPointForKey:@"touch"];
+//            CGSize inSize = [unarchiver decodeCGSizeForKey:@"bounds"];
+//            CGSize outSize = [[UIScreen mainScreen] bounds].size;
+//            
+//            float xScale = outSize.width / inSize.width;
+//            float yScale = outSize.height / inSize.height;
+//            
+//            CGPoint pos = CGPointMake(touch.x * xScale, touch.y * yScale);
+//            
+//            if (type == RTMessageBeginCardTouch) {
+//                
+//                [_gameScene opponentBeganCardTouch:c atPoint:pos];
+//                
+//            }
+//            
+//            else if (type == RTMessageMoveCardTouch) {
+//                
+//                [_gameScene opponentMovedCardTouch:c atPoint:pos];
+//                
+//            }
             
         }
         
@@ -1140,7 +1119,7 @@
 }
 
 
--(void)sendAction:(GameAction*)action perform:(BOOL)perform {
+-(void)sendAction:(GameSequence*)action perform:(BOOL)perform {
     
     if (_myTurn || perform) {
         
@@ -1266,56 +1245,57 @@
 }
 #pragma mark - CREATING EVENTS
 
--(void)getPlayerPointersForEvent:(SkillEvent*)event {
+-(void)getPlayerPointersForEvent:(GameEvent*)event {
     
-    if (event.type == kStartingAction) {
+    if (event.type == kEventSequence) {
         event.playerPerformingAction = [self playerAtLocation:event.location];
     }
     
     else if (event.isRunningEvent) {
         
-        int index = [event.parent.skillEvents indexOfObject:event];
+        int index = [event.parent.GameEvents indexOfObject:event];
         
         for (int i = index; i >= 0; i--){
-            SkillEvent* testEvent = event.parent.skillEvents[i];
-            if (testEvent.type == kStartingAction) {
+            GameEvent* testEvent = event.parent.GameEvents[i];
+            if (testEvent.type == kEventSequence) {
                 event.playerPerformingAction = testEvent.playerPerformingAction;
             }
         }
         
-        if (event.type == kChallengeAction) {
+        if (event.type == kEventChallenge) {
             event.playerReceivingAction = [self playerAtLocation:event.location];
         }
         
     }
     
-    else if (event.type == kPlayCardAction){
+    else if (event.type == kEventPlayCard){
         
-        if ([self cardInHandForManager:event.manager location:event.startingLocation]) {
-            event.playerPerformingAction = [self cardInHandForManager:event.manager location:event.startingLocation];
-        }
-        else {
+        event.card = [event.playerPerformingAction cardInHandAtlocation:event.location];
+        
+        if (!event.card) {
             NSLog(@"play card with no card in hand");
         }
         
     }
     
-    else if (event.type == kEnchantAction || event.type == kDeployEvent) {
+    else if (event.type == kEventAddPlayer){
+
+    }
+    
+    else if (event.type == kEventRemovePlayer) {
         
-        // depreciated because of SPAWN ACTION
+        event.playerPerformingAction = [self playerAtLocation:event.location];
         
-        //        if ([self cardInDeckForManager:event.manager location:event.startingLocation]) {
-        //            event.playerPerformingAction = [self cardInDeckForManager:event.manager location:event.startingLocation];
-        //            NSLog(@"found player in deck");
-        //        } // DEPLOY FROM DECK
-        
+    }
+    
+    else if (event.type == kEventAddSpecial) {
         
         int index = event.actionSlot;
         
         for (int i = index; i >= 0; i--){
-            SkillEvent* testEvent = event.parent.skillEvents[i];
+            GameEvent* testEvent = event.parent.GameEvents[i];
             
-            if (testEvent.type == kPlayCardAction) {
+            if (testEvent.type == kEventPlayCard) {
                 event.playerPerformingAction = testEvent.playerPerformingAction;
                 NSLog(@"found player from 'play card action'");
             }
@@ -1327,88 +1307,69 @@
         }
         
         
-        if (event.type == kEnchantAction) {
+        if (event.type == kEventAddSpecial) {
             event.playerReceivingAction = [self playerAtLocation:event.location];
         }
         
     }
     
-    else if (event.type == kRemovePlayerAction) {
-        
-        event.playerPerformingAction = [self playerAtLocation:event.location];
-        
-    }
-    
-    else if (event.type == kPassAction || event.type == kShootAction || event.type == kGoaliePass) {
+    else if (event.type == kEventKickGoal || event.type == kEventKickPass) {
         
         event.playerPerformingAction = [self playerAtLocation:event.startingLocation];
         
         event.playerReceivingAction = [self playerAtLocation:event.location];
-        
-        if (event.type == kShootAction) {
-            event.playerReceivingAction = [self goalieForManager:event.manager.opponent];
-        }
-        
     }
-    
-    //    if (event.playerPerformingAction) {
-    //        event.manager = event.playerPerformingAction.manager;
-    //       // NSLog(@"new event for: %@", event.playerPerformingAction.name);
-    //    }
-    //
-    //    else {
-    //        //NSLog(@"new manager event for: %@", event.manager);
-    //    }
-    
-    
     
     
 }
 
--(SkillEvent*)addCardEventToAction:(GameAction*)action fromCard:(Card*)card toLocation:(BoardLocation*)location withType:(ActionType)type {
+-(GameEvent*)addEventToSequence:(GameSequence*)sequence fromCardOrPlayer:(Card*)card toLocation:(BoardLocation*)location withType:(EventType)type {
     
     NSLog(@"CARD'S DECK LOCATION IS %d %d", card.location.x, card.location.y);
     
-    action.boost = 0;
+
+    GameEvent *event = [GameEvent eventForAction:sequence];
     
-    SkillEvent *event = [SkillEvent eventForAction:action];
+    if ([card isKindOfClass:[Player class]]) { // IS A PLAYER
+        event.playerPerformingAction = (Player*)card;
+        event.manager = event.playerPerformingAction.manager;
+        event.deck = nil;
+        event.type = kEventAddPlayer;
+        NSLog(@"adding deploy event");
+    }
     
-    event.manager = card.manager;
+    else if (card){ // IS CARD
+        event.deck = card.deck;
+        event.manager = event.deck.player.manager;
+    }
     
+    event.type = type;
     event.startingLocation = [card.location copy];
     event.location = [location copy];
     
-    [action.skillEvents addObject:event];
+    [sequence.GameEvents addObject:event];
     
-    //event.actionSlot = action.skillEvents.count;
-    
-    event.type = type;
+    //event.actionSlot = action.GameEvents.count;
     
     event.actionCost = 0;
     
     [self getPlayerPointersForEvent:event];
-    
-    if (event.type == kDeployEvent || event.type == kEnchantAction) {
-        event.actionCost = card.actionPointCost;
-    }
-    
-    event.totalModifier = 0.;
-    
+
     return event;
     
 }
 
--(SkillEvent*)addGeneralEventToAction:(GameAction*)action forManager:(Manager*)m withType:(ActionType)type {
+-(GameEvent*)addGeneralEventToAction:(GameSequence*)action forManager:(Manager*)m withType:(EventType)type {
     
     action.boost = 0;
     
-    SkillEvent *event = [SkillEvent eventForAction:action];
+    GameEvent *event = [GameEvent eventForAction:action];
     
     event.manager = m;
     
-    [action.skillEvents addObject:event];
+    [action.GameEvents addObject:event];
     
-    //event.actionSlot = action.skillEvents.count;
+    //event.actionSlot = action.GameEvents.count;
     
     event.type = type;
     
@@ -1420,150 +1381,153 @@
     
 }
 
--(SkillEvent*)addPlayerEventToAction:(GameAction*)action from:(BoardLocation *)startLocation to:(BoardLocation*)location withType:(ActionType)type {
+-(GameEvent*)addPlayerEventToAction:(GameSequence*)action from:(BoardLocation *)startLocation to:(BoardLocation*)location withType:(EventType)type {
     
-    action.boost = 0;
-    
-    SkillEvent *event = [SkillEvent eventForAction:action];
-    
-    event.location = [location copy];
-    event.startingLocation = [startLocation copy];
-    
-    event.type = type;
-    
-    // EDGE CASE FIX FOR OVERRIDING PASS
-    
-    if (event.isRunningEvent) {
-        SkillEvent* e = [action.skillEvents lastObject];
-        
-        if (e.type == kPassAction || e.type == kShootAction) {
-            e.type = kDribbleAction;
-            e.actionCost = 1;
-            SkillEvent *previous = action.skillEvents[e.actionSlot - 1];
-            
-            Abilities *tempPlayer = [self playerAbilitiesWithMod:e.playerPerformingAction];
-            
-            e.startingLocation = previous.location;
-            
-            e.totalModifier += [self checkLocationForDribbleModifiers:location forTeam:_opponent];
-            e.success = tempPlayer.dribble + event.totalModifier;
-            
-            NSLog(@"REWRITING PASS TO DRIBBLE EVENT");
-        }
-    }
-    
-    if (event.type == kPassAction || event.type == kShootAction) {
-        event.startingLocation = [[action.skillEvents[0] startingLocation] copy];
-    }
-    
-    // BACK TO IT
-    
-    [action.skillEvents addObject:event];
-    
-    //event.actionSlot = action.skillEvents.count;
-    
-    [self getPlayerPointersForEvent:event];
-    
-    // SET GENERIC COST
-    
-    event.actionCost = 1;
-    event.totalModifier = 0.;
-    
-    // CONFIGURE INDIVIDUAL COST / MODIFIER
-    Abilities *tempPlayer = [self playerAbilitiesWithMod:event.playerPerformingAction];
-    
-    event.totalModifier = 0.;
+    // FIX THIS
     
     
-    
-    
-    if (event.type == kStartingAction) {
-        event.actionCost = 0.;
-        event.totalModifier = 0.;
-        event.success = 1.;
-    }
-    
-    else if (event.type == kRunningAction) {
-        event.totalModifier = 0.;
-    }
-    
-    else if (event.type == kChallengeAction){
-        event.totalModifier += [self checkLocationForChallengeModifiers:location forTeam:_opponent];
-        event.success = tempPlayer.handling + event.totalModifier;
-    }
-    
-    else if (event.type == kDribbleAction) {
-        SkillEvent *previous = action.skillEvents[event.actionSlot - 1];
-        event.totalModifier += [self checkLocationForDribbleModifiers:previous.location forTeam:_opponent];
-        event.success = tempPlayer.dribble + event.totalModifier;
-    }
-    
-    else if (event.type == kPassAction){
-        event.totalModifier += [self checkLocationForPassModifiers:location forTeam:_opponent];
-        event.success = tempPlayer.kick + event.playerReceivingAction.abilities.handling + event.totalModifier;
-    }
-    
-    else if (event.type == kShootAction){
-        event.totalModifier += [self checkLocationForShootModifiers:location forTeam:_opponent];
-        event.success = tempPlayer.kick + event.totalModifier;
-    }
-    else if (event.type == kDeployEvent) {
-        event.actionCost = 0;
-        event.totalModifier = 0.;
-        event.success = 1.;
-    }
-    
-    else if (event.type == kPlayCardAction) {
-        event.actionCost = event.playerPerformingAction.actionPointCost;
-        event.totalModifier = 0.;
-        event.success = 1.;
-    }
-    
-    else if (event.type == kEnchantAction) {
-        event.actionCost = 0;
-        event.totalModifier = 0.;
-        event.success = 1.;
-    }
-    
-    else {
-        event.actionCost = 1;
-        NSLog(@"must be a draw action!");
-    }
-    
-    
-    // CALCULATE TOTAL COST
-    //NSLog(@"temp player %f / %f", tempPlayer.kick, tempPlayer.handling);
-    
-    //NSLog(@"event modifier %f : success %f", event.totalModifier, event.parent.totalSucess);
-    
+//    action.boost = 0;
+//    
+    GameEvent *event = [GameEvent eventForAction:action];
+//    
+//    event.location = [location copy];
+//    event.startingLocation = [startLocation copy];
+//    
+//    event.type = type;
+//    
+//    // EDGE CASE FIX FOR OVERRIDING PASS
+//    
+//    if (event.isRunningEvent) {
+//        GameEvent* e = [action.GameEvents lastObject];
+//        
+//        if (e.type == kEventKickPass || e.type == kEventKickGoal) {
+//            e.type = kDribbleAction;
+//            e.actionCost = 1;
+//            GameEvent *previous = action.GameEvents[e.actionSlot - 1];
+//            
+//            Abilities *tempPlayer = [self playerAbilitiesWithMod:e.playerPerformingAction];
+//            
+//            e.startingLocation = previous.location;
+//            
+//            e.totalModifier += [self checkLocationForDribbleModifiers:location forTeam:_opponent];
+//            e.success = tempPlayer.dribble + event.totalModifier;
+//            
+//            NSLog(@"REWRITING PASS TO DRIBBLE EVENT");
+//        }
+//    }
+//    
+//    if (event.type == kEventKickPass || event.type == kEventKickGoal) {
+//        event.startingLocation = [[action.GameEvents[0] startingLocation] copy];
+//    }
+//    
+//    // BACK TO IT
+//    
+//    [action.GameEvents addObject:event];
+//    
+//    //event.actionSlot = action.GameEvents.count;
+//    
+//    [self getPlayerPointersForEvent:event];
+//    
+//    // SET GENERIC COST
+//    
+//    event.actionCost = 1;
+//    event.totalModifier = 0.;
+//    
+//    // CONFIGURE INDIVIDUAL COST / MODIFIER
+//    Abilities *tempPlayer = [self playerAbilitiesWithMod:event.playerPerformingAction];
+//    
+//    event.totalModifier = 0.;
+//    
+//    
+//    
+//    
+//    if (event.type == kEventSequence) {
+//        event.actionCost = 0.;
+//        event.totalModifier = 0.;
+//        event.success = 1.;
+//    }
+//    
+//    else if (event.type == kRunningAction) {
+//        event.totalModifier = 0.;
+//    }
+//    
+//    else if (event.type == kChallengeAction){
+//        event.totalModifier += [self checkLocationForChallengeModifiers:location forTeam:_opponent];
+//        event.success = tempPlayer.handling + event.totalModifier;
+//    }
+//    
+//    else if (event.type == kDribbleAction) {
+//        GameEvent *previous = action.GameEvents[event.actionSlot - 1];
+//        event.totalModifier += [self checkLocationForDribbleModifiers:previous.location forTeam:_opponent];
+//        event.success = tempPlayer.dribble + event.totalModifier;
+//    }
+//    
+//    else if (event.type == kEventKickPass){
+//        event.totalModifier += [self checkLocationForPassModifiers:location forTeam:_opponent];
+//        event.success = tempPlayer.kick + event.playerReceivingAction.abilities.handling + event.totalModifier;
+//    }
+//    
+//    else if (event.type == kEventKickGoal){
+//        event.totalModifier += [self checkLocationForShootModifiers:location forTeam:_opponent];
+//        event.success = tempPlayer.kick + event.totalModifier;
+//    }
+//    else if (event.type == kEventAddPlayer) {
+//        event.actionCost = 0;
+//        event.totalModifier = 0.;
+//        event.success = 1.;
+//    }
+//    
+//    else if (event.type == kEventPlayCard) {
+//        event.actionCost = event.playerPerformingAction.actionPointCost;
+//        event.totalModifier = 0.;
+//        event.success = 1.;
+//    }
+//    
+//    else if (event.type == kEnchantAction) {
+//        event.actionCost = 0;
+//        event.totalModifier = 0.;
+//        event.success = 1.;
+//    }
+//    
+//    else {
+//        event.actionCost = 1;
+//        NSLog(@"must be a draw action!");
+//    }
+//    
+//    
+//    // CALCULATE TOTAL COST
+//    //NSLog(@"temp player %f / %f", tempPlayer.kick, tempPlayer.handling);
+//    
+//    //NSLog(@"event modifier %f : success %f", event.totalModifier, event.parent.totalSucess);
+//    
     
     return event;
     
 }
 
--(SkillEvent*)addDrawEventToAction:(GameAction*)action forManager:(Manager*)m {
+-(GameEvent*)addDrawEventToAction:(GameSequence*)action forManager:(Manager*)m {
     
-    SkillEvent *draw = [SkillEvent eventForAction:action];
-    draw.type = kDrawAction;
+    GameEvent *draw = [GameEvent eventForAction:action];
+    draw.type = kEventDraw;
     draw.manager = m;
-    [action.skillEvents addObject:draw];
-    //draw.actionSlot = action.skillEvents.count;
+    [action.GameEvents addObject:draw];
+    //draw.actionSlot = action.GameEvents.count;
     
     return draw;
     
 }
 
 
--(SkillEvent*)addShuffleEventToAction:(GameAction*)action forManager:(Manager*)m {
+-(GameEvent*)addShuffleEventToAction:(GameSequence*)action forDeck:(Deck*)d {
     
-    SkillEvent *shuffle = [SkillEvent eventForAction:action];
-    shuffle.manager = m;
-    shuffle.type = kShuffleAction;
+    GameEvent *shuffle = [GameEvent eventForAction:action];
+    shuffle.deck = d;
+    shuffle.type = kEventShuffleDeck;
     
     
-    [action.skillEvents addObject:shuffle];
+    [action.GameEvents addObject:shuffle];
     
-    //shuffle.actionSlot = action.skillEvents.count;
+    //shuffle.actionSlot = action.GameEvents.count;
     
     return shuffle;
     
@@ -1573,134 +1537,131 @@
 
 -(BOOL)validatePlayerMove:(Card*)player { // AKA VALIDATE ACTION
     
-    if (_myTurn) {
-        
-        if (_currentAction.skillEvents.count) {
-            
-            SkillEvent *last = [_currentAction.skillEvents lastObject];
-            
-            BoardLocation *location = [last location];
-            
-            // DRIBBLE
-            if (last.type == kStartingAction) {
-                return 0;
-            }
-            if ([location isEqual:player.location]) {
-                self.currentAction = Nil;
-                return 0;
-            }
-            
-            Card* player = _currentAction.playerPerformingAction;
-            
-            // GOALIE RULES
-            if (player.isTypeKeeper) {
-                
-                for (SkillEvent *e in _currentAction.skillEvents) {
-                    if (e.type == kChallengeAction) {
-                        if ([self isAdjacent:e.location to:player.location]) {
-                            return 1;
-                        }
-                    }
-                    
-                    if (e.type == kPassAction) {
-                        return 1;
-                    }
-                    
-                }
-                
-                
-                self.currentAction = Nil;
-                return 0;
-            }
-            
-            else {
-                for (SkillEvent *e in _currentAction.skillEvents) {
-                    if (e.type == kChallengeAction) {
-                        if ([self playerAtLocation:e.startingLocation]) {
-                            if (![[self playerAtLocation:e.startingLocation] isEqual:_currentAction.playerPerformingAction]) {
-                                NSLog(@"can't challenge from occupied square");
-                                self.currentAction = Nil;
-                                return 0;
-                            }
-                        }
-                    }
-                }
-                
-                
-                if ([_currentAction isRunningAction]){
-                    
-                    for (Card *c in [[_opponent deck] inGame]) { // CHECK OPPONENT CARDS
-                        if ([c.location isEqual:location]) {
-                            if (c.ball){
-                                return 1;
-                            }
-                            self.currentAction = Nil;
-                            return 0;
-                        }
-                    }
-                    
-                    for (Card *c in [[_me deck] inGame]) { // CHECK MY CARDS
-                        if ([c.location isEqual:location]) {
-                            self.currentAction = Nil;
-                            return 0;
-                        }
-                    }
-                }
-            }
-            
-            return 1;
-            
-        }
-        
-        return 0;
-    }
+#pragma mark - MOVE LOGIC NEEDS HERE::
     
+//    if (_myTurn) {
+//        
+//        if (_currentAction.GameEvents.count) {
+//            
+//            GameEvent *last = [_currentAction.GameEvents lastObject];
+//            
+//            BoardLocation *location = [last location];
+//            
+//            // DRIBBLE
+//            if (last.type == kEventSequence) {
+//                return 0;
+//            }
+//            if ([location isEqual:player.location]) {
+//                self.currentAction = Nil;
+//                return 0;
+//            }
+//            
+//            Card* player = _currentAction.playerPerformingAction;
+//            
+//            // GOALIE RULES
+//            if (player.isTypeKeeper) {
+//                
+//                for (GameEvent *e in _currentAction.GameEvents) {
+//                    if (e.type == kChallengeAction) {
+//                        if ([self isAdjacent:e.location to:player.location]) {
+//                            return 1;
+//                        }
+//                    }
+//                    
+//                    if (e.type == kEventKickPass) {
+//                        return 1;
+//                    }
+//                    
+//                }
+//                
+//                
+//                self.currentAction = Nil;
+//                return 0;
+//            }
+//            
+//            else {
+//                for (GameEvent *e in _currentAction.GameEvents) {
+//                    if (e.type == kChallengeAction) {
+//                        if ([self playerAtLocation:e.startingLocation]) {
+//                            if (![[self playerAtLocation:e.startingLocation] isEqual:_currentAction.playerPerformingAction]) {
+//                                NSLog(@"can't challenge from occupied square");
+//                                self.currentAction = Nil;
+//                                return 0;
+//                            }
+//                        }
+//                    }
+//                }
+//                
+//                
+//                if ([_currentAction isRunningAction]){
+//                    
+//                    for (Card *c in [[_opponent deck] inGame]) { // CHECK OPPONENT CARDS
+//                        if ([c.location isEqual:location]) {
+//                            if (c.ball){
+//                                return 1;
+//                            }
+//                            self.currentAction = Nil;
+//                            return 0;
+//                        }
+//                    }
+//                    
+//                    for (Card *c in [[_me deck] inGame]) { // CHECK MY CARDS
+//                        if ([c.location isEqual:location]) {
+//                            self.currentAction = Nil;
+//                            return 0;
+//                        }
+//                    }
+//                }
+//            }
+//            
+//            return 1;
+//            
+//        }
+//        
+//        return 0;
+//    }
+//    
+//    return -1;
     return -1;
 }
 
--(GameAction*)endTurnAction {
+-(GameSequence*)endTurnAction {
     
-    GameAction* endTurn = [GameAction action];
+    GameSequence* endTurn = [GameSequence action];
     
-    NSLog(@"removing players outside zone!!");
+    // this did wipe the board of out of zone players
     
-    [self updateActiveZone];
+//    for (Card* p in gameBoard.allKeys) {
+//        
+//        if ([p isTypePlayer]) {
+//            
+//            if (p.location.x < _activeZone.x || p.location.x > _activeZone.y) {
+//                
+//                GameEvent *e = [GameEvent eventForAction:endTurn];
+//                e.location = [p.location copy];
+//                e.playerPerformingAction = p;
+//                e.type = kRemovePlayerAction;
+//                [endTurn.GameEvents addObject:e];
+//                //e.actionSlot = endTurn.GameEvents.count;
+//                
+//            }
+//            
+//        }
+//        
+//    }
     
-    for (Card* p in gameBoard.allKeys) {
-        
-        if ([p isTypePlayer]) {
-            
-            if (p.location.x < _activeZone.x || p.location.x > _activeZone.y) {
-                
-                SkillEvent *e = [SkillEvent eventForAction:endTurn];
-                e.location = [p.location copy];
-                e.playerPerformingAction = p;
-                e.type = kRemovePlayerAction;
-                [endTurn.skillEvents addObject:e];
-                //e.actionSlot = endTurn.skillEvents.count;
-                
-            }
-            
-        }
-        
-    }
     
-    SkillEvent *e = [SkillEvent eventForAction:endTurn];
-    e.type = kMoveFieldAction;
-    e.manager = _me;
-    [endTurn.skillEvents addObject:e];
-    
-    SkillEvent *e2 = [SkillEvent eventForAction:endTurn];
-    e2.type = kPurgeEnchantmentsAction;
+    GameEvent *e2 = [GameEvent eventForAction:endTurn];
+    e2.type = kEventRemoveSpecial;
     e2.manager = _me;
-    [endTurn.skillEvents addObject:e2];
+    [endTurn.GameEvents addObject:e2];
     
     
-    SkillEvent *e3 = [SkillEvent eventForAction:endTurn];
-    e3.type = kEndTurnAction;
+    GameEvent *e3 = [GameEvent eventForAction:endTurn];
+    e3.type = kEventEndTurn;
     e3.manager = _me;
-    [endTurn.skillEvents addObject:e3];
-    //e.actionSlot = endTurn.skillEvents.count;
+    [endTurn.GameEvents addObject:e3];
+    //e.actionSlot = endTurn.GameEvents.count;
     
     
     
@@ -1708,31 +1669,25 @@
     
 }
 
--(void)fullFieldWipeForAction:(GameAction*)action {
+-(void)fullFieldWipeForAction:(GameSequence*)action {
     
-    for (Card* p in gameBoard.allKeys) {
-        if ([p isTypePlayer]) {
-            SkillEvent *e = [SkillEvent eventForAction:action];
+    for (Player* p in gameBoard.allKeys) {
+            GameEvent *e = [GameEvent eventForAction:action];
             e.location = [p.location copy];
-            e.type = kRemovePlayerAction;
+            e.type = kEventRemovePlayer;
             e.playerPerformingAction = p;
             
-            [action.skillEvents addObject:e];
-            //e.actionSlot = action.skillEvents.count;
+            [action.GameEvents addObject:e];
+            //e.actionSlot = action.GameEvents.count;
         }
-    }
+    
     
 }
 
--(void)addGoalResetToAction:(GameAction*)goal {
+-(void)addGoalResetToAction:(GameSequence*)goal {
     
     
     [self fullFieldWipeForAction:goal];
-    
-    SkillEvent *r = [SkillEvent eventForAction:goal];
-    r.type = kGoalResetAction;
-    r.manager = _me;
-    [goal.skillEvents addObject:r];
     
     [self setupCoinTossPositionsForAction:goal];
     
@@ -1743,147 +1698,144 @@
         [self addSetBallEventForAction:goal location:[BoardLocation pX:BOARD_LENGTH/2 Y:1]];
     }
     
-    SkillEvent *e = [SkillEvent eventForAction:goal];
-    e.type = kMoveFieldAction;
-    e.manager = _me;
-    [goal.skillEvents addObject:e];
-    
-    SkillEvent *e2 = [SkillEvent eventForAction:goal];
-    e2.type = kPurgeEnchantmentsAction;
+    GameEvent *e2 = [GameEvent eventForAction:goal];
+    e2.type = kEventRemoveSpecial;
     e2.manager = _me;
-    [goal.skillEvents addObject:e2];
+    [goal.GameEvents addObject:e2];
     
     
-    SkillEvent *e3 = [SkillEvent eventForAction:goal];
-    e3.type = kEndTurnAction;
+    GameEvent *e3 = [GameEvent eventForAction:goal];
+    e3.type = kEventEndTurn;
     e3.manager = _me;
-    [goal.skillEvents addObject:e3];
+    [goal.GameEvents addObject:e3];
+    //e.actionSlot = endTurn.GameEvents.count;
+
     
 }
 
--(void)addGoalKickToAction:(GameAction*)goal {
-    
-    
-    [self fullFieldWipeForAction:goal];
-    
-    SkillEvent *r = [SkillEvent eventForAction:goal];
-    r.type = kGoalResetAction;
-    r.manager = _me;
-    [goal.skillEvents addObject:r];
-    //r.actionSlot = goal.skillEvents.count;
-    
-    [self setupCoinTossPositionsForAction:goal];
-    
-    // [self addSetBallEventForAction:goal location:[[self goalieForManager:_opponent].location copy]];
-    
-    SkillEvent* goalKick = [SkillEvent eventForAction:goal];
-    
-    goalKick.type = kGoaliePass;
-    
-    goalKick.startingLocation = [[self goalieForManager:_opponent].location copy];
-    
-    if (_me.teamSide) {
-        goalKick.location = [BoardLocation pX:BOARD_LENGTH/2-1 Y:1];
-    }
-    else {
-        goalKick.location = [BoardLocation pX:BOARD_LENGTH/2 Y:1];
-    }
-    
-    [goal.skillEvents addObject:goalKick];
-    //goalKick.actionSlot = goal.skillEvents.count;
-    
-    SkillEvent *e = [SkillEvent eventForAction:goal];
-    e.type = kMoveFieldAction;
-    e.manager = _me;
-    [goal.skillEvents addObject:e];
-    
-    SkillEvent *e2 = [SkillEvent eventForAction:goal];
-    e2.type = kPurgeEnchantmentsAction;
-    e2.manager = _me;
-    [goal.skillEvents addObject:e2];
-    
-    
-    SkillEvent *e3 = [SkillEvent eventForAction:goal];
-    e3.type = kEndTurnAction;
-    e3.manager = _me;
-    [goal.skillEvents addObject:e3];
-    //e.actionSlot = endTurn.skillEvents.count;
-    
-    //e.actionSlot = goal.skillEvents.count;
-    
-    
-}
+//-(void)addGoalKickToAction:(GameSequence*)goal {
+//    
+//    
+//    [self fullFieldWipeForAction:goal];
+//    
+//    GameEvent *r = [GameEvent eventForAction:goal];
+//    r.type = kGoalResetAction;
+//    r.manager = _me;
+//    [goal.GameEvents addObject:r];
+//    //r.actionSlot = goal.GameEvents.count;
+//    
+//    [self setupCoinTossPositionsForAction:goal];
+//    
+//    // [self addSetBallEventForAction:goal location:[[self goalieForManager:_opponent].location copy]];
+//    
+//    GameEvent* goalKick = [GameEvent eventForAction:goal];
+//    
+//    goalKick.type = kGoaliePass;
+//    
+//    goalKick.startingLocation = [[self goalieForManager:_opponent].location copy];
+//    
+//    if (_me.teamSide) {
+//        goalKick.location = [BoardLocation pX:BOARD_LENGTH/2-1 Y:1];
+//    }
+//    else {
+//        goalKick.location = [BoardLocation pX:BOARD_LENGTH/2 Y:1];
+//    }
+//    
+//    [goal.GameEvents addObject:goalKick];
+//    //goalKick.actionSlot = goal.GameEvents.count;
+//    
+//    GameEvent *e = [GameEvent eventForAction:goal];
+//    e.type = kMoveFieldAction;
+//    e.manager = _me;
+//    [goal.GameEvents addObject:e];
+//    
+//    GameEvent *e2 = [GameEvent eventForAction:goal];
+//    e2.type = kPurgeEnchantmentsAction;
+//    e2.manager = _me;
+//    [goal.GameEvents addObject:e2];
+//    
+//    
+//    GameEvent *e3 = [GameEvent eventForAction:goal];
+//    e3.type = kEventEndTurn;
+//    e3.manager = _me;
+//    [goal.GameEvents addObject:e3];
+//    //e.actionSlot = endTurn.GameEvents.count;
+//    
+//    //e.actionSlot = goal.GameEvents.count;
+//    
+//    
+//}
 
--(SkillEvent*)addSetBallEventForAction:(GameAction*)action location:(BoardLocation*)location {
+-(GameEvent*)addSetBallEventForAction:(GameSequence*)action location:(BoardLocation*)location {
     
-    SkillEvent *set = [SkillEvent eventForAction:action];
-    set.type = kSetBallAction;
+    GameEvent *set = [GameEvent eventForAction:action];
+    set.type = kEventSetBallLocation;
     set.manager = _me;
     set.location = [location copy];
-    [action.skillEvents addObject:set];
-    //set.actionSlot = action.skillEvents.count;
+    [action.GameEvents addObject:set];
+    //set.actionSlot = action.GameEvents.count;
     
     return set;
 }
 
--(void)addStartTurnEventsToAction:(GameAction*)action {
+-(void)addStartTurnEventsToAction:(GameSequence*)action {
     
-    SkillEvent* ap = [SkillEvent eventForAction:action];
-    ap.type = kStartTurnAction;
+    GameEvent* ap = [GameEvent eventForAction:action];
+    ap.type = kEventStartTurn;
     ap.manager = _me;
     ap.actionCost = 0;
-    [action.skillEvents addObject:ap];
+    [action.GameEvents addObject:ap];
     
-    SkillEvent* draw = [self addDrawEventToAction:action forManager:_me];
-    draw.type = kTurnDrawAction;
+    GameEvent* draw = [self addDrawEventToAction:action forManager:_me];
+    draw.type = kEventStartTurnDraw;
     draw.actionCost = 0;
     
-
-    //ap.actionSlot = action.skillEvents.count;
     
-
+    //ap.actionSlot = action.GameEvents.count;
+    
+    
     
 }
 
--(ActionType)getPlayerActionTypeForLocation:(BoardLocation*)location {
-    
-    // INHERIT PLAYER FROM kStartingAction
-    
-    Card* playerPerformingAction = [_currentAction playerPerformingAction];
-    
-    if (playerPerformingAction.ball){
-        
-        for (Card *player in [[playerPerformingAction.manager deck] inGame]) {
-            if ([player.location isEqual:location]) { // SHOULD PASS
-                if (![player isEqual:_currentAction.playerPerformingAction]) {
-                    NSLog(@"pass to: %@ : %d %d", player.nameForCard, location.x, location.y);
-                    return kPassAction;
-                }
-            }
-        }
-        
-    }
-    
-    if (![self willHaveBallForCurrentAction]) {
-        
-        for (Card *player in [[_opponent deck] inGame]) {
-            if ([player.location isEqual:location]) { // SHOULD CHALLENGE
-                if (player.ball) {
-                    return kChallengeAction;
-                }
-            }
-        }
-        
-        return kRunningAction;
-    }
-    
-    
-    return kDribbleAction;
-}
+//-(EventType)getPlayerEventTypeForLocation:(BoardLocation*)location {
+//    
+//    // INHERIT PLAYER FROM kEventSequence
+//    
+//    Card* playerPerformingAction = [_currentAction playerPerformingAction];
+//    
+//    if (playerPerformingAction.ball){
+//        
+//        for (Card *player in [[playerPerformingAction.manager deck] inGame]) {
+//            if ([player.location isEqual:location]) { // SHOULD PASS
+//                if (![player isEqual:_currentAction.playerPerformingAction]) {
+//                    NSLog(@"pass to: %@ : %d %d", player.nameForCard, location.x, location.y);
+//                    return kEventKickPass;
+//                }
+//            }
+//        }
+//        
+//    }
+//    
+//    if (![self willHaveBallForCurrentAction]) {
+//        
+//        for (Card *player in [[_opponent deck] inGame]) {
+//            if ([player.location isEqual:location]) { // SHOULD CHALLENGE
+//                if (player.ball) {
+//                    return kChallengeAction;
+//                }
+//            }
+//        }
+//        
+//        return kRunningAction;
+//    }
+//    
+//    
+//    return kDribbleAction;
+//}
 
 #pragma mark - PERFORMING EVENTS
 
--(void)performAction:(GameAction*)action record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
+-(void)performAction:(GameSequence*)action record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
     
     
     //[_gameScene cleanUpUIForAction:action];
@@ -1896,8 +1848,8 @@
     
     
     // BAD - BUT NEED THIS FOR REMOVE PLAYER EVENTS TO PROCESS ??
-    if (action.type == kEndTurnAction) {
-        [self updateActiveZone];
+    if (action.type == kEventEndTurn) {
+
     }
     
     if (shouldRecordSequence) {
@@ -1905,14 +1857,14 @@
         // FILTER MIDDLE EVENTS FOR PASS AND SHOOT
         
         
-        if (action.type == kShootAction || action.type == kPassAction) { // FIRST AND LAST FILTER
+        if (action.type == kEventKickGoal || action.type == kEventKickPass) { // FIRST AND LAST FILTER
             
             NSMutableArray *firstAndLast = [[NSMutableArray alloc]init];
             
-            [firstAndLast addObject:action.skillEvents.firstObject];
-            [firstAndLast addObject:action.skillEvents.lastObject];
+            [firstAndLast addObject:action.GameEvents.firstObject];
+            [firstAndLast addObject:action.GameEvents.lastObject];
             
-            action.skillEvents = firstAndLast;
+            action.GameEvents = firstAndLast;
             
         }
         
@@ -1920,7 +1872,7 @@
         
         [_thisTurnActions addObject:action];
         
-        action.tag = [self totalGameActions];
+        action.tag = [self totalGameSequences];
         action.wasSuccessful = [self rollAction:action];
         
         
@@ -1929,7 +1881,7 @@
         
         if (action.wasSuccessful) {
             
-            if (action.type == kShootAction) {
+            if (action.type == kEventKickGoal) {
                 
                 [self addGoalResetToAction:action];
             }
@@ -1937,22 +1889,22 @@
         }
         else { // NOT SUCCESSFUL
             
-            if (action.type == kShootAction) {
-                [self addGoalKickToAction:action];
+            if (action.type == kEventKickGoal) {
+                [self addGoalResetToAction:action];
             }
             
             if (action.isRunningAction) {
                 
                 NSMutableArray *new = [NSMutableArray array];
                 
-                [new addObject:action.skillEvents[0]];
-                [new addObject:action.skillEvents[1]];
+                [new addObject:action.GameEvents[0]];
+                [new addObject:action.GameEvents[1]];
                 
-                if (action.skillEvents.count > 2) {
+                if (action.GameEvents.count > 2) {
                     
-                    for (int a = 2; a < action.skillEvents.count; a++){
+                    for (int a = 2; a < action.GameEvents.count; a++){
                         
-                        SkillEvent *ev = action.skillEvents[a];
+                        GameEvent *ev = action.GameEvents[a];
                         
                         bool op = NO;
                         
@@ -1971,11 +1923,11 @@
                         
                     }
                     
-                    NSLog(@"failed run, removing %d events", action.skillEvents.count - new.count);
+                    NSLog(@"failed run, removing %d events", action.GameEvents.count - new.count);
                     
                 }
                 
-                action.skillEvents = new;
+                action.GameEvents = new;
                 
             }
         }
@@ -1985,7 +1937,7 @@
         // THEN SEND IT
         
         // log meta
-  
+        
         
         [self processMetaDataForAction:action];
         
@@ -2014,18 +1966,18 @@
     action.manager.ActionPoints -= action.totalCost;
     //action.manager.ActionPoints -= action.boost;
     
-    NSLog(@"---- %d -- ACTION -- %d ----", action.tag, action.skillEvents.count);
+    NSLog(@"---- %d -- ACTION -- %d ----", action.tag, action.GameEvents.count);
     
     actionIndex = action.tag;
     
-    [_gameScene refreshScoreBoard];
+    // [_gameScene refreshScoreBoard];
     
     // MAKE EVENT HEAP- reverse order copy of event array
     
     _eventHeap = [[NSMutableArray alloc]initWithCapacity:5];
     
-    for (int i = 0; i < action.skillEvents.count; i++){
-        [_eventHeap addObject:action.skillEvents[action.skillEvents.count - (i + 1)]];
+    for (int i = 0; i < action.GameEvents.count; i++){
+        [_eventHeap addObject:action.GameEvents[action.GameEvents.count - (i + 1)]];
     }
     
     
@@ -2088,10 +2040,10 @@
 
 -(BOOL)canPerformCurrentAction {
     
-    if (_currentAction.skillEvents.count) {
-        SkillEvent *last = [_currentAction.skillEvents lastObject];
+    if (_currentAction.GameEvents.count) {
+        GameEvent *last = [_currentAction.GameEvents lastObject];
         
-        if (last.type != kStartingAction) {
+        if (last.type != kEventSequence) {
             if (_currentAction.totalCost <= _currentAction.manager.ActionPoints) {
                 return 1;
             }
@@ -2107,11 +2059,11 @@
 
 
 
--(void)enumerateEventHeapForAction:(GameAction*)action record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
+-(void)enumerateEventHeapForAction:(GameSequence*)action record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
     
     if (_eventHeap.count) {
         
-        SkillEvent* event = [_eventHeap lastObject];
+        GameEvent* event = [_eventHeap lastObject];
         
         
         [self performEvent:event];
@@ -2151,7 +2103,7 @@
     }
 }
 
--(void)endAction:(GameAction*)action record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
+-(void)endAction:(GameSequence*)action record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
     
     if (shouldRecordSequence){
         
@@ -2159,18 +2111,18 @@
         
         if (shouldWin) {
             [_gameScene animateBigText:@"YOU WON !!" withCompletionBlock:^{
-             [self endTurn];
+                [self endTurn];
             }];
-           
+            
         }
         else if (shouldLose){
             [_gameScene animateBigText:@"YOU LOST !!" withCompletionBlock:^{
-              [self endTurn];
+                [self endTurn];
             }];
-          
+            
         }
         
-        else if (action.type == kEndTurnAction) {
+        else if (action.type == kEventEndTurn) {
             
             //[self sendAction:action perform:YES];
             
@@ -2288,7 +2240,7 @@
     
 }
 
--(BOOL)rollAction:(GameAction*)action {
+-(BOOL)rollAction:(GameSequence*)action {
     
     if(action.totalModifier == 0.0)
         return 1;
@@ -2307,7 +2259,7 @@
     
 }
 
--(void)logEvent:(SkillEvent*)event{
+-(void)logEvent:(GameEvent*)event{
     
     
     
@@ -2336,42 +2288,43 @@
 }
 
 
--(BOOL)performEvent:(SkillEvent*)event {
+-(BOOL)performEvent:(GameEvent*)event {
     
+    NSLog(@"perform event !!");
     // FIRST INHERIT WHO IS INVOLVED FROM PERSISTENT LOCATIONS
     
     [self getPlayerPointersForEvent:event];
     
     //event.manager.ActionPoints -= event.actionCost;
-
+    
 #pragma mark - CARD / SYSTEM EVENTS
     
-    if (event.type == kDrawAction || event.type == kTurnDrawAction) {
+    if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         
-        if (event.manager.deck.inHand.count < 7) {
-            
-            if (!event.manager.deck.theDeck.count) {
-                
-                NSLog(@"re-shuffle from graveyard");
-                
-                [event.manager.deck shuffleWithSeed:event.seed fromDeck:event.manager.deck.discarded];
-                event.manager.deck.discarded = @[];
-                
-                NSLog(@"shuffled new deck for %@, %d cards", event.manager.name, event.manager.deck.theDeck.count);
-            }
-            
-            
-            Card *newCard = [[event.manager deck] turnOverNextCard];
-            event.playerPerformingAction = newCard;
-            event.startingLocation = newCard.location;
-            
-        }
+//        if (event.manager.deck.inHand.count < 7) {
+//            
+//            if (!event.manager.deck.theDeck.count) {
+//                
+//                NSLog(@"re-shuffle from graveyard");
+//                
+//                [event.manager.deck shuffleWithSeed:event.seed fromDeck:event.manager.deck.discarded];
+//                event.manager.deck.discarded = @[];
+//                
+//                NSLog(@"shuffled new deck for %@, %d cards", event.manager.name, event.manager.deck.theDeck.count);
+//            }
+//            
+//            
+//            Card *newCard = [[event.manager deck] turnOverNextCard];
+//            event.playerPerformingAction = newCard;
+//            event.startingLocation = newCard.location;
+//            
+//        }
         
         //NSLog(@"Game.m : drawing card %@ for:%@", newCard.nameForCard, event.manager.name);
         
     }
     
-    else if (event.type == kSetBallAction) {
+    else if (event.type == kEventSetBallLocation) {
         
         if (_ball.player) {
             [_ball.player setBall:nil];
@@ -2381,192 +2334,86 @@
         _ball.location = event.location;
         
         //NSLog(@"Game.m : performEvent : setting inital ball carrier");
-        [[self playerAtLocation:event.location] setBall:_ball];
         
-        [self updateActiveZone];
+        [[self playerAtLocation:event.location] setBall:_ball];
         
     }
     
-    else if (event.type == kDeployEvent) {
+    else if (event.type == kEventAddPlayer){
         
+        Player *newPlayer = [event.manager.playersMutable lastObject];
+        
+        [event.manager.playersMutable removeLastObject];
+        
+        event.playerPerformingAction = newPlayer;
         
         event.playerPerformingAction.location = [event.location copy];
         [gameBoard setObject:[event.location copy] forKey:event.playerPerformingAction];
         
-        //NSLog(@">> %d, Game.m : deploying : %ld %ld : %@", event.actionSlot, (long)playerPerformingAction.location.x, (long)playerPerformingAction.location.y, playerPerformingAction.nameForCard);
-        
     }
     
-    else if (event.type == kSpawnKeeperEvent) {
-        
-
-        
-        NSArray* deck = event.manager.deck.theDeck;
-        
-        for (int i = 0; i<deck.count; i++) {
-            
-            Card* c = deck[i];
-            
-            if ([c isTypeKeeper]){
-                event.playerPerformingAction = c;
-
-                break;
-            }
-            
-        }
-        
-        if([event.manager.deck playCardFromDeck:event.playerPerformingAction]){
-            NSLog(@"DEPLOYING KEEPER FROM DECK");
-            event.playerPerformingAction.location = [event.location copy];
-            [gameBoard setObject:[event.location copy] forKey:event.playerPerformingAction];
-            
-        }
-        
-    }
-    
-    else if (event.type == kSpawnPlayerEvent){
-
-        Card *newPlayer;
-        
-        NSArray* deck = event.manager.deck.theDeck;
-        for (int i = 0; i<deck.count; i++) {
-            
-            Card* c = deck[i];
-            
-            if ([c isTypePlayer]){
-                event.playerPerformingAction = c;
-                newPlayer = c;
-                break;
-            }
-            
-        }
-        
-        if (!newPlayer) {
-            NSLog(@"re-shuffle from graveyard");
-            
-            NSLog(@"Discarding deck first");
-            
-            NSArray *allDeck = [event.manager.deck.theDeck copy];
-            
-            for (Card *c in allDeck) {
-                [event.manager.deck discardCardFromDeck:c];
-            }
-            
-            [event.manager.deck shuffleWithSeed:event.seed fromDeck:event.manager.deck.discarded];
-            event.manager.deck.discarded = @[];
-            
-            NSLog(@"shuffled new deck for %@, %d cards", event.manager.name, event.manager.deck.theDeck.count);
-            
-            
-            for (int i = 0; i<event.manager.deck.theDeck.count; i++) {
-                
-                Card* c = event.manager.deck.theDeck[i];
-                if ([c isTypePlayer]){
-                    event.playerPerformingAction = c;
-                    newPlayer = c;
-                    break;
-                }
-                
-            }
-            
-            if (!newPlayer) {
-                NSLog(@"STILL NO PLAYER AFTER RESHUFFLE - FAILING");
-            }
-            
-        }
-        
-        
-        if([event.manager.deck playCardFromDeck:event.playerPerformingAction]){
-            // NSLog(@"DEPLOYING PLAYER FROM DECK");
-            event.playerPerformingAction.location = [event.location copy];
-            [gameBoard setObject:[event.location copy] forKey:event.playerPerformingAction];
-            
-        }
-        
-        
-        
-    }
-    
-    else if (event.type == kPlayCardAction) {
-        //NSLog(@">> %d, Game.m Play card event!", event.actionSlot);
-        if (![event.manager.deck playCardFromHand:event.playerPerformingAction]){
-            NSLog(@"Game.m : failed to get card from hand, maybe already in play?");
-        }
-        
-    }
-    
-    else if (event.type == kEnchantAction) {
-        
-        
-        Card *enchantment = event.playerPerformingAction;
-        Card *enchantee = event.playerReceivingAction;
-        
-        if (!enchantee) {
-            NSLog(@"somehow player dissapeared! enchant fail");
-        }
-        
-        if (enchantment.actionPointEarn) { // AP BOOST
-            // NSLog(@"Game.m : enchant! boost + %d", enchantment.actionPointEarn);
-            event.manager.ActionPoints += enchantment.actionPointEarn;
-            [event.manager.deck discardCardFromGame:enchantment];
-            
-        }
-        
-        else { // CARD ENCHANTMENT
-            //NSLog(@"Game.m : enchant player: %@", enchantee.nameForCard);
-            [enchantee addEnchantment:event.playerPerformingAction]; // PlayerPerformingAction is the enchantment, not the enchantee
-        }
-        
-    }
-    
-    else if (event.type == kRemovePlayerAction) {
+    else if (event.type == kEventRemovePlayer) {
         
         //NSLog(@"**should discard player**");
         
         event.playerPerformingAction = [self playerAtLocation:event.location];
         
-        Card *p = event.playerPerformingAction;
+        Player *p = event.playerPerformingAction;
         
         //NSLog(@">> %d discarding player: %@", event.actionSlot, p.nameForCard);
         
         for (Card *e in p.enchantments) {
-            [p.manager.deck discardCardFromGame:e];
+            [e discard];
         }
         
         p.enchantments = nil;
-        
-        [p.manager.deck discardCardFromGame:p];
         
         [gameBoard removeObjectForKey:p];
         
         
     }
-
-    else if (event.type == kMoveFieldAction){
-        
-        [self updateActiveZone];
-        
-        //NSLog(@"performing end turn event");
-        
+    
+    else if (event.type == kEventPlayCard) {
+        //NSLog(@">> %d, Game.m Play card event!", event.actionSlot);
+        if (![event.card.deck playCardFromHand:event.card]){
+            NSLog(@"Game.m : failed to get card from hand, maybe already in play?");
+        }
         
     }
     
-    else if (event.type == kEndTurnAction){
+    else if (event.type == kEventAddSpecial) {
+        
+        Player *enchantee = event.playerReceivingAction;
+        
+        if (!enchantee) {
+            NSLog(@"somehow player dissapeared! enchant fail");
+        }
+        
+        if (event.card.actionPointEarn) { // DISCARD IMMEDIATELY
+            // NSLog(@"Game.m : enchant! boost + %d", enchantment.actionPointEarn);
+//            event.manager.ActionPoints += enchantment.actionPointEarn;
+//            [event.card.deck discardCardFromGame:enchantment];
+//            
+        }
+        
+        else { // CARD ENCHANTMENT
+            //NSLog(@"Game.m : enchant player: %@", enchantee.nameForCard);
+            [enchantee addEnchantment:event.card]; // PlayerPerformingAction is the enchantment, not the enchantee
+        }
+        
+    }
+    
+
+    else if (event.type == kEventEndTurn){
         
         //[self updateActiveZone];
-       
+        
         //NSLog(@"performing end turn event");
-         [self purgeTemporaryEnchantments];
+        [self purgeTemporaryEnchantments];
         
     }
-    
-    else if (event.type == kPurgeEnchantmentsAction){
-        
-       
-        
-    }
-    
-    else if (event.type == kGoalResetAction){
+
+    else if (event.type == kEventResetPlayers){
         
         // NSLog(@"resetting coin toss position");
         
@@ -2574,27 +2421,13 @@
         _ball.player = nil;
         
         
-        
-    }
-    
-    else if (event.type == kGoaliePass){ // PASS
-        //NSLog(@"pass!");
-        [event.playerPerformingAction setBall:Nil];
-        
-        Card *c = [self playerAtLocation:event.location];
-        
-        [c setBall:_ball];
-        //NSLog(@"Game.m : performEvent : passing to: %@ at %ld,%ld",c.nameForCard, (long)c.location.x, (long)c.location.y);
-        [_ball setLocation:[c.location copy]];
-        [self updateActiveZone];
-        
     }
     
     
-    else if (event.type == kStartTurnAction){
+    else if (event.type == kEventStartTurn){
         
         //NSLog(@"performing start turn");
-        event.manager.ActionPoints = [self getActionPointsForManager:event.manager];
+       // event.manager.ActionPoints = [self getActionPointsForManager:event.manager];
         
         
         //        [self assignBallIfPossible];
@@ -2604,11 +2437,11 @@
         
     }
     
-    else if (event.type == kShuffleAction) {
+    else if (event.type == kEventShuffleDeck) {
         
         //NSLog(@"shuffling %@'s deck", event.manager);
         
-        [event.manager.deck shuffleWithSeed:event.seed fromDeck:event.manager.deck.allCards];
+        [event.deck shuffleWithSeed:event.seed fromDeck:event.deck.allCards];
         
         
         // START TEST
@@ -2640,7 +2473,7 @@
     
     if (event.parent.wasSuccessful) {
         
-        if (event.type == kStartingAction ) {
+        if (event.type == kEventSequence ) {
             
             //NSLog(@"%d Game.m : Start Player Events", event.actionSlot);
             
@@ -2665,7 +2498,7 @@
             
             // CHALLENGE
             
-            if (event.type == kChallengeAction) {
+            if (event.type == kEventChallenge) {
                 
                 //NSLog(@">> %d Game.m : challengeAction : SUCCEEDED", event.actionSlot);
                 
@@ -2705,20 +2538,17 @@
             
         }
         
-        else if (event.type == kPassAction){ // PASS
+        else if (event.type == kEventKickPass){ // PASS
             //NSLog(@"pass!");
             [event.playerPerformingAction setBall:Nil];
             
             event.playerReceivingAction = [self playerAtLocation:event.location];
             
-            Card *c = event.playerReceivingAction;
-            [c setBall:_ball];
-            //NSLog(@"Game.m : performEvent : passing to: %@ at %ld,%ld",c.nameForCard, (long)c.location.x, (long)c.location.y);
-            [_ball setLocation:[c.location copy]];
-            
-            
+            Player *p = event.playerReceivingAction;
+            [p setBall:_ball];
         }
-        else if (event.type == kShootAction){ // SHOOT
+        
+        else if (event.type == kEventKickGoal){ // SHOOT
             //NSLog(@"shoot!");
             
             //for (int i = 0; i < 5; i++) {
@@ -2754,7 +2584,7 @@
         
         if (event.isRunningEvent) {
             
-            if (event.type != kChallengeAction) {
+            if (event.type != kEventChallenge) {
                 event.playerPerformingAction.location = [event.location copy];
                 [gameBoard setObject:event.location forKey:event.playerPerformingAction];
                 //NSLog(@"moving to location %d %d", event.location.x, event.location.y);
@@ -2775,25 +2605,20 @@
             
         }
         
-        else if (event.type == kShootAction){ // FAILED SHOT
-            // NSLog(@"No GOAL :(   :(   :(   :(");
-            //ball go to location of goalie
-            if (event.manager.teamSide)
-                [_ball setLocation:[BoardLocation pX:0 Y:1]];
-            else
-                [_ball setLocation:[BoardLocation pX:BOARD_LENGTH-1 Y:1]];
-            
-            for (Card *c in [gameBoard allKeys]){
-                if ([c.location isEqual:_ball.location]) {
-                    [c setBall:_ball];
-                }
-            }
-            
-            
+        else if (event.type == kEventKickGoal){ // FAILED SHOT
+//            // NSLog(@"No GOAL :(   :(   :(   :(");
+//            //ball go to location of goalie
+//            if (event.manager.teamSide)
+//                [_ball setLocation:[BoardLocation pX:0 Y:1]];
+//            else
+//                [_ball setLocation:[BoardLocation pX:BOARD_LENGTH-1 Y:1]];
+//            
+//            [self assignBallIfPossible];
+
             //[self endTurn];
         }
         
-        else if (event.type == kPassAction){ // FAILED PASS
+        else if (event.type == kEventKickPass){ // FAILED PASS
             [event.playerPerformingAction setBall:Nil];
             _ball.player = Nil;
             _ball.location = [self passFail:event];
@@ -2810,11 +2635,11 @@
 
 #pragma mark - META DATA
 
--(void)processMetaDataForAction:(GameAction*)action {
+-(void)processMetaDataForAction:(GameSequence*)action {
     
     action.manager.actionPointsSpent += action.totalCost;
     
-    for (SkillEvent *e in action.skillEvents) {
+    for (GameEvent *e in action.GameEvents) {
         
         Manager* m = e.manager;
         
@@ -2825,34 +2650,30 @@
         
         switch (e.type) {
                 
-            case kStartTurnAction:
-                m.actionPointsEarned += [self getActionPointsForManager:m];
+            case kEventStartTurn:
                 break;
                 
-            case kPlayCardAction:
+            case kEventPlayCard:
                 m.cardsPlayed++;
-                if (e.playerPerformingAction.isTypeBoost) {
-                    m.actionPointsEarned += e.playerPerformingAction.actionPointEarn;
-                }
                 break;
                 
-            case kShootAction:
+            case kEventKickGoal:
                 m.attemptedGoals++;
                 break;
                 
-            case kChallengeAction:
+            case kEventChallenge:
                 m.attemptedSteals++;
                 break;
                 
-            case kPassAction:
+            case kEventKickPass:
                 m.attemptedPasses++;
                 break;
                 
-            case kDrawAction:
+            case kEventDraw:
                 m.cardsDrawn++;
                 break;
                 
-            case kDeployEvent:
+            case kEventAddPlayer:
                 m.playersDeployed++;
                 break;
                 
@@ -2866,15 +2687,15 @@
             
             switch (e.type) {
                     
-                case kShootAction:
+                case kEventKickGoal:
                     m.successfulGoals++;
                     break;
                     
-                case kChallengeAction:
+                case kEventChallenge:
                     m.successfulSteals++;
                     break;
                     
-                case kPassAction:
+                case kEventKickPass:
                     m.successfulPasses++;
                     break;
                     
@@ -2922,18 +2743,18 @@
 
 #pragma mark - INTEROGATION CONVENIENCE
 
--(BoardLocation*)passFail:(SkillEvent*)event {
+-(BoardLocation*)passFail:(GameEvent*)event {
     
     NSLog(@"calculate failed pass!");
     
-
-    int randomX = event.location.x + ([event.manager.deck randomForIndex:event.seed]%3 - 1);
-    int randomY = event.location.y + ([event.manager.deck randomForIndex:event.seed+1]%3 - 1);
     
-//    while ([[BoardLocation pX:randomX Y:randomY] isEqual:event.location]) {
-//       randomX = event.location.x + ([event.manager.deck randomForIndex:event.seed]%3 - 1);
-//       randomY = event.location.y + ([event.manager.deck randomForIndex:event.seed+1]%3 - 1);
-//    }
+    int randomX = event.location.x + ([event.deck randomForIndex:event.seed]%3 - 1);
+    int randomY = event.location.y + ([event.deck randomForIndex:event.seed+1]%3 - 1);
+    
+    //    while ([[BoardLocation pX:randomX Y:randomY] isEqual:event.location]) {
+    //       randomX = event.location.x + ([event.manager.deck randomForIndex:event.seed]%3 - 1);
+    //       randomY = event.location.y + ([event.manager.deck randomForIndex:event.seed+1]%3 - 1);
+    //    }
     
     randomX = MIN(MAX(0, randomX), BOARD_LENGTH-1);
     randomY = MIN(MAX(0, randomY), BOARD_WIDTH-1);
@@ -2943,10 +2764,10 @@
 }
 
 -(NSSet*)temporaryEnchantments {
-     NSMutableSet *temp = [NSMutableSet set];
+    NSMutableSet *temp = [NSMutableSet set];
     
-    for (Card* player in gameBoard.allKeys) {
-
+    for (Player* player in gameBoard.allKeys) {
+        
         for (Card* e in player.enchantments) {
             if (e.isTemporary) {
                 [temp addObject:e];
@@ -2962,7 +2783,7 @@
 
 -(void)purgeTemporaryEnchantments {
     
-    for (Card* player in gameBoard.allKeys) {
+    for (Player* player in gameBoard.allKeys) {
         
         NSMutableSet *rem;
         
@@ -2972,7 +2793,7 @@
                     rem = [NSMutableSet set];
                 }
                 [rem addObject:e];
-                [player.manager.deck discardCardFromGame:e];
+                [e discard];
             }
         }
         
@@ -2984,53 +2805,53 @@
     
 }
 
--(void)updateActiveZone {
-    
-    if (!_activeZone) {
-        _activeZone = [BoardLocation pX:(BOARD_LENGTH/2)-1 Y:(BOARD_LENGTH/2)+3];
-        
-    }
-    
-    if (_ball) {
-        
-        if (_ball.player) {
-            
-            if (_ball.player.manager.teamSide) {
-                _activeZone.x = _ball.player.location.x - 3;
-                _activeZone.y = _ball.player.location.x + 1;
-                NSLog(@"Game.m : updateActiveZone : player 1 has ball");
-            }
-            else {
-                
-                _activeZone.x = _ball.player.location.x - 1;
-                _activeZone.y = _ball.player.location.x + 3;
-                NSLog(@"Game.m : updateActiveZone : player 0 has ball");
-            }
-            
-            _zoneActive = YES;
-            
-        }
-        
-        else {
-            _zoneActive = NO;
-        }
-        
-        
-    }
-    
-    if (_activeZone.x <= 0) {
-        _activeZone.x = 0;
-        _activeZone.y = 4;
-    }
-    
-    else if (_activeZone.y >= BOARD_LENGTH) {
-        _activeZone.y = BOARD_LENGTH;
-        _activeZone.x = BOARD_LENGTH - 4;
-    }
-    
-    NSLog(@"zone is : %d %d", _activeZone.x, _activeZone.y);
-    
-}
+//-(void)updateActiveZone {
+//    
+//    if (!_activeZone) {
+//        _activeZone = [BoardLocation pX:(BOARD_LENGTH/2)-1 Y:(BOARD_LENGTH/2)+3];
+//        
+//    }
+//    
+//    if (_ball) {
+//        
+//        if (_ball.player) {
+//            
+//            if (_ball.player.manager.teamSide) {
+//                _activeZone.x = _ball.player.location.x - 3;
+//                _activeZone.y = _ball.player.location.x + 1;
+//                NSLog(@"Game.m : updateActiveZone : player 1 has ball");
+//            }
+//            else {
+//                
+//                _activeZone.x = _ball.player.location.x - 1;
+//                _activeZone.y = _ball.player.location.x + 3;
+//                NSLog(@"Game.m : updateActiveZone : player 0 has ball");
+//            }
+//            
+//            _zoneActive = YES;
+//            
+//        }
+//        
+//        else {
+//            _zoneActive = NO;
+//        }
+//        
+//        
+//    }
+//    
+//    if (_activeZone.x <= 0) {
+//        _activeZone.x = 0;
+//        _activeZone.y = 4;
+//    }
+//    
+//    else if (_activeZone.y >= BOARD_LENGTH) {
+//        _activeZone.y = BOARD_LENGTH;
+//        _activeZone.x = BOARD_LENGTH - 4;
+//    }
+//    
+//    NSLog(@"zone is : %d %d", _activeZone.x, _activeZone.y);
+//    
+//}
 
 -(BOOL)requireEmptyLocation:(BoardLocation*)location {
     return ![self requirePlayerAtLocation:location];
@@ -3043,8 +2864,8 @@
     return 0;
 }
 
--(Card*)playerAtLocation:(BoardLocation*)location {
-    for (Card* inPlay in [gameBoard allKeys]) {
+-(Player*)playerAtLocation:(BoardLocation*)location {
+    for (Player* inPlay in [gameBoard allKeys]) {
         if ([inPlay.location isEqual:location]) {
             return inPlay;
         }
@@ -3052,46 +2873,14 @@
     return Nil;
 }
 
--(Card*)cardInHandForManager:(Manager*)m location:(BoardLocation*)location {
-    for (Card* inHand in m.deck.inHand) {
-        if ([inHand.location isEqual:location]) {
-            return inHand;
-        }
-    }
-    return Nil;
-}
-
--(Card*)cardInDeckForManager:(Manager*)m location:(BoardLocation*)location {
-    for (Card* inDeck in m.deck.theDeck) {
-        if ([inDeck.location isEqual:location]) {
-            return inDeck;
-        }
-    }
-    return Nil;
-}
-
--(Card*)goalieForManager:(Manager*)m {
-    for (Card* inPlay in [m.deck inGame]) {
-        if ([inPlay isTypeKeeper]) {
-            return inPlay;
-        }
-    }
-    return Nil;
-    
-}
 
 -(BOOL)requirePossesion:(Manager*)m {
-    for (Card *c in m.deck.inGame) {
-        if (c.ball) {
-            return YES;
-        }
-    }
-    return NO;
+    return m.hasPossesion;
 }
 
 -(BOOL)requireLastActionSucessful {
     
-    GameAction *lastAction = [self lastAction];
+    GameSequence *lastAction = [self lastAction];
     if (lastAction.wasSuccessful) {
         return YES;
     }
@@ -3099,8 +2888,8 @@
     return NO;
 }
 
--(BOOL)requireLastActionType:(ActionType)type {
-    GameAction *lastAction = [self lastAction];
+-(BOOL)requireLastEventType:(EventType)type {
+    GameSequence *lastAction = [self lastAction];
     if (lastAction.type == type) {
         return YES;
     }
@@ -3108,21 +2897,21 @@
     return NO;
 }
 
--(GameAction*)lastAction {
+-(GameSequence*)lastAction {
     return [_thisTurnActions lastObject];
     return nil;
 }
 
--(Card*)lastActionPlayer {
+-(Player*)lastActionPlayer {
     
-    GameAction *lastAction = [self lastAction];
+    GameSequence *lastAction = [self lastAction];
     
-    if (lastAction.type != kEnchantAction) {
+    if (lastAction.type != kEventAddSpecial) {
         
         if ([lastAction isRunningAction]) {
             return lastAction.playerPerformingAction;
         }
-        else if (lastAction.type == kPassAction){
+        else if (lastAction.type == kEventKickPass){
             return lastAction.playerReceivingAction;
         }
         
@@ -3131,69 +2920,63 @@
     return Nil;
 }
 
--(SkillEvent*)firstEvent {
+-(GameEvent*)firstEvent {
     
-    return _currentAction.skillEvents[0];
+    return _currentAction.GameEvents[0];
     
 }
 
 -(void)assignBallIfPossible {
     
-    if (!_ball.player) {
-        
-        Card* player = [self playerAtLocation:_ball.location];
-        
-        if (player) {
-            
-            player.ball = _ball;
-            
+    for (Player *p in [gameBoard allKeys]){
+        if ([p.location isEqual:_ball.location]) {
+            [p setBall:_ball];
         }
-        
     }
-    
+
 }
 
--(BOOL)canDraw {
-    if (_me.ActionPoints >= 1) {
-        if (_me.deck.theDeck.count && _me.deck.inHand.count < 7) {
-            return 1;
-        }
-    }
-    return 0;
-}
+//-(BOOL)canDraw {
+//    if (_me.ActionPoints >= 1) {
+//        if (_me.deck.theDeck.count && _me.deck.inHand.count < 7) {
+//            return 1;
+//        }
+//    }
+//    return 0;
+//}
 
--(BOOL)requestDrawAction {
-    
-    if (_myTurn) {
-        
-        if ([self canDraw]) {
-            
-            _currentAction = [GameAction action];
-            NSLog(@"Game.m : requestDrawAction");
-            
-            SkillEvent* draw = [self addDrawEventToAction:_currentAction forManager:_me];
-            
-            if (draw) {
-                
-                draw.actionCost = 1;
-                
-                if ([self shouldPerformCurrentAction]){
-                    return 1;
-                }
-            }
-            
-        }
-        
-        
-        
-    }
-    
-    
-    return 0;
-}
+//-(BOOL)requestDrawAction {
+//    
+//    if (_myTurn) {
+//        
+//        if ([self canDraw]) {
+//            
+//            _currentAction = [GameSequence action];
+//            NSLog(@"Game.m : requestDrawAction");
+//            
+//            GameEvent* draw = [self addDrawEventToAction:_currentAction forManager:_me];
+//            
+//            if (draw) {
+//                
+//                draw.actionCost = 1;
+//                
+//                if ([self shouldPerformCurrentAction]){
+//                    return 1;
+//                }
+//            }
+//            
+//        }
+//        
+//        
+//        
+//    }
+//    
+//    
+//    return 0;
+//}
 
 -(BOOL)willHaveBallForCurrentAction {
-    for (SkillEvent *e in _currentAction.skillEvents) { // Will have successfully picked up or challenged
+    for (GameEvent *e in _currentAction.GameEvents) { // Will have successfully picked up or challenged
         if ([e.location isEqual:_ball.location]) {
             // NSLog(@"found event with ball is : %d : %d current", e.actionSlot, event.actionSlot);
             // return e.actionSlot < event.actionSlot;
@@ -3204,9 +2987,9 @@
     return 0;
 }
 
--(BOOL)willHaveBallDuringEvent:(SkillEvent*)event {
+-(BOOL)willHaveBallDuringEvent:(GameEvent*)event {
     
-    for (SkillEvent *e in event.parent.skillEvents) { // Will have successfully picked up or challenged
+    for (GameEvent *e in event.parent.GameEvents) { // Will have successfully picked up or challenged
         if ([e.location isEqual:_ball.location]) {
             NSLog(@"found event with ball is : %d : %d current", e.actionSlot, event.actionSlot);
             return e.actionSlot < event.actionSlot;
@@ -3246,19 +3029,19 @@
     
 }
 
--(int)getActionPointsForManager:(Manager*)m {
-    
-    int ap = 0;
-    for (Card* c in m.deck.inGame) {
-        ap += c.actionPointEarn;
-    }
-    
-    return ap;
-    
-}
+//-(int)getActionPointsForManager:(Manager*)m {
+//    
+//    int ap = 0;
+//    for (Card* c in m.deck.inGame) {
+//        ap += c.actionPointEarn;
+//    }
+//    
+//    return ap;
+//    
+//}
 
 
--(Abilities*)playerAbilitiesWithMod:(Card*)player {
+-(Abilities*)playerAbilitiesWithMod:(Player*)player {
     
     Abilities *temp = [player.abilities copy];
     
@@ -3266,7 +3049,7 @@
         [temp add:e.abilities];
     }
     
-    for (Card *c in player.manager.deck.inGame) {
+    for (Card *c in player.manager.cardsInGame) {
         if ([self isAdjacent:c.location to:player.location]) {
             [temp add:c.nearTeamModifiers];
             
@@ -3285,7 +3068,7 @@
     
     Manager *op = [self opponentForManager:player.manager];
     
-    for (Card *c in op.deck.inGame) {
+    for (Card *c in op.cardsInGame) {
         if ([self isAdjacent:c.location to:player.location]) {
             [temp add:c.nearOpponentModifiers];
         }
@@ -3385,7 +3168,7 @@
     return actions;
 }
 
--(int)totalGameActions {
+-(int)totalGameSequences {
     int actions = [self actionCountForArray:_history];
     actions += _thisTurnActions.count;
     return actions;
@@ -3524,85 +3307,85 @@
     return [[self IndexesAndIntersectionsFromPoint:start To:end] objectForKey:@"indexes"];
 }
 
--(float)checkLocationForDribbleModifiers:(BoardLocation*)location forTeam:(Manager*)manager{
-    float modifier = 0.;
-    
-    if (location) {
-        for (Card* card in manager.deck.inGame) {
-            if ([self isAdjacent:card.location to:location] == -1) {
-                modifier = -0.2;
-            }
-            else if ([self isAdjacent:card.location to:location] == 1){
-                modifier = -0.1;
-            }
-        }
-    }
-    //    // FORCE FIRST DRIBBLE TO 0
-    //    if ([location isEqual:_currentAction.playerPerformingAction.location]) {
-    //        modifier = 0.;
-    //    }
-    
-    return modifier;
-}
+//-(float)checkLocationForDribbleModifiers:(BoardLocation*)location forTeam:(Manager*)manager{
+//    float modifier = 0.;
+//    
+//    if (location) {
+//        for (Card* card in manager.deck.inGame) {
+//            if ([self isAdjacent:card.location to:location] == -1) {
+//                modifier = -0.2;
+//            }
+//            else if ([self isAdjacent:card.location to:location] == 1){
+//                modifier = -0.1;
+//            }
+//        }
+//    }
+//    //    // FORCE FIRST DRIBBLE TO 0
+//    //    if ([location isEqual:_currentAction.playerPerformingAction.location]) {
+//    //        modifier = 0.;
+//    //    }
+//    
+//    return modifier;
+//}
 
--(float)checkLocationForPassModifiers:(BoardLocation*)location forTeam:(Manager*)manager{
-    NSInteger playersInTheWay = 0.;
-    NSSet *obstacles = [self digitalDifferentialAnalysisFrom:_currentAction.playerPerformingAction.location To:location];
-    NSMutableArray *verifiedObstacles = [NSMutableArray array];
-    for (Card* card in _opponent.deck.inGame){
-        if([obstacles containsObject:card.location]){
-            playersInTheWay++;
-            [verifiedObstacles addObject:[BoardLocation pX:card.location.x Y:card.location.y]];
-        }
-    }
-    //    [_gameScene setTilesToAlert:verifiedObstacles];
-    // NSLog(@"Game.m : checkLocationForPassModifiers : # players to pass through:%d",playersInTheWay);
-    //    for (Card* card in manager.deck.inGame) {
-    //        if ([self isAdjacent:card.location to:location] == -1) {
-    //            modifier = -0.2;
-    //        }
-    //        else if ([self isAdjacent:card.location to:location] == 1){
-    //            modifier = -0.1;
-    //        }
-    //    }
-    float obstacleMod = -.1*playersInTheWay;
-    float threatMod = [self checkLocationForDribbleModifiers:_currentAction.playerPerformingAction.location forTeam:manager];
-    float xMod = -.1*(abs(_currentAction.playerPerformingAction.location.x - location.x));
-    float yMod = -.1*(abs(_currentAction.playerPerformingAction.location.y - location.y));
-    NSLog(@"obst: %1f, threat: %1f, x:%1f, y:%1f", obstacleMod,threatMod,xMod,yMod);
-    return obstacleMod + threatMod + xMod + yMod;
-    
-}
+//-(float)checkLocationForPassModifiers:(BoardLocation*)location forTeam:(Manager*)manager{
+//    NSInteger playersInTheWay = 0.;
+//    NSSet *obstacles = [self digitalDifferentialAnalysisFrom:_currentAction.playerPerformingAction.location To:location];
+//    NSMutableArray *verifiedObstacles = [NSMutableArray array];
+//    for (Card* card in _opponent.deck.inGame){
+//        if([obstacles containsObject:card.location]){
+//            playersInTheWay++;
+//            [verifiedObstacles addObject:[BoardLocation pX:card.location.x Y:card.location.y]];
+//        }
+//    }
+//    //    [_gameScene setTilesToAlert:verifiedObstacles];
+//    // NSLog(@"Game.m : checkLocationForPassModifiers : # players to pass through:%d",playersInTheWay);
+//    //    for (Card* card in manager.deck.inGame) {
+//    //        if ([self isAdjacent:card.location to:location] == -1) {
+//    //            modifier = -0.2;
+//    //        }
+//    //        else if ([self isAdjacent:card.location to:location] == 1){
+//    //            modifier = -0.1;
+//    //        }
+//    //    }
+//    float obstacleMod = -.1*playersInTheWay;
+//    float threatMod = [self checkLocationForDribbleModifiers:_currentAction.playerPerformingAction.location forTeam:manager];
+//    float xMod = -.1*(abs(_currentAction.playerPerformingAction.location.x - location.x));
+//    float yMod = -.1*(abs(_currentAction.playerPerformingAction.location.y - location.y));
+//    NSLog(@"obst: %1f, threat: %1f, x:%1f, y:%1f", obstacleMod,threatMod,xMod,yMod);
+//    return obstacleMod + threatMod + xMod + yMod;
+//    
+//}
 
--(float)checkLocationForShootModifiers:(BoardLocation*)location forTeam:(Manager*)manager{
-    
-    return [self checkLocationForPassModifiers:location forTeam:manager];
-    
-    //    float obstacleMod = -.1*playersInTheWay;
-    //    float threatMod = [self checkLocationForDribbleModifiers:_currentAction.playerPerformingAction.location forTeam:manager];
-    //    float xMod = -.1*(abs(_currentAction.playerPerformingAction.location.x - location.x));
-    //    float yMod = -.1*(abs(_currentAction.playerPerformingAction.location.y - location.y));
-    //    NSLog(@"obst: %1f, threat: %1f, x:%1f, y:%1f", obstacleMod,threatMod,xMod,yMod);
-    //    return threatMod + xMod + yMod;
-    
-}
-
--(float)checkLocationForChallengeModifiers:(BoardLocation*)location forTeam:(Manager*)manager{
-    float modifier = 0.;
-    
-    modifier -= [[self playerAtLocation:location] abilities].handling;
-    
-    for (Card* card in manager.opponent.deck.inGame) {
-        if ([self isAdjacent:card.location to:location]) {
-            if (![card isEqual:_currentAction.playerPerformingAction]) {
-                modifier += .1;
-            }
-            
-        }
-    }
-    
-    return modifier;
-}
+//-(float)checkLocationForShootModifiers:(BoardLocation*)location forTeam:(Manager*)manager{
+//    
+//    return [self checkLocationForPassModifiers:location forTeam:manager];
+//    
+//    //    float obstacleMod = -.1*playersInTheWay;
+//    //    float threatMod = [self checkLocationForDribbleModifiers:_currentAction.playerPerformingAction.location forTeam:manager];
+//    //    float xMod = -.1*(abs(_currentAction.playerPerformingAction.location.x - location.x));
+//    //    float yMod = -.1*(abs(_currentAction.playerPerformingAction.location.y - location.y));
+//    //    NSLog(@"obst: %1f, threat: %1f, x:%1f, y:%1f", obstacleMod,threatMod,xMod,yMod);
+//    //    return threatMod + xMod + yMod;
+//    
+//}
+//
+//-(float)checkLocationForChallengeModifiers:(BoardLocation*)location forTeam:(Manager*)manager{
+//    float modifier = 0.;
+//    
+//    modifier -= [[self playerAtLocation:location] abilities].handling;
+//    
+//    for (Card* card in manager.opponent.deck.inGame) {
+//        if ([self isAdjacent:card.location to:location]) {
+//            if (![card isEqual:_currentAction.playerPerformingAction]) {
+//                modifier += .1;
+//            }
+//            
+//        }
+//    }
+//    
+//    return modifier;
+//}
 
 
 #pragma mark - ARCHIVING
@@ -3670,11 +3453,11 @@
     _thisTurnActions = [[unarchiver decodeObjectForKey:@"thisTurnActions"] mutableCopy];
     
     for (NSArray* turn in _history) {
-        for (GameAction *action in turn) {
+        for (GameSequence *action in turn) {
             [self setUpPointersForActionArray:action];
         }
     }
-    for (GameAction *action in _thisTurnActions) {
+    for (GameSequence *action in _thisTurnActions) {
         [self setUpPointersForActionArray:action];
     }
     
@@ -3684,10 +3467,10 @@
     
 }
 
--(void)setUpPointersForActionArray:(GameAction*)action{
+-(void)setUpPointersForActionArray:(GameSequence*)action{
     
-    for (int i =0; i<action.skillEvents.count; i++) {
-        SkillEvent *e = action.skillEvents[i];
+    for (int i =0; i<action.GameEvents.count; i++) {
+        GameEvent *e = action.GameEvents[i];
         e.parent = action;
         e.manager = [self managerForTeamSide:e.teamSide];
     }
@@ -3777,7 +3560,7 @@
     NSLog(@"**--**-- CURRENT GAME DATA --**--**");
     NSLog(@"history is %d turns", _history.count);
     NSLog(@"this turn has %d actions", _thisTurnActions.count);
-    NSLog(@"**** TOTAL ACTIONS: %d EVENTS:%d ****", [self totalGameActions], [self totalEvents]);
+    NSLog(@"**** TOTAL ACTIONS: %d EVENTS:%d ****", [self totalGameSequences], [self totalEvents]);
     NSString *realtime = @"INACTIVE";
     
     if (rtIsActive) {
@@ -3803,7 +3586,7 @@
     
     NSMutableArray *tmp = [[NSMutableArray alloc] initWithCapacity:10];
     
-    for (GameAction* a in src) {
+    for (GameSequence* a in src) {
         
         [tmp addObject:a];
         
@@ -3843,7 +3626,7 @@
         }
         
         NSLog(@"Game.m : endTurn : ENDING TURN: NEXT IS: %@", nextParticipant.playerID);
-        NSLog(@"**** ACTIONS: %d EVENTS:%d ****", [self totalGameActions], [self totalEvents]);
+        NSLog(@"**** ACTIONS: %d EVENTS:%d ****", [self totalGameSequences], [self totalEvents]);
         
         _myTurn = NO;
         [self setCurrentManagerFromMatch];
@@ -3956,8 +3739,8 @@
     
 #warning lame o work around for game center
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
-//    SKViewController *rootViewController = (SKViewController*)window.rootViewController;
-//    [rootViewController performSelector:@selector(showGK) withObject:Nil afterDelay:2.0];
+    //    SKViewController *rootViewController = (SKViewController*)window.rootViewController;
+    //    [rootViewController performSelector:@selector(showGK) withObject:Nil afterDelay:2.0];
     
 }
 
