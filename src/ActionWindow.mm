@@ -293,9 +293,7 @@
     
     if ([self cardIsMine:card]) {
         [_myCards addObject:newCard];
-        
-        
-        
+
         if (animated) {
             
             [newCard setZPosition:Z_INDEX_FX];
