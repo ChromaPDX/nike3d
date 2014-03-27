@@ -7,10 +7,11 @@
 //
 
 #import "NKSceneNode.h"
+#import "NKScrollNode.h"
 #include "Menus.h"
 
 
-@interface MenuScene : NKSceneNode
+@interface MenuScene : NKSceneNode <NKTableCellDelegate>
 
 @property (nonatomic, strong) MenuNode* MenuNode;
 
