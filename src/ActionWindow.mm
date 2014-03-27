@@ -6,9 +6,8 @@
     NKSpriteNode *fieldHUD;
     NKSpriteNode *fieldHUDSelectionBar;
     CGSize cardSize;
-    float w;
-    float h;
 }
+
 @end
 
 @implementation ActionWindow
@@ -19,15 +18,21 @@
     
     if (self) {
         
-        //self.color = [NKColor colorWithRed:.7 green:.7 blue:.7 alpha:1.];
+        cardSize.width = w*.2;
+        cardSize.height = h;
+        
+        
+         NSLog(@"init actionWindow, size: %f %f, cardSize: %f %f", w,h, cardSize.width, cardSize.height);
         
         _myCards = [NSMutableOrderedSet orderedSetWithCapacity:7];
         _opCards = [NSMutableOrderedSet orderedSetWithCapacity:7];
         _cardSprites = [NSMutableDictionary dictionary];
         
-        cardSize.width = w*.25;
-        cardSize.height = h;
+        self.name = @"ACTION WINDOW";
         
+        self.userInteractionEnabled = true;
+
+       
 //        
 //        NKLabelNode *yourCards = [[NKLabelNode alloc] initWithFontNamed:@"TradeGothicLTStd-BdCn20"];
 //        [yourCards setText:@"YOUR CARDS"];
@@ -200,8 +205,7 @@
     
     [self fadeOutChild:_alert duration:1.];
     
-    [self setZPosition:Z_BOARD_LOW];
-    
+ 
     [self sortMyCards:YES WithCompletionBlock:^{ }];
     
     
@@ -211,13 +215,12 @@
 
 -(void)addStartTurnCard:(Card *)card withCompletionBlock:(void (^)())block{
     
-    [self setZPosition:Z_INDEX_FX];
+
     
     _alert = [[AlertSprite alloc] initWithTexture:[NKTexture textureWithImageNamed:@"YOUR_TURN_BOX"] color:nil size:CGSizeMake(cardSize.width*2.5, cardSize.height*1.6)];
     
     _alert.delegate = self;
-    [_alert setZPosition:Z_INDEX_FX];
-    
+
     [_alert setPosition:CGPointMake(0, 0)];
     
     [self fadeInChild:_alert duration:.5];
@@ -242,8 +245,7 @@
     
     
     
-    
-    [newCard setZPosition:Z_INDEX_FX];
+
     //[newCard setHasShadow:YES];
     
     [newCard runAction:[NKAction scaleTo:1.3 duration:.15]];
@@ -276,27 +278,34 @@
 
 -(void)addCard:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block{
     
-    CardSprite* newCard = [[CardSprite alloc] initWithTexture:nil color:nil size:cardSize ];
+    NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
+    
+    CardSprite* newCard = [[CardSprite alloc] initWithTexture:nil color:nil size:cardSize];
     
     newCard.delegate = _delegate;
     newCard.model = card;
     newCard.window = self;
     
-    if (![self cardIsMine:card]) {
-        [newCard setScale:.5];
-        [newCard setFlipped:YES];
-    }
+    [newCard setZPosition:4];
+    
+//    if (![self cardIsMine:card]) {
+//        [newCard setScale:.5];
+//        [newCard setFlipped:YES];
+//    }
+    
+ //   NSLog(@"made cardSprite, adding to dict");
     
     [_cardSprites setObject:newCard forKey:card];
     
     [self addChild:newCard];
     
     if ([self cardIsMine:card]) {
+        NSLog(@"is my card");
         [_myCards addObject:newCard];
 
         if (animated) {
             
-            [newCard setZPosition:Z_INDEX_FX];
+
             [newCard setHasShadow:YES];
             
             [newCard runAction:[NKAction scaleTo:1.3 duration:.15]];
@@ -318,8 +327,9 @@
     }
     
     else {
+        NSLog(@"is opponent's card");
         [_opCards addObject:newCard];
-        newCard.position = CGPointMake(0, self.size.height*.5);
+        newCard.position = CGPointMake(self.size.width*.5, 0);
         [self sortOpCards:NO WithCompletionBlock:^{
             block();
         }];
@@ -331,7 +341,6 @@
 
 
 -(BOOL)cardIsMine:(Card*)card {
-    
     if ([card.deck.player.manager isEqual:_delegate.game.me]) return 1;
     return 0;
 }
@@ -385,7 +394,7 @@
             
             [cs setAlpha:1.];
             cs.order = i;
-            cs.zPosition = i;
+            //cs.zPosition = i;
             
             if (cs.order < card.order) {
                 
@@ -429,15 +438,15 @@
         CardSprite *cs = _myCards[i];
         
         cs.order = i;
-        cs.zPosition = i;
+        //cs.zPosition = i;
         if (cs.hasShadow) {
             [cs setHasShadow:NO];
         }
         
         [cs setAlpha:1.];
         
-        
-        cs.origin = CGPointMake(0, (h*.3) - ((cardSize.height*.15 + (h*.125)* (2./_myCards.count) ) * i));
+        //cs.origin = CGPointMake((w*.3) - ((cardSize.width*.15 + (w*.125)* (2./_myCards.count) ) * i),0);
+        cs.origin = CGPointMake(cardSize.width * (i-1), 0);
         
         if (animated) {
             
@@ -480,7 +489,7 @@
     for (int i = 0; i < _opCards.count; i++) {
         CardSprite *cs = _opCards[i];
         cs.order = i;
-        cs.zPosition = i + 2;
+        //cs.zPosition = i + 2;
         //cs.origin = CGPointMake(self.scene.size.width - WINDOW_WIDTH*.5 - cardSize.width*.125, self.size.height*.5 - cardSize.height*.125);
         cs.origin = CGPointMake(self.scene.size.width,0);
         
@@ -535,8 +544,6 @@
     
     card.touchOffset = CGPointMake(0, 0);
     
-    [card setZPosition:Z_INDEX_HUD];
-    
     [card setHasShadow:NO];
     
     [card runAction:[NKAction customActionWithDuration:FAST_ANIM_DUR actionBlock:^(NKNode *node, CGFloat elapsedTime){
@@ -589,8 +596,8 @@
         [_delegate.game setCurrentAction:Nil];
         
         if (point.x > self.size.width*.5) {
-            [self setZPosition:Z_INDEX_BOARD];
-            [card setZPosition:Z_INDEX_HUD];
+//            [self setZPosition:Z_INDEX_BOARD];
+//            [card setZPosition:Z_INDEX_HUD];
         }
         else {
             [self shuffleAroundCard:card];
@@ -620,7 +627,7 @@
             
             
             if (!card.hasShadow) {
-                [card setZPosition:Z_INDEX_HUD];
+              //  [card setZPosition:Z_INDEX_HUD];
                 
                 [card setHasShadow:YES];
                 

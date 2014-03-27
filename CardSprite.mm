@@ -14,32 +14,33 @@
 -(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size {
     
     self = [super initWithTexture:nil color:nil size:size];
+    
     if (self) {
         
         _shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Ipad_shadow"] color:[NKColor blackColor]  size:size];
         [_shadow setZPosition:-1];
         [self addChild:_shadow];
-        [_shadow setHidden:YES];
-        [_shadow setPosition:CGPointMake(-size.width*.075, size.height*.075)];
+        [_shadow setAlpha:.5];
         
-        //NKSpriteNode *dark = [NKSpriteNode spriteNodeWithColor:[UIColor colorWithWhite:0.0 alpha:0.8] size:CGSizeMake(size.width-2, size.height-2)];
-        //[self addChild:dark];
-        w = size.width;
-        h = size.height;
+        //[_shadow setHidden:YES];
+        [_shadow setPosition:CGPointMake(-size.width*.075, size.height*.075)];
+
         self.userInteractionEnabled = YES;
+        
+        NSLog(@"Card sprite alloc");
     }
     return self;
 }
 
--(NKLabelNode*)styledLabelNode {
-    
-    NKLabelNode *node = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
-    node.verticalAlignmentMode = NKLabelVerticalAlignmentModeCenter;
-    
-    node.fontColor = [NKColor blackColor];
-    node.fontSize = h/10.;
-    return node;
-}
+//-(NKLabelNode*)styledLabelNode {
+//    
+//    NKLabelNode *node = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
+//    node.verticalAlignmentMode = NKLabelVerticalAlignmentModeCenter;
+//    
+//    node.fontColor = [NKColor blackColor];
+//    node.fontSize = h/10.;
+//    return node;
+//}
 
 -(void)setHasShadow:(BOOL)hasShadow {
     _hasShadow = hasShadow;
@@ -73,47 +74,58 @@
 }
 
 
+-(NSString*)name {
+    return _model.name;
+}
+
 -(void)setModel:(Card *)model {
     
     if (model) {
+        
         _model = model;
         
-        _art = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Player_Male"] color:[NKColor blueColor] size:CGSizeMake(TILE_WIDTH, TILE_WIDTH*1.3)];
-        
-        [self addChild:_art];
+//        _art = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Player_Male"] color:[NKColor blueColor] size:CGSizeMake(TILE_WIDTH, TILE_WIDTH*1.3)];
+//        
+//        [self addChild:_art];
         
         //[_art setPosition:CGPointMake(0, -h*.05)];
         
         //        cardName = [self styledLabelNode];
         //        cardName.fontSize = (int)(h/10.);
         //        [cardName setPosition:CGPointMake(0, h*.25)];
-        //        cardName.text = [model.nameForCard uppercaseString];
+        //        cardName.text = [model.name uppercaseString];
         
-//        _doubleName = [self spritenodecontaininglabelsFromStringcontainingnewlines:[[model.nameForCard uppercaseString] stringByReplacingOccurrencesOfString:@" " withString:@"\n"]
+        _doubleName = [[NKLabelNode alloc]initWithSize:self.size FontNamed:@"TradeGothicLTStd-BdCn20"];
+        _doubleName.fontSize = 20;
+        _doubleName.text = _model.name;
+        
+        [self addChild:_doubleName];
+        
+//        _doubleName = [self spritenodecontaininglabelsFromStringcontainingnewlines:[[model.name uppercaseString] stringByReplacingOccurrencesOfString:@" " withString:@"\n"]
 //                                                                          fontname:@"TradeGothicLTStd-BdCn20"
 //                                                                         fontcolor:[NKColor blackColor] fontsize:h/12.
 //                                                                    verticalMargin:0 emptylineheight:0];
         
-        [self addChild:_doubleName];
-        [_doubleName setPosition:CGPointMake(-w*.38, h*.32)];
-        
-        cost = [self styledLabelNode];
-        cost.text = [NSString stringWithFormat:@"%d", (int)(_model.actionPointCost)];
-        cost.position = CGPointMake((int)(w*.33), (int)(h*.23));
-        
-        NKSpriteNode *apIcon = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"ActionPointsIconSM"] size:CGSizeMake(w*.07,h*.07)];
-        apIcon.position = CGPointMake((int)(w*.27), (int)(h*.23));
-        
-        [self addChild:apIcon];
-        [self addChild:cost];
-        
-        
-        actionPoints = [self styledLabelNode];
-        actionPoints.text = [NSString stringWithFormat:@"%d", (int)(_model.actionPointEarn)];
-        actionPoints.position = CGPointMake((int)(-w*.38), (int)(-h*.4));
-        
-        [self addChild:actionPoints];
-        
+//        [self addChild:_doubleName];
+//        [_doubleName setPosition:CGPointMake(-w*.38, h*.32)];
+//        
+//        cost = [self styledLabelNode];
+//        cost.text = [NSString stringWithFormat:@"%d", (int)(_model.actionPointCost)];
+//        cost.position = CGPointMake((int)(w*.33), (int)(h*.23));
+//        
+//        NKSpriteNode *apIcon = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"ActionPointsIconSM"] size:CGSizeMake(w*.07,h*.07)];
+//        apIcon.position = CGPointMake((int)(w*.27), (int)(h*.23));
+//        
+//        [self addChild:apIcon];
+//        [self addChild:cost];
+//        
+//        
+//        actionPoints = [self styledLabelNode];
+//        actionPoints.text = [NSString stringWithFormat:@"%d", (int)(_model.actionPointEarn)];
+//        actionPoints.position = CGPointMake((int)(-w*.38), (int)(-h*.4));
+//        
+//        [self addChild:actionPoints];
+//        
         
         [self setCorrectTexture];
         
@@ -154,7 +166,7 @@
 
 -(void)setCorrectTexture {
     
-    if (!_flipped) {
+ //   if (!_flipped) {
         
 //        if ([_model isTypePlayer]){ // Player
 //            if ([_model.manager isEqual:_delegate.game.me]) {
@@ -169,7 +181,7 @@
 //            
 //        }
 
-        NKColor *color;
+   //     NKColor *color;
         
         
 //        if([_model isTypeSkill]){
@@ -188,24 +200,24 @@
 //        }
 //        
         
-        self.color = color;
-        
-        
-        [_art setTexture:[NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Card_%@", [[_model nameForCard] stringByReplacingOccurrencesOfString:@" " withString:@"_"]]]];
-
-        
-        [_art setColor:self.color];
-        [_art setColorBlendFactor:1.];
+//        self.color = color;
+//        
+//        
+//        [_art setTexture:[NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Card_%@", [[_model name] stringByReplacingOccurrencesOfString:@" " withString:@"_"]]]];
+//
+//        
+//        [_art setColor:self.color];
+//        [_art setColorBlendFactor:1.];
         //NSLog(@" setting art color: %@", _art.color);
         //self.colorBlendFactor = .05;
         
         
-    }
-    
-    else {
-        self.userInteractionEnabled = NO;
-        self.texture = [NKTexture textureWithImageNamed:@"CardReplay"];
-    }
+//    }
+//    
+//    else {
+//        self.userInteractionEnabled = NO;
+//        self.texture = [NKTexture textureWithImageNamed:@"CardReplay"];
+//    }
     
     
     

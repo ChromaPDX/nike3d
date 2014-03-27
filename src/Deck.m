@@ -25,9 +25,7 @@
     self = [super init];
     if(self){
         _type = type;
-        
-      
-        
+
         switch (type) {
             case DeckTypeKick:
                 _allCards = @[[[Card alloc] initWithDeck:self],
@@ -184,7 +182,7 @@
     
     for (int i = 0; i < cardsMutable.count; ++i){
         [cardsMutable[i] setLocation:[BoardLocation pX:100+shuffleCount Y:i]];
-          //  NSLog(@"%d :%@", i, [cardsMutable[i] nameForCard]);
+          //  NSLog(@"%d :%@", i, [cardsMutable[i] name]);
     }
     
     _theDeck = cardsMutable;
@@ -225,7 +223,7 @@
     
     for (int i = 0; i < cardsMutable.count; ++i){
         [cardsMutable[i] setLocation:[BoardLocation pX:100+shuffleCount Y:i]];
-        //NSLog(@"%d :%@", i, [cardsMutable[i] nameForCard]);
+        //NSLog(@"%d :%@", i, [cardsMutable[i] name]);
 
     }
     
@@ -242,7 +240,7 @@
     
     Card *card = [cardsMutable lastObject];
     
-    //NSLog(@"deck.m : getting card %@ from deck", card.nameForCard);
+    //NSLog(@"deck.m : getting card %@ from deck", card.name);
           
     [inHandMutable addObject:card];
     [cardsMutable removeObject:card];
@@ -252,6 +250,9 @@
     
     //card.location = [BoardLocation pX:101 Y:card.location.y];
     
+    if (!card) {
+        NSLog(@"ERROR DIDN'T GET A CARD FROM DECK");
+    }
     return card;
 }
 

@@ -35,7 +35,7 @@
         //        cardName = [self styledLabelNode];
         //        cardName.fontSize = (int)(h/7.);
         //        [cardName setPosition:CGPointMake(w*.25 * ((model.manager.teamSide*2)-1), h*.1)];
-        //        cardName.text = [model.nameForCard substringToIndex:1];
+        //        cardName.text = [model.name substringToIndex:1];
         //        [self addChild:cardName];
         
 
@@ -60,7 +60,7 @@
            
             [triangle setZPosition:h*.33];
             
-            self.name = model.nameForCard;
+            self.name = model.name;
             self.userInteractionEnabled = true;
         
     }
@@ -173,7 +173,7 @@
         
         
         [self fadeOutChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
-            NSLog(@"stopped possesion : %@", _model.nameForCard);
+            NSLog(@"stopped possesion : %@", _model.name);
             [_ballTarget removeFromParent];
             _posession = nil;
         }];

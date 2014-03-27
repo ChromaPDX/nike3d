@@ -59,31 +59,22 @@
     }
     
     else {
-        switch (_cardType) {
-            case kCardTypeKick:
+        switch (self.deckType) {
+            case DeckTypeKick:
                 return @"KICK";
                 break;
                 
-            case kCardTypeMove:
+            case DeckTypeMove:
                 return @"MOVE";
                 break;
                 
-            case kCardTypeChallenge:
+            case DeckTypeChallenge:
                 return @"CHALLENGE";
                 break;
                 
-            case kCardTypeSpecial:
+            case DeckTypeSpecial:
                 return @"SPECIAL";
                 break;
-                
-            case kCardTypeBall:
-                return @"THE BALL";
-                break;
-                
-            case kCardTypePlayer:
-                return @"PLAYER";
-                break;
-                
 
             default:
                 return @"ERROR, fix name or generic";
@@ -120,11 +111,8 @@
   
 }
 
-
--(NSString*) nameForCard{
-    
+-(NSString*)name {
     return [self nameOrGeneric];
-    
 }
 
 -(NSString*) descriptionForCard  {

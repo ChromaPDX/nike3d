@@ -57,7 +57,6 @@
 
 -(EventType)discardAfterEventType;
 
--(NSString*) nameForCard;
 -(NSString*) descriptionForCard;
 
 @property (nonatomic, weak) Deck *deck;

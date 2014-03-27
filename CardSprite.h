@@ -23,7 +23,7 @@
     NKLabelNode *dribble;
     NKLabelNode *slash;
     NKLabelNode *save; // goalie only
-    NKSpriteNode *_doubleName;
+    NKLabelNode *_doubleName;
     
 }
 
@@ -40,6 +40,7 @@
 @property (nonatomic, weak) ActionWindow *window;
 @property (nonatomic) CGPoint origin;
 @property (nonatomic) int order;
+
 @property (nonatomic, strong) NKSpriteNode *art;
 @property (nonatomic,strong) NKSpriteNode *shadow;
 

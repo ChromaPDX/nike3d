@@ -1814,7 +1814,7 @@
 //        for (Card *player in [[playerPerformingAction.manager deck] inGame]) {
 //            if ([player.location isEqual:location]) { // SHOULD PASS
 //                if (![player isEqual:_currentAction.playerPerformingAction]) {
-//                    NSLog(@"pass to: %@ : %d %d", player.nameForCard, location.x, location.y);
+//                    NSLog(@"pass to: %@ : %d %d", player.name, location.x, location.y);
 //                    return kEventKickPass;
 //                }
 //            }
@@ -2268,7 +2268,7 @@
 -(void)logEvent:(GameEvent*)event{
     
     if (event.playerPerformingAction) {
-        NSLog(@">>%d %@ is %@ >> %d,%d to %d,%d", event.actionSlot, event.playerPerformingAction.nameForCard, event.nameForAction, event.startingLocation.x, event.startingLocation.y, event.location.x, event.location.y);
+        NSLog(@">>%d %@ is %@ >> %d,%d to %d,%d", event.actionSlot, event.playerPerformingAction.name, event.nameForAction, event.startingLocation.x, event.startingLocation.y, event.location.x, event.location.y);
     }
     else if (event.startingLocation) {
         NSLog(@">>%d %@ for %@ from %d %d", event.actionSlot, event.nameForAction, event.manager.name, event.startingLocation.x, event.startingLocation.y);
@@ -2323,6 +2323,7 @@
         for (Player* p in event.manager.players.inGame) {
             [p.moveDeck turnOverNextCard];
             [p.kickDeck turnOverNextCard];
+            [p.challengeDeck turnOverNextCard];
             [p.specialDeck turnOverNextCard];
             [p.specialDeck turnOverNextCard];
         }
@@ -2346,7 +2347,7 @@
 //            
 //        }
         
-        //NSLog(@"Game.m : drawing card %@ for:%@", newCard.nameForCard, event.manager.name);
+        //NSLog(@"Game.m : drawing card %@ for:%@", newCard.name, event.manager.name);
         
     }
     
@@ -2370,10 +2371,10 @@
         
         if ([event.manager.players playCardFromDeck:newPlayer]){
             NSLog (@"putting player on field, shufflingcards");
-            [newPlayer.moveDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
+            [newPlayer.moveDeck shuffleWithSeed:event.seed fromDeck:newPlayer.moveDeck.allCards];
             [newPlayer.kickDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
-            [newPlayer.challengeDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
-            [newPlayer.specialDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
+            [newPlayer.challengeDeck shuffleWithSeed:event.seed fromDeck:newPlayer.challengeDeck.allCards];
+            [newPlayer.specialDeck shuffleWithSeed:event.seed fromDeck:newPlayer.specialDeck.allCards];
         }
         
         event.playerPerformingAction = newPlayer;
@@ -2392,7 +2393,7 @@
         
         Player *p = event.playerPerformingAction;
         
-        //NSLog(@">> %d discarding player: %@", event.actionSlot, p.nameForCard);
+        //NSLog(@">> %d discarding player: %@", event.actionSlot, p.name);
         
         for (Card *e in p.enchantments) {
             [e discard];
@@ -2429,7 +2430,7 @@
         }
         
         else { // CARD ENCHANTMENT
-            //NSLog(@"Game.m : enchant player: %@", enchantee.nameForCard);
+            //NSLog(@"Game.m : enchant player: %@", enchantee.name);
             [enchantee addEnchantment:event.card]; // PlayerPerformingAction is the enchantment, not the enchantee
         }
         

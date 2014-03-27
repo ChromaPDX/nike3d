@@ -20,10 +20,10 @@
 
 -(void)generateDefaultCards {
     
-    _moveDeck = [[Deck alloc]initWithPlayer:self type:_moveDeck];
-    _kickDeck = [[Deck alloc]initWithPlayer:self type:_kickDeck];
-    _challengeDeck = [[Deck alloc]initWithPlayer:self type:_challengeDeck];
-    _specialDeck = [[Deck alloc]initWithPlayer:self type:_specialDeck];
+    _moveDeck = [[Deck alloc]initWithPlayer:self type:DeckTypeMove];
+    _kickDeck = [[Deck alloc]initWithPlayer:self type:DeckTypeKick];
+    _challengeDeck = [[Deck alloc]initWithPlayer:self type:DeckTypeChallenge];
+    _specialDeck = [[Deck alloc]initWithPlayer:self type:DeckTypeSpecial];
     
 }
 

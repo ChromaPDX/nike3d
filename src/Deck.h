@@ -12,12 +12,11 @@
 @class Player;
 
 typedef NS_ENUM(int, DeckType){
-    
+    DeckTypeNull,
     DeckTypeKick,
     DeckTypeChallenge,
     DeckTypeMove,
     DeckTypeSpecial
-    
 };
 
 @interface Deck : NSObject <NSCoding, NSCopying>

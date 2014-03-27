@@ -75,7 +75,6 @@
         ((ofApp*)ofGetAppPtr())->scene = newScene;
         
     }
-    
     else if ([cell.name isEqualToString:@"LEIF"]) {
         GameScene* newScene = [[GameScene alloc]initWithSize:self.size];
         ((ofApp*)ofGetAppPtr())->scene = newScene;

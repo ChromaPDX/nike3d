@@ -98,8 +98,10 @@ float PARTICLE_SCALE;
 
 -(void)setupGameBoard {
     
-    _actionWindow = [[ActionWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:1.] size:CGSizeMake(w, h*.2)];
-    [_actionWindow setPosition3d:ofPoint(w*.5,h*.9,10)];
+    NSLog(@"setup gameBoard %f :%f",w,h);
+    
+    _actionWindow = [[ActionWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
+    [_actionWindow setPosition3d:ofPoint(0,-h*.425,20)];
     _actionWindow.delegate = self;
     [self addChild:_actionWindow];
     
@@ -226,7 +228,7 @@ float PARTICLE_SCALE;
     
     if ([_game canUsePlayer:player.model]){
         
-        NSLog(@"CAN USE PLAYER: %@", player.model.nameForCard);
+        NSLog(@"CAN USE PLAYER: %@", player.model.name);
         
 //        [_infoHUD setPlayer:player.model];
 //        [_infoHUD setZPosition:Z_BOARD_LOW];
@@ -237,7 +239,7 @@ float PARTICLE_SCALE;
     
     else {
         
-        NSLog(@"NOPE NOT FOR PLAYER: %@", player.model.nameForCard);
+        NSLog(@"NOPE NOT FOR PLAYER: %@", player.model.name);
         
 //        [_infoHUD setPlayer:player.model];
 //        [_infoHUD setZPosition:Z_BOARD_LOW];
@@ -301,7 +303,7 @@ float PARTICLE_SCALE;
 //            
 //            
 //            if (event) {
-//                NSLog(@"PLAYER IS: %@", event.playerPerformingAction.nameForCard);
+//                NSLog(@"PLAYER IS: %@", event.playerPerformingAction.name);
 //                NSLog(@"EVENT IS:%@", event.nameForAction);
 //                [self addUIForEvent:event];
 //                [_game sendAction:_game.currentAction perform:NO];
@@ -999,25 +1001,36 @@ float PARTICLE_SCALE;
 
 -(void)refreshActionWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
     
-    NSLog(@"show cards for: %@",p.name);
-    
-    [_actionWindow cleanup];
-    
-    for (Card* c in p.moveDeck.inHand) {
-        [_actionWindow addCard:c];
-    }
-    if (p.manager.hasPossesion)
-        for (Card* c in p.kickDeck.inHand) {
+    if (p){
+        NSLog(@"show cards for: %@",p.name);
+        
+        [_actionWindow cleanup];
+        
+        for (Card* c in p.moveDeck.inHand) {
             [_actionWindow addCard:c];
         }
-    else for (Card* c in p.challengeDeck.inHand) {
-        [_actionWindow addCard:c];
+        
+        if (p.manager.hasPossesion){
+            for (Card* c in p.kickDeck.inHand) {
+                [_actionWindow addCard:c];
+            }
+        }
+        else {
+            for (Card* c in p.challengeDeck.inHand) {
+                [_actionWindow addCard:c];
+            }
+        }
+        
+        for (Card* c in p.specialDeck.inHand) {
+            [_actionWindow addCard:c];
+        }
+        
+        //[_actionWindow sortMyCards:YES WithCompletionBlock:nil];
+        
     }
-    for (Card* c in p.specialDeck.inHand) {
-        [_actionWindow addCard:c];
+    else {
+        NSLog(@"ERROR NO MODEL FOR SELECTED PLAYER");
     }
-
-    [_actionWindow sortMyCards:YES WithCompletionBlock:nil];
     
     //[self refreshActionPoints];
     
