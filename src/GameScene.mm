@@ -1236,7 +1236,7 @@ float PARTICLE_SCALE;
 -(BallSprite*)ballSprite {
     if (!_ballSprite) {
         _ballSprite = [[BallSprite alloc]init];
-        _ballSprite.texture = [NKTexture textureWithImageNamed:@"GAMELOGO.png"];
+        _ballSprite.texture = [NKTexture textureWithImageNamed:@"ball_Texture.png"];
     }
     if (!_ballSprite.parent) {
         [_gameBoardNode addChild:_ballSprite];
