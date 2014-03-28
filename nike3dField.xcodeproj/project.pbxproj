@@ -146,6 +146,9 @@
 		616BB31618E39D2500A680D3 /* Special_L2a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2F918E39D2500A680D3 /* Special_L2a.1.png */; };
 		616BB31718E39D2500A680D3 /* Special_L3a.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2FA18E39D2500A680D3 /* Special_L3a.1.png */; };
 		616BB31818E39D2500A680D3 /* Special_L3b.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2FB18E39D2500A680D3 /* Special_L3b.1.png */; };
+		616BB31B18E4CFDE00A680D3 /* NKTextureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 616BB31A18E4CFDE00A680D3 /* NKTextureManager.m */; };
+		616BB31D18E4D57000A680D3 /* ball_Texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB31C18E4D57000A680D3 /* ball_Texture.png */; };
+		616BB31E18E4E67400A680D3 /* libofxiOS_iphoneos_Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D410213B3A0D800A75A5D /* libofxiOS_iphoneos_Debug.a */; };
 		61744C1E18DB9E1600C925B2 /* CardType_HUD.png in Resources */ = {isa = PBXBuildFile; fileRef = 61744C1D18DB9E1600C925B2 /* CardType_HUD.png */; };
 		61744C2018DBB86B00C925B2 /* Field_Goal.png in Resources */ = {isa = PBXBuildFile; fileRef = 61744C1F18DBB86B00C925B2 /* Field_Goal.png */; };
 		617BDD0718D92491005EC4B1 /* BallSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0618D92491005EC4B1 /* BallSprite.mm */; };
@@ -220,7 +223,6 @@
 		E41D400C13B39D2100A75A5D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400713B39D2100A75A5D /* CoreMedia.framework */; };
 		E41D400D13B39D2100A75A5D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400813B39D2100A75A5D /* CoreVideo.framework */; };
 		E41D400E13B39D2100A75A5D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400913B39D2100A75A5D /* MapKit.framework */; };
-		E41D421413B3A95300A75A5D /* libofxiOS_iphoneos_Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D410213B3A0D800A75A5D /* libofxiOS_iphoneos_Debug.a */; };
 		E4A823A412561BE3002F86A2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4A823A312561BE3002F86A2 /* CoreGraphics.framework */; };
 		E4D8936E11527B74007E1F53 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D8936B11527B74007E1F53 /* main.mm */; };
 		E4D8936F11527B74007E1F53 /* ofApp.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D8936D11527B74007E1F53 /* ofApp.mm */; };
@@ -399,6 +401,9 @@
 		616BB2F918E39D2500A680D3 /* Special_L2a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Special_L2a.1.png; sourceTree = "<group>"; };
 		616BB2FA18E39D2500A680D3 /* Special_L3a.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Special_L3a.1.png; sourceTree = "<group>"; };
 		616BB2FB18E39D2500A680D3 /* Special_L3b.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Special_L3b.1.png; sourceTree = "<group>"; };
+		616BB31918E4CFDE00A680D3 /* NKTextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTextureManager.h; sourceTree = "<group>"; };
+		616BB31A18E4CFDE00A680D3 /* NKTextureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKTextureManager.m; sourceTree = "<group>"; };
+		616BB31C18E4D57000A680D3 /* ball_Texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball_Texture.png; sourceTree = "<group>"; };
 		61744C1D18DB9E1600C925B2 /* CardType_HUD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CardType_HUD.png; sourceTree = "<group>"; };
 		61744C1F18DBB86B00C925B2 /* Field_Goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Field_Goal.png; sourceTree = "<group>"; };
 		617BDD0518D92491005EC4B1 /* BallSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallSprite.h; sourceTree = "<group>"; };
@@ -535,10 +540,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				616BB31E18E4E67400A680D3 /* libofxiOS_iphoneos_Debug.a in Frameworks */,
 				61B28A1518D9065E00102278 /* GameKit.framework in Frameworks */,
 				61D0177E18D7CD7E0085D7F9 /* CoreText.framework in Frameworks */,
 				618E1D3218C01E620038AD46 /* CoreMotion.framework in Frameworks */,
-				E41D421413B3A95300A75A5D /* libofxiOS_iphoneos_Debug.a in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -662,6 +667,7 @@
 		6116FB1F18C554B600BBD1CB /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				616BB31C18E4D57000A680D3 /* ball_Texture.png */,
 				616BB2DE18E39D2500A680D3 /* Menus */,
 				6183B7D318D90B0E002D426F /* SFX_BOARD */,
 				61341FBB18C6A4B1003D7C9E /* UI_Buttons */,
@@ -981,6 +987,8 @@
 				61D0174118D7CD4C0085D7F9 /* NKShaderNode.mm */,
 				61D0174218D7CD4C0085D7F9 /* NKSpriteNode.h */,
 				61D0174318D7CD4C0085D7F9 /* NKSpriteNode.mm */,
+				616BB31918E4CFDE00A680D3 /* NKTextureManager.h */,
+				616BB31A18E4CFDE00A680D3 /* NKTextureManager.m */,
 				61D0174418D7CD4C0085D7F9 /* NKTexture.h */,
 				61D0174518D7CD4C0085D7F9 /* NKTexture.mm */,
 				6181275118E0EE35003B72F8 /* NKMesh.h */,
@@ -1274,6 +1282,7 @@
 				6134203218C6A4B1003D7C9E /* CardSkill.png in Resources */,
 				6134203918C6A4B1003D7C9E /* star_blue.png in Resources */,
 				6134202718C6A4B1003D7C9E /* Card_Player_Male.png in Resources */,
+				616BB31D18E4D57000A680D3 /* ball_Texture.png in Resources */,
 				61744C1E18DB9E1600C925B2 /* CardType_HUD.png in Resources */,
 				616BB30118E39D2500A680D3 /* Challenge_L2a.1.png in Resources */,
 				6116FB2A18C554B600BBD1CB /* PlayerIndicator_PlayerOFF.png in Resources */,
@@ -1373,6 +1382,7 @@
 				6116FB1C18C54CC200BBD1CB /* BoardTile.mm in Sources */,
 				D5BC8C9018E0F3A9005E2F52 /* MiniTouch.mm in Sources */,
 				61D0177018D7CD4C0085D7F9 /* NKBlendShader.mm in Sources */,
+				616BB31B18E4CFDE00A680D3 /* NKTextureManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

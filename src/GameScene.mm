@@ -100,10 +100,7 @@ float PARTICLE_SCALE;
     
     NSLog(@"setup gameBoard %f :%f",w,h);
     
-    _actionWindow = [[ActionWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
-    [_actionWindow setPosition3d:ofPoint(0,-h*.425,20)];
-    _actionWindow.delegate = self;
-    [self addChild:_actionWindow];
+
     
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
     _gameTiles = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
@@ -115,6 +112,12 @@ float PARTICLE_SCALE;
     [self addChild:_pivot];
     
     [_pivot setPosition3d:(ofPoint(0,-h*.5,0))];
+    
+    
+    _actionWindow = [[ActionWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
+    [_actionWindow setPosition3d:ofPoint(0,-h*.425,20)];
+    _actionWindow.delegate = self;
+    [self addChild:_actionWindow];
     
 //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:CGSizeMake(TILE_WIDTH*4, TILE_WIDTH*5.2)];
 //    [_pivot addChild:logo];
@@ -1233,7 +1236,7 @@ float PARTICLE_SCALE;
 -(BallSprite*)ballSprite {
     if (!_ballSprite) {
         _ballSprite = [[BallSprite alloc]init];
-        _ballSprite.texture = [NKTexture textureWithImageNamed:@"GAMELOGO.png"];
+        _ballSprite.texture = [NKTexture textureWithImageNamed:@"ball_Texture.png"];
     }
     if (!_ballSprite.parent) {
         [_gameBoardNode addChild:_ballSprite];
@@ -1583,17 +1586,17 @@ float PARTICLE_SCALE;
 
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
-
-    if ([super touchUp:location id:touchId] == NKTouchIsFirstResponder) {
-        if (!_miniGameNode) {
-            [self startMiniGame];
-        }
-        return NKTouchIsFirstResponder;
-    };
-
-    return NKTouchNone;
-    
-}
+//-(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+//
+//    if ([super touchUp:location id:touchId] == NKTouchIsFirstResponder) {
+//        if (!_miniGameNode) {
+//            [self startMiniGame];
+//        }
+//        return NKTouchIsFirstResponder;
+//    };
+//
+//    return NKTouchNone;
+//    
+//}
 
 @end
