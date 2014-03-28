@@ -11,6 +11,9 @@
 @interface MiniGameNode (){
     int activeMiniGame; // 1:maze, 2:touch, 3:cups
     bool loader;  // do not run updates while loading in progress
+    ofTexture titleTexture;
+    ofTrueTypeFont titleFont;
+    ofTrueTypeFont font;
 }
 
 @end
@@ -26,6 +29,12 @@
         self.size = size;
         [self setUserInteractionEnabled:YES];
         self.name = @"miniGame Node";
+// hardcode setting the title of the card
+        _cardTypeTitle = @"MOVE CARD";
+        ofLoadImage(titleTexture, "twitch_label.png");
+        printf("HEIGHT OF FRAME %f",[self getDrawFrame].width*.8 * 1.17);
+        titleFont.loadFont("Avenir.ttf", 17);
+        font.loadFont("Avenir.ttf", 10);
     }
     
     return self;
@@ -87,6 +96,15 @@
             _miniTouch->draw();
         else if(activeMiniGame == 3)
             _miniCups->draw();
+        ofPopMatrix();
+        ofPushMatrix();
+        ofTranslate([self getDrawFrame].x + [self getDrawFrame].width*.1,  [self getDrawFrame].width*.4 * 1.17 + /*height of image */ 45);
+        titleTexture.draw(0,0);//, [self getDrawFrame].width*.8 * 1.17);
+        ofSetColor(0, 168, 171);
+        titleFont.drawString([_cardTypeTitle cStringUsingEncoding:NSUTF8StringEncoding], 5, 33);
+        font.drawString("LEVEL 2 CARD", 5, 7);
+        font.drawString("COST +200", 130, 7);
+        ofSetColor(255, 255, 255);
         ofPopMatrix();
         ofEnableNormalizedTexCoords();
         glEnable(GL_CULL_FACE);
