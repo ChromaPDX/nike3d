@@ -99,8 +99,8 @@
     }
     
     else if ([cell.name isEqualToString:@"2"]) {
-        MenuPlayerProfileScene* newScene = [[MenuPlayerProfileScene alloc]initWithSize:self.size];
-        ((ofApp*)ofGetAppPtr())->scene = newScene;
+    //    MenuPlayerProfileScene* newScene = [[MenuPlayerProfileScene alloc]initWithSize:self.size];
+    //    ((ofApp*)ofGetAppPtr())->scene = newScene;
     }
     
     else if ([cell.name isEqualToString:@"3"]) {
