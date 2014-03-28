@@ -45,6 +45,9 @@ void MiniTouch::setup(int xIn, int yIn, int width, int height){
     
     ballPosition[X] = centerX;
     ballPosition[Y] = centerY;
+    
+    ofLoadImage(successTexture, "success.png");
+    ofLoadImage(failTexture, "fail.png");
 }
 
 void MiniTouch::update(){
@@ -62,6 +65,20 @@ void MiniTouch::update(){
         ballPosition[X] = centerX + sin(ballIncrement) * w*.42;
         ballPosition[Y] = centerY + -cos(ballIncrement*2) * w*.05;
     }
+    if(gameState == touchGameStateWinLose && ofGetElapsedTimeMillis() > nextStartTime){
+        if(win){
+            if(delegate)
+                delegate->gameDidFinishWithWin();
+            if(objDelegate)
+                [objDelegate gameDidFinishWithWin];
+        }
+        else{
+            if(delegate)
+                delegate->gameDidFinishWithLose();
+            if(objDelegate)
+                [objDelegate gameDidFinishWithLose];
+        }
+    }
 }
 
 void MiniTouch::touchDownCoords(float x, float y){
@@ -75,21 +92,13 @@ void MiniTouch::touchDown(ofTouchEventArgs &touch){
             printf("WIN\n");
             // you win
             win = true;
-            if(delegate)
-                delegate->gameDidFinishWithWin();
-            if(objDelegate)
-                [objDelegate gameDidFinishWithWin];
         }
         else{
             printf("LOSE\n");
             // you lose
-            if(delegate)
-                delegate->gameDidFinishWithLose();
-            if(objDelegate)
-                [objDelegate gameDidFinishWithLose];
         }
 
-        gameState = touchGameStateWaiting;
+        gameState = touchGameStateWinLose;
         nextStartTime = ofGetElapsedTimeMillis() + 1000;
     }
 }
@@ -125,20 +134,28 @@ void MiniTouch::drawTimer(int centerX, int centerY){
 }
 
 void MiniTouch::draw(){
-    if(win)
-        ofClear(0, 100, 0);
+//    if(win)
+//        ofClear(0, 100, 0);
     backgroundTexture.draw(x, y, w, h);
-    ofSetColor(255, 100);
-    ballTexture.draw(centerX, centerY-w*.05, 100, 100);
-    ofSetColor(255, 255);
-    ballTexture.draw(ballPosition[X], ballPosition[Y], 60, 60);
-    if(gameState == touchGameStateRunning)
-        font.drawString("line up the ball & target", centerX - font.stringWidth("line up the ball & target")*.5, centerY-h*.55);
-    if(gameState == touchGameStateWaiting){
+    if(gameState == touchGameStateWinLose){
         if(win)
-            font.drawString("great!", centerX - font.stringWidth("great!")*.5, centerY-h*.55);
+            successTexture.draw(centerX-w*.33, centerY-w*.33, w*.66, w*.66);
         else
-            font.drawString("sorry", centerX - font.stringWidth("sorry")*.5, centerY-h*.55);
-
+            failTexture.draw(centerX-w*.33, centerY-w*.33, w*.66, w*.66);
+    }
+    else{
+        ofSetColor(255, 100);
+        ballTexture.draw(centerX, centerY-w*.05, 100, 100);
+        ofSetColor(255, 255);
+        ballTexture.draw(ballPosition[X], ballPosition[Y], 60, 60);
+        if(gameState == touchGameStateRunning)
+            font.drawString("line up the ball & target", centerX - font.stringWidth("line up the ball & target")*.5, centerY-h*.55);
+        if(gameState == touchGameStateWaiting){
+            if(win)
+                font.drawString("great!", centerX - font.stringWidth("great!")*.5, centerY-h*.55);
+            else
+                font.drawString("sorry", centerX - font.stringWidth("sorry")*.5, centerY-h*.55);
+            
+        }
     }
 }

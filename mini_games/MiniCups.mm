@@ -53,10 +53,11 @@ void MiniCups::setup(int xIn, int yIn, int width, int height){
     showBall = true;
     fingerTouchDown = false;
     
+    angleAcceleration = 0;
     angleVelocity = 0;
     
     gameState = cupsGameStateGetReady;
-    nextStartTime = 3000;
+    nextStartTime = ofGetElapsedTimeMillis() + 1000;
     
     ///
 //    ofLoadImage(touchTexture, "theball.png");
@@ -89,6 +90,19 @@ void MiniCups::update(){
     if(gameState == cupsGameStateReveal && ofGetElapsedTimeMillis() > nextStartTime){
         gameState = cupsGameStateGetReady;
         nextStartTime = ofGetElapsedTimeMillis() + 1000;
+        if(win){
+            if(delegate)
+                delegate->gameDidFinishWithWin();
+            if(objDelegate)
+                [objDelegate gameDidFinishWithWin];
+        }
+        else{
+            if(delegate)
+                delegate->gameDidFinishWithLose();
+            if(objDelegate)
+                [objDelegate gameDidFinishWithLose];
+        }
+
     }
 
     angleVelocity += angleAcceleration;
@@ -132,19 +146,11 @@ void MiniCups::touchDownCoords(float x, float y){
     
     if(ballSelection != 0){
         if(ballSelection == 1){ // you win
-        printf("WIN\n");
-        win = true;
-//        if(delegate)
-//            delegate->gameDidFinishWithWin();
-//        if(objDelegate)
-//            [objDelegate gameDidFinishWithWin];
+            printf("WIN\n");
+            win = true;
         }
         else if (ballSelection == 2 || ballSelection == 3){ // you lose
             printf("LOSE\n");
-//        if(delegate)
-//            delegate->gameDidFinishWithLose();
-//        if(objDelegate)
-//            [objDelegate gameDidFinishWithLose];
         }
 
         if(gameState == cupsGameStatePicking){

@@ -211,6 +211,9 @@
 		D5319E4F18E36B2000B3DC5D /* Avenir.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5319E4E18E36B2000B3DC5D /* Avenir.ttf */; };
 		D5BC8C9018E0F3A9005E2F52 /* MiniTouch.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5BC8C8F18E0F3A9005E2F52 /* MiniTouch.mm */; };
 		D5BC8C9318E0F8CE005E2F52 /* MiniCups.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5BC8C9218E0F8CE005E2F52 /* MiniCups.mm */; };
+		D5F8FABC18E4E76100C764E5 /* fail.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F8FABA18E4E76100C764E5 /* fail.png */; };
+		D5F8FABD18E4E76100C764E5 /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F8FABB18E4E76100C764E5 /* success.png */; };
+		D5F8FABF18E4E8A800C764E5 /* twitch_label.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F8FABE18E4E8A800C764E5 /* twitch_label.png */; };
 		E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3ED613B38FB500A75A5D /* Project.xcconfig */; };
 		E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */; };
 		E41D400B13B39D2100A75A5D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400613B39D2100A75A5D /* AVFoundation.framework */; };
@@ -511,6 +514,9 @@
 		D5BC8C8F18E0F3A9005E2F52 /* MiniTouch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniTouch.mm; path = mini_maze/MiniTouch.mm; sourceTree = "<group>"; };
 		D5BC8C9118E0F8CE005E2F52 /* MiniCups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniCups.h; sourceTree = "<group>"; };
 		D5BC8C9218E0F8CE005E2F52 /* MiniCups.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MiniCups.mm; sourceTree = "<group>"; };
+		D5F8FABA18E4E76100C764E5 /* fail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fail.png; sourceTree = "<group>"; };
+		D5F8FABB18E4E76100C764E5 /* success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = success.png; sourceTree = "<group>"; };
+		D5F8FABE18E4E8A800C764E5 /* twitch_label.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitch_label.png; sourceTree = "<group>"; };
 		E41D3ED613B38FB500A75A5D /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/ios/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E41D400613B39D2100A75A5D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -824,6 +830,9 @@
 		6134207318C6ABA4003D7C9E /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				D5F8FABA18E4E76100C764E5 /* fail.png */,
+				D5F8FABB18E4E76100C764E5 /* success.png */,
+				D5F8FABE18E4E8A800C764E5 /* twitch_label.png */,
 				6134207418C6ABA4003D7C9E /* arrow.png */,
 				D5319E4E18E36B2000B3DC5D /* Avenir.ttf */,
 				6134207518C6ABA4003D7C9E /* arrowDown.png */,
@@ -1153,6 +1162,7 @@
 				616BB30618E39D2500A680D3 /* flag_Bolivia.1.png in Resources */,
 				6134200F18C6A4B1003D7C9E /* BoostButton_Empty.png in Resources */,
 				6134205318C6A4B1003D7C9E /* Icon_Dribble.png in Resources */,
+				D5F8FABD18E4E76100C764E5 /* success.png in Resources */,
 				E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */,
 				6134208518C6ABA4003D7C9E /* footlong.png in Resources */,
 				E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */,
@@ -1198,6 +1208,7 @@
 				678E130C1795153C005B6D19 /* Default.png in Resources */,
 				6134203C18C6A4B1003D7C9E /* Halo.png in Resources */,
 				6134208818C6ABA4003D7C9E /* thirtypercentwhite.png in Resources */,
+				D5F8FABF18E4E8A800C764E5 /* twitch_label.png in Resources */,
 				6134202218C6A4B1003D7C9E /* Card_Adrenal_Boost.png in Resources */,
 				6134204318C6A4B1003D7C9E /* GAMELOGOBig.png in Resources */,
 				6134204118C6A4B1003D7C9E /* PlayerShadow.png in Resources */,
@@ -1227,6 +1238,7 @@
 				616BB30818E39D2500A680D3 /* flag_USA.1.png in Resources */,
 				6134201118C6A4B1003D7C9E /* Button_BlankBlue_OFF.png in Resources */,
 				6134204618C6A4B1003D7C9E /* LogIn_ButtonNewgameOff.png in Resources */,
+				D5F8FABC18E4E76100C764E5 /* fail.png in Resources */,
 				6134205918C6A4B1003D7C9E /* Icon_Run.png in Resources */,
 				678E130E17951540005B6D19 /* Default@2x.png in Resources */,
 				6134201B18C6A4B1003D7C9E /* Button_EndTurnON.png in Resources */,
