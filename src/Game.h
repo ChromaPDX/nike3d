@@ -129,6 +129,7 @@ typedef enum RTMessageType {
 @property (nonatomic, strong) id <GameSceneProtocol> gameScene;
 @property (nonatomic, strong) GameSequence *currentAction;
 @property (nonatomic, weak) Card *selectedCard;
+@property (nonatomic, strong) NSMutableDictionary *players;
 
 // GK TURN BASED MATCH
 @property (nonatomic, strong) GKTurnBasedMatch *match;
@@ -142,7 +143,7 @@ typedef enum RTMessageType {
 // END PERSISTENT
 @property (nonatomic, strong) BoardLocation *score;
 @property (nonatomic, strong) Card *ball;
-@property (nonatomic, weak) Manager *scoreBoardManager;
+@property (nonatomic, weak)   Manager *scoreBoardManager;
 
 @property (nonatomic, strong) NSMutableArray *turnHeap;
 @property (nonatomic, strong) NSMutableArray *actionHeap;
