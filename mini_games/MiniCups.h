@@ -55,7 +55,10 @@ private:
     ofTexture backgroundTexture;
     ofTexture white30Texture;
     
-    ofTrueTypeFont font;
+    ofTrueTypeFont font, largeFont;
+    
+    ofTexture successTexture, failTexture;
+    float gameFade;
     
     int w, h, x, y;
     int centerX, centerY;
@@ -76,6 +79,7 @@ private:
     float angleVelocity;
     float angleAcceleration;
     
+    long accelerationBeginTime;
     
     bool win = false;
     
