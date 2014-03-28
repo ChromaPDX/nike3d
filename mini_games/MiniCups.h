@@ -27,7 +27,8 @@ typedef enum {
     cupsGameStateAccelerating,
     cupsGameStateSlowing,
     cupsGameStatePicking,
-    cupsGameStateReveal
+    cupsGameStateReveal,
+    cupsGameStateWinLose
 } CupsGameState;
 
 class MiniCups {

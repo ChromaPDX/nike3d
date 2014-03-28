@@ -111,6 +111,12 @@ void MiniMaze::setup(int xIn, int yIn, int width, int height){
         wall[i].width = wall[i].width*CELLSIZE;
         wall[i].height = wall[i].height*CELLSIZE;
     }
+    
+    centerX = x+w*.5;
+    centerY = y+h*.6;  // because of the text box
+
+    ofLoadImage(successTexture, "success.png");
+    ofLoadImage(failTexture, "fail.png");
 }
 
 void MiniMaze::update(){
@@ -238,15 +244,24 @@ void MiniMaze::drawTimer(int centerX, int centerY){
 
 void MiniMaze::draw(){
     backgroundTexture.draw(x, y, w, h);
-    for(int i = 0; i < 6; i++)
-        white30Texture.draw(wall[i].x, wall[i].y, wall[i].width, wall[i].height);
-    ballTexture.draw(ballPosition[X], ballPosition[Y], ballRadius+ballRadius, ballRadius+ballRadius);
-    startArrowTexture.draw( x+(.5+startCell[X])*CELLSIZE+(w-CELLSIZE*5)*.5,
-                           y+(.5+startCell[Y])*CELLSIZE + CELLSIZE*.5 + h*.17,
-                           CELLSIZE*.5, CELLSIZE*.5);
-    endArrowTexture.draw( x+(.5+endCell[X])*CELLSIZE+(w-CELLSIZE*5)*.5,
-                         y+(.5+endCell[Y])*CELLSIZE + CELLSIZE*.5 + h*.17,
-                         CELLSIZE*.5, CELLSIZE*.5);
-    if(gameState == gameStateRunning && !win)
-        drawTimer(x+w-45, y+h-45);
+    if(gameState == gameStateWinLose){
+        if(win)
+            successTexture.draw(centerX-w*.33, centerY-w*.33, w*.66, w*.66);
+        else
+            failTexture.draw(centerX-w*.33, centerY-w*.33, w*.66, w*.66);
+    }
+    else{
+
+        for(int i = 0; i < 6; i++)
+            white30Texture.draw(wall[i].x, wall[i].y, wall[i].width, wall[i].height);
+        ballTexture.draw(ballPosition[X], ballPosition[Y], ballRadius+ballRadius, ballRadius+ballRadius);
+        startArrowTexture.draw( x+(.5+startCell[X])*CELLSIZE+(w-CELLSIZE*5)*.5,
+                               y+(.5+startCell[Y])*CELLSIZE + CELLSIZE*.5 + h*.17,
+                               CELLSIZE*.5, CELLSIZE*.5);
+        endArrowTexture.draw( x+(.5+endCell[X])*CELLSIZE+(w-CELLSIZE*5)*.5,
+                             y+(.5+endCell[Y])*CELLSIZE + CELLSIZE*.5 + h*.17,
+                             CELLSIZE*.5, CELLSIZE*.5);
+        if(gameState == gameStateRunning && !win)
+            drawTimer(x+w-45, y+h-45);
+    }
 }
