@@ -1232,6 +1232,17 @@ float PARTICLE_SCALE;
     
 }
 
+-(void)setSelectedCard:(Card *)selectedCard {
+    
+    _game.selectedCard = selectedCard;
+    _selectedCard = selectedCard;
+
+}
+
+-(void)showCardPath:(NSArray*)path{
+    
+}
+
 #pragma mark - POSITION FUNCTIONS
 -(void)cameraShouldFollowSprite:(NKSpriteNode*)sprite withCompletionBlock:(void (^)())block {
     if (MOVE_CAMERA) {
@@ -1530,23 +1541,6 @@ float PARTICLE_SCALE;
     }
     
     [[playerSprites objectForKey:selectedPlayer] setHighlighted:true];
-    
-}
-
--(void)setSelectedCard:(Card *)selectedCard {
-    
-    
-    if (_selectedCard && !selectedCard) { // SETTING TO NIL
-        
-        //[_actionWindow setZPosition:Z_INDEX_BOARD];
-        
-        if (_selectedCard) {
-        
-        }
-        
-    }
-
-    _selectedCard = selectedCard;
     
 }
 
