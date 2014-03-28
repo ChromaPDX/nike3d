@@ -17,6 +17,8 @@
 #define NSFWKeyPlayer @"player"
 #define NSFWKeyDeck @"deck"
 #define NSFWKeyName @"name"
+#define NSFWKeyCardLevel @"cardLevel"
+#define NSFWKeyCardRange @"cardRange"
 #define NSFWKeyActionPointEarn @"actionPointEarn"
 #define NSFWKeyActionPointCost @"actionPointCost"
 #define NSFWKeyAbilities @"abilities"
@@ -44,13 +46,15 @@
 
 @property NSInteger actionPointCost;
 @property NSInteger actionPointEarn;
+@property NSInteger level;
+@property NSInteger range;
 
-@property (nonatomic, strong)BoardLocation *location;
+@property (nonatomic, strong) BoardLocation *location;
 @property (nonatomic,strong) Abilities *abilities;
-@property (nonatomic,strong) Abilities *nearTeamModifiers;
-@property (nonatomic,strong) Abilities *teamModifiers;
-@property (nonatomic,strong) Abilities *nearOpponentModifiers;
-@property (nonatomic,strong) Abilities *opponentModifiers;
+//@property (nonatomic,strong) Abilities *nearTeamModifiers;
+//@property (nonatomic,strong) Abilities *teamModifiers;
+//@property (nonatomic,strong) Abilities *nearOpponentModifiers;
+//@property (nonatomic,strong) Abilities *opponentModifiers;
 
 
 -(BOOL)isTemporary;
@@ -73,10 +77,6 @@
 @property (nonatomic) int32_t kick;      // Player
 @property (nonatomic) int32_t move;      // Player
 @property (nonatomic) int32_t challenge; // Player (handling)
-@property (nonatomic) int32_t dribble;   // Player (handling)
-@property (nonatomic) int32_t pass;      // Player (kick)
-@property (nonatomic) int32_t shoot;     // Player (kick)
-@property (nonatomic) int32_t save;      // Keeper
 
 -(void)add:(Abilities*)modifier;
 

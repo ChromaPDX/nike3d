@@ -3075,31 +3075,31 @@
         [temp add:e.abilities];
     }
     
-    for (Card *c in player.manager.cardsInGame) {
-        if ([self isAdjacent:c.location to:player.location]) {
-            [temp add:c.nearTeamModifiers];
-            
-            //            for (Card *e in c.enchantments) {
-            //                [temp add:e.nearTeamModifiers];
-            //            }
-            
-        }
-        [temp add:c.teamModifiers];
-        
-        //        for (Card *e in c.enchantments) {
-        //            [temp add:e.teamModifiers];
-        //        }
-        
-    }
-    
-    Manager *op = [self opponentForManager:player.manager];
-    
-    for (Card *c in op.cardsInGame) {
-        if ([self isAdjacent:c.location to:player.location]) {
-            [temp add:c.nearOpponentModifiers];
-        }
-        [temp add:c.opponentModifiers];
-    }
+//    for (Card *c in player.manager.cardsInGame) {
+//        if ([self isAdjacent:c.location to:player.location]) {
+//            [temp add:c.nearTeamModifiers];
+//            
+//            //            for (Card *e in c.enchantments) {
+//            //                [temp add:e.nearTeamModifiers];
+//            //            }
+//            
+//        }
+//        [temp add:c.teamModifiers];
+//        
+//        //        for (Card *e in c.enchantments) {
+//        //            [temp add:e.teamModifiers];
+//        //        }
+//        
+//    }
+//    
+//    Manager *op = [self opponentForManager:player.manager];
+//    
+//    for (Card *c in op.cardsInGame) {
+//        if ([self isAdjacent:c.location to:player.location]) {
+//            [temp add:c.nearOpponentModifiers];
+//        }
+//        [temp add:c.opponentModifiers];
+//    }
     
     return temp;
     

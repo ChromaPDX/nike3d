@@ -201,14 +201,54 @@
 
 #pragma mark METHODS FROM MODEL / DELEGATE
 
+-(void)refreshCardsForPlayer:(Player*)p{
+    if (p){
+        NSLog(@"show cards for: %@",p.name);
+        
+        [self cleanup];
+        
+        cardSize.width = (1. / (p.cardSlots+2)) * w;
+        cardSize.height = (cardSize.width * (100. / 70.));
+
+        
+        for (Card* c in p.moveDeck.inHand) {
+            [self addCard:c];
+        }
+        
+        if (p.manager.hasPossesion){
+            for (Card* c in p.kickDeck.inHand) {
+                [self addCard:c];
+            }
+        }
+        else {
+            for (Card* c in p.challengeDeck.inHand) {
+                [self addCard:c];
+            }
+        }
+        
+        for (Card* c in p.specialDeck.inHand) {
+            [self addCard:c];
+        }
+        
+        [self sortCardsForPlayer:p animated:YES WithCompletionBlock:^{}];
+        //[_actionWindow sortMyCards:YES WithCompletionBlock:nil];
+        
+    }
+    else {
+        NSLog(@"ERROR NO MODEL FOR SELECTED PLAYER");
+    }
+}
+
+
+
 -(void)alertDidCancel {
     
     [self fadeOutChild:_alert duration:1.];
     
  
-    [self sortMyCards:YES WithCompletionBlock:^{ }];
-    
-    
+//    [self sortMyCards:YES WithCompletionBlock:^{ }];
+//    
+//    
 }
 
 
@@ -278,7 +318,7 @@
 
 -(void)addCard:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block{
     
-    NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
+   // NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
     
     CardSprite* newCard = [[CardSprite alloc] initWithTexture:nil color:nil size:cardSize];
     
@@ -286,7 +326,7 @@
     newCard.model = card;
     newCard.window = self;
     
-    [newCard setZPosition:4];
+    //[newCard setZPosition:4];
     
 //    if (![self cardIsMine:card]) {
 //        [newCard setScale:.5];
@@ -298,45 +338,50 @@
     [_cardSprites setObject:newCard forKey:card];
     
     [self addChild:newCard];
+    [newCard setPosition3d:ofPoint(w,0,100)];
     
-    if ([self cardIsMine:card]) {
-        NSLog(@"is my card");
-        [_myCards addObject:newCard];
-
-        if (animated) {
-            
-
-            [newCard setHasShadow:YES];
-            
-            [newCard runAction:[NKAction scaleTo:1.3 duration:.15]];
-            [newCard runAction:[NKAction sequence:@[[NKAction moveTo:CGPointMake(0, 0) duration:.1],
-                                                    [NKAction moveBy:CGVectorMake(0, 0) duration:.4]]]
-                    completion:^{
-                        [self sortMyCards:animated WithCompletionBlock:^{
-                            block();
-                        }];
-                        
-                    }];
-            
-        }
-        else {
-            [self sortMyCards:animated WithCompletionBlock:^{
-                block();
-            }];
-        }
+    [_myCards addObject:newCard];
+    
+    if (block) {
+        block();
     }
-    
-    else {
-        NSLog(@"is opponent's card");
-        [_opCards addObject:newCard];
-        newCard.position = CGPointMake(self.size.width*.5, 0);
-        [self sortOpCards:NO WithCompletionBlock:^{
-            block();
-        }];
-    }
-    
-    
-    
+
+//    if ([self cardIsMine:card]) {
+//        NSLog(@"is my card");
+//
+//
+//        if (animated) {
+//            
+//
+//            [newCard setHasShadow:YES];
+//            
+//            [newCard runAction:[NKAction scaleTo:1.3 duration:.15]];
+//            [newCard runAction:[NKAction sequence:@[[NKAction moveTo:CGPointMake(0, 0) duration:.1],
+//                                                    [NKAction moveBy:CGVectorMake(0, 0) duration:.4]]]
+//                    completion:^{
+//                        [self sortCardsForPlayer:card.deck.player animated:animated WithCompletionBlock:^{
+//                            block();
+//                        }];
+//                        
+//                    }];
+//            
+//        }
+//        else {
+//            [self sortCardsForPlayer:card.deck.player animated:animated WithCompletionBlock:^{
+//                block();
+//            }];
+//        }
+//    }
+//    
+//    else {
+//        NSLog(@"is opponent's card");
+//        [_opCards addObject:newCard];
+//        newCard.position = CGPointMake(self.size.width*.5, 0);
+//        [self sortOpCards:NO WithCompletionBlock:^{
+//            block();
+//        }];
+//    }
+
 }
 
 
@@ -361,9 +406,7 @@
         if ([self cardIsMine:card]){
             [_myCards removeObject:cardToRemove];
             
-            [self sortMyCards:animated WithCompletionBlock:^{
-                block();
-            }];
+           // SORT CARDS
         }
         else {
             [_opCards removeObject:cardToRemove];
@@ -424,14 +467,18 @@
     
 }
 
--(void)sortMyCards:(BOOL)animated WithCompletionBlock:(void (^)())block{
+-(void)sortCardsForPlayer:(Player*)p{
+    [self sortCardsForPlayer:p animated:false WithCompletionBlock:^{}];
+}
+
+-(void)sortCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block{
     
     //NSLog(@"I HAVE %d CARD SPRITES IN MY HAND", _myCards.count);
     // MYCARDS
     
-    if (_delegate.game.myTurn) {
-        [_delegate.game sendRTPacketWithType:RTMessageSortCards point:nil];
-    }
+//    if (_delegate.game.myTurn) {
+//        [_delegate.game sendRTPacketWithType:RTMessageSortCards point:nil];
+//    }
     
     for (int i = 0; i < _myCards.count; i++) {
         
@@ -446,7 +493,7 @@
         [cs setAlpha:1.];
         
         //cs.origin = CGPointMake((w*.3) - ((cardSize.width*.15 + (w*.125)* (2./_myCards.count) ) * i),0);
-        cs.origin = CGPointMake(cardSize.width * (i-1), 0);
+        cs.origin = CGPointMake(cardSize.width * 1.1 * (i-1), 0);
         
         if (animated) {
             
@@ -454,25 +501,29 @@
                 [cs removeAllActions];
             }
             
-            [cs runAction:[NKAction scaleTo:1. duration:CARD_ANIM_DUR]];
-            NKAction *move = [NKAction moveTo:cs.origin duration:CARD_ANIM_DUR];
+            //[cs runAction:[NKAction scaleTo:1. duration:CARD_ANIM_DUR]];
+            NKAction *move = [NKAction move3dTo:ofPoint(cs.origin.x, cs.origin.y,2) duration:CARD_ANIM_DUR];
             [move setTimingMode:NKActionTimingEaseIn];
             [cs runAction:move];
+ //           [cs setPosition3d:ofPoint(cs.origin.x, cs.origin.y,2)];
+
         }
         
         else {
-            [cs setPosition:cs.origin];
+            [cs setPosition3d:ofPoint(cs.origin.x, cs.origin.y,2)];
         }
         
     }
     
     if (animated) {
         
-        [self runAction:[NKAction moveByX:0 y:0 duration:FAST_ANIM_DUR] completion:^{
-            if (block) {
-                block();
-            }
-        }];
+        if (block) {
+            block();
+        }
+        
+//        [self runAction:[NKAction moveByX:0 y:0 duration:FAST_ANIM_DUR] completion:^{
+
+//        }];
     }
     
     else {

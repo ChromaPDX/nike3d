@@ -115,7 +115,7 @@ float PARTICLE_SCALE;
     
     
     _actionWindow = [[ActionWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
-    [_actionWindow setPosition3d:ofPoint(0,-h*.425,20)];
+    [_actionWindow setPosition3d:ofPoint(0,-h*.42,20)];
     _actionWindow.delegate = self;
     [self addChild:_actionWindow];
     
@@ -1004,36 +1004,7 @@ float PARTICLE_SCALE;
 
 -(void)refreshActionWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
     
-    if (p){
-        NSLog(@"show cards for: %@",p.name);
-        
-        [_actionWindow cleanup];
-        
-        for (Card* c in p.moveDeck.inHand) {
-            [_actionWindow addCard:c];
-        }
-        
-        if (p.manager.hasPossesion){
-            for (Card* c in p.kickDeck.inHand) {
-                [_actionWindow addCard:c];
-            }
-        }
-        else {
-            for (Card* c in p.challengeDeck.inHand) {
-                [_actionWindow addCard:c];
-            }
-        }
-        
-        for (Card* c in p.specialDeck.inHand) {
-            [_actionWindow addCard:c];
-        }
-        
-        //[_actionWindow sortMyCards:YES WithCompletionBlock:nil];
-        
-    }
-    else {
-        NSLog(@"ERROR NO MODEL FOR SELECTED PLAYER");
-    }
+    [_actionWindow refreshCardsForPlayer:p];
     
     //[self refreshActionPoints];
     

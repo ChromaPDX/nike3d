@@ -17,6 +17,7 @@
 @interface ActionWindow : NKSpriteNode
 
 @property (nonatomic, weak) GameScene *delegate;
+@property (nonatomic, weak) Player* player;
 
 @property (nonatomic, strong) NSMutableOrderedSet *myCards;
 @property (nonatomic, strong) NSMutableOrderedSet *opCards;
@@ -32,6 +33,8 @@
 @property (nonatomic) BOOL enableSubmitButton;
 @property (nonatomic, strong) AlertSprite *alert;
 
+-(void)refreshCardsForPlayer:(Player*)p;
+
 -(void)addCard:(Card*)card;
 -(void)removeCard:(Card*)card;
 
@@ -39,8 +42,7 @@
 -(void)removeCard:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block;
 -(void)addStartTurnCard:(Card *)card withCompletionBlock:(void (^)())block;
 
--(void)sortMyCards:(BOOL)animated WithCompletionBlock:(void (^)())block;
--(void)sortOpCards:(BOOL)animated WithCompletionBlock:(void (^)())block;
+-(void)sortCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block;
 
 -(void)opponentBeganCardTouch:(Card*)c atPoint:(CGPoint)point;
 -(void)opponentMovedCardTouch:(Card*)c atPoint:(CGPoint)point;

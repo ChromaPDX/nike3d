@@ -21,6 +21,7 @@
 @property (nonatomic, strong) Deck *moveDeck;
 @property (nonatomic, strong) Deck *specialDeck;
 
+@property (nonatomic) int cardSlots;
 @property (nonatomic) BOOL female;
 
 // NON-PERSISTENT - ADDED IN REALTIME

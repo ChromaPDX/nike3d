@@ -20,6 +20,8 @@
 
 -(void)generateDefaultCards {
     
+    _cardSlots = 4;
+    
     _moveDeck = [[Deck alloc]initWithPlayer:self type:DeckTypeMove];
     _kickDeck = [[Deck alloc]initWithPlayer:self type:DeckTypeKick];
     _challengeDeck = [[Deck alloc]initWithPlayer:self type:DeckTypeChallenge];
@@ -30,6 +32,7 @@
 -(void)encodeWithCoder:(NSCoder *)aCoder {
     [super encodeWithCoder:aCoder];
     
+    [aCoder encodeInt32:_cardSlots forKey:@"cardSlots"];
     [aCoder encodeObject:_manager forKey:NSFWKeyManager];
     [aCoder encodeObject:_moveDeck forKey:@"moveDeck"];
     [aCoder encodeObject:_kickDeck forKey:@"kickDeck"];
@@ -53,6 +56,7 @@
     
     if (self) {
      
+        _cardSlots = [decoder decodeInt32ForKey:@"cardSlots"];
         _manager = [decoder decodeObjectForKey:NSFWKeyManager];
         _kickDeck = [decoder decodeObjectForKey:@"kickDeck"];
         _challengeDeck = [decoder decodeObjectForKey:@"challengeDeck"];
