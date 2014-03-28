@@ -6,6 +6,7 @@
 //
 //
 
+#include "ofApp.h"
 #import "MenuScene.h"
 #import "ofxNodeKitten.h"
 
@@ -52,17 +53,14 @@
         subTable.name = @"1";
         subTable.delegate = self;
         
-        //ofPoint df = subTable.getGlobalPosition();
-        //ofRectangle drawFrame = [subTable getDrawFrame];
-        //NSLog(@"drawFrame1 = %f,%f %fx%f", df.x, df.y, drawFrame.width, drawFrame.height);
-        
         NKScrollNode *subTable2 = [[NKScrollNode alloc] initWithParent:table autoSizePct:.13];
         [table addChild:subTable2];
         subTable2.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
         [subTable2 setHighlightColor:highlightColor];
         image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"menu1_b.png"]];
         [subTable2 setTexture:image];
-        [subTable2 setName:@"2"];
+        subTable2.name = @"2";
+        subTable2.delegate = self;
         
         NKScrollNode *subTable3 = [[NKScrollNode alloc] initWithParent:table autoSizePct:.125];
         [table addChild:subTable3];
@@ -71,7 +69,9 @@
         // subTable3.scrollingEnabled = true;
         image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"menu1_c.png"]];
         [subTable3 setTexture:image];
-        [subTable3 setName:@"3"];
+        subTable3.name = @"3";
+        subTable3.delegate = self;
+
         
         NKScrollNode *subTable4 = [[NKScrollNode alloc] initWithParent:table autoSizePct:.125];
         [table addChild:subTable4];
@@ -80,7 +80,9 @@
         //subTable4.scrollingEnabled = true;
         image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"menu1_d.png"]];
         [subTable4 setTexture:image];
-        [subTable4 setName:@"4"];
+        subTable4.name = @"4";
+        subTable4.delegate = self;
+
         
         // setupCM();
         //subTable.node->setOrientation(ofVec3f(0,1,0));
@@ -97,6 +99,8 @@
     }
     
     else if ([cell.name isEqualToString:@"2"]) {
+        MenuPlayerProfileScene* newScene = [[MenuPlayerProfileScene alloc]initWithSize:self.size];
+        ((ofApp*)ofGetAppPtr())->scene = newScene;
     }
     
     else if ([cell.name isEqualToString:@"3"]) {

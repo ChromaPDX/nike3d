@@ -11,7 +11,7 @@
 #import "ofxNodeKitten.h"
 #import "MiniGameScene.h"
 #import "GameScene.h"
-#import "MenuScene.h"
+#import "Menus.h"
 
 @implementation DevMenu 
 
