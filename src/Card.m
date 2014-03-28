@@ -25,7 +25,7 @@
         _deck = deck;
         _abilities = [[Abilities alloc]init];
         _level = rand()%3 + 1;
-        _range = rand()%5 + 1;
+        _range = _level;
         _actionPointEarn = 0;
         _actionPointCost = 0;
     }

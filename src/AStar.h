@@ -24,4 +24,6 @@ typedef NS_ENUM(int, NeighborhoodType){
 
 -(NSArray*) cellsAccesibleFrom:(BoardLocation*)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE;
 
+-(NSArray*)cellsAccesibleFrom:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE walkDistance:(int)distance;
+
 @end
