@@ -51,6 +51,6 @@
 -(Card*)cardInDeckAtLocation:(BoardLocation*)location;
 -(Card*)cardInHandAtlocation:(BoardLocation*)location;
 
--(NSArray*)playersClosestToBall;
+-(NSDictionary*)playersPathToBall;
 
 @end

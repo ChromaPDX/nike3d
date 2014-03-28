@@ -133,13 +133,23 @@
     return m;
 }
 
--(NSArray*)playersClosestToBall{
+-(NSArrray*)playersPathToBall{
     BoardLocation *ballLocation = _game.ball.location;
-    AStar *astar = [AStar];
+   // NSMutableArray *retPlayers = [[NSMutableArray alloc] init];
+    NSMutableArray *playerLocations = [[NSMutableArray alloc] init];
     for(Player* p in _players.inGame){
-        
+        [playerLocations addObject:p.location];
+    }
+    NSMutableDictionary *playerPathsDict = [[NSMutableDictionary alloc] init];
+    AStar *astar;
+    astar = [astar initWithColumns:BOARD_WIDTH  Rows:BOARD_LENGTH  ObstaclesCells:playerLocations];
+    for(Player* p in _players.inGame) {
+        NSArray* path = [astar pathFromAtoB:p.location B:ballLocation NeighborhoodType:NeighborhoodTypeQueen];
+      //  [playerPathsDict setObject:<#(id)#> forKey:<#(id<NSCopying>)#>]
         
     }
+    
+    return playerPathsDict;
 }
 
 @end

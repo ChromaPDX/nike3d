@@ -9,6 +9,7 @@
 #ifndef ChromaNSFW_ModelHeaders_h
 #define ChromaNSFW_ModelHeaders_h
 
+#import "GlobalTypes.h"
 #import "CardTypes.h"
 #import "Game.h"
 #import "Manager.h"
@@ -19,6 +20,7 @@
 #import "Actions.h"
 #import "NSData+CocoaDevUsersAdditions.h"
 #import "AStar.h"
+
 
 #define PRESENTATION_MODE 0
 #define CHEATS 0
