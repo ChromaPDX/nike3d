@@ -13,37 +13,39 @@
 @class CardSprite;
 @class ButtonSprite;
 @class AlertSprite;
+@class ActionWindow;
+
+@interface PlayerHand : NKNode
+{
+    CGSize cardSize;
+}
+    @property (nonatomic, weak) ActionWindow* delegate;
+    @property (nonatomic, weak) Player* player;
+    @property (nonatomic, strong) NSMutableDictionary *cardSprites;
+    @property (nonatomic, strong) NSMutableArray *myCards;
+    @property (nonatomic, strong) NKLabelNode *playerName;
+
+    -(instancetype)initWithPlayer:(Player*)p delegate:(ActionWindow*)delegate;
+    -(void)addCard:(Card*)card;
+    -(void)removeCard:(Card*)card;
+    -(void)sortCards;
+    -(void)shuffleAroundCard:(CardSprite*)card;
+@end
 
 @interface ActionWindow : NKSpriteNode
 
+@property (nonatomic, strong) NSMutableDictionary *playerHands;
+
 @property (nonatomic, weak) GameScene *delegate;
+@property (nonatomic, weak) Player* selectedPlayer;
+@property (nonatomic, weak) Card* selectedCard;
 
-@property (nonatomic, strong) NSMutableOrderedSet *myCards;
-@property (nonatomic, strong) NSMutableOrderedSet *opCards;
-
-@property (nonatomic, strong) NSMutableDictionary *cardSprites;
-
-@property (nonatomic, strong) ButtonSprite *actionButton;
-
-@property (nonatomic, strong) NKSpriteNode *turnTokensWindow;
-@property (nonatomic, strong) NKLabelNode *turnTokenCount;
-@property (nonatomic, strong) NKLabelNode *opTokenCount;
+-(CardSprite*)spriteForCard:(Card*)c;
 
 @property (nonatomic) BOOL enableSubmitButton;
 @property (nonatomic, strong) AlertSprite *alert;
 
--(void)addCard:(Card*)card;
--(void)removeCard:(Card*)card;
-
--(void)addCard:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block;
--(void)removeCard:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block;
--(void)addStartTurnCard:(Card *)card withCompletionBlock:(void (^)())block;
-
--(void)sortMyCards:(BOOL)animated WithCompletionBlock:(void (^)())block;
--(void)sortOpCards:(BOOL)animated WithCompletionBlock:(void (^)())block;
-
--(void)opponentBeganCardTouch:(Card*)c atPoint:(CGPoint)point;
--(void)opponentMovedCardTouch:(Card*)c atPoint:(CGPoint)point;
+-(void)refreshCardsForPlayer:(Player*)p;
 
 -(void)cardTouchMoved:(CardSprite*)card atPoint:(CGPoint)point;
 -(void)cardTouchBegan:(CardSprite*)card atPoint:(CGPoint)point;

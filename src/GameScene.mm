@@ -115,7 +115,7 @@ float PARTICLE_SCALE;
     
     
     _actionWindow = [[ActionWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
-    [_actionWindow setPosition3d:ofPoint(0,-h*.425,20)];
+    [_actionWindow setPosition3d:ofPoint(0,-h*.42,20)];
     _actionWindow.delegate = self;
     [self addChild:_actionWindow];
     
@@ -388,9 +388,9 @@ float PARTICLE_SCALE;
         
         if (event) {
             
-            CardSprite *sprite = [[_actionWindow cardSprites] objectForKey:card];
-            
-            [sprite runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
+//            CardSprite *sprite = [[_actionWindow cardSprites] objectForKey:card];
+//            
+//            [sprite runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
             
             
            // [self addUIForEvent:event];
@@ -411,9 +411,9 @@ float PARTICLE_SCALE;
         
         else {
             
-            CardSprite *sprite = [[_actionWindow cardSprites] objectForKey:card];
-            
-            [sprite runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
+//            CardSprite *sprite = [[_actionWindow cardSprites] objectForKey:card];
+//            
+//            [sprite runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
             
             GameEvent *event = [_game.currentAction.GameEvents lastObject];
             return event.location;
@@ -743,7 +743,8 @@ float PARTICLE_SCALE;
         
         // [self cameraShouldFollowSprite:nil withCompletionBlock:^{}];
         
-        CardSprite* card = [_actionWindow.cardSprites objectForKey:event.playerPerformingAction];
+        
+        CardSprite* card = [_actionWindow spriteForCard:event.playerPerformingAction];
         
         //            [card removeFromParent];
         //            [_gameBoardNode addChild:card];
@@ -752,7 +753,7 @@ float PARTICLE_SCALE;
         
         [card setZPosition:Z_INDEX_HUD];
         
-        [_actionWindow removeCard:card.model animated:YES withCompletionBlock:^{}];
+        //[_actionWindow removeCard:card.model animated:YES withCompletionBlock:^{}];
         
         [card removeAllActions];
         
@@ -1004,46 +1005,17 @@ float PARTICLE_SCALE;
 
 -(void)refreshActionWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
     
-    if (p){
-        NSLog(@"show cards for: %@",p.name);
-        
-        [_actionWindow cleanup];
-        
-        for (Card* c in p.moveDeck.inHand) {
-            [_actionWindow addCard:c];
-        }
-        
-        if (p.manager.hasPossesion){
-            for (Card* c in p.kickDeck.inHand) {
-                [_actionWindow addCard:c];
-            }
-        }
-        else {
-            for (Card* c in p.challengeDeck.inHand) {
-                [_actionWindow addCard:c];
-            }
-        }
-        
-        for (Card* c in p.specialDeck.inHand) {
-            [_actionWindow addCard:c];
-        }
-        
-        //[_actionWindow sortMyCards:YES WithCompletionBlock:nil];
-        
-    }
-    else {
-        NSLog(@"ERROR NO MODEL FOR SELECTED PLAYER");
-    }
+    [_actionWindow refreshCardsForPlayer:p];
     
     //[self refreshActionPoints];
     
 }
 
 -(void)refreshActionPoints {
-    
-    [_actionWindow.turnTokenCount setText:[NSString stringWithFormat:@"%d", _game.me.ActionPoints]];
-    [_actionWindow.opTokenCount setText:[NSString stringWithFormat:@"%d", _game.opponent.ActionPoints]];
-    
+//    
+//    [_actionWindow.turnTokenCount setText:[NSString stringWithFormat:@"%d", _game.me.ActionPoints]];
+//    [_actionWindow.opTokenCount setText:[NSString stringWithFormat:@"%d", _game.opponent.ActionPoints]];
+//    
 }
 
 
@@ -1226,11 +1198,11 @@ float PARTICLE_SCALE;
 }
 
 -(void)addCardToHand:(Card *)card {
-    [_actionWindow addCard:card];
+    //[_actionWindow addCard:card];
 }
 
 -(void)removeCardFromHand:(Card *)card {
-    [_actionWindow removeCard:card];
+   // [_actionWindow removeCard:card];
 }
 
 -(BallSprite*)ballSprite {

@@ -26,6 +26,7 @@ public:
 typedef enum {
     gameStateWaiting,
     gameStateRunning,
+    gameStateWinLose
 } GameState;
 
 
@@ -62,6 +63,11 @@ private:
     ofTexture startArrowTexture;
     ofTexture endArrowTexture;
     
+    ofTrueTypeFont font, largeFont;
+    
+    ofTexture successTexture, failTexture;
+    float gameFade;
+    
     ofTexture ballTexture;
     float ballPosition[2];
     float ballVelocity[2];
@@ -71,6 +77,8 @@ private:
     ofRectangle wall[6];
     float startCell[2];
     float endCell[2];
+    
+    int centerX, centerY;
     
     int w, h, x, y;
     int CELLSIZE;

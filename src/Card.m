@@ -24,6 +24,8 @@
     if(self){
         _deck = deck;
         _abilities = [[Abilities alloc]init];
+        _level = rand()%3 + 1;
+        _range = rand()%5 + 1;
         _actionPointEarn = 0;
         _actionPointCost = 0;
     }
@@ -175,12 +177,11 @@
         
     _actionPointEarn = [decoder decodeIntForKey:NSFWKeyActionPointEarn];
     _actionPointCost = [decoder decodeIntForKey:NSFWKeyActionPointCost];
+    _level = [decoder decodeIntForKey:NSFWKeyCardLevel];
+    _range = [decoder decodeIntForKey:NSFWKeyCardRange];
         
     _abilities = [decoder decodeObjectForKey:NSFWKeyAbilities];
-    _nearOpponentModifiers = [decoder decodeObjectForKey:NSFWKeyNearOpponentModifiers];
-    _nearTeamModifiers = [decoder decodeObjectForKey:NSFWKeyNearTeamModifiers]  ;
-    _opponentModifiers = [decoder decodeObjectForKey:NSFWKeyOpponentModifiers];
-    _teamModifiers = [decoder decodeObjectForKey:NSFWKeyTeamModifiers];
+
         
     }
     
@@ -197,12 +198,10 @@
     
     [encoder encodeInteger:_actionPointEarn forKey:NSFWKeyActionPointEarn];
     [encoder encodeInteger:_actionPointCost forKey:NSFWKeyActionPointCost];
+    [encoder encodeInteger:_level forKey:NSFWKeyCardLevel];
+    [encoder encodeInteger:_range forKey:NSFWKeyCardRange];
     
     [self encodeAbilities:_abilities with:encoder forKey:NSFWKeyAbilities];
-    [self encodeAbilities:_nearOpponentModifiers with:encoder forKey:NSFWKeyNearOpponentModifiers];
-    [self encodeAbilities:_nearTeamModifiers with:encoder forKey:NSFWKeyNearTeamModifiers];
-    [self encodeAbilities:_opponentModifiers with:encoder forKey:NSFWKeyOpponentModifiers];
-    [self encodeAbilities:_teamModifiers with:encoder forKey:NSFWKeyTeamModifiers];
 
     
 }
@@ -255,10 +254,6 @@
         _kick = [decoder decodeInt32ForKey:a[0]];
         _move = [decoder decodeInt32ForKey:a[1]];
         _challenge = [decoder decodeInt32ForKey:a[2]];
-        _dribble = [decoder decodeInt32ForKey:a[3]];
-        _pass = [decoder decodeInt32ForKey:a[4]];
-        _shoot = [decoder decodeInt32ForKey:a[5]];
-        _save = [decoder decodeInt32ForKey:a[6]];
         
     }
 
@@ -279,10 +274,7 @@
     [encoder encodeInt32:_kick forKey:a[0]];
     [encoder encodeInt32:_move forKey:a[1]];
     [encoder encodeInt32:_challenge forKey:a[2]];
-    [encoder encodeInt32:_dribble forKey:a[3]];
-    [encoder encodeInt32:_pass forKey:a[4]];
-    [encoder encodeInt32:_shoot forKey:a[5]];
-    [encoder encodeInt32:_save forKey:a[6]];
+
     
 }
 
@@ -292,10 +284,7 @@
     a.kick = _kick;
     a.move = _move;
     a.challenge = _challenge;
-    a.dribble = _dribble;
-    a.pass = _pass;
-    a.shoot = _shoot;
-    a.save = _save;
+
     
     return a;
 }
@@ -305,10 +294,6 @@
     _kick += modifier.kick;
     _move += modifier.move;
     _challenge += modifier.challenge;
-    _dribble += modifier.dribble;
-    _pass += modifier.pass;
-    _shoot += modifier.shoot;
-    _save += modifier.save;
     
 }
 

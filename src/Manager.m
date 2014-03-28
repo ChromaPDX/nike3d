@@ -13,7 +13,7 @@
 
 @implementation Manager
 
--(id)init{
+-(id)initWithGame:(Game*)game{
     self = [super init];
     if(self){
         NSLog(@"new manager init");

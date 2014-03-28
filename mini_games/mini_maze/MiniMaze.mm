@@ -111,6 +111,20 @@ void MiniMaze::setup(int xIn, int yIn, int width, int height){
         wall[i].width = wall[i].width*CELLSIZE;
         wall[i].height = wall[i].height*CELLSIZE;
     }
+    
+    centerX = x+w*.5;
+    centerY = y+h*.6;  // because of the text box
+
+    ofLoadImage(successTexture, "success.png");
+    ofLoadImage(failTexture, "fail.png");
+
+    font.loadFont("Avenir.ttf", ofGetWidth() / 22., true, true);   // 4.2
+    largeFont.loadFont("Avenir.ttf", ofGetWidth() / 10., true, true);   // 4.2
+
+    ofLoadImage(successTexture, "success.png");
+    ofLoadImage(failTexture, "fail.png");
+    
+    gameFade = 1.0;
 }
 
 void MiniMaze::update(){
@@ -127,15 +141,35 @@ void MiniMaze::update(){
         win = false;
     }
     if(gameState == gameStateRunning && ofGetElapsedTimeMillis() > nextStartTime){
-        // end of round, reset for new round
-        nextStartTime = ofGetElapsedTimeMillis() + 3000;
-        gameState = gameStateWaiting;
+        ////////////////
+        //  to begin the end of the minigame
+        gameState = gameStateWinLose;
+        nextStartTime = ofGetElapsedTimeMillis() + 1500;
+        ////////////////
         // you lose
-        if(delegate)
-            delegate->gameDidFinishWithLose();
-        if(objDelegate)
-            [objDelegate gameDidFinishWithLose];
     }
+    if(gameState == gameStateWinLose && ofGetElapsedTimeMillis() > nextStartTime){
+        if(win){
+            if(delegate)
+                delegate->gameDidFinishWithWin();
+            if(objDelegate)
+                [objDelegate gameDidFinishWithWin];
+        }
+        else{
+            if(delegate)
+                delegate->gameDidFinishWithLose();
+            if(objDelegate)
+                [objDelegate gameDidFinishWithLose];
+        }
+    }
+    //////////////////
+    // fade out, end of game
+    if(gameState == gameStateWinLose){
+        gameFade = 1.0 - (ofGetElapsedTimeMillis() - (nextStartTime-1500)) / 1000.0;
+        if(gameFade < 0.0)
+            gameFade = 0.0f;
+    }
+    //////////////////
     // update ball position, velocity, acceleration
     ballAcceleration[X] = -attitude.g;
     ballAcceleration[Y] = -attitude.h;
@@ -150,12 +184,12 @@ void MiniMaze::update(){
         }
     }
     else{
-        // you win
-        win = true;
-        if(delegate)
-            delegate->gameDidFinishWithWin();
-        if(objDelegate)
-            [objDelegate gameDidFinishWithWin];
+        if(gameState != gameStateWinLose){
+            // you win
+            win = true;
+            gameState = gameStateWinLose;
+            nextStartTime = ofGetElapsedTimeMillis() + 1500;
+        }
     }
     
     // collision detection
@@ -237,7 +271,9 @@ void MiniMaze::drawTimer(int centerX, int centerY){
 }
 
 void MiniMaze::draw(){
+
     backgroundTexture.draw(x, y, w, h);
+    ofSetColor(255, 255*gameFade);
     for(int i = 0; i < 6; i++)
         white30Texture.draw(wall[i].x, wall[i].y, wall[i].width, wall[i].height);
     ballTexture.draw(ballPosition[X], ballPosition[Y], ballRadius+ballRadius, ballRadius+ballRadius);
@@ -249,4 +285,22 @@ void MiniMaze::draw(){
                          CELLSIZE*.5, CELLSIZE*.5);
     if(gameState == gameStateRunning && !win)
         drawTimer(x+w-45, y+h-45);
+
+    ofSetColor(255, 255);
+
+    if(gameState == gameStateRunning)
+        font.drawString("tilt maze", centerX - font.stringWidth("tilt maze")*.5, centerY-h*.53);
+    
+    if(gameState == gameStateWinLose){
+        if(win){
+            successTexture.draw(centerX-w*.33, centerY-w*.33, w*.66, w*.66);
+            largeFont.drawString("SUCCESS", centerX - largeFont.stringWidth("SUCCESS")*.5, centerY-w*.45);
+            font.drawString("tap to deploy on field", centerX - font.stringWidth("tap to deploy on field")*.5, centerY-h*.53);
+        }
+        else{
+            failTexture.draw(centerX-w*.33, centerY-w*.33, w*.66, w*.66);
+            largeFont.drawString("FAIL", centerX - largeFont.stringWidth("FAIL")*.5, centerY-w*.45);
+            font.drawString("tap to return to field", centerX - font.stringWidth("tap to return to field")*.5, centerY-h*.53);
+        }
+    }
 }

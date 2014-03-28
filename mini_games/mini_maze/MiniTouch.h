@@ -25,6 +25,7 @@ public:
 typedef enum {
     touchGameStateWaiting,
     touchGameStateRunning,
+    touchGameStateWinLose
 } TouchGameState;
 
 class MiniTouch {
@@ -52,7 +53,11 @@ private:
     ofTexture white30Texture;
     ofTexture ballTexture;
     float ballIncrement;
-    ofTrueTypeFont font;
+    
+    ofTrueTypeFont font, largeFont;
+    
+    ofTexture successTexture, failTexture;
+    float gameFade;
     
     int w, h, x, y;
     int centerX, centerY;

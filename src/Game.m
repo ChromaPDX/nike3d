@@ -93,8 +93,8 @@
 
 -(void)startSinglePlayerGame {
     
-    _me = [[Manager alloc] init];
-    _opponent = [[Manager alloc] init];
+    _me = [[Manager alloc] initWithGame:self];
+    _opponent = [[Manager alloc] initWithGame:self];
     
     _score = [BoardLocation pX:0 Y:0];
     
@@ -3075,31 +3075,31 @@
         [temp add:e.abilities];
     }
     
-    for (Card *c in player.manager.cardsInGame) {
-        if ([self isAdjacent:c.location to:player.location]) {
-            [temp add:c.nearTeamModifiers];
-            
-            //            for (Card *e in c.enchantments) {
-            //                [temp add:e.nearTeamModifiers];
-            //            }
-            
-        }
-        [temp add:c.teamModifiers];
-        
-        //        for (Card *e in c.enchantments) {
-        //            [temp add:e.teamModifiers];
-        //        }
-        
-    }
-    
-    Manager *op = [self opponentForManager:player.manager];
-    
-    for (Card *c in op.cardsInGame) {
-        if ([self isAdjacent:c.location to:player.location]) {
-            [temp add:c.nearOpponentModifiers];
-        }
-        [temp add:c.opponentModifiers];
-    }
+//    for (Card *c in player.manager.cardsInGame) {
+//        if ([self isAdjacent:c.location to:player.location]) {
+//            [temp add:c.nearTeamModifiers];
+//            
+//            //            for (Card *e in c.enchantments) {
+//            //                [temp add:e.nearTeamModifiers];
+//            //            }
+//            
+//        }
+//        [temp add:c.teamModifiers];
+//        
+//        //        for (Card *e in c.enchantments) {
+//        //            [temp add:e.teamModifiers];
+//        //        }
+//        
+//    }
+//    
+//    Manager *op = [self opponentForManager:player.manager];
+//    
+//    for (Card *c in op.cardsInGame) {
+//        if ([self isAdjacent:c.location to:player.location]) {
+//            [temp add:c.nearOpponentModifiers];
+//        }
+//        [temp add:c.opponentModifiers];
+//    }
     
     return temp;
     

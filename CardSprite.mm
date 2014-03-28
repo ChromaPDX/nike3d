@@ -17,13 +17,6 @@
     
     if (self) {
         
-        _shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Ipad_shadow"] color:[NKColor blackColor]  size:size];
-        [_shadow setZPosition:-1];
-        [self addChild:_shadow];
-        [_shadow setAlpha:.5];
-        
-        //[_shadow setHidden:YES];
-        [_shadow setPosition:CGPointMake(-size.width*.075, size.height*.075)];
 
         self.userInteractionEnabled = YES;
         
@@ -53,7 +46,15 @@
 
 -(void)showShadow:(BOOL)showShadow withCompletionBlock:(void (^)())block {
     
+    
     if (showShadow) {
+        
+        if (!_shadow) {
+            _shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Ipad_shadow"] color:[NKColor blackColor]  size:self.size];
+            [_shadow setZPosition:-1];
+            [_shadow setPosition:CGPointMake(-w*.075, h*.075)];
+            [self addChild:_shadow];
+        }
         [_shadow setHidden:NO];
         [_shadow setAlpha:0.];
         [_shadow runAction:[NKAction scaleTo:1.2 duration:CARD_ANIM_DUR]];
@@ -95,11 +96,11 @@
         //        [cardName setPosition:CGPointMake(0, h*.25)];
         //        cardName.text = [model.name uppercaseString];
         
-        _doubleName = [[NKLabelNode alloc]initWithSize:self.size FontNamed:@"TradeGothicLTStd-BdCn20"];
-        _doubleName.fontSize = 20;
-        _doubleName.text = _model.name;
-        
-        [self addChild:_doubleName];
+//        _doubleName = [[NKLabelNode alloc]initWithSize:self.size FontNamed:@"TradeGothicLTStd-BdCn20"];
+//        _doubleName.fontSize = 20;
+//        _doubleName.text = _model.name;
+//        
+//        [self addChild:_doubleName];
         
 //        _doubleName = [self spritenodecontaininglabelsFromStringcontainingnewlines:[[model.name uppercaseString] stringByReplacingOccurrencesOfString:@" " withString:@"\n"]
 //                                                                          fontname:@"TradeGothicLTStd-BdCn20"
@@ -164,8 +165,28 @@
     }
 }
 
+-(NSString*)cardStringForType {
+    switch (_model.deckType) {
+        case DeckTypeMove: return @"Move";
+        case DeckTypeKick: return @"Kick";
+            case DeckTypeChallenge: return @"Chal";
+            case DeckTypeSpecial:
+            
+            switch (_model.cardType) {
+                default:   return @"SpecM";
+            }
+          
+        default:
+            break;
+    }
+    return @"NIL";
+}
+
+
 -(void)setCorrectTexture {
     
+    NSString *fileName = [NSString stringWithFormat:@"Card_Icon_%@_L%d", [self cardStringForType], _model.level];
+    self.texture = [NKTexture textureWithImageNamed:fileName];
  //   if (!_flipped) {
         
 //        if ([_model isTypePlayer]){ // Player
@@ -272,17 +293,13 @@
 //    
 //}
 //
-//-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-//    
-//    [_delegate resetFingerLocation];
-//    [_window cardTouchEnded:self atPoint:[[touches anyObject] locationInNode:self.parent]];
-//    
-//    // TODO: define a pass action
-//    //    BoardLocation *loc = [_delegate canPlayCard:_model withTouch:[touches anyObject]];
-//    //    if (!loc) {
-//    
-//    //   }
-//}
+-(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+    NKTouchState hit = [super touchUp:location id:touchId];
+    if (hit == 2) {
+          [_window cardTouchEnded:self atPoint:location];
+    }
+    return hit;
+}
 
 -(NKAction*)goBack {
     
