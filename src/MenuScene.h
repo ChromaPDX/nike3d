@@ -8,8 +8,8 @@
 
 #import "NKSceneNode.h"
 #import "NKScrollNode.h"
-#include "Menus.h"
 
+@class MenuNode;
 
 @interface MenuScene : NKSceneNode <NKTableCellDelegate>
 

@@ -293,17 +293,13 @@
 //    
 //}
 //
-//-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-//    
-//    [_delegate resetFingerLocation];
-//    [_window cardTouchEnded:self atPoint:[[touches anyObject] locationInNode:self.parent]];
-//    
-//    // TODO: define a pass action
-//    //    BoardLocation *loc = [_delegate canPlayCard:_model withTouch:[touches anyObject]];
-//    //    if (!loc) {
-//    
-//    //   }
-//}
+-(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+    NKTouchState hit = [super touchUp:location id:touchId];
+    if (hit == 2) {
+          [_window cardTouchEnded:self atPoint:location];
+    }
+    return hit;
+}
 
 -(NKAction*)goBack {
     

@@ -6,7 +6,7 @@
 //
 //
 
-#import "NikeNodeHeaders.h"
+#import "../NikeNodeHeaders.h"
 
 @interface MenuNode (){
 }
