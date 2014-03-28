@@ -63,13 +63,16 @@ private:
     ofTexture startArrowTexture;
     ofTexture endArrowTexture;
     
+    ofTrueTypeFont font, largeFont;
+    
+    ofTexture successTexture, failTexture;
+    float gameFade;
+    
     ofTexture ballTexture;
     float ballPosition[2];
     float ballVelocity[2];
     float ballAcceleration[2];
     int ballRadius;
-
-    ofTexture successTexture, failTexture;
     
     ofRectangle wall[6];
     float startCell[2];
