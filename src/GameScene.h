@@ -49,11 +49,7 @@
 
 @property (nonatomic) int gameBoardNodeScrollOffset;
 
-
-
-
 -(void)setOrientation:(ofQuaternion)orientation;
-
 -(void)gameDidFinishWithLose;
 -(void)gameDidFinishWithWin;
 

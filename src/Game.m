@@ -701,6 +701,25 @@
     
 }
 
+-(void)setSelectedCard:(Card *)selectedCard {
+    
+    if (_myTurn) {
+        
+        if (!_animating) {
+            
+            NSArray* path;
+            
+            AStar *astar = [[AStar alloc]initWithColumns:selectedCard.range Rows:selectedCard.range ObstaclesCells:nil];
+            
+            
+            [_gameScene showCardPath:path];
+            
+        }
+    }
+    
+    _selectedCard = selectedCard;
+    
+}
 
 // MOVING PLAYER ON FIELD
 -(BOOL)canUsePlayer:(Player*)player {
