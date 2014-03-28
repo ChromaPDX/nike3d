@@ -75,6 +75,8 @@ void MiniCups::update(){
         angleVelocity = 0;
         angleAcceleration = .005;
         gameFade = 1.0;
+        fullSpeedCount = 0;
+        fullSpeedRandomTime = ofRandom(10, 40);
         spinTime = ofRandom(1000, 1200);
         gameState = cupsGameStateAccelerating;
         accelerationBeginTime = ofGetElapsedTimeMillis();
@@ -84,11 +86,15 @@ void MiniCups::update(){
     }
     // 0.355000  -  probably too hard
     // 0.325000  -  challenging but accomplishable
-    if(gameState == cupsGameStateAccelerating && angleVelocity > 0.325000){  // based on speed instead of time
+    if(gameState == cupsGameStateAccelerating && angleVelocity > 0.315000){  // based on speed instead of time
 //    if(gameState == cupsGameStateAccelerating && ofGetElapsedTimeMillis() > nextStartTime){
-        gameState = cupsGameStateSlowing;
-        angleAcceleration = -.005;
-        nextStartTime = ofGetElapsedTimeMillis() + spinTime;
+        angleAcceleration = 0;
+        fullSpeedCount++;
+        if(fullSpeedCount > fullSpeedRandomTime){
+            gameState = cupsGameStateSlowing;
+            angleAcceleration = -.005;
+            nextStartTime = ofGetElapsedTimeMillis() + spinTime;
+        }
     }
     if(gameState == cupsGameStateSlowing && ofGetElapsedTimeMillis() > nextStartTime){
         gameState = cupsGameStatePicking;
@@ -175,7 +181,7 @@ void MiniCups::touchDownCoords(float x, float y){
             ////////////////
             //  to begin the end of the minigame
             gameState = cupsGameStateWinLose;
-            nextStartTime = ofGetElapsedTimeMillis() + 1500;
+            nextStartTime = ofGetElapsedTimeMillis() + 1000;
             ////////////////
             showBall = true;
         }

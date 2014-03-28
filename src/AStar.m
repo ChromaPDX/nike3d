@@ -10,7 +10,7 @@
 #define BISHOP_MOVE_COST 7
 // costs based on the unit square and its diagonal, 1:sqrt(2) =~ 1:1.4 == 10:14 == 5:7
 
-#define NEIGHBORHOOD_TYPE 1  // 0:Von Neumann  1:Moore
+// NEIGHBORHOOD_TYPE 1  // 0:Von Neumann  1:Moore
 
 #define MAX_ITERATIONS 10000 // just incase. prevent infinite loop
 
@@ -60,7 +60,7 @@
         openList = (bool*)malloc(sizeof(bool)*columns*rows);
         closedList = (bool*)malloc(sizeof(bool)*columns*rows);
         parentIndex = (int*)malloc(sizeof(int)*columns*rows);
-
+        
         [self updateObstacleCells:obstacles];
     }
     return self;
@@ -76,10 +76,10 @@
     free(parentIndex);
 }
 
--(NSArray*) pathFromAtoB:(BoardLocation*)start B:(BoardLocation*)finish
+-(NSArray*) pathFromAtoB:(BoardLocation*)start B:(BoardLocation*)finish NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE
 {
     NSMutableArray *pathArray = [NSMutableArray array];
-
+    
     int A = start.x + start.y*columns;
     int B = finish.x + finish.y*columns;
     bool found;
@@ -95,20 +95,20 @@
         openList[i] = false;
         closedList[i] = false;
     }
-//    int start[2] = {A%columns, (int)A/columns};
+    //    int start[2] = {A%columns, (int)A/columns};
     int end[2] = {B%columns, (int)B/columns};
     for(int c = 0; c < columns; c++){
         for(int r = 0; r < rows; r++){
             hValues[c+r*columns] = abs(end[0]-c) + abs(end[1]-r);
         }
     }
-//    printf("\n");
-//    for(int c = 0; c < columns; c++){
-//        for(int r = 0; r < rows; r++){
-//            printf("%d ",hValues[c+r*columns]);
-//        }
-//        printf("\n");
-//    }
+    //    printf("\n");
+    //    for(int c = 0; c < columns; c++){
+    //        for(int r = 0; r < rows; r++){
+    //            printf("%d ",hValues[c+r*columns]);
+    //        }
+    //        printf("\n");
+    //    }
     
     // check neighbors, add children to cell, when finished, close this cell
     int step, stepRow, stepColumn, neighborIndex[8];
@@ -173,11 +173,11 @@
             int pathIndex = B;
             do {
                 [pathArray addObject:[self LocationFromIndex:pathIndex]];
-//                pathArray[i] = pathIndex;
+                //                pathArray[i] = pathIndex;
                 pathIndex = parentIndex[pathIndex];
                 i++;
             } while (pathIndex != A && i < MAX_ITERATIONS);
-//            *sizeOfArray = i;
+            //            *sizeOfArray = i;
             return pathArray;
         }
         iterations++;
@@ -187,7 +187,7 @@
     return nil;
 }
 
--(NSArray*) cellsAccesibleFrom:(BoardLocation*)location{
+-(NSArray*) cellsAccesibleFrom:(BoardLocation*)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE{
     
     int A = location.x + location.y*columns;
     bool found;
@@ -241,9 +241,9 @@
             }
             i++;
         } while (nextAvailableIndex == -1 && i < columns*rows);
-
+        
         if(nextAvailableIndex == -1) {
-//            printf("\ncompleted. all reachable cells have been checked.\n");
+            //            printf("\ncompleted. all reachable cells have been checked.\n");
             NSMutableArray *checked = [NSMutableArray array];
             for(int i = 0; i < columns*rows; i++)
                 if(closedList[i])
