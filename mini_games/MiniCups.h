@@ -80,6 +80,8 @@ private:
     float angleAcceleration;
     
     long accelerationBeginTime;
+    int fullSpeedRandomTime;
+    int fullSpeedCount;
     
     bool win = false;
     

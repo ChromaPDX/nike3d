@@ -188,7 +188,7 @@ void MiniMaze::update(){
             // you win
             win = true;
             gameState = gameStateWinLose;
-            nextStartTime = ofGetElapsedTimeMillis() + 1500;
+            nextStartTime = ofGetElapsedTimeMillis() + 1000;
         }
     }
     
