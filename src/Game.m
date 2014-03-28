@@ -15,7 +15,6 @@
 
 
 @interface Game (){
-    NSMutableDictionary *gameBoard;
     SystemSoundID touchSound;
     SystemSoundID menuLoop;
 }
@@ -78,7 +77,7 @@
 //
 //    _history = [NSMutableArray array];
 //    _thisTurnActions = [NSMutableArray array];
-//    gameBoard = [NSMutableDictionary dictionary];
+//    players = [NSMutableDictionary dictionary];
 //
 //    [self setupNewPlayers];
 //
@@ -135,7 +134,7 @@
     
     _history = [NSMutableArray array];
     _thisTurnActions = [NSMutableArray array];
-    gameBoard = [NSMutableDictionary dictionary];
+    _players = [NSMutableDictionary dictionary];
     
     [self setupNewPlayers];
     
@@ -564,12 +563,12 @@
     _ball = [[Card alloc] init];
     _ball.cardType = kCardTypeBall;
     
-    gameBoard = [NSMutableDictionary dictionary];
+    _players = [NSMutableDictionary dictionary];
     [_gameScene cleanupGameBoard];
 }
 
 -(void) addCardToBoard:(Card*)c {
-    [gameBoard setObject:[c.location copy] forKey:c];
+    [_players setObject:[c.location copy] forKey:c];
     [_gameScene addCardToBoardScene:c];
 }
 
@@ -701,6 +700,27 @@
     
 }
 
+-(void)setSelectedCard:(Card *)selectedCard {
+    
+    if (_myTurn) {
+        
+        if (!_animating) {
+            
+            NSArray* path;
+            
+            NSArray* playerLocations = [_players allKeys];
+            
+            AStar *astar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:playerLocations];
+            
+            
+            [_gameScene showCardPath:path];
+            
+        }
+    }
+    
+    _selectedCard = selectedCard;
+    
+}
 
 // MOVING PLAYER ON FIELD
 -(BOOL)canUsePlayer:(Player*)player {
@@ -1637,7 +1657,7 @@
     
     // this did wipe the board of out of zone players
     
-//    for (Card* p in gameBoard.allKeys) {
+//    for (Card* p in players.allKeys) {
 //        
 //        if ([p isTypePlayer]) {
 //            
@@ -1677,7 +1697,7 @@
 
 -(void)fullFieldWipeForAction:(GameSequence*)action {
     
-    for (Player* p in gameBoard.allKeys) {
+    for (Player* p in _players.allKeys) {
             GameEvent *e = [GameEvent eventForAction:action];
             e.location = [p.location copy];
             e.type = kEventRemovePlayer;
@@ -1914,7 +1934,7 @@
                         
                         bool op = NO;
                         
-                        for (Card *c in gameBoard.allKeys) {
+                        for (Card *c in _players.allKeys) {
                             if ([c.location isEqual:ev.startingLocation]) {
                                 op = YES;
                             }
@@ -2381,7 +2401,7 @@
         
         event.playerPerformingAction.location = [event.location copy];
         
-        [gameBoard setObject:[event.location copy] forKey:event.playerPerformingAction];
+        [_players setObject:[event.location copy] forKey:event.playerPerformingAction];
         
     }
     
@@ -2401,7 +2421,7 @@
         
         p.enchantments = nil;
         
-        [gameBoard removeObjectForKey:p];
+        [_players removeObjectForKey:p];
         
         
     }
@@ -2533,7 +2553,7 @@
                 // MOVE OPPONENT TO MY SQUARE
                 
                 event.playerReceivingAction.location = [event.startingLocation copy];
-                [gameBoard setObject:[event.startingLocation copy] forKey:event.playerReceivingAction];
+                [_players setObject:[event.startingLocation copy] forKey:event.playerReceivingAction];
                 
             }
             
@@ -2558,7 +2578,7 @@
             
             
             event.playerPerformingAction.location = [event.location copy];
-            [gameBoard setObject:event.location forKey:event.playerPerformingAction];
+            [_players setObject:event.location forKey:event.playerPerformingAction];
             
             [self assignBallIfPossible];
             
@@ -2612,7 +2632,7 @@
             
             if (event.type != kEventChallenge) {
                 event.playerPerformingAction.location = [event.location copy];
-                [gameBoard setObject:event.location forKey:event.playerPerformingAction];
+                [_players setObject:event.location forKey:event.playerPerformingAction];
                 //NSLog(@"moving to location %d %d", event.location.x, event.location.y);
             }
             else {
@@ -2792,7 +2812,7 @@
 -(NSSet*)temporaryEnchantments {
     NSMutableSet *temp = [NSMutableSet set];
     
-    for (Player* player in gameBoard.allKeys) {
+    for (Player* player in _players.allKeys) {
         
         for (Card* e in player.enchantments) {
             if (e.isTemporary) {
@@ -2809,7 +2829,7 @@
 
 -(void)purgeTemporaryEnchantments {
     
-    for (Player* player in gameBoard.allKeys) {
+    for (Player* player in _players.allKeys) {
         
         NSMutableSet *rem;
         
@@ -2891,7 +2911,7 @@
 }
 
 -(Player*)playerAtLocation:(BoardLocation*)location {
-    for (Player* inPlay in [gameBoard allKeys]) {
+    for (Player* inPlay in [_players allKeys]) {
         if ([inPlay.location isEqual:location]) {
             return inPlay;
         }
@@ -2954,7 +2974,7 @@
 
 -(void)assignBallIfPossible {
     
-    for (Player *p in [gameBoard allKeys]){
+    for (Player *p in [_players allKeys]){
         if ([p.location isEqual:_ball.location]) {
             [p setBall:_ball];
         }

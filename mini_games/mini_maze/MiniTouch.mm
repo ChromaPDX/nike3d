@@ -113,7 +113,7 @@ void MiniTouch::touchDown(ofTouchEventArgs &touch){
         ////////////////
         //  to begin the end of the minigame
         gameState = touchGameStateWinLose;
-        nextStartTime = ofGetElapsedTimeMillis() + 1500;
+        nextStartTime = ofGetElapsedTimeMillis() + 1000;
         ////////////////
     }
 }

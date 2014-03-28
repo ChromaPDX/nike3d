@@ -557,9 +557,18 @@
 
 -(void)cardTouchEnded:(CardSprite*)card atPoint:(CGPoint)point {
     
-    _selectedCard = card.model;
+    self.selectedCard = card.model;
+    
+}
 
-    [[_playerHands objectForKey:_selectedCard.deck.player] shuffleAroundCard:card];
+-(void)setSelectedCard:(Card *)selectedCard {
+
+    if (selectedCard) {
+         [[_playerHands objectForKey:_selectedCard.deck.player] shuffleAroundCard:[self spriteForCard:selectedCard]];
+    }
+    
+    _selectedCard = selectedCard;
+    _delegate.selectedCard = selectedCard;
     
 }
 
