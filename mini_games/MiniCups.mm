@@ -84,9 +84,8 @@ void MiniCups::update(){
         showBall = false;
         win = false;
     }
-    // 0.355000  -  probably too hard
-    // 0.325000  -  challenging but accomplishable
-    if(gameState == cupsGameStateAccelerating && angleVelocity > 0.315000){  // based on speed instead of time
+
+    if(gameState == cupsGameStateAccelerating && angleVelocity > 0.25){  // based on speed instead of time
 //    if(gameState == cupsGameStateAccelerating && ofGetElapsedTimeMillis() > nextStartTime){
         angleAcceleration = 0;
         fullSpeedCount++;
@@ -96,7 +95,7 @@ void MiniCups::update(){
             nextStartTime = ofGetElapsedTimeMillis() + spinTime;
         }
     }
-    if(gameState == cupsGameStateSlowing && ofGetElapsedTimeMillis() > nextStartTime){
+    if(gameState == cupsGameStateSlowing && angleVelocity < 0.0){
         gameState = cupsGameStatePicking;
         angleAcceleration = 0;
         angleVelocity = 0;
@@ -231,8 +230,10 @@ void MiniCups::draw(){
 //    touchTexture.draw(touchLocation[X], touchLocation[Y], 40, 40);
     if(showBall){
         ofSetColor(255, 100*gameFade);
-        ball2Texture.draw(ball2Position[X], ball2Position[Y]);
-        ball3Texture.draw(ball3Position[X], ball3Position[Y]);
+        if(gameState != cupsGameStateWinLose){
+            ball2Texture.draw(ball2Position[X], ball2Position[Y]);
+            ball3Texture.draw(ball3Position[X], ball3Position[Y]);
+        }
         ofSetColor(255, 55, 55, 255*gameFade);
         ball1Texture.draw(ball1Position[X], ball1Position[Y]);
     }

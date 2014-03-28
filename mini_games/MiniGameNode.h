@@ -25,6 +25,9 @@ class MiniCupsDelegate;
 @property (nonatomic) MiniTouch *miniTouch;
 @property (nonatomic) MiniCups *miniCups;
 
+@property (nonatomic) NSString *cardTypeTitle;
+// the other mini titles can be made into variables too, like above
+
 -(void)startMiniGame;
 
 @end

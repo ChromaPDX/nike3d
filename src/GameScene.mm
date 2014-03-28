@@ -1240,7 +1240,12 @@ float PARTICLE_SCALE;
 }
 
 -(void)showCardPath:(NSArray*)path{
-    
+    for (BoardTile* tile in _gameTiles.allValues) {
+        [tile setColor:nil];
+    }
+    for (BoardLocation* loc in path) {
+        [[_gameTiles objectForKey:loc] setColor:NKWHITE];
+    }
 }
 
 #pragma mark - POSITION FUNCTIONS
