@@ -22,7 +22,7 @@
 #import "AlertSprite.h"
 
 #import "MiniGames.h"
-#import "Menus.h"
+#import "menus/Menus.h"
 
 // STRINGS
 

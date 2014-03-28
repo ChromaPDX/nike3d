@@ -388,9 +388,9 @@ float PARTICLE_SCALE;
         
         if (event) {
             
-            CardSprite *sprite = [[_actionWindow cardSprites] objectForKey:card];
-            
-            [sprite runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
+//            CardSprite *sprite = [[_actionWindow cardSprites] objectForKey:card];
+//            
+//            [sprite runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
             
             
            // [self addUIForEvent:event];
@@ -411,9 +411,9 @@ float PARTICLE_SCALE;
         
         else {
             
-            CardSprite *sprite = [[_actionWindow cardSprites] objectForKey:card];
-            
-            [sprite runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
+//            CardSprite *sprite = [[_actionWindow cardSprites] objectForKey:card];
+//            
+//            [sprite runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
             
             GameEvent *event = [_game.currentAction.GameEvents lastObject];
             return event.location;
@@ -743,7 +743,8 @@ float PARTICLE_SCALE;
         
         // [self cameraShouldFollowSprite:nil withCompletionBlock:^{}];
         
-        CardSprite* card = [_actionWindow.cardSprites objectForKey:event.playerPerformingAction];
+        
+        CardSprite* card = [_actionWindow spriteForCard:event.playerPerformingAction];
         
         //            [card removeFromParent];
         //            [_gameBoardNode addChild:card];
@@ -752,7 +753,7 @@ float PARTICLE_SCALE;
         
         [card setZPosition:Z_INDEX_HUD];
         
-        [_actionWindow removeCard:card.model animated:YES withCompletionBlock:^{}];
+        //[_actionWindow removeCard:card.model animated:YES withCompletionBlock:^{}];
         
         [card removeAllActions];
         
@@ -1011,10 +1012,10 @@ float PARTICLE_SCALE;
 }
 
 -(void)refreshActionPoints {
-    
-    [_actionWindow.turnTokenCount setText:[NSString stringWithFormat:@"%d", _game.me.ActionPoints]];
-    [_actionWindow.opTokenCount setText:[NSString stringWithFormat:@"%d", _game.opponent.ActionPoints]];
-    
+//    
+//    [_actionWindow.turnTokenCount setText:[NSString stringWithFormat:@"%d", _game.me.ActionPoints]];
+//    [_actionWindow.opTokenCount setText:[NSString stringWithFormat:@"%d", _game.opponent.ActionPoints]];
+//    
 }
 
 
@@ -1197,11 +1198,11 @@ float PARTICLE_SCALE;
 }
 
 -(void)addCardToHand:(Card *)card {
-    [_actionWindow addCard:card];
+    //[_actionWindow addCard:card];
 }
 
 -(void)removeCardFromHand:(Card *)card {
-    [_actionWindow removeCard:card];
+   // [_actionWindow removeCard:card];
 }
 
 -(BallSprite*)ballSprite {

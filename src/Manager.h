@@ -13,9 +13,12 @@
 
 @interface Manager : NSObject <NSCoding, NSCopying>
 
+-(id)initWithGame:(Game*)game;
+
+// PERSISTENT PROPERTIES
+
+@property (nonatomic) Deck* players;
 @property (nonatomic, strong) NSString *name;
-
-
 // Game Engine
 
 @property (nonatomic) int teamSide;
@@ -23,9 +26,7 @@
 
 // Meta Data
 
-@property (nonatomic) Deck* players;
-@property (nonatomic) NSMutableArray *cardsInGame;
-
+//@property (nonatomic) NSMutableArray *cardsInGame;
 @property (nonatomic, strong) SKColor *color;
 
 @property (nonatomic) int actionPointsEarned;
@@ -40,7 +41,11 @@
 @property (nonatomic) int cardsDrawn;
 @property (nonatomic) int cardsPlayed;
 
+
+// CONVENIENCE / NORMALIZATION
+
 @property (nonatomic, weak) Manager *opponent;
+@property (nonatomic, weak) Game *game;
 
 -(bool)hasPossesion;
 -(Card*)cardInDeckAtLocation:(BoardLocation*)location;

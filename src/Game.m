@@ -93,8 +93,8 @@
 
 -(void)startSinglePlayerGame {
     
-    _me = [[Manager alloc] init];
-    _opponent = [[Manager alloc] init];
+    _me = [[Manager alloc] initWithGame:self];
+    _opponent = [[Manager alloc] initWithGame:self];
     
     _score = [BoardLocation pX:0 Y:0];
     

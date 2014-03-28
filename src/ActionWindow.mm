@@ -2,13 +2,6 @@
 #import "NikeNodeHeaders.h"
 #import "ModelHeaders.h"
 
-@interface ActionWindow () {
-    NKSpriteNode *fieldHUD;
-    NKSpriteNode *fieldHUDSelectionBar;
-    CGSize cardSize;
-}
-
-@end
 
 @implementation ActionWindow
 
@@ -17,17 +10,15 @@
     self = [super initWithTexture:texture color:color size:size];
     
     if (self) {
-        
-        cardSize.width = w*.2;
-        cardSize.height = h;
+
         
         
-         NSLog(@"init actionWindow, size: %f %f, cardSize: %f %f", w,h, cardSize.width, cardSize.height);
+         //NSLog(@"init actionWindow, size: %f %f, cardSize: %f %f", w,h, cardSize.width, cardSize.height);
         
-        _myCards = [NSMutableOrderedSet orderedSetWithCapacity:7];
-        _opCards = [NSMutableOrderedSet orderedSetWithCapacity:7];
-        _cardSprites = [NSMutableDictionary dictionary];
         
+
+        _playerHands = [NSMutableDictionary dictionary];
+ 
         self.name = @"ACTION WINDOW";
         
         self.userInteractionEnabled = true;
@@ -186,30 +177,454 @@
     [_delegate shouldPerformCurrentAction];
 }
 
--(void) setEnableSubmitButton:(BOOL)enableSubmitButton{
-    _enableSubmitButton = enableSubmitButton;
-    if(_enableSubmitButton){
-        [_actionButton setOnTexture:[NKTexture textureWithImageNamed:@"Button_Submit_on"]];
-        [_actionButton setOffTexture:[NKTexture textureWithImageNamed:@"Button_Submit_off"]];
-    }
-    else{
-        [_actionButton setOnTexture:[NKTexture textureWithImageNamed:@"Button_Submit_gray"]];
-        [_actionButton setOffTexture:[NKTexture textureWithImageNamed:@"Button_Submit_gray"]];
-    }
-    [_actionButton setState:_actionButton.state];
-}
+//-(void) setEnableSubmitButton:(BOOL)enableSubmitButton{
+//    _enableSubmitButton = enableSubmitButton;
+//    if(_enableSubmitButton){
+//        [_actionButton setOnTexture:[NKTexture textureWithImageNamed:@"Button_Submit_on"]];
+//        [_actionButton setOffTexture:[NKTexture textureWithImageNamed:@"Button_Submit_off"]];
+//    }
+//    else{
+//        [_actionButton setOnTexture:[NKTexture textureWithImageNamed:@"Button_Submit_gray"]];
+//        [_actionButton setOffTexture:[NKTexture textureWithImageNamed:@"Button_Submit_gray"]];
+//    }
+//    [_actionButton setState:_actionButton.state];
+//}
 
 #pragma mark METHODS FROM MODEL / DELEGATE
 
--(void)refreshCardsForPlayer:(Player*)p{
-    if (p){
-        NSLog(@"show cards for: %@",p.name);
+
+
+
+
+-(void)alertDidCancel {
+    
+    [self fadeOutChild:_alert duration:1.];
+    
+ 
+//    [self sortMyCards:YES WithCompletionBlock:^{ }];
+//    
+//    
+}
+
+
+//
+//-(void)addStartTurnCard:(Card *)card withCompletionBlock:(void (^)())block{
+//    
+//
+//    
+//    _alert = [[AlertSprite alloc] initWithTexture:[NKTexture textureWithImageNamed:@"YOUR_TURN_BOX"] color:nil size:CGSizeMake(cardSize.width*2.5, cardSize.height*1.6)];
+//    
+//    _alert.delegate = self;
+//
+//    [_alert setPosition:CGPointMake(0, 0)];
+//    
+//    [self fadeInChild:_alert duration:.5];
+//    
+//    CardSprite* newCard = [[CardSprite alloc] initWithTexture:nil color:nil size:cardSize ];
+//    
+//    newCard.delegate = _delegate;
+//    newCard.model = card;
+//    newCard.window = self;
+//    
+//    if (![self cardIsMine:card]) {
+//        [newCard setScale:.5];
+//        [newCard setFlipped:YES];
+//    }
+//    
+//    [_cardSprites setObject:newCard forKey:card];
+//    
+//    [self addChild:newCard];
+//    
+//    
+//    [_myCards addObject:newCard];
+//    
+//    
+//    
+//
+//    //[newCard setHasShadow:YES];
+//    
+//    [newCard runAction:[NKAction scaleTo:1.3 duration:.15]];
+//    [newCard runAction:[NKAction sequence:@[[NKAction moveTo:CGPointMake(0, -cardSize.height*.125) duration:.1],
+//                                            [NKAction moveBy:CGVectorMake(0, 0) duration:.4]]]
+//            completion:^{
+//                //                        [self sortMyCards:YES WithCompletionBlock:^{
+//                //                            block();
+//                //                        }];
+//                block();
+//                
+//            }];
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//}
+
+
+
+
+
+-(BOOL)cardIsMine:(Card*)card {
+    if ([card.deck.player.manager isEqual:_delegate.game.me]) return 1;
+    return 0;
+}
+
+
+-(void)removeCard:(Card *)card {
+    
+    //[self removeCard:card animated:NO withCompletionBlock:^{}];
+    
+}
+
+//-(void)removeCard:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block{
+//    
+//    CardSprite *cardToRemove = [_cardSprites objectForKey:card];
+//    
+//    if (cardToRemove) {
+//        
+//        if ([self cardIsMine:card]){
+//            [_myCards removeObject:cardToRemove];
+//            
+//           // SORT CARDS
+//        }
+//        else {
+//            [_opCards removeObject:cardToRemove];
+//            
+//            [self sortOpCards:animated WithCompletionBlock:^{
+//                block();
+//            }];
+//        }
+//        
+//        [_cardSprites removeObjectForKey:card];
+//        
+//        
+//    }
+//}
+
+
+
+
+//
+//-(void)sortOpCards:(BOOL)animated WithCompletionBlock:(void (^)())block{
+//    
+//    // OPPONENTS CARDS
+//    
+//    for (int i = 0; i < _opCards.count; i++) {
+//        CardSprite *cs = _opCards[i];
+//        cs.order = i;
+//        //cs.zPosition = i + 2;
+//        //cs.origin = CGPointMake(self.scene.size.width - WINDOW_WIDTH*.5 - cardSize.width*.125, self.size.height*.5 - cardSize.height*.125);
+//        cs.origin = CGPointMake(self.scene.size.width,0);
+//        
+//        if (animated) {
+//            [cs runAction:[NKAction moveTo:cs.origin duration:FAST_ANIM_DUR]];
+//        }
+//        
+//        else {
+//            [cs setPosition:cs.origin];
+//        }
+//        
+//    }
+//    
+//    if (animated) {
+//        [self runAction:[NKAction moveByX:0 y:0 duration:FAST_ANIM_DUR] completion:^{
+//            block();
+//        }];
+//    }
+//    
+//    else {
+//        block();
+//    }
+//    
+//    
+//}
+//
+
+-(void)swapCard:(CardSprite*)c withCard:(CardSprite*)c2 {
+    
+}
+
+-(CardSprite*)spriteForCard:(Card*)c {
+    
+    PlayerHand *hand = [_playerHands objectForKey:c.deck.player];
+    
+    if (hand) {
         
-        [self cleanup];
+        return [hand.cardSprites objectForKey:c];
+        
+    }
+    return nil;
+    
+}
+
+-(void)cleanup {
+    
+    for (PlayerHand *hand in _playerHands.allValues) {
+        [self removeCardsForPlayer:hand.player animated:YES WithCompletionBlock:^{}];
+    }
+
+    _playerHands = [NSMutableDictionary dictionary];
+    
+}
+
+//-(void)opponentBeganCardTouch:(Card*)c atPoint:(CGPoint)point {
+//    
+//    CardSprite *card = [_cardSprites objectForKey:c];
+//    
+//    _delegate.selectedCard = c;
+//    
+//    card.realPosition = CGPointMake(self.scene.size.width-point.x, -point.y);
+//    
+//    card.touchOffset = CGPointMake(0, 0);
+//    
+//    [card setHasShadow:NO];
+//    
+//    [card runAction:[NKAction customActionWithDuration:FAST_ANIM_DUR actionBlock:^(NKNode *node, CGFloat elapsedTime){
+//        
+//        //float xmod = 0;
+//        
+//        //        if (card.realPosition.x > WINDOW_WIDTH*.5) {
+//        //            xmod = card.realPosition.x - WINDOW_WIDTH*.5;
+//        //        }
+//        
+//        [card setPosition:CGPointMake((self.scene.size.width - cardSize.width*.125), card.origin.y * (1.-(elapsedTime/FAST_ANIM_DUR)))];
+//        
+//    }]];
+//    
+//    
+//}
+//
+//-(void)opponentMovedCardTouch:(Card*)c atPoint:(CGPoint)point {
+//    
+//    //   if (point.x > WINDOW_WIDTH*.5) {
+//    
+//    CardSprite *card = [_cardSprites objectForKey:c];
+//    
+//    card.realPosition = CGPointMake(self.scene.size.width-point.x, -point.y);
+//    
+//    if (!card.hasActions) {
+//        [card setPosition:card.realPosition];
+//    }
+//    
+//    
+//    //   }
+//    
+//    
+//    
+//}
+
+
+//-(void)cardTouchBegan:(CardSprite*)card atPoint:(CGPoint)point {
+//    
+//    if (_alert) {
+//        [self fadeOutChild:_alert duration:1.];
+//        [card runAction:[NKAction scaleTo:1. duration:.15]];
+//        [card setHasShadow:YES];
+//        card.hovering = YES;
+//        
+//    }
+//    
+//    if ([self cardIsMine:card.model]) {
+//        
+//        [_delegate.game setCurrentAction:Nil];
+//        
+//        if (point.x > self.size.width*.5) {
+////            [self setZPosition:Z_INDEX_BOARD];
+////            [card setZPosition:Z_INDEX_HUD];
+//        }
+//        else {
+//            [self shuffleAroundCard:card];
+//        }
+//        
+//        card.origin = card.position;
+//        card.realPosition = card.origin;
+//        
+//        _delegate.selectedCard = card.model;
+//        
+//        [_delegate.game sendRTPacketWithCard:card.model point:point began:YES];
+//        
+//    }
+//    
+//    
+//}
+//
+//-(void)cardTouchMoved:(CardSprite*)card atPoint:(CGPoint)point {
+//    
+//    if ([self cardIsMine:card.model]) {
+//        
+//        
+//        
+//        if (point.x > self.size.width*.75) {
+//            
+//            card.realPosition = point;
+//            
+//            
+//            if (!card.hasShadow) {
+//              //  [card setZPosition:Z_INDEX_HUD];
+//                
+//                [card setHasShadow:YES];
+//                
+//                [card runAction:[NKAction customActionWithDuration:CARD_ANIM_DUR actionBlock:^(NKNode *node, CGFloat elapsedTime){
+//                    float complete = 0.;
+//                    
+//                    
+//                    complete = (elapsedTime / CARD_ANIM_DUR);
+//                    //NSLog(@"complete %f", complete);
+//                    
+//                    
+//                    
+//                    float xAn = card.realPosition.x * complete;
+//                    
+//                    float yDiff = card.realPosition.y - card.origin.y;
+//                    
+//                    float YAn = (card.origin.y + (yDiff * complete));
+//                    
+//                    [card setPosition:CGPointMake(xAn, YAn)];
+//                    
+//                }] completion:^{
+//                    card.hovering = YES;
+//                }
+//                 
+//                 ];
+//                
+//            }
+//            
+//            if (card.hovering) {
+//                if ([_delegate canPlayCard:card.model atPosition:point]) {
+//                    
+//                }
+//                else {
+//                    [card setPosition:card.realPosition];
+//                    [_delegate.game sendRTPacketWithCard:card.model point:point began:NO];
+//                }
+//                
+//                
+//            }
+//            
+//            
+//        }
+//        
+//        else if (card.hovering && point.x < self.size.width*.7) {
+//            
+//            [_delegate resetFingerLocation];
+//            
+//            card.hovering = NO;
+//            
+//            [card setHasShadow:NO];
+//            
+//            card.realPosition = CGPointMake(point.x - card.touchOffset.x, point.y - card.touchOffset.y);
+//            card.origin = CGPointMake(0, card.realPosition.y);
+//            
+//            [card runAction:[NKAction fadeAlphaTo:1. duration:.1]];
+//            
+//            [card runAction:[NKAction moveTo:card.origin duration:FAST_ANIM_DUR] completion:^{
+//            }];
+//            
+//            if (_delegate.game.currentAction) {
+//                [_delegate.game setCurrentAction:nil];
+//                [_delegate fadeOutChild:_delegate.infoHUD duration:1.];
+//            }
+//            
+//        }
+//        
+//        else if (point.x < self.size.width*.7){
+//            
+//            if (!card.hasActions) {
+//                
+//                
+//                card.realPosition = CGPointMake(point.x - card.touchOffset.x, point.y - card.touchOffset.y);
+//                card.origin = CGPointMake(0, card.realPosition.y);
+//                
+//                
+//                [card setPosition:card.origin];
+//                
+//                [self shuffleAroundCard:card];
+//                
+//            }
+//            
+//            
+//        }
+//        
+//        
+//        
+//    }
+//    
+//}
+
+-(void)cardTouchEnded:(CardSprite*)card atPoint:(CGPoint)point {
+    
+    _selectedCard = card.model;
+
+    [[_playerHands objectForKey:_selectedCard.deck.player] shuffleAroundCard:card];
+    
+}
+
+-(void)removeCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block{
+    
+    PlayerHand *hand = [_playerHands objectForKey:p];
+    
+    [hand runAction:[NKAction moveByX:0 y:-hand.size.height duration:FAST_ANIM_DUR ] completion:^{
+        [hand removeFromParent];
+    }];
+    
+    
+}
+
+-(void)refreshCardsForPlayer:(Player *)p {
+    if (_selectedPlayer){
+        [self removeCardsForPlayer:_selectedPlayer animated:YES WithCompletionBlock:^{}];
+    }
+    _selectedPlayer = p;
+
+    PlayerHand *nHand = [[PlayerHand alloc] initWithPlayer:p delegate:self];
+    
+    [_playerHands setObject:nHand forKey:p];
+    
+    [self addChild:nHand];
+    
+    [nHand sortCards];
+}
+
+-(void)sortCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block{
+ 
+    [[_playerHands objectForKey:_selectedCard.deck.player] sortCards];
+    
+}
+
+@end
+
+@implementation PlayerHand
+
+-(instancetype)initWithPlayer:(Player*)p delegate:(ActionWindow*)delegate {
+    self = [super init];
+    
+    if (self){
+        
+
+        _cardSprites = [NSMutableDictionary dictionaryWithCapacity:6];
+        _myCards = [NSMutableArray arrayWithCapacity:6];
+        
+        self.userInteractionEnabled = true;
+        
+         _delegate = delegate;
+        self.size = delegate.size;
+        _player = p;
+       
         
         cardSize.width = (1. / (p.cardSlots+2)) * w;
         cardSize.height = (cardSize.width * (100. / 70.));
-
+        
+        _playerName = [[NKLabelNode alloc]initWithSize:CGSizeMake(cardSize.width*2., cardSize.height) FontNamed:@"Helvetica"];
+        _playerName.fontSize = 20;
+        _playerName.text = p.name;
+        
+        [self addChild:_playerName];
+        
+        [_playerName setPosition3d:ofPoint(w,0,2)];
         
         for (Card* c in p.moveDeck.inHand) {
             [self addCard:c];
@@ -230,85 +645,18 @@
             [self addCard:c];
         }
         
-        [self sortCardsForPlayer:p animated:YES WithCompletionBlock:^{}];
+        [self sortCards];
+        
         //[_actionWindow sortMyCards:YES WithCompletionBlock:nil];
         
     }
     else {
         NSLog(@"ERROR NO MODEL FOR SELECTED PLAYER");
     }
-}
-
-
-
--(void)alertDidCancel {
     
-    [self fadeOutChild:_alert duration:1.];
-    
- 
-//    [self sortMyCards:YES WithCompletionBlock:^{ }];
-//    
-//    
-}
-
-
-
--(void)addStartTurnCard:(Card *)card withCompletionBlock:(void (^)())block{
-    
-
-    
-    _alert = [[AlertSprite alloc] initWithTexture:[NKTexture textureWithImageNamed:@"YOUR_TURN_BOX"] color:nil size:CGSizeMake(cardSize.width*2.5, cardSize.height*1.6)];
-    
-    _alert.delegate = self;
-
-    [_alert setPosition:CGPointMake(0, 0)];
-    
-    [self fadeInChild:_alert duration:.5];
-    
-    CardSprite* newCard = [[CardSprite alloc] initWithTexture:nil color:nil size:cardSize ];
-    
-    newCard.delegate = _delegate;
-    newCard.model = card;
-    newCard.window = self;
-    
-    if (![self cardIsMine:card]) {
-        [newCard setScale:.5];
-        [newCard setFlipped:YES];
-    }
-    
-    [_cardSprites setObject:newCard forKey:card];
-    
-    [self addChild:newCard];
-    
-    
-    [_myCards addObject:newCard];
-    
-    
-    
-
-    //[newCard setHasShadow:YES];
-    
-    [newCard runAction:[NKAction scaleTo:1.3 duration:.15]];
-    [newCard runAction:[NKAction sequence:@[[NKAction moveTo:CGPointMake(0, -cardSize.height*.125) duration:.1],
-                                            [NKAction moveBy:CGVectorMake(0, 0) duration:.4]]]
-            completion:^{
-                //                        [self sortMyCards:YES WithCompletionBlock:^{
-                //                            block();
-                //                        }];
-                block();
-                
-            }];
-    
-    
-    
-    
-    
-    
-    
-    
+    return self;
     
 }
-
 
 -(void)addCard:(Card *)card {
     
@@ -318,78 +666,25 @@
 
 -(void)addCard:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block{
     
-   // NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
+    // NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
     
     CardSprite* newCard = [[CardSprite alloc] initWithTexture:nil color:nil size:cardSize];
     
-    newCard.delegate = _delegate;
     newCard.model = card;
-    newCard.window = self;
-    
-    //[newCard setZPosition:4];
-    
-//    if (![self cardIsMine:card]) {
-//        [newCard setScale:.5];
-//        [newCard setFlipped:YES];
-//    }
-    
- //   NSLog(@"made cardSprite, adding to dict");
+    newCard.window = _delegate;
     
     [_cardSprites setObject:newCard forKey:card];
     
     [self addChild:newCard];
-    [newCard setPosition3d:ofPoint(w,0,100)];
+    [newCard setPosition3d:ofPoint(w,0,0)];
     
     [_myCards addObject:newCard];
     
     if (block) {
         block();
     }
-
-//    if ([self cardIsMine:card]) {
-//        NSLog(@"is my card");
-//
-//
-//        if (animated) {
-//            
-//
-//            [newCard setHasShadow:YES];
-//            
-//            [newCard runAction:[NKAction scaleTo:1.3 duration:.15]];
-//            [newCard runAction:[NKAction sequence:@[[NKAction moveTo:CGPointMake(0, 0) duration:.1],
-//                                                    [NKAction moveBy:CGVectorMake(0, 0) duration:.4]]]
-//                    completion:^{
-//                        [self sortCardsForPlayer:card.deck.player animated:animated WithCompletionBlock:^{
-//                            block();
-//                        }];
-//                        
-//                    }];
-//            
-//        }
-//        else {
-//            [self sortCardsForPlayer:card.deck.player animated:animated WithCompletionBlock:^{
-//                block();
-//            }];
-//        }
-//    }
-//    
-//    else {
-//        NSLog(@"is opponent's card");
-//        [_opCards addObject:newCard];
-//        newCard.position = CGPointMake(self.size.width*.5, 0);
-//        [self sortOpCards:NO WithCompletionBlock:^{
-//            block();
-//        }];
-//    }
-
+    
 }
-
-
--(BOOL)cardIsMine:(Card*)card {
-    if ([card.deck.player.manager isEqual:_delegate.game.me]) return 1;
-    return 0;
-}
-
 
 -(void)removeCard:(Card *)card {
     
@@ -398,87 +693,69 @@
 }
 
 -(void)removeCard:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block{
-    
+
     CardSprite *cardToRemove = [_cardSprites objectForKey:card];
-    
-    if (cardToRemove) {
-        
-        if ([self cardIsMine:card]){
-            [_myCards removeObject:cardToRemove];
-            
-           // SORT CARDS
-        }
-        else {
-            [_opCards removeObject:cardToRemove];
-            
-            [self sortOpCards:animated WithCompletionBlock:^{
-                block();
-            }];
-        }
-        
-        [_cardSprites removeObjectForKey:card];
-        
-        
-    }
+    [cardToRemove removeFromParent];
+    [_cardSprites removeObjectForKey:card];
+
 }
+
 
 -(void)shuffleAroundCard:(CardSprite*)card {
     
-    
-    float cardBottom = card.position.y - (card.size.height*.95);
-    float toTop = h*.3 - card.position.y;
-    float toBottom = cardBottom + h*.35;
+    float offSet = cardSize.width * -1.1;
+    float nscale = 1.;
     
     for (int i = 0; i < _myCards.count; i++) {
         
         CardSprite *cs = _myCards[i];
         
-        if (![cs isEqual:card]) {
+        
+        [cs setAlpha:1.];
+        cs.order = i;
+        
+        
+        if (cs.order == card.order){
             
-            [cs setAlpha:1.];
-            cs.order = i;
-            //cs.zPosition = i;
             
-            if (cs.order < card.order) {
-                
-                cs.origin = CGPointMake(0, (h*.3) - (toTop * (i / (float)card.order)));
-            }
+            offSet += cardSize.width * .1;
+            cs.origin = CGPointMake(offSet, cardSize.height*.1);
+            offSet += cardSize.width * 1.2;
+            nscale = 1.15;
             
-            else {
-                
-                float newY = (cardBottom) - (toBottom * ((float)(cs.order - (card.order+1)) / (_myCards.count - card.order)));
-                if (newY < -h*.35) newY = -h*.35;
-                
-                cs.origin = CGPointMake(0, newY);
-                //cs.origin = CGPointMake(0, card.position.y - (card.size.height) - (cardSize.height*.15 * (i - (card.order + 1))));
-            }
-            
-            NKAction *move = [NKAction moveTo:cs.origin duration:FAST_ANIM_DUR];
-            [move setTimingMode:NKActionTimingEaseOut];
-            
-            [cs runAction:move];
-            // [cs setPosition:cs.origin];
         }
         
         
+        else {
+            
+            nscale = 1.;
+            
+            cs.origin = CGPointMake(offSet, 0);
+            offSet += cardSize.width * 1.1;
+            
+        }
+        
+        [cs runAction:[NKAction group:@[[NKAction scaleTo:nscale duration:FAST_ANIM_DUR],
+                                        [NKAction moveTo:cs.origin duration:FAST_ANIM_DUR]]]];
         
     }
     
+}
+
+-(void)sortCards{
+    
+    [self sortCardsAnimated:true WithCompletionBlock:^{}];
     
 }
 
--(void)sortCardsForPlayer:(Player*)p{
-    [self sortCardsForPlayer:p animated:false WithCompletionBlock:^{}];
-}
-
--(void)sortCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block{
+-(void)sortCardsAnimated:(BOOL)animated WithCompletionBlock:(void (^)())block{
     
     //NSLog(@"I HAVE %d CARD SPRITES IN MY HAND", _myCards.count);
     // MYCARDS
     
-//    if (_delegate.game.myTurn) {
-//        [_delegate.game sendRTPacketWithType:RTMessageSortCards point:nil];
-//    }
+    //    if (_delegate.game.myTurn) {
+    //        [_delegate.game sendRTPacketWithType:RTMessageSortCards point:nil];
+    //    }
     
     for (int i = 0; i < _myCards.count; i++) {
         
@@ -501,12 +778,12 @@
                 [cs removeAllActions];
             }
             
-            //[cs runAction:[NKAction scaleTo:1. duration:CARD_ANIM_DUR]];
+            [cs runAction:[NKAction scaleTo:1. duration:CARD_ANIM_DUR]];
             NKAction *move = [NKAction move3dTo:ofPoint(cs.origin.x, cs.origin.y,2) duration:CARD_ANIM_DUR];
             [move setTimingMode:NKActionTimingEaseIn];
             [cs runAction:move];
- //           [cs setPosition3d:ofPoint(cs.origin.x, cs.origin.y,2)];
-
+            //           [cs setPosition3d:ofPoint(cs.origin.x, cs.origin.y,2)];
+            
         }
         
         else {
@@ -515,49 +792,18 @@
         
     }
     
+    [_playerName runAction:[NKAction move3dTo:ofPoint( (_playerName.size.width * .4) - w*.5, -h*.4, 2) duration:CARD_ANIM_DUR]];
+ 
+    
     if (animated) {
         
         if (block) {
             block();
         }
         
-//        [self runAction:[NKAction moveByX:0 y:0 duration:FAST_ANIM_DUR] completion:^{
-
-//        }];
-    }
-    
-    else {
-        block();
-    }
-    
-    
-}
-
--(void)sortOpCards:(BOOL)animated WithCompletionBlock:(void (^)())block{
-    
-    // OPPONENTS CARDS
-    
-    for (int i = 0; i < _opCards.count; i++) {
-        CardSprite *cs = _opCards[i];
-        cs.order = i;
-        //cs.zPosition = i + 2;
-        //cs.origin = CGPointMake(self.scene.size.width - WINDOW_WIDTH*.5 - cardSize.width*.125, self.size.height*.5 - cardSize.height*.125);
-        cs.origin = CGPointMake(self.scene.size.width,0);
+        //        [self runAction:[NKAction moveByX:0 y:0 duration:FAST_ANIM_DUR] completion:^{
         
-        if (animated) {
-            [cs runAction:[NKAction moveTo:cs.origin duration:FAST_ANIM_DUR]];
-        }
-        
-        else {
-            [cs setPosition:cs.origin];
-        }
-        
-    }
-    
-    if (animated) {
-        [self runAction:[NKAction moveByX:0 y:0 duration:FAST_ANIM_DUR] completion:^{
-            block();
-        }];
+        //        }];
     }
     
     else {
@@ -568,241 +814,6 @@
 }
 
 
--(void)swapCard:(CardSprite*)c withCard:(CardSprite*)c2 {
-    
-}
-
--(void)cleanup {
-    
-    for (CardSprite *c in _cardSprites.allValues) {
-        [_cardSprites removeObjectForKey:c.model];
-        [c removeFromParent];
-    }
-    
-    _myCards = [NSMutableOrderedSet orderedSetWithCapacity:7];
-    _opCards = [NSMutableOrderedSet orderedSetWithCapacity:7];
-    _cardSprites = [NSMutableDictionary dictionary];
-    
-}
-
--(void)opponentBeganCardTouch:(Card*)c atPoint:(CGPoint)point {
-    
-    CardSprite *card = [_cardSprites objectForKey:c];
-    
-    _delegate.selectedCard = c;
-    
-    card.realPosition = CGPointMake(self.scene.size.width-point.x, -point.y);
-    
-    card.touchOffset = CGPointMake(0, 0);
-    
-    [card setHasShadow:NO];
-    
-    [card runAction:[NKAction customActionWithDuration:FAST_ANIM_DUR actionBlock:^(NKNode *node, CGFloat elapsedTime){
-        
-        //float xmod = 0;
-        
-        //        if (card.realPosition.x > WINDOW_WIDTH*.5) {
-        //            xmod = card.realPosition.x - WINDOW_WIDTH*.5;
-        //        }
-        
-        [card setPosition:CGPointMake((self.scene.size.width - cardSize.width*.125), card.origin.y * (1.-(elapsedTime/FAST_ANIM_DUR)))];
-        
-    }]];
-    
-    
-}
-
--(void)opponentMovedCardTouch:(Card*)c atPoint:(CGPoint)point {
-    
-    //   if (point.x > WINDOW_WIDTH*.5) {
-    
-    CardSprite *card = [_cardSprites objectForKey:c];
-    
-    card.realPosition = CGPointMake(self.scene.size.width-point.x, -point.y);
-    
-    if (!card.hasActions) {
-        [card setPosition:card.realPosition];
-    }
-    
-    
-    //   }
-    
-    
-    
-}
-
-
--(void)cardTouchBegan:(CardSprite*)card atPoint:(CGPoint)point {
-    
-    if (_alert) {
-        [self fadeOutChild:_alert duration:1.];
-        [card runAction:[NKAction scaleTo:1. duration:.15]];
-        [card setHasShadow:YES];
-        card.hovering = YES;
-        
-    }
-    
-    if ([self cardIsMine:card.model]) {
-        
-        [_delegate.game setCurrentAction:Nil];
-        
-        if (point.x > self.size.width*.5) {
-//            [self setZPosition:Z_INDEX_BOARD];
-//            [card setZPosition:Z_INDEX_HUD];
-        }
-        else {
-            [self shuffleAroundCard:card];
-        }
-        
-        card.origin = card.position;
-        card.realPosition = card.origin;
-        
-        _delegate.selectedCard = card.model;
-        
-        [_delegate.game sendRTPacketWithCard:card.model point:point began:YES];
-        
-    }
-    
-    
-}
-
--(void)cardTouchMoved:(CardSprite*)card atPoint:(CGPoint)point {
-    
-    if ([self cardIsMine:card.model]) {
-        
-        
-        
-        if (point.x > self.size.width*.75) {
-            
-            card.realPosition = point;
-            
-            
-            if (!card.hasShadow) {
-              //  [card setZPosition:Z_INDEX_HUD];
-                
-                [card setHasShadow:YES];
-                
-                [card runAction:[NKAction customActionWithDuration:CARD_ANIM_DUR actionBlock:^(NKNode *node, CGFloat elapsedTime){
-                    float complete = 0.;
-                    
-                    
-                    complete = (elapsedTime / CARD_ANIM_DUR);
-                    //NSLog(@"complete %f", complete);
-                    
-                    
-                    
-                    float xAn = card.realPosition.x * complete;
-                    
-                    float yDiff = card.realPosition.y - card.origin.y;
-                    
-                    float YAn = (card.origin.y + (yDiff * complete));
-                    
-                    [card setPosition:CGPointMake(xAn, YAn)];
-                    
-                }] completion:^{
-                    card.hovering = YES;
-                }
-                 
-                 ];
-                
-            }
-            
-            if (card.hovering) {
-                if ([_delegate canPlayCard:card.model atPosition:point]) {
-                    
-                }
-                else {
-                    [card setPosition:card.realPosition];
-                    [_delegate.game sendRTPacketWithCard:card.model point:point began:NO];
-                }
-                
-                
-            }
-            
-            
-        }
-        
-        else if (card.hovering && point.x < self.size.width*.7) {
-            
-            [_delegate resetFingerLocation];
-            
-            card.hovering = NO;
-            
-            [card setHasShadow:NO];
-            
-            card.realPosition = CGPointMake(point.x - card.touchOffset.x, point.y - card.touchOffset.y);
-            card.origin = CGPointMake(0, card.realPosition.y);
-            
-            [card runAction:[NKAction fadeAlphaTo:1. duration:.1]];
-            
-            [card runAction:[NKAction moveTo:card.origin duration:FAST_ANIM_DUR] completion:^{
-            }];
-            
-            if (_delegate.game.currentAction) {
-                [_delegate.game setCurrentAction:nil];
-                [_delegate fadeOutChild:_delegate.infoHUD duration:1.];
-            }
-            
-        }
-        
-        else if (point.x < self.size.width*.7){
-            
-            if (!card.hasActions) {
-                
-                
-                card.realPosition = CGPointMake(point.x - card.touchOffset.x, point.y - card.touchOffset.y);
-                card.origin = CGPointMake(0, card.realPosition.y);
-                
-                
-                [card setPosition:card.origin];
-                
-                [self shuffleAroundCard:card];
-                
-            }
-            
-            
-        }
-        
-        
-        
-    }
-    
-}
-
--(void)cardTouchEnded:(CardSprite*)card atPoint:(CGPoint)point {
-    
-    //    if (point.x < WINDOW_WIDTH*.3) {
-    //
-    //        [_delegate setCurrentCard:nil];
-    //        //[card returnToHand];
-    //
-    //
-    //    }
-    
-    
-    [_delegate resetFingerLocation];
-    
-}
-
-
-
-#pragma mark-TOUCHES
-//
-//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//    NSLog(@"Touches:Action Window");
-//    [_delegate touchesBegan:touches withEvent:event];
-//}
-//
-//-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-//    //NSLog(@"moved");
-//    [_delegate touchesMoved:touches withEvent:event];
-//}
-//
-//-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-//
-//    [_delegate touchesEnded:touches withEvent:event];
-//    
-//}
 
 @end
 
