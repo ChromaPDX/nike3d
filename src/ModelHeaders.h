@@ -18,6 +18,7 @@
 #import "BoardLocation.h"
 #import "Actions.h"
 #import "NSData+CocoaDevUsersAdditions.h"
+#import "AStar.h"
 
 #define PRESENTATION_MODE 0
 #define CHEATS 0

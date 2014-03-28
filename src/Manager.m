@@ -133,4 +133,13 @@
     return m;
 }
 
+-(NSArray*)playersClosestToBall{
+    BoardLocation *ballLocation = _game.ball.location;
+    AStar *astar = [AStar];
+    for(Player* p in _players.inGame){
+        
+        
+    }
+}
+
 @end
