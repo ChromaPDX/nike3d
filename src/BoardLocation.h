@@ -17,17 +17,18 @@ typedef NS_OPTIONS(UInt16, BorderMask) {
     BorderMaskTop = 1 << 3,
     BorderMaskBottom = 1 << 4,
     
-    BorderMaskUR = BorderMaskTop | BorderMaskRight,
-    BorderMaskUL = BorderMaskTop | BorderMaskLeft,
-    BorderMaskBR = BorderMaskBottom | BorderMaskRight,
-    BorderMaskBL = BorderMaskBottom | BorderMaskLeft,
+    BorderMaskTopRight = BorderMaskTop | BorderMaskRight,
+    BorderMaskTopLeft = BorderMaskTop | BorderMaskLeft,
+    BorderMaskBottomRight = BorderMaskBottom | BorderMaskRight,
+    BorderMaskBottomLeft = BorderMaskBottom | BorderMaskLeft,
     
     BorderMaskVertical = BorderMaskLeft | BorderMaskRight,
     BorderMaskHorizontal = BorderMaskTop | BorderMaskBottom,
-    BorderMask3top = BorderMaskLeft | BorderMaskTop | BorderMaskRight,
-    BorderMask3bottom = BorderMaskLeft | BorderMaskBottom | BorderMaskRight,
-    BorderMask3left = BorderMaskLeft | BorderMaskBottom | BorderMaskTop,
-    BorderMask3right = BorderMaskRight | BorderMaskBottom | BorderMaskTop,
+    
+    BorderMask3Top = BorderMaskLeft | BorderMaskTop | BorderMaskRight,
+    BorderMask3Bottom = BorderMaskLeft | BorderMaskBottom | BorderMaskRight,
+    BorderMask3Left = BorderMaskLeft | BorderMaskBottom | BorderMaskTop,
+    BorderMask3Right = BorderMaskRight | BorderMaskBottom | BorderMaskTop,
 
     BorderMaskAll = BorderMaskLeft | BorderMaskRight | BorderMaskBottom | BorderMaskTop,
     
@@ -39,7 +40,7 @@ typedef NS_OPTIONS(UInt16, BorderMask) {
 }
 @property NSInteger x;
 @property NSInteger y;
-@property int borderShape;
+@property BorderMask borderShape;
 
 +(instancetype)pX:(int)x Y:(int)y;
 +(instancetype)pointWithCGPoint:(CGPoint)point;
