@@ -281,7 +281,7 @@ float PARTICLE_SCALE;
 //            
 //            if (event) {
 //                [self addUIForEvent:event];
-//                [_game sendAction:_game.currentAction perform:NO];
+//                [_game sendAction:_game.currentEventSequence perform:NO];
 //                n.isHighlighted = YES;
 //            }
 //        }
@@ -309,7 +309,7 @@ float PARTICLE_SCALE;
 //                NSLog(@"PLAYER IS: %@", event.playerPerformingAction.name);
 //                NSLog(@"EVENT IS:%@", event.nameForAction);
 //                [self addUIForEvent:event];
-//                [_game sendAction:_game.currentAction perform:NO];
+//                [_game sendAction:_game.currentEventSequence perform:NO];
 //                n.isHighlighted = YES;
 //            }
 //            
@@ -353,10 +353,7 @@ float PARTICLE_SCALE;
     
 }
 
-#pragma mark - CREATE CARD EVENTS
-
-#pragma mark - !! ALL TOUCH METHODS NEED UPDATED !!
-
+#pragma mark - UX INTERACTION
 
 -(BoardLocation*)locationOnBoardFromPoint:(CGPoint)location {
     
@@ -402,7 +399,7 @@ float PARTICLE_SCALE;
 //                [_infoHUD enableBoost];
             }
             
-            [_game sendAction:_game.currentAction perform:NO];
+            [_game sendAction:_game.currentEventSequence perform:NO];
             
     //        n.isHighlighted = YES;
             //NSLog(@"GameScene.m :: Deploy New Player");
@@ -415,19 +412,54 @@ float PARTICLE_SCALE;
 //            
 //            [sprite runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
             
-            GameEvent *event = [_game.currentAction.GameEvents lastObject];
+            GameEvent *event = [_game.currentEventSequence.GameEvents lastObject];
             return event.location;
         }
         
     }
     
-    else if ([_game.currentAction.GameEvents lastObject]){
-        GameEvent *event = [_game.currentAction.GameEvents lastObject];
+    else if ([_game.currentEventSequence.GameEvents lastObject]){
+        GameEvent *event = [_game.currentEventSequence.GameEvents lastObject];
         return event.location;
     }
     
     return nil;
     
+}
+
+-(void)cleanUpUIForAction:(GameSequence *)action {
+    for (BoardTile* tile in _gameTiles.allValues) {
+        [tile setColor:nil];
+        [tile setUserInteractionEnabled:false];
+    }
+}
+
+-(void)setSelectedCard:(Card *)selectedCard {
+    
+    _game.selectedCard = selectedCard;
+    _selectedCard = selectedCard;
+    
+}
+
+-(void)showCardPath:(NSArray*)path{
+    for (BoardTile* tile in _gameTiles.allValues) {
+        [tile setColor:nil];
+        [tile setUserInteractionEnabled:false];
+    }
+    for (BoardLocation* loc in path) {
+        BoardTile* tile = [_gameTiles objectForKey:loc];
+        [tile setColor:V2BLUE];
+        [tile setUserInteractionEnabled:true];
+    }
+}
+
+-(void)setSelectedBoardTile:(BoardTile *)selectedBoardTile {
+    
+    if (_selectedCard) {
+        
+    }
+    
+    _selectedBoardTile = selectedBoardTile;
 }
 
 //-(float)rotationForManager:(Manager*)m {
@@ -1228,25 +1260,7 @@ float PARTICLE_SCALE;
     
 }
 
--(void)cleanUpUIForAction:(GameSequence *)action {
-    
-}
 
--(void)setSelectedCard:(Card *)selectedCard {
-    
-    _game.selectedCard = selectedCard;
-    _selectedCard = selectedCard;
-
-}
-
--(void)showCardPath:(NSArray*)path{
-    for (BoardTile* tile in _gameTiles.allValues) {
-        [tile setColor:nil];
-    }
-    for (BoardLocation* loc in path) {
-        [[_gameTiles objectForKey:loc] setColor:NKWHITE];
-    }
-}
 
 #pragma mark - POSITION FUNCTIONS
 -(void)cameraShouldFollowSprite:(NKSpriteNode*)sprite withCompletionBlock:(void (^)())block {

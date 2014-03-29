@@ -9,12 +9,16 @@
 #import "NKSpriteNode.h"
 
 @class BoardLocation;
+@class GameScene;
 
 @interface BoardTile : NKSpriteNode
+
+-(instancetype)initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size;
 
 // MODEL
 @property (nonatomic, strong) BoardLocation *location;
 
--(instancetype)initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size;
+// VIEW
+@property (nonatomic, weak) GameScene *delegate;
 
 @end
