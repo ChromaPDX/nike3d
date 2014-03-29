@@ -2172,9 +2172,11 @@
                     
                     _animating = NO;
                     
+                    [self endActionForEricWithManager:action.manager];
+                    
                     [self saveTurnWithCompletionBlock:^{
                         
-                        [self endActionForEricWithManager:action.manager];
+               
                         [self checkMyTurn];
                         
                     }];
@@ -2185,8 +2187,6 @@
                 _animating = NO;
                 
                 [self saveTurnWithCompletionBlock:^{
-                    
-                    [self checkMyTurn];
                     
                 }];
                 
