@@ -2174,6 +2174,7 @@
                     
                     [self saveTurnWithCompletionBlock:^{
                         
+                        [self endActionForEricWithManager:action.manager];
                         [self checkMyTurn];
                         
                     }];
@@ -2671,6 +2672,10 @@
 
 
 #pragma mark - META DATA
+
+-(void)endActionForEricWithManager:(Manager*)m{
+    NSLog(@"hi eric, this is: %@",m.name);
+}
 
 -(void)processMetaDataForAction:(GameSequence*)action {
     
