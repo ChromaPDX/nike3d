@@ -781,7 +781,7 @@
             
             _currentEventSequence = [GameSequence action];
             [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventMove];
-            
+            [self performAction:_currentEventSequence record:YES animate:YES];
         }
     }
     
@@ -1356,10 +1356,12 @@
     else if (card){ // IS CARD
         event.deck = card.deck;
         event.manager = event.deck.player.manager;
+        event.playerPerformingAction = card.deck.player;
+        event.card = card;
     }
     
     event.type = type;
-    event.startingLocation = [card.location copy];
+    event.startingLocation = [card.deck.player.location copy];
     event.location = [location copy];
     
     [sequence.GameEvents addObject:event];
@@ -1855,7 +1857,7 @@
 -(void)performAction:(GameSequence*)action record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
     
     
-    //[_gameScene cleanUpUIForAction:action];
+   // [_gameScene cleanUpUIForAction:action];
     [self setCurrentAction:nil];
     
     if (animate) {
@@ -1871,84 +1873,84 @@
     
     if (shouldRecordSequence) {
         
-        // FILTER MIDDLE EVENTS FOR PASS AND SHOOT
-        
-        
-        if (action.type == kEventKickGoal || action.type == kEventKickPass) { // FIRST AND LAST FILTER
-            
-            NSMutableArray *firstAndLast = [[NSMutableArray alloc]init];
-            
-            [firstAndLast addObject:action.GameEvents.firstObject];
-            [firstAndLast addObject:action.GameEvents.lastObject];
-            
-            action.GameEvents = firstAndLast;
-            
-        }
-        
-        // NOW ROLL THAT SHIT !!
-        
-        [_thisTurnActions addObject:action];
-        
-        action.tag = [self totalGameSequences];
-        action.wasSuccessful = [self rollAction:action];
-        
-        
-        // HERE IS WHERE TO DO SUCCESS BASED MODIFICATIONS TO THE ACTION, BEFORE PARSING THE EVENT LOOP
-        
-        
-        if (action.wasSuccessful) {
-            
-            if (action.type == kEventKickGoal) {
-                
-                [self addGoalResetToAction:action];
-            }
-            
-        }
-        else { // NOT SUCCESSFUL
-            
-            if (action.type == kEventKickGoal) {
-                [self addGoalResetToAction:action];
-            }
-            
-            if (action.isRunningAction) {
-                
-                NSMutableArray *new = [NSMutableArray array];
-                
-                [new addObject:action.GameEvents[0]];
-                [new addObject:action.GameEvents[1]];
-                
-                if (action.GameEvents.count > 2) {
-                    
-                    for (int a = 2; a < action.GameEvents.count; a++){
-                        
-                        GameEvent *ev = action.GameEvents[a];
-                        
-                        bool op = NO;
-                        
-                        for (Card *c in _players.allKeys) {
-                            if ([c.location isEqual:ev.startingLocation]) {
-                                op = YES;
-                            }
-                        }
-                        
-                        if (op) {
-                            [new addObject:ev];
-                        }
-                        
-                        else break;
-                        
-                        
-                    }
-                    
-                    NSLog(@"failed run, removing %d events", action.GameEvents.count - new.count);
-                    
-                }
-                
-                action.GameEvents = new;
-                
-            }
-        }
-        
+//        // FILTER MIDDLE EVENTS FOR PASS AND SHOOT
+//        
+//        
+//        if (action.type == kEventKickGoal || action.type == kEventKickPass) { // FIRST AND LAST FILTER
+//            
+//            NSMutableArray *firstAndLast = [[NSMutableArray alloc]init];
+//            
+//            [firstAndLast addObject:action.GameEvents.firstObject];
+//            [firstAndLast addObject:action.GameEvents.lastObject];
+//            
+//            action.GameEvents = firstAndLast;
+//            
+//        }
+//        
+//        // NOW ROLL THAT SHIT !!
+//        
+//        [_thisTurnActions addObject:action];
+//        
+//        action.tag = [self totalGameSequences];
+//        action.wasSuccessful = [self rollAction:action];
+//        
+//        
+//        // HERE IS WHERE TO DO SUCCESS BASED MODIFICATIONS TO THE ACTION, BEFORE PARSING THE EVENT LOOP
+//        
+//        
+//        if (action.wasSuccessful) {
+//            
+//            if (action.type == kEventKickGoal) {
+//                
+//                [self addGoalResetToAction:action];
+//            }
+//            
+//        }
+//        else { // NOT SUCCESSFUL
+//            
+//            if (action.type == kEventKickGoal) {
+//                [self addGoalResetToAction:action];
+//            }
+//            
+//            if (action.isRunningAction) {
+//                
+//                NSMutableArray *new = [NSMutableArray array];
+//                
+//                [new addObject:action.GameEvents[0]];
+//                [new addObject:action.GameEvents[1]];
+//                
+//                if (action.GameEvents.count > 2) {
+//                    
+//                    for (int a = 2; a < action.GameEvents.count; a++){
+//                        
+//                        GameEvent *ev = action.GameEvents[a];
+//                        
+//                        bool op = NO;
+//                        
+//                        for (Card *c in _players.allKeys) {
+//                            if ([c.location isEqual:ev.startingLocation]) {
+//                                op = YES;
+//                            }
+//                        }
+//                        
+//                        if (op) {
+//                            [new addObject:ev];
+//                        }
+//                        
+//                        else break;
+//                        
+//                        
+//                    }
+//                    
+//                    NSLog(@"failed run, removing %d events", action.GameEvents.count - new.count);
+//                    
+//                }
+//                
+//                action.GameEvents = new;
+//                
+//            }
+//        }
+//        
         
         // OK GOOD TO GO?
         // THEN SEND IT
