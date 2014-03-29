@@ -258,4 +258,19 @@
     return nil;
 }
 
+-(NSArray*)cellsAccesibleFrom:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE walkDistance:(int)distance {
+    NSArray* accesibleCells = [self cellsAccesibleFrom:location NeighborhoodType:NEIGHBORHOOD_TYPE];
+    
+    NSMutableArray* inRange = [NSMutableArray array];
+    
+    for (BoardLocation* loc in accesibleCells) {
+        NSArray *path = [self pathFromAtoB:location B:loc NeighborhoodType:NEIGHBORHOOD_TYPE];
+        if (path.count <= distance) {
+            [inRange addObject:loc];
+        }
+    }
+    
+    return inRange;
+}
+
 @end
