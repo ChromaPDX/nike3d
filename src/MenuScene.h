@@ -13,6 +13,5 @@
 
 @interface MenuScene : NKSceneNode <NKTableCellDelegate>
 
-@property (nonatomic, strong) MenuNode* MenuNode;
 
 @end

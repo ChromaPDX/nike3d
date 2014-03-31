@@ -10,6 +10,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		3B91089F18E4EF580059284F /* MenuPlayerProfileScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3B91089E18E4EF580059284F /* MenuPlayerProfileScene.mm */; };
 		5326AEA810A23A0500278DE6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5326AEA710A23A0500278DE6 /* CoreLocation.framework */; };
 		53F323EB10A20EDB00E0DAE4 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F323EA10A20EDB00E0DAE4 /* OpenAL.framework */; };
 		6102DCFE18E24EAE00AB39D1 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 6102DCFD18E24EAE00AB39D1 /* Player.m */; };
@@ -306,6 +307,8 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* ofxiOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxiOS_Prefix.pch; sourceTree = "<group>"; };
+		3B91089D18E4EF580059284F /* MenuPlayerProfileScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuPlayerProfileScene.h; path = ../../../../../../chroma/nike3d/src/MenuPlayerProfileScene.h; sourceTree = "<group>"; };
+		3B91089E18E4EF580059284F /* MenuPlayerProfileScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MenuPlayerProfileScene.mm; path = ../../../../../../chroma/nike3d/src/MenuPlayerProfileScene.mm; sourceTree = "<group>"; };
 		5326AEA710A23A0500278DE6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		53F323EA10A20EDB00E0DAE4 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		6102DCFC18E24EAE00AB39D1 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
@@ -416,8 +419,8 @@
 		6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniGameNode.mm; path = mini_games/MiniGameNode.mm; sourceTree = SOURCE_ROOT; };
 		6160990F18E247450004A938 /* MiniGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniGameScene.h; sourceTree = "<group>"; };
 		6160991018E247450004A938 /* MiniGameScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MiniGameScene.mm; sourceTree = "<group>"; };
-		616BB2D618E39C3F00A680D3 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
-		616BB2D718E39C3F00A680D3 /* MenuScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuScene.mm; sourceTree = "<group>"; };
+		616BB2D618E39C3F00A680D3 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuScene.h; path = ../MenuScene.h; sourceTree = "<group>"; };
+		616BB2D718E39C3F00A680D3 /* MenuScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MenuScene.mm; path = ../MenuScene.mm; sourceTree = "<group>"; };
 		616BB2DA18E39C4600A680D3 /* MenuNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuNode.h; sourceTree = "<group>"; };
 		616BB2DB18E39C4600A680D3 /* MenuNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuNode.mm; sourceTree = "<group>"; };
 		616BB2DC18E39C4600A680D3 /* Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
@@ -973,6 +976,10 @@
 		616BB2D918E39C4600A680D3 /* menus */ = {
 			isa = PBXGroup;
 			children = (
+				616BB2D618E39C3F00A680D3 /* MenuScene.h */,
+				616BB2D718E39C3F00A680D3 /* MenuScene.mm */,
+				3B91089D18E4EF580059284F /* MenuPlayerProfileScene.h */,
+				3B91089E18E4EF580059284F /* MenuPlayerProfileScene.mm */,
 				616BB2DA18E39C4600A680D3 /* MenuNode.h */,
 				616BB2DB18E39C4600A680D3 /* MenuNode.mm */,
 				616BB2DC18E39C4600A680D3 /* Menus.h */,
@@ -1294,8 +1301,6 @@
 				E4D8936D11527B74007E1F53 /* ofApp.mm */,
 				61EF6FB318E23259002B9814 /* DevMenu.h */,
 				61EF6FB418E23259002B9814 /* DevMenu.mm */,
-				616BB2D618E39C3F00A680D3 /* MenuScene.h */,
-				616BB2D718E39C3F00A680D3 /* MenuScene.mm */,
 				6160990F18E247450004A938 /* MiniGameScene.h */,
 				6160991018E247450004A938 /* MiniGameScene.mm */,
 				E4D8936B11527B74007E1F53 /* main.mm */,

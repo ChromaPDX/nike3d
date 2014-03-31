@@ -784,8 +784,6 @@
             [self performAction:_currentEventSequence record:YES animate:YES];
         }
     }
-    
-
 }
 
 // MOVING PLAYER ON FIELD
@@ -804,8 +802,6 @@
                 [_gameScene refreshActionWindowForPlayer:player withCompletionBlock:nil];
                 
                 return 1;
-                
-                
                 
             }
             
@@ -2677,6 +2673,11 @@
 
 -(void)endActionForEricWithManager:(Manager*)m{
     NSLog(@"hi eric, this is: %@",m.name);
+   // NSDictionary *players = [m playersClosestToBall];
+   // NSLog(@"Players closest to ball:");
+   // for(Player* p in players) {
+   //     NSLog(@"name = %@", p.name);
+   // }
 }
 
 -(void)processMetaDataForAction:(GameSequence*)action {
