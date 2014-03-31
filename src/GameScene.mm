@@ -146,6 +146,8 @@ float PARTICLE_SCALE;
             
             [square setLocation:[BoardLocation pX:i Y:j]];
             
+            square.delegate = self;
+            
             [_gameBoardNode addChild:square];
             [_gameTiles setObject:square forKey:square.location];
             
@@ -430,6 +432,7 @@ float PARTICLE_SCALE;
 -(void)cleanUpUIForAction:(GameSequence *)action {
     for (BoardTile* tile in _gameTiles.allValues) {
         [tile setColor:nil];
+        [tile setTexture:nil];
         [tile setUserInteractionEnabled:false];
     }
 }
@@ -442,21 +445,27 @@ float PARTICLE_SCALE;
 }
 
 -(void)showCardPath:(NSArray*)path{
+    
     for (BoardTile* tile in _gameTiles.allValues) {
         [tile setColor:nil];
+        [tile setTexture:nil];
         [tile setUserInteractionEnabled:false];
     }
     for (BoardLocation* loc in path) {
         BoardTile* tile = [_gameTiles objectForKey:loc];
         [tile setColor:V2BLUE];
+        [tile.location setBorderShapeInContext:path];
+        [tile setTextureForBorder:tile.location.borderShape];
         [tile setUserInteractionEnabled:true];
     }
+    
 }
 
 -(void)setSelectedBoardTile:(BoardTile *)selectedBoardTile {
     
+    
     if (_selectedCard) {
-        
+        _game.selectedLocation = selectedBoardTile.location;
     }
     
     _selectedBoardTile = selectedBoardTile;
@@ -1554,12 +1563,16 @@ float PARTICLE_SCALE;
     return 0;
 }
 
--(void)setSelectedPlayer:(Card *)selectedPlayer {
+-(void)setSelectedPlayer:(Player *)selectedPlayer {
+    
     for (PlayerSprite *p in playerSprites.allValues) {
         [p setHighlighted:false];
     }
     
     [[playerSprites objectForKey:selectedPlayer] setHighlighted:true];
+    
+    _selectedPlayer = selectedPlayer;
+    _game.selectedPlayer = selectedPlayer;
     
 }
 

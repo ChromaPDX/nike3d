@@ -28,7 +28,7 @@
 
 @property (nonatomic, strong) Game* game;
 @property (nonatomic, weak) Card* selectedCard;
-@property (nonatomic, weak) Card* selectedPlayer;
+@property (nonatomic, weak) Player* selectedPlayer;
 @property (nonatomic, weak) BoardTile *selectedBoardTile;
 
 @property (nonatomic, strong) NSMutableDictionary *gameTiles;  //objects:game tiles, key:location

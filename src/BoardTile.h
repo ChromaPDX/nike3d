@@ -7,6 +7,7 @@
 //
 
 #import "NKSpriteNode.h"
+#import "BoardLocation.h"
 
 @class BoardLocation;
 @class GameScene;
@@ -20,5 +21,7 @@
 
 // VIEW
 @property (nonatomic, weak) GameScene *delegate;
+
+-(void)setTextureForBorder:(BorderMask)border;
 
 @end
