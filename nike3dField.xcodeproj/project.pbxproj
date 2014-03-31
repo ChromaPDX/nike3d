@@ -1657,6 +1657,7 @@
 				61B28A0D18D8FB8500102278 /* inftrees.c in Sources */,
 				61EF6FB518E23259002B9814 /* DevMenu.mm in Sources */,
 				61B28A0518D8FB8500102278 /* deflate.c in Sources */,
+				3B91089F18E4EF580059284F /* MenuPlayerProfileScene.mm in Sources */,
 				D569A85718EA151F0032A5DA /* gluLookAt.m in Sources */,
 				61D0176818D7CD4C0085D7F9 /* NKNodeAnimationHandler.mm in Sources */,
 				61B28A0418D8FB8500102278 /* crc32.c in Sources */,
