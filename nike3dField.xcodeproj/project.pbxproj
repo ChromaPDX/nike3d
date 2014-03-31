@@ -1410,6 +1410,7 @@
 				6134202B18C6A4B1003D7C9E /* CardPlayerBlue.png in Resources */,
 				6134201718C6A4B1003D7C9E /* Button_Confirm.png in Resources */,
 				616BB39918E4F9DF00A680D3 /* Card_Icon_SpecM_L3.png in Resources */,
+				D569A86518EA29FC0032A5DA /* icosahedron.obj in Resources */,
 				61DF2E5818E653E40075E8A0 /* tile_right.png in Resources */,
 				6134204718C6A4B1003D7C9E /* LogIn_ButtonNewgameOn.png in Resources */,
 				616BB32F18E4EA3800A680D3 /* Field_Goal.png in Resources */,
