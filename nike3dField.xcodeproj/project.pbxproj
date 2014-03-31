@@ -214,6 +214,7 @@
 		61B28A0F18D8FB8500102278 /* uncompr.c in Sources */ = {isa = PBXBuildFile; fileRef = 61B289FC18D8FB8500102278 /* uncompr.c */; };
 		61B28A1018D8FB8500102278 /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 61B289FF18D8FB8500102278 /* zutil.c */; };
 		61B28A1518D9065E00102278 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61B28A1418D9065E00102278 /* GameKit.framework */; };
+		61C0E1E618EA102900F5343A /* NKMeshNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61C0E1E518EA102900F5343A /* NKMeshNode.mm */; };
 		61D0175518D7CD4C0085D7F9 /* chromeKitten.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D0171418D7CD4C0085D7F9 /* chromeKitten.png */; };
 		61D0176518D7CD4C0085D7F9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 61D0173118D7CD4C0085D7F9 /* README.md */; };
 		61D0176618D7CD4C0085D7F9 /* NKLabelNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61D0173418D7CD4C0085D7F9 /* NKLabelNode.mm */; };
@@ -545,6 +546,8 @@
 		61B289FF18D8FB8500102278 /* zutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zutil.c; sourceTree = "<group>"; };
 		61B28A0018D8FB8500102278 /* zutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zutil.h; sourceTree = "<group>"; };
 		61B28A1418D9065E00102278 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		61C0E1E418EA102900F5343A /* NKMeshNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMeshNode.h; sourceTree = "<group>"; };
+		61C0E1E518EA102900F5343A /* NKMeshNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKMeshNode.mm; sourceTree = "<group>"; };
 		61D0171418D7CD4C0085D7F9 /* chromeKitten.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chromeKitten.png; sourceTree = "<group>"; };
 		61D0173118D7CD4C0085D7F9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		61D0173318D7CD4C0085D7F9 /* NKLabelNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKLabelNode.h; sourceTree = "<group>"; };
@@ -1151,6 +1154,8 @@
 				61D0174518D7CD4C0085D7F9 /* NKTexture.mm */,
 				6181275118E0EE35003B72F8 /* NKMesh.h */,
 				6181275218E0EE35003B72F8 /* NKMesh.mm */,
+				61C0E1E418EA102900F5343A /* NKMeshNode.h */,
+				61C0E1E518EA102900F5343A /* NKMeshNode.mm */,
 				61D0174618D7CD4C0085D7F9 /* NKViewController.h */,
 				61D0174718D7CD4C0085D7F9 /* NKViewController.mm */,
 				61D0174818D7CD4C0085D7F9 /* ofxNodeKitten.h */,
@@ -1600,6 +1605,7 @@
 				61D0177118D7CD4C0085D7F9 /* NKDrawDepthShader.mm in Sources */,
 				6124554B18D91866003FF53D /* NKEmitterNode.mm in Sources */,
 				6124554E18D91DB3003FF53D /* ActionWindow.mm in Sources */,
+				61C0E1E618EA102900F5343A /* NKMeshNode.mm in Sources */,
 				61341FB818C69407003D7C9E /* PlayerSprite.mm in Sources */,
 				61B28A0C18D8FB8500102278 /* inflate.c in Sources */,
 				61D0176718D7CD4C0085D7F9 /* NKNode.mm in Sources */,
