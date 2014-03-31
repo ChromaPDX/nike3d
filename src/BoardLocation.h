@@ -12,10 +12,10 @@ typedef NS_OPTIONS(UInt16, BorderMask) {
     
     BorderMaskNone = 0,
     
-    BorderMaskLeft = 1 << 1,
-    BorderMaskRight = 1 << 2,
-    BorderMaskTop = 1 << 3,
-    BorderMaskBottom = 1 << 4,
+    BorderMaskLeft = 1 << 0,
+    BorderMaskRight = 1 << 1,
+    BorderMaskTop = 1 << 2,
+    BorderMaskBottom = 1 << 3,
     
     BorderMaskTopRight = BorderMaskTop | BorderMaskRight,
     BorderMaskTopLeft = BorderMaskTop | BorderMaskLeft,
