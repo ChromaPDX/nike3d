@@ -2173,7 +2173,7 @@
                     //
                     
                     if (action.manager.teamSide == 1) {
-                        [self endActionForEricWithManager:action.manager.opponent];
+                        [self endActionForEricWithManager:action.manager.opponent]; // new?
                     }
                     
                     [self saveTurnWithCompletionBlock:^{
