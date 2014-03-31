@@ -2170,7 +2170,11 @@
                     
                     _animating = NO;
                     
-                    [self endActionForEricWithManager:action.manager];
+                    //
+                    
+                    if (action.manager.teamSide == 1) {
+                        [self endActionForEricWithManager:action.manager.opponent];
+                    }
                     
                     [self saveTurnWithCompletionBlock:^{
                         
@@ -2756,8 +2760,8 @@
     }
     
     
-    NSLog(@"META FOR %@", [self metaDataForManager:action.manager]);
-    ;
+    //NSLog(@"META FOR %@", [self metaDataForManager:action.manager]);
+    
     
 }
 
