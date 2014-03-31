@@ -11,6 +11,7 @@
 #import "Game.h"
 
 @class GameBoardNode;
+@class BoardTile;
 @class MiniGameNode;
 @class ActionWindow;
 @class Card;
@@ -27,7 +28,8 @@
 
 @property (nonatomic, strong) Game* game;
 @property (nonatomic, weak) Card* selectedCard;
-@property (nonatomic, weak) Card* selectedPlayer;
+@property (nonatomic, weak) Player* selectedPlayer;
+@property (nonatomic, weak) BoardTile *selectedBoardTile;
 
 @property (nonatomic, strong) NSMutableDictionary *gameTiles;  //objects:game tiles, key:location
 
@@ -54,6 +56,7 @@
 -(void)gameDidFinishWithWin;
 
 // INTER NODE / DELEGATE
+
 
 -(void)shouldPerformCurrentAction;
 -(BOOL)requestActionWithPlayer:(PlayerSprite*)player;

@@ -7,14 +7,21 @@
 //
 
 #import "NKSpriteNode.h"
+#import "BoardLocation.h"
 
 @class BoardLocation;
+@class GameScene;
 
 @interface BoardTile : NKSpriteNode
+
+-(instancetype)initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size;
 
 // MODEL
 @property (nonatomic, strong) BoardLocation *location;
 
--(instancetype)initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size;
+// VIEW
+@property (nonatomic, weak) GameScene *delegate;
+
+-(void)setTextureForBorder:(BorderMask)border;
 
 @end

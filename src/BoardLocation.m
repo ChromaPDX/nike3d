@@ -77,5 +77,32 @@
     [encoder encodeInteger:_y forKey:@"_y"];
     
 }
+
+-(void) setBorderShapeInContext:(NSArray *)arrayOfLocations{
     
+    bool left =  ![arrayOfLocations containsObject:[BoardLocation pX:_x-1 Y:_y]];
+    bool right = ![arrayOfLocations containsObject:[BoardLocation pX:_x+1 Y:_y]];
+    bool above = ![arrayOfLocations containsObject:[BoardLocation pX:_x Y:_y+1]];
+    bool below = ![arrayOfLocations containsObject:[BoardLocation pX:_x Y:_y-1]];
+    
+    if(!above && !right && !below && !left) _borderShape = BorderMaskNone;
+    if( above && !right && !below && !left) _borderShape = BorderMaskTop;
+    if(!above &&  right && !below && !left) _borderShape = BorderMaskRight;
+    if( above &&  right && !below && !left) _borderShape = BorderMaskTopRight;
+    if(!above && !right &&  below && !left) _borderShape = BorderMaskBottom;
+    if( above && !right &&  below && !left) _borderShape = BorderMaskHorizontal;
+    if(!above &&  right &&  below && !left) _borderShape = BorderMaskBottomRight;
+    if( above &&  right &&  below && !left) _borderShape = BorderMask3Right;
+    if(!above && !right && !below &&  left) _borderShape = BorderMaskLeft;
+    if( above && !right && !below &&  left) _borderShape = BorderMaskTopLeft;
+    if(!above &&  right && !below &&  left) _borderShape = BorderMaskVertical;
+    if( above &&  right && !below &&  left) _borderShape = BorderMask3Top;
+    if(!above && !right &&  below &&  left) _borderShape = BorderMaskBottomLeft;
+    if( above && !right &&  below &&  left) _borderShape = BorderMask3Left;
+    if(!above &&  right &&  below &&  left) _borderShape = BorderMask3Bottom;
+    if( above &&  right &&  below &&  left) _borderShape = BorderMaskAll;
+    
+    
+}
+
 @end

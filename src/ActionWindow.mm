@@ -524,7 +524,7 @@
 //            [card runAction:[NKAction moveTo:card.origin duration:FAST_ANIM_DUR] completion:^{
 //            }];
 //            
-//            if (_delegate.game.currentAction) {
+//            if (_delegate.game.currentEventSequence) {
 //                [_delegate.game setCurrentAction:nil];
 //                [_delegate fadeOutChild:_delegate.infoHUD duration:1.];
 //            }

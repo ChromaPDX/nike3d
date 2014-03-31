@@ -127,8 +127,13 @@ typedef enum RTMessageType {
 @property (nonatomic, strong) id <GameCenterProtocol> gcController;
 @property (nonatomic) NSUInteger rtmatchid;
 @property (nonatomic, strong) id <GameSceneProtocol> gameScene;
-@property (nonatomic, strong) GameSequence *currentAction;
+@property (nonatomic, strong) GameSequence *currentEventSequence;
+
+// MAIN UX INTERACTION
+@property (nonatomic, weak) Player *selectedPlayer;
 @property (nonatomic, weak) Card *selectedCard;
+@property (nonatomic, weak) BoardLocation *selectedLocation;
+
 @property (nonatomic, strong) NSMutableDictionary *players;
 
 // GK TURN BASED MATCH
