@@ -176,9 +176,32 @@
         }
     }
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
-    NSLog(@"in pathToBall, player = %@ ball = %@", self.location, ballLocation);
+   // NSLog(@"in pathToBall, player = %@ ball = %@", self.location, ballLocation);
     NSArray* path = [aStar pathFromAtoB:self.location B:ballLocation NeighborhoodType:NeighborhoodTypeMoore];
 
+    return path;
+}
+
+-(NSArray*)pathToGoal{
+    NSMutableArray* obstacles = [[NSMutableArray alloc] init];
+    BoardLocation *goalLocation = _manager.goal;
+    
+    for (Player* p in [_manager.players allCards]) {
+        // add all players that aren't on the ball to the obstacles
+        if(!(p.location.x == goalLocation.x && p.location.y == goalLocation.y)){
+            [obstacles addObject:p.location];
+        }
+    }
+    for (Player* p in [_manager.opponent.players allCards]) {
+        // add all players that aren't on the ball to the obstacles
+        if(!(p.location.x == goalLocation.x && p.location.y == goalLocation.y)){
+            [obstacles addObject:p.location];
+        }
+    }
+    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
+    // NSLog(@"in pathToBall, player = %@ goal = %@", self.location, goalLocation);
+    NSArray* path = [aStar pathFromAtoB:self.location B:goalLocation NeighborhoodType:NeighborhoodTypeMoore];
+    
     return path;
 }
 

@@ -2684,14 +2684,32 @@
 -(void)endActionForEricWithManager:(Manager*)m{
     NSLog(@"hi eric, this is: %@",m.name);
     
-    NSArray *players = [m playersClosestToBall];
+    int mode = arc4random() % 2;
+    NSLog(@"AI mode = %d", mode);
+    
+    //NSArray *players = [m playersClosestToBall];
+    NSArray *players;
+    if(mode == 0){
+        players = [m playersClosestToGoal];
+    }
+    else if(mode == 1){
+        players = [m playersClosestToBall];
+    }
     if(players){
         int lowerBound = 0;
         int upperBound = [players count];
         int playerIndex = lowerBound + arc4random() % (upperBound - lowerBound);
         Player *p = [players objectAtIndex:playerIndex];
         //Player *p = [players objectAtIndex:0];
-        NSArray *path = [p pathToBall];
+        NSArray *path;
+        if(mode == 0){
+            path = [p pathToGoal];
+        }
+        else if(mode == 1){
+            path = [p pathToBall];
+        }
+        // NSArray *path = [p pathToBall];
+        // NSArray *path = [p pathToGoal];
         // NSLog(@"path = %@", path);
         BoardLocation *newLoc;
         
