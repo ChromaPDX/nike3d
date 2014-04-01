@@ -142,7 +142,12 @@
         if(!(p.location.x == ballLocation.x && p.location.y == ballLocation.y)){
             [obstacles addObject:p.location];
         }
-        
+    }
+    for (Player* p in [_opponent.players allCards]) {
+        // add all players that aren't on the ball to the obstacles
+        if(!(p.location.x == ballLocation.x && p.location.y == ballLocation.y)){
+            [obstacles addObject:p.location];
+        }
     }
     
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];

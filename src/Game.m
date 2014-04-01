@@ -2342,6 +2342,14 @@
             [p.specialDeck turnOverNextCard];
         }
         
+        for (Player* p in event.manager.opponent.players.inGame) {
+            [p.moveDeck turnOverNextCard];
+            [p.kickDeck turnOverNextCard];
+            [p.challengeDeck turnOverNextCard];
+            [p.specialDeck turnOverNextCard];
+            [p.specialDeck turnOverNextCard];
+        }
+        
 //        if (event.manager.deck.inHand.count < 7) {
 //            
 //            if (!event.manager.deck.theDeck.count) {
@@ -2641,8 +2649,6 @@
                 _ball.enchantee = Nil;
                 
             }
-            
-            
         }
         
         else if (event.type == kEventKickGoal){ // FAILED SHOT
@@ -2679,20 +2685,33 @@
     NSLog(@"hi eric, this is: %@",m.name);
     
     NSArray *players = [m playersClosestToBall];
- //   NSLog(@"players = %@", players);
     if(players){
-        Player *p = [players objectAtIndex:[players count]-1];
+        int lowerBound = 0;
+        int upperBound = [players count];
+        int playerIndex = lowerBound + arc4random() % (upperBound - lowerBound);
+        Player *p = [players objectAtIndex:playerIndex];
+        //Player *p = [players objectAtIndex:0];
         NSArray *path = [p pathToBall];
-        NSLog(@"path = %@", path);
+        // NSLog(@"path = %@", path);
         BoardLocation *newLoc;
-        if(path){
-            newLoc = [path objectAtIndex:[path count]-1];
-        }
         
-        GameSequence *gs = [GameSequence action];
+        Card* moveCard = p.moveDeck.inHand[0];
+        int maxDist = [path count] - 1;
+        
+        int travelDistance = MAX(0,MIN(maxDist, moveCard.range));
+       // NSLog(@"travelDistance = %d", travelDistance);
+       // NSLog(@"path count = %d", [path count]);
+        
+        if(path && travelDistance > 0){
+            //newLoc = [path objectAtIndex:[path count]-travelDistance];
+            newLoc = [path objectAtIndex:[path count]-travelDistance];
+     
+        
+            GameSequence *gs = [GameSequence action];
   
-        [self addEventToSequence:gs fromCardOrPlayer:p toLocation:newLoc withType:kEventMove];
-        [self performAction:gs record:YES animate:YES];
+            [self addEventToSequence:gs fromCardOrPlayer:p toLocation:newLoc withType:kEventMove];
+            [self performAction:gs record:YES animate:YES];
+        }
     }
 }
 
