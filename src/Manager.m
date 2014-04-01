@@ -136,7 +136,7 @@
 -(NSArray*)playersClosestToBall{
     NSMutableArray* obstacles = [[NSMutableArray alloc] init];
     BoardLocation *ballLocation = _game.ball.location;
-
+    
     for (Player* p in [_players allCards]) {
         // add all players that aren't on the ball to the obstacles
         if(!(p.location.x == ballLocation.x && p.location.y == ballLocation.y)){
@@ -146,21 +146,21 @@
     }
     
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
-     
-    NSLog(@"_game = %@", _game.ball.location);
-
+    
+    //NSLog(@"_game = %@", _game.ball.location);
+    
     NSMutableDictionary *playerPathsDict = [[NSMutableDictionary alloc] init];
     for(Player* p in _players.inGame) {
-     //   NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, ballLocation);
+        //   NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, ballLocation);
         NSArray* path = [aStar pathFromAtoB:p.location B:ballLocation NeighborhoodType:NeighborhoodTypeMoore];
-      //  NSLog(@"in playersClosestToBall, path = %@", path);
-       // NSString* count = [NSString stringWithFormat:@"%d",[path count]];
+        //  NSLog(@"in playersClosestToBall, path = %@", path);
+        // NSString* count = [NSString stringWithFormat:@"%d",[path count]];
         if(path){
             [playerPathsDict setObject:p forKey:path];
         }
     }
     // NSLog(@"in playersClosestToBall, playersPathsDict = %@", playerPathsDict);
-
+    
     // sort the plaerPathsDict by lenth of the paths
     NSArray *keys = [playerPathsDict allKeys];
     NSMutableArray *sortedPlayers = [[NSMutableArray alloc] init];

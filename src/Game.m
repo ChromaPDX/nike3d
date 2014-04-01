@@ -2677,12 +2677,31 @@
 
 -(void)endActionForEricWithManager:(Manager*)m{
     NSLog(@"hi eric, this is: %@",m.name);
-   // NSDictionary *players = [m playersClosestToBall];
-   // NSLog(@"Players closest to ball:");
-   // for(Player* p in players) {
-   //     NSLog(@"name = %@", p.name);
-   // }
+    
+    NSArray *players = [m playersClosestToBall];
+    if(players){
+        Player *p = [players objectAtIndex:0];
+        NSLog(@"moving %@", p.name);
+        
+        BoardLocation *loc = p.location;
+        loc.x = loc.x +1;
+        loc.y = loc.y + 1;
+        // [self addPlayerEventToAction:_currentEventSequence from:p.location to:loc withType:kEventDraw];
+        GameSequence *gs = [GameSequence action];
+        NSLog(@"adding event to sequence");
+        [self addEventToSequence:gs fromCardOrPlayer:p toLocation:loc withType:kEventMove];
+        NSLog(@"event added to sequence");
+        // [p setLocation:loc];
+        
+        // [self refreshGameBoard];
+        [self performAction:gs record:YES animate:YES];
+    }
+    // NSLog(@"Players closest to ball:");
+    // for(Player* p in players) {
+    //     NSLog(@"name = %@", p.name);
+    // }
 }
+
 
 -(void)processMetaDataForAction:(GameSequence*)action {
     
