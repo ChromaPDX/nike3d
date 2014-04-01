@@ -266,12 +266,15 @@
 		BBE5EAB80F49AD8400F28951 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */; };
 		D5319E4B18E35F7800B3DC5D /* soccerball.png in Resources */ = {isa = PBXBuildFile; fileRef = D5319E4A18E35F7800B3DC5D /* soccerball.png */; };
 		D5319E4F18E36B2000B3DC5D /* Avenir.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5319E4E18E36B2000B3DC5D /* Avenir.ttf */; };
+		D569A86D18EA3B880032A5DA /* icosahedron.mtl in Resources */ = {isa = PBXBuildFile; fileRef = D569A86B18EA3B880032A5DA /* icosahedron.mtl */; };
+		D569A86E18EA3B880032A5DA /* icosahedron.obj in Resources */ = {isa = PBXBuildFile; fileRef = D569A86C18EA3B880032A5DA /* icosahedron.obj */; };
 		D5BC8C9018E0F3A9005E2F52 /* MiniTouch.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5BC8C8F18E0F3A9005E2F52 /* MiniTouch.mm */; };
 		D5BC8C9318E0F8CE005E2F52 /* MiniCups.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5BC8C9218E0F8CE005E2F52 /* MiniCups.mm */; };
 		D5DD851018E5FA0100187103 /* AStar.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DD850F18E5FA0100187103 /* AStar.m */; };
 		D5F8FABC18E4E76100C764E5 /* fail.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F8FABA18E4E76100C764E5 /* fail.png */; };
 		D5F8FABD18E4E76100C764E5 /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F8FABB18E4E76100C764E5 /* success.png */; };
 		D5F8FABF18E4E8A800C764E5 /* twitch_label.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F8FABE18E4E8A800C764E5 /* twitch_label.png */; };
+		D5FC63B918EB88A6003FD008 /* earth.obj in Resources */ = {isa = PBXBuildFile; fileRef = D5FC63B818EB88A6003FD008 /* earth.obj */; };
 		E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3ED613B38FB500A75A5D /* Project.xcconfig */; };
 		E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */; };
 		E41D400B13B39D2100A75A5D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400613B39D2100A75A5D /* AVFoundation.framework */; };
@@ -632,6 +635,8 @@
 		BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D5319E4A18E35F7800B3DC5D /* soccerball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soccerball.png; sourceTree = "<group>"; };
 		D5319E4E18E36B2000B3DC5D /* Avenir.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Avenir.ttf; sourceTree = SOURCE_ROOT; };
+		D569A86B18EA3B880032A5DA /* icosahedron.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = icosahedron.mtl; sourceTree = "<group>"; };
+		D569A86C18EA3B880032A5DA /* icosahedron.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = icosahedron.obj; sourceTree = "<group>"; };
 		D5BC8C8E18E0F3A9005E2F52 /* MiniTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniTouch.h; path = mini_maze/MiniTouch.h; sourceTree = "<group>"; };
 		D5BC8C8F18E0F3A9005E2F52 /* MiniTouch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniTouch.mm; path = mini_maze/MiniTouch.mm; sourceTree = "<group>"; };
 		D5BC8C9118E0F8CE005E2F52 /* MiniCups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniCups.h; sourceTree = "<group>"; };
@@ -641,6 +646,7 @@
 		D5F8FABA18E4E76100C764E5 /* fail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fail.png; sourceTree = "<group>"; };
 		D5F8FABB18E4E76100C764E5 /* success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = success.png; sourceTree = "<group>"; };
 		D5F8FABE18E4E8A800C764E5 /* twitch_label.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitch_label.png; sourceTree = "<group>"; };
+		D5FC63B818EB88A6003FD008 /* earth.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = earth.obj; sourceTree = "<group>"; };
 		E41D3ED613B38FB500A75A5D /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/ios/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E41D400613B39D2100A75A5D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1137,6 +1143,9 @@
 		61C0E1E918EA1B2A00F5343A /* WavefrontOBJ */ = {
 			isa = PBXGroup;
 			children = (
+				D569A86B18EA3B880032A5DA /* icosahedron.mtl */,
+				D5FC63B818EB88A6003FD008 /* earth.obj */,
+				D569A86C18EA3B880032A5DA /* icosahedron.obj */,
 				61C0E1EA18EA1B2A00F5343A /* ConstantsAndMacros.h */,
 				61C0E1F118EA1B2A00F5343A /* OpenGLTexture3D.h */,
 				61C0E1F218EA1B2A00F5343A /* OpenGLTexture3D.m */,
@@ -1387,6 +1396,7 @@
 				616BB30518E39D2500A680D3 /* create_profile_button.1.png in Resources */,
 				616BB38918E4F9DF00A680D3 /* Card_Icon_Chal_L3.png in Resources */,
 				616BB31718E39D2500A680D3 /* Special_L3a.1.png in Resources */,
+				D569A86E18EA3B880032A5DA /* icosahedron.obj in Resources */,
 				6134203818C6A4B1003D7C9E /* player_popup_dark.png in Resources */,
 				6134203B18C6A4B1003D7C9E /* white_select_circle.png in Resources */,
 				616BB38A18E4F9DF00A680D3 /* Card_Icon_Challenge_L1.png in Resources */,
@@ -1483,6 +1493,7 @@
 				616BB33018E4EA3800A680D3 /* Field_Layer01.png in Resources */,
 				6134202A18C6A4B1003D7C9E /* CardGear.png in Resources */,
 				616BB38718E4F9DF00A680D3 /* Card_Icon_Chal_L1.png in Resources */,
+				D569A86D18EA3B880032A5DA /* icosahedron.mtl in Resources */,
 				616BB31218E39D2500A680D3 /* Move_L2a.1.png in Resources */,
 				6134208018C6ABA4003D7C9E /* arrowDown.png in Resources */,
 				61DF2E5218E653E40075E8A0 /* tile_bottom.png in Resources */,
@@ -1510,6 +1521,7 @@
 				616BB39418E4F9DF00A680D3 /* Card_Icon_Speck_L1.png in Resources */,
 				616BB33318E4EA3800A680D3 /* PlayerIndicator_PlayerOFF.png in Resources */,
 				678E130E17951540005B6D19 /* Default@2x.png in Resources */,
+				D5FC63B918EB88A6003FD008 /* earth.obj in Resources */,
 				616BB33218E4EA3800A680D3 /* Field_Layer03.png in Resources */,
 				6134201B18C6A4B1003D7C9E /* Button_EndTurnON.png in Resources */,
 				616BB30418E39D2500A680D3 /* create_profile_bg.1.png in Resources */,

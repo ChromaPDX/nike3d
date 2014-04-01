@@ -38,9 +38,20 @@
         font.loadFont("Avenir.ttf", 10);
         
         ofVec3f vec3 = ofVec3f(100.0f, 100.0f, 100.0f);
-        meshNode = [[NKMeshNode alloc] initWithObjFileNamed:@"icosahedron" texture:nil size:vec3];
+        meshNode = [[NKMeshNode alloc] initWithObjFileNamed:@"earth" texture:[NKTexture textureWithImageNamed:@"ball_Texture"] size:vec3];
         
+        [meshNode runAction:[NKAction repeatActionForever:[NKAction rotate3dByAngle:ofVec3f(0,90,0) duration:1.]]];
+        
+        [self addChild:meshNode];
+        NSLog(@"MESH NODE GROUPS COUNT>: %d",meshNode.mesh.groups.count);
+
     }
+//    @property (nonatomic, retain) NSString *sourceObjFilePath;
+//    @property (nonatomic, retain) NSString *sourceMtlFilePath;
+//    @property (nonatomic, retain) NSDictionary *materials;
+//    @property (nonatomic, retain) NSMutableArray *groups;
+//    @property Vertex3D currentPosition;
+//    @property Rotation3D currentRotation;
     
     return self;
 }
@@ -84,15 +95,15 @@
     }
 }
 
--(void) customDraw{
-    
-    // mesh node test
-    ofPushMatrix();
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    [meshNode draw];
-    ofPopMatrix();
-
-}
+//-(void) customDraw{
+//    
+//    // mesh node test
+//    ofPushMatrix();
+//    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+//    [meshNode draw];
+//    ofPopMatrix();
+//
+//}
 
 //-(void)customDraw {
 //    if(!loader){

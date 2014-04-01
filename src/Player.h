@@ -43,5 +43,6 @@
 -(Card*)cardInDeckAtLocation:(BoardLocation*)location;
 
 -(NSArray*)pathToBall;
+-(NSArray*)pathToGoal;
 
 @end
