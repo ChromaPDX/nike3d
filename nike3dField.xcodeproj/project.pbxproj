@@ -274,6 +274,7 @@
 		D5F8FABC18E4E76100C764E5 /* fail.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F8FABA18E4E76100C764E5 /* fail.png */; };
 		D5F8FABD18E4E76100C764E5 /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F8FABB18E4E76100C764E5 /* success.png */; };
 		D5F8FABF18E4E8A800C764E5 /* twitch_label.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F8FABE18E4E8A800C764E5 /* twitch_label.png */; };
+		D5FC63B918EB88A6003FD008 /* earth.obj in Resources */ = {isa = PBXBuildFile; fileRef = D5FC63B818EB88A6003FD008 /* earth.obj */; };
 		E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3ED613B38FB500A75A5D /* Project.xcconfig */; };
 		E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */; };
 		E41D400B13B39D2100A75A5D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400613B39D2100A75A5D /* AVFoundation.framework */; };
@@ -645,6 +646,7 @@
 		D5F8FABA18E4E76100C764E5 /* fail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fail.png; sourceTree = "<group>"; };
 		D5F8FABB18E4E76100C764E5 /* success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = success.png; sourceTree = "<group>"; };
 		D5F8FABE18E4E8A800C764E5 /* twitch_label.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitch_label.png; sourceTree = "<group>"; };
+		D5FC63B818EB88A6003FD008 /* earth.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = earth.obj; sourceTree = "<group>"; };
 		E41D3ED613B38FB500A75A5D /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/ios/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E41D400613B39D2100A75A5D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1142,6 +1144,7 @@
 			isa = PBXGroup;
 			children = (
 				D569A86B18EA3B880032A5DA /* icosahedron.mtl */,
+				D5FC63B818EB88A6003FD008 /* earth.obj */,
 				D569A86C18EA3B880032A5DA /* icosahedron.obj */,
 				61C0E1EA18EA1B2A00F5343A /* ConstantsAndMacros.h */,
 				61C0E1F118EA1B2A00F5343A /* OpenGLTexture3D.h */,
@@ -1518,6 +1521,7 @@
 				616BB39418E4F9DF00A680D3 /* Card_Icon_Speck_L1.png in Resources */,
 				616BB33318E4EA3800A680D3 /* PlayerIndicator_PlayerOFF.png in Resources */,
 				678E130E17951540005B6D19 /* Default@2x.png in Resources */,
+				D5FC63B918EB88A6003FD008 /* earth.obj in Resources */,
 				616BB33218E4EA3800A680D3 /* Field_Layer03.png in Resources */,
 				6134201B18C6A4B1003D7C9E /* Button_EndTurnON.png in Resources */,
 				616BB30418E39D2500A680D3 /* create_profile_bg.1.png in Resources */,
