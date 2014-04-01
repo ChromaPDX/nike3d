@@ -1391,8 +1391,8 @@
     event.totalModifier = 0.;
     
     return event;
-    
 }
+
 
 -(GameEvent*)addPlayerEventToAction:(GameSequence*)action from:(BoardLocation *)startLocation to:(BoardLocation*)location withType:(EventType)type {
     
@@ -1782,14 +1782,12 @@
 //}
 
 -(GameEvent*)addSetBallEventForAction:(GameSequence*)action location:(BoardLocation*)location {
-    
     GameEvent *set = [GameEvent eventForAction:action];
     set.type = kEventSetBallLocation;
     set.manager = _me;
     set.location = [location copy];
     [action.GameEvents addObject:set];
     //set.actionSlot = action.GameEvents.count;
-    
     return set;
 }
 
@@ -1869,6 +1867,7 @@
     
     if (shouldRecordSequence) {
         
+        action.wasSuccessful = true;
 //        // FILTER MIDDLE EVENTS FOR PASS AND SHOOT
 //        
 //        
@@ -2175,13 +2174,14 @@
                     if (action.manager.teamSide == 1) {
                         [self endActionForEricWithManager:action.manager.opponent]; // new?
                     }
-                    
+
                     [self saveTurnWithCompletionBlock:^{
                         
                
                         [self checkMyTurn];
                         
                     }];
+                    
                 }];
             }
             
@@ -2335,6 +2335,14 @@
     else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         
         for (Player* p in event.manager.players.inGame) {
+            [p.moveDeck turnOverNextCard];
+            [p.kickDeck turnOverNextCard];
+            [p.challengeDeck turnOverNextCard];
+            [p.specialDeck turnOverNextCard];
+            [p.specialDeck turnOverNextCard];
+        }
+        
+        for (Player* p in event.manager.opponent.players.inGame) {
             [p.moveDeck turnOverNextCard];
             [p.kickDeck turnOverNextCard];
             [p.challengeDeck turnOverNextCard];
@@ -2641,8 +2649,6 @@
                 _ball.enchantee = Nil;
                 
             }
-            
-            
         }
         
         else if (event.type == kEventKickGoal){ // FAILED SHOT
@@ -2677,12 +2683,38 @@
 
 -(void)endActionForEricWithManager:(Manager*)m{
     NSLog(@"hi eric, this is: %@",m.name);
-   // NSDictionary *players = [m playersClosestToBall];
-   // NSLog(@"Players closest to ball:");
-   // for(Player* p in players) {
-   //     NSLog(@"name = %@", p.name);
-   // }
+    
+    NSArray *players = [m playersClosestToBall];
+    if(players){
+        int lowerBound = 0;
+        int upperBound = [players count];
+        int playerIndex = lowerBound + arc4random() % (upperBound - lowerBound);
+        Player *p = [players objectAtIndex:playerIndex];
+        //Player *p = [players objectAtIndex:0];
+        NSArray *path = [p pathToBall];
+        // NSLog(@"path = %@", path);
+        BoardLocation *newLoc;
+        
+        Card* moveCard = p.moveDeck.inHand[0];
+        int maxDist = [path count] - 1;
+        
+        int travelDistance = MAX(0,MIN(maxDist, moveCard.range));
+       // NSLog(@"travelDistance = %d", travelDistance);
+       // NSLog(@"path count = %d", [path count]);
+        
+        if(path && travelDistance > 0){
+            //newLoc = [path objectAtIndex:[path count]-travelDistance];
+            newLoc = [path objectAtIndex:[path count]-travelDistance];
+     
+        
+            GameSequence *gs = [GameSequence action];
+  
+            [self addEventToSequence:gs fromCardOrPlayer:p toLocation:newLoc withType:kEventMove];
+            [self performAction:gs record:YES animate:YES];
+        }
+    }
 }
+
 
 -(void)processMetaDataForAction:(GameSequence*)action {
     

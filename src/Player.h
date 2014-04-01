@@ -42,4 +42,6 @@
 -(Card*)cardInHandAtlocation:(BoardLocation*)location;
 -(Card*)cardInDeckAtLocation:(BoardLocation*)location;
 
+-(NSArray*)pathToBall;
+
 @end

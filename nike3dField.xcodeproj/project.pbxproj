@@ -10,6 +10,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		3B40115918EB200800B5E4C2 /* MenuPlayerProfileScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3B40115818EB200800B5E4C2 /* MenuPlayerProfileScene.mm */; };
 		5326AEA810A23A0500278DE6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5326AEA710A23A0500278DE6 /* CoreLocation.framework */; };
 		53F323EB10A20EDB00E0DAE4 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F323EA10A20EDB00E0DAE4 /* OpenAL.framework */; };
 		6102DCFE18E24EAE00AB39D1 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 6102DCFD18E24EAE00AB39D1 /* Player.m */; };
@@ -307,6 +308,8 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* ofxiOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxiOS_Prefix.pch; sourceTree = "<group>"; };
+		3B40115718EB200800B5E4C2 /* MenuPlayerProfileScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuPlayerProfileScene.h; sourceTree = "<group>"; };
+		3B40115818EB200800B5E4C2 /* MenuPlayerProfileScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuPlayerProfileScene.mm; sourceTree = "<group>"; };
 		5326AEA710A23A0500278DE6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		53F323EA10A20EDB00E0DAE4 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		6102DCFC18E24EAE00AB39D1 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
@@ -979,6 +982,8 @@
 				616BB2DA18E39C4600A680D3 /* MenuNode.h */,
 				616BB2DB18E39C4600A680D3 /* MenuNode.mm */,
 				616BB2DC18E39C4600A680D3 /* Menus.h */,
+				3B40115718EB200800B5E4C2 /* MenuPlayerProfileScene.h */,
+				3B40115818EB200800B5E4C2 /* MenuPlayerProfileScene.mm */,
 			);
 			path = menus;
 			sourceTree = "<group>";
@@ -1606,6 +1611,7 @@
 				61C0E1FF18EA1B2A00F5343A /* OpenGLTexture3D.m in Sources */,
 				61B28A0818D8FB8500102278 /* gzread.c in Sources */,
 				61B28A0318D8FB8500102278 /* compress.c in Sources */,
+				3B40115918EB200800B5E4C2 /* MenuPlayerProfileScene.mm in Sources */,
 				61D0176A18D7CD4C0085D7F9 /* NKSceneNode.mm in Sources */,
 				6134208E18C6ABD4003D7C9E /* MiniGameNode.mm in Sources */,
 				616BB2DD18E39C4600A680D3 /* MenuNode.mm in Sources */,
