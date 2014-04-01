@@ -151,7 +151,7 @@
     
     NSMutableDictionary *playerPathsDict = [[NSMutableDictionary alloc] init];
     for(Player* p in _players.inGame) {
-        //   NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, ballLocation);
+        NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, ballLocation);
         NSArray* path = [aStar pathFromAtoB:p.location B:ballLocation NeighborhoodType:NeighborhoodTypeMoore];
         //  NSLog(@"in playersClosestToBall, path = %@", path);
         // NSString* count = [NSString stringWithFormat:@"%d",[path count]];
@@ -161,13 +161,11 @@
     }
     // NSLog(@"in playersClosestToBall, playersPathsDict = %@", playerPathsDict);
     
-    // sort the plaerPathsDict by lenth of the paths
+    // sort the playerPathsDict by lenth of the paths
     NSArray *keys = [playerPathsDict allKeys];
     NSMutableArray *sortedPlayers = [[NSMutableArray alloc] init];
-    
     NSSortDescriptor* descriptor= [NSSortDescriptor sortDescriptorWithKey: @"@count" ascending: YES];
     NSArray* sortedKeys= [keys sortedArrayUsingDescriptors: @[ descriptor ]];
-    
     for(NSArray* key in sortedKeys){
         [sortedPlayers addObject:[playerPathsDict objectForKey:key]];
     }

@@ -1261,6 +1261,7 @@ float PARTICLE_SCALE;
     
     [_ballSprite setScale:BALL_SCALE_BIG];
     [_ballSprite setPosition:[[_gameTiles objectForKey:location] position]];
+    _game.ball.location = location;
     
     NSLog(@"GameScene.m :: moving ball to: %d %d", location.x, location.y);
 }

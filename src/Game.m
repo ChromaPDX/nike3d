@@ -1391,8 +1391,8 @@
     event.totalModifier = 0.;
     
     return event;
-    
 }
+
 
 -(GameEvent*)addPlayerEventToAction:(GameSequence*)action from:(BoardLocation *)startLocation to:(BoardLocation*)location withType:(EventType)type {
     
@@ -1782,14 +1782,12 @@
 //}
 
 -(GameEvent*)addSetBallEventForAction:(GameSequence*)action location:(BoardLocation*)location {
-    
     GameEvent *set = [GameEvent eventForAction:action];
     set.type = kEventSetBallLocation;
     set.manager = _me;
     set.location = [location copy];
     [action.GameEvents addObject:set];
     //set.actionSlot = action.GameEvents.count;
-    
     return set;
 }
 
@@ -1869,6 +1867,7 @@
     
     if (shouldRecordSequence) {
         
+        action.wasSuccessful = true;
 //        // FILTER MIDDLE EVENTS FOR PASS AND SHOOT
 //        
 //        
@@ -2175,13 +2174,14 @@
                     if (action.manager.teamSide == 1) {
                         [self endActionForEricWithManager:action.manager.opponent]; // new?
                     }
-                    
+
                     [self saveTurnWithCompletionBlock:^{
                         
                
                         [self checkMyTurn];
                         
                     }];
+                    
                 }];
             }
             
@@ -2679,27 +2679,21 @@
     NSLog(@"hi eric, this is: %@",m.name);
     
     NSArray *players = [m playersClosestToBall];
+ //   NSLog(@"players = %@", players);
     if(players){
-        Player *p = [players objectAtIndex:0];
-        NSLog(@"moving %@", p.name);
+        Player *p = [players objectAtIndex:[players count]-1];
+        NSArray *path = [p pathToBall];
+        NSLog(@"path = %@", path);
+        BoardLocation *newLoc;
+        if(path){
+            newLoc = [path objectAtIndex:[path count]-1];
+        }
         
-        BoardLocation *loc = p.location;
-        loc.x = loc.x +1;
-        loc.y = loc.y + 1;
-        // [self addPlayerEventToAction:_currentEventSequence from:p.location to:loc withType:kEventDraw];
         GameSequence *gs = [GameSequence action];
-        NSLog(@"adding event to sequence");
-        [self addEventToSequence:gs fromCardOrPlayer:p toLocation:loc withType:kEventMove];
-        NSLog(@"event added to sequence");
-        // [p setLocation:loc];
-        
-        // [self refreshGameBoard];
+  
+        [self addEventToSequence:gs fromCardOrPlayer:p toLocation:newLoc withType:kEventMove];
         [self performAction:gs record:YES animate:YES];
     }
-    // NSLog(@"Players closest to ball:");
-    // for(Player* p in players) {
-    //     NSLog(@"name = %@", p.name);
-    // }
 }
 
 
