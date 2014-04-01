@@ -51,6 +51,10 @@
 -(Card*)cardInDeckAtLocation:(BoardLocation*)location;
 -(Card*)cardInHandAtlocation:(BoardLocation*)location;
 
+-(BoardLocation*)goal;
+
 -(NSArray*)playersClosestToBall;
+-(NSArray*)playersClosestToGoal;
+
 
 @end
