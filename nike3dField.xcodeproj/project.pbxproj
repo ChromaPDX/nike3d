@@ -1166,6 +1166,7 @@
 			isa = PBXGroup;
 			children = (
 				61C0E1E918EA1B2A00F5343A /* WavefrontOBJ */,
+				61D0174818D7CD4C0085D7F9 /* ofxNodeKitten.h */,
 				61F9C4EE18D7D3DB005F849D /* NKCoreTextNode.h */,
 				61F9C4EF18D7D3DB005F849D /* NKCoreTextNode.mm */,
 				61D0173318D7CD4C0085D7F9 /* NKLabelNode.h */,
@@ -1197,7 +1198,6 @@
 				61C0E1E518EA102900F5343A /* NKMeshNode.mm */,
 				61D0174618D7CD4C0085D7F9 /* NKViewController.h */,
 				61D0174718D7CD4C0085D7F9 /* NKViewController.mm */,
-				61D0174818D7CD4C0085D7F9 /* ofxNodeKitten.h */,
 				61D0174918D7CD4C0085D7F9 /* shaderClasses */,
 			);
 			path = src;
