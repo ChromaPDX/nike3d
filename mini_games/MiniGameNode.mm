@@ -40,7 +40,15 @@
         ofVec3f vec3 = ofVec3f(100.0f, 100.0f, 100.0f);
         meshNode = [[NKMeshNode alloc] initWithObjFileNamed:@"icosahedron" texture:nil size:vec3];
         
+        NSLog(@"MESH NODE GROUPS COUNT>: %d",meshNode.mesh.groups.count);
+
     }
+//    @property (nonatomic, retain) NSString *sourceObjFilePath;
+//    @property (nonatomic, retain) NSString *sourceMtlFilePath;
+//    @property (nonatomic, retain) NSDictionary *materials;
+//    @property (nonatomic, retain) NSMutableArray *groups;
+//    @property Vertex3D currentPosition;
+//    @property Rotation3D currentRotation;
     
     return self;
 }
