@@ -2608,7 +2608,7 @@
         else if (event.type == kEventKickPass){ // FAILED PASS
             [event.playerPerformingAction setBall:Nil];
             _ball.enchantee = Nil;
-            _ball.location = [self passFail:event];
+            _ball.location = [event scatter];
             
         }
         
@@ -2805,26 +2805,6 @@
 
 
 
--(BoardLocation*)passFail:(GameEvent*)event {
-    
-    NSLog(@"calculate failed pass!");
-    
-    
-    int randomX = event.location.x + ([event.deck randomForIndex:event.seed]%3 - 1);
-    int randomY = event.location.y + ([event.deck randomForIndex:event.seed+1]%3 - 1);
-    
-    //    while ([[BoardLocation pX:randomX Y:randomY] isEqual:event.location]) {
-    //       randomX = event.location.x + ([event.manager.deck randomForIndex:event.seed]%3 - 1);
-    //       randomY = event.location.y + ([event.manager.deck randomForIndex:event.seed+1]%3 - 1);
-    //    }
-    
-    randomX = MIN(MAX(0, randomX), BOARD_LENGTH-1);
-    randomY = MIN(MAX(0, randomY), BOARD_WIDTH-1);
-    
-    return [BoardLocation pX:randomX Y:randomY];
-    
-}
-
 -(NSSet*)temporaryEnchantments {
     NSMutableSet *temp = [NSMutableSet set];
     
@@ -2867,53 +2847,6 @@
     
 }
 
-//-(void)updateActiveZone {
-//    
-//    if (!_activeZone) {
-//        _activeZone = [BoardLocation pX:(BOARD_LENGTH/2)-1 Y:(BOARD_LENGTH/2)+3];
-//        
-//    }
-//    
-//    if (_ball) {
-//        
-//        if (_ball.player) {
-//            
-//            if (_ball.player.manager.teamSide) {
-//                _activeZone.x = _ball.player.location.x - 3;
-//                _activeZone.y = _ball.player.location.x + 1;
-//                NSLog(@"Game.m : updateActiveZone : player 1 has ball");
-//            }
-//            else {
-//                
-//                _activeZone.x = _ball.player.location.x - 1;
-//                _activeZone.y = _ball.player.location.x + 3;
-//                NSLog(@"Game.m : updateActiveZone : player 0 has ball");
-//            }
-//            
-//            _zoneActive = YES;
-//            
-//        }
-//        
-//        else {
-//            _zoneActive = NO;
-//        }
-//        
-//        
-//    }
-//    
-//    if (_activeZone.x <= 0) {
-//        _activeZone.x = 0;
-//        _activeZone.y = 4;
-//    }
-//    
-//    else if (_activeZone.y >= BOARD_LENGTH) {
-//        _activeZone.y = BOARD_LENGTH;
-//        _activeZone.x = BOARD_LENGTH - 4;
-//    }
-//    
-//    NSLog(@"zone is : %d %d", _activeZone.x, _activeZone.y);
-//    
-//}
 
 -(BOOL)requireEmptyLocation:(BoardLocation*)location {
     return ![self requirePlayerAtLocation:location];
@@ -3140,29 +3073,6 @@
     return temp;
     
 }
-
--(int)isAdjacent:(BoardLocation*)a to:(BoardLocation*)b {
-    if ([a isEqual:b]) {
-        return -1;
-    }
-    else if (a.x == b.x) { // SAME ROW
-        if (abs(a.y - b.y) == 1) { // Column neighbor
-            return 1;
-        }
-    }
-    else if (a.y == b.y) { // SAME COLUMN
-        if (abs(a.x - b.x) == 1) { // ROW NEIGHBOR
-            return 1;
-        }
-    }
-    return 0;
-}
-
--(float)checkCardForModifiers:(Card*)card {
-    float modifier = 0.;
-    return modifier;
-}
-
 
 -(void)setCurrentManagerFromMatch {
     

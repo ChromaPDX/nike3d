@@ -210,6 +210,21 @@ return [(GameEvent*)[_GameEvents lastObject] type];
     else return 0;
 }
 
+-(BoardLocation*)scatterLocation {
+    
+    NSLog(@"calculate failed pass!");
+    
+    
+    int randomX = _location.x + ([_deck randomForIndex:_seed]%3 - 1);
+    int randomY = _location.y + ([_deck randomForIndex:_seed+1]%3 - 1);
+    
+    randomX = MIN(MAX(0, randomX), BOARD_LENGTH-1);
+    randomY = MIN(MAX(0, randomY), BOARD_WIDTH-1);
+    
+    return [BoardLocation pX:randomX Y:randomY];
+    
+}
+
 //-(BOOL)isDeployEvent {
 //    
 //    if (_type == kDeployEvent || _type == kSpawnPlayerEvent || _type == kSpawnKeeperEvent) {

@@ -105,4 +105,23 @@
     
 }
 
+-(int)isAdjacentTo:(BoardLocation*)b {
+    if ([self isEqual:b]) {
+        return -1;
+    }
+    else if (_x == b.x) { // SAME ROW
+        if (abs(_y - b.y) == 1) { // Column neighbor
+            return 1;
+        }
+    }
+    else if (_y == b.y) { // SAME COLUMN
+        if (abs(_x - b.x) == 1) { // ROW NEIGHBOR
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+
 @end
