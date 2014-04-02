@@ -109,6 +109,7 @@
 		6134208718C6ABA4003D7C9E /* theball.png in Resources */ = {isa = PBXBuildFile; fileRef = 6134207D18C6ABA4003D7C9E /* theball.png */; };
 		6134208818C6ABA4003D7C9E /* thirtypercentwhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 6134207E18C6ABA4003D7C9E /* thirtypercentwhite.png */; };
 		6134208E18C6ABD4003D7C9E /* MiniGameNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */; };
+		6136A02018EC9F6C00B9267F /* NKTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6136A01F18EC9F6C00B9267F /* NKTypes.cpp */; };
 		6160991118E247450004A938 /* MiniGameScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6160991018E247450004A938 /* MiniGameScene.mm */; };
 		616BB2D818E39C3F00A680D3 /* MenuScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 616BB2D718E39C3F00A680D3 /* MenuScene.mm */; };
 		616BB2DD18E39C4600A680D3 /* MenuNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 616BB2DB18E39C4600A680D3 /* MenuNode.mm */; };
@@ -423,6 +424,8 @@
 		6134208918C6ABB3003D7C9E /* MiniGames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniGames.h; sourceTree = "<group>"; };
 		6134208C18C6ABD4003D7C9E /* MiniGameNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MiniGameNode.h; path = mini_games/MiniGameNode.h; sourceTree = SOURCE_ROOT; };
 		6134208D18C6ABD4003D7C9E /* MiniGameNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MiniGameNode.mm; path = mini_games/MiniGameNode.mm; sourceTree = SOURCE_ROOT; };
+		6136A01F18EC9F6C00B9267F /* NKTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NKTypes.cpp; sourceTree = "<group>"; };
+		6136A02118EC9F7C00B9267F /* NKTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NKTypes.h; sourceTree = "<group>"; };
 		6160990F18E247450004A938 /* MiniGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniGameScene.h; sourceTree = "<group>"; };
 		6160991018E247450004A938 /* MiniGameScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MiniGameScene.mm; sourceTree = "<group>"; };
 		616BB2D618E39C3F00A680D3 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuScene.h; path = ../MenuScene.h; sourceTree = "<group>"; };
@@ -1185,8 +1188,10 @@
 		61D0173218D7CD4C0085D7F9 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				61E6BC3018ECBEEF00A6F923 /* Native */,
 				61C0E1E918EA1B2A00F5343A /* WavefrontOBJ */,
 				61D0174818D7CD4C0085D7F9 /* ofxNodeKitten.h */,
+				61D0173918D7CD4C0085D7F9 /* NKpch.h */,
 				61F9C4EE18D7D3DB005F849D /* NKCoreTextNode.h */,
 				61F9C4EF18D7D3DB005F849D /* NKCoreTextNode.mm */,
 				61D0173318D7CD4C0085D7F9 /* NKLabelNode.h */,
@@ -1197,7 +1202,6 @@
 				61D0173818D7CD4C0085D7F9 /* NKNodeAnimationHandler.mm */,
 				6124554918D91866003FF53D /* NKEmitterNode.h */,
 				6124554A18D91866003FF53D /* NKEmitterNode.mm */,
-				61D0173918D7CD4C0085D7F9 /* NKpch.h */,
 				61D0173A18D7CD4C0085D7F9 /* NKPrimitiveNode.h */,
 				61D0173B18D7CD4C0085D7F9 /* NKPrimitiveNode.mm */,
 				61D0173C18D7CD4C0085D7F9 /* NKSceneNode.h */,
@@ -1212,16 +1216,6 @@
 				616BB31A18E4CFDE00A680D3 /* NKTextureManager.m */,
 				61D0174418D7CD4C0085D7F9 /* NKTexture.h */,
 				61D0174518D7CD4C0085D7F9 /* NKTexture.mm */,
-				6181275118E0EE35003B72F8 /* NKMesh.h */,
-				6181275218E0EE35003B72F8 /* NKMesh.mm */,
-				61C0E1E418EA102900F5343A /* NKMeshNode.h */,
-				61C0E1E518EA102900F5343A /* NKMeshNode.mm */,
-				61D0174618D7CD4C0085D7F9 /* NKViewController.h */,
-				61D0174718D7CD4C0085D7F9 /* NKViewController.mm */,
-				6188D77118EB90F6003D0BB7 /* NKView.h */,
-				6188D77218EB90F6003D0BB7 /* NKView.mm */,
-				6188D77418EB913C003D0BB7 /* NKCamera.h */,
-				6188D77518EB913C003D0BB7 /* NKCamera.mm */,
 				61D0174918D7CD4C0085D7F9 /* shaderClasses */,
 			);
 			path = src;
@@ -1266,6 +1260,25 @@
 				61DF2E4C18E653E40075E8A0 /* tile_vertical.png */,
 			);
 			path = TILE_HIGHLIGHT;
+			sourceTree = "<group>";
+		};
+		61E6BC3018ECBEEF00A6F923 /* Native */ = {
+			isa = PBXGroup;
+			children = (
+				6136A02118EC9F7C00B9267F /* NKTypes.h */,
+				6136A01F18EC9F6C00B9267F /* NKTypes.cpp */,
+				6181275118E0EE35003B72F8 /* NKMesh.h */,
+				6181275218E0EE35003B72F8 /* NKMesh.mm */,
+				61C0E1E418EA102900F5343A /* NKMeshNode.h */,
+				61C0E1E518EA102900F5343A /* NKMeshNode.mm */,
+				61D0174618D7CD4C0085D7F9 /* NKViewController.h */,
+				61D0174718D7CD4C0085D7F9 /* NKViewController.mm */,
+				6188D77118EB90F6003D0BB7 /* NKView.h */,
+				6188D77218EB90F6003D0BB7 /* NKView.mm */,
+				6188D77418EB913C003D0BB7 /* NKCamera.h */,
+				6188D77518EB913C003D0BB7 /* NKCamera.mm */,
+			);
+			name = Native;
 			sourceTree = "<group>";
 		};
 		BB16E9930F2B1E5900518274 /* libs */ = {
@@ -1644,6 +1657,7 @@
 				6102DCFE18E24EAE00AB39D1 /* Player.m in Sources */,
 				617BDD0A18D9298E005EC4B1 /* AlertSprite.mm in Sources */,
 				61B28A0218D8FB8500102278 /* adler32.c in Sources */,
+				6136A02018EC9F6C00B9267F /* NKTypes.cpp in Sources */,
 				61B28A0E18D8FB8500102278 /* trees.c in Sources */,
 				E4D8936E11527B74007E1F53 /* main.mm in Sources */,
 				61D0176918D7CD4C0085D7F9 /* NKPrimitiveNode.mm in Sources */,

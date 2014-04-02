@@ -65,21 +65,29 @@
 -(void)cellWasSelected:(NKScrollNode *)cell {
     NSLog(@"%@ was selected", cell.name);
     
+    NKSceneNode* newScene;
+    
     if ([cell.name isEqualToString:@"ROBBY"]) {
-        MiniGameScene* newScene = [[MiniGameScene alloc]initWithSize:self.size];
-        ((ofApp*)ofGetAppPtr())->scene = newScene;
+        newScene = [[MiniGameScene alloc]initWithSize:self.size];
+
         
     }
     else if ([cell.name isEqualToString:@"ERIC"]) {
-        MenuScene* newScene = [[MenuScene alloc]initWithSize:self.size];
-        ((ofApp*)ofGetAppPtr())->scene = newScene;
+        newScene = [[MenuScene alloc]initWithSize:self.size];
+
         
     }
     else if ([cell.name isEqualToString:@"LEIF"]) {
-        GameScene* newScene = [[GameScene alloc]initWithSize:self.size];
-        ((ofApp*)ofGetAppPtr())->scene = newScene;
-        
+        newScene = [[GameScene alloc]initWithSize:self.size];
+
     }
+    
+#ifdef OF_BACKED
+    ((ofApp*)ofGetAppPtr())->scene = newScene;
+#else
+    self.nkView.scene = newScene;
+#endif
+    
 }
 
 -(void)cellWasDeSelected:(NKScrollNode *)cell {
