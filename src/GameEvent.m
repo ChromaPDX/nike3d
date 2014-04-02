@@ -11,7 +11,7 @@
 
 @implementation GameSequence
 
-+(instancetype) action {
++(instancetype) sequence {
     
     GameSequence *newAction = [[GameSequence alloc]init];
     newAction.GameEvents = [NSMutableArray arrayWithCapacity:12];
@@ -27,10 +27,8 @@
         return nil;
     }
     
-    _wasSuccessful = [decoder decodeBoolForKey:@"wasSuccessful"];
     _boost = [decoder decodeIntForKey:@"boost"];
-    _tag = [decoder decodeIntForKey:@"tag"];
-    
+    _index = [decoder decodeIntForKey:@"index"];
     _GameEvents = [[decoder decodeObjectForKey:@"events"] mutableCopy];
     
     return self;
@@ -38,154 +36,15 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
-    [encoder encodeInt:_tag forKey:@"tag"];
+    [encoder encodeInt:_index forKey:@"index"];
     [encoder encodeInt:_boost forKey:@"boost"];
-    [encoder encodeBool:_wasSuccessful forKey:@"wasSuccessful"];
-    
     [encoder encodeObject:_GameEvents forKey:@"events"];
     
 }
 
--(float)totalModifier {
-    
-    float totalModifier = 0.;
-    
-    if (self.isRunningAction) {
-        
-        for (int i = 0; i < self.GameEvents.count; i++) {
-            GameEvent *e = self.GameEvents[i];
-            if(e.totalModifier != 0){
-                //if(e.success < e.totalModifier) return 0; // modifiers within one event bring chance of success below 0
-                totalModifier += e.totalModifier; // cumulatively reduce chance of success
-            }
-            
-            
-        }
-        
-    }
-    
-    else {
-        totalModifier = [self.GameEvents.lastObject totalModifier];
-    }
-    
-    _totalModifier = totalModifier;
-
-    return _totalModifier;
-    
-}
-
--(float)totalSucess {
-    
-    float totalSuccess = 1.;
-    
-    if (self.isRunningAction) {
-        
-        
-        for (int i = 0; i < self.GameEvents.count; i++) {
-            GameEvent *e = self.GameEvents[i];
-            if(e.totalModifier != 0){
-                //if(e.success < e.totalModifier) return 0; // modifiers within one event bring chance of success below 0
-                totalSuccess *= e.success; // cumulatively reduce chance of success
-            }
-            
-            
-        }
-        
-    }
-    
-    else {
-        totalSuccess = [self.GameEvents.lastObject success];
-    }
-    
-   
-    totalSuccess += (_boost * .1);
-    
-    if (totalSuccess > 1.) {
-        totalSuccess = 1.;
-    }
-    
-    else if (totalSuccess < 0.){
-        totalSuccess = 0;
-    }
-    
-    _totalSucess = totalSuccess;
-    
-    return totalSuccess;
-}
-
--(int)totalCost {
-    
-    int totalCost = 0;
-    
-    if (self.isRunningAction) {
-        
-        for (int i = 0; i < self.GameEvents.count; i++) {
-            GameEvent *e = self.GameEvents[i];
-            totalCost += e.actionCost;
-        }
-        
-    }
-    
-    else {
-        totalCost = [self.GameEvents.lastObject actionCost];
-    }
-    
-    totalCost += _boost;
-    
-    _totalCost = totalCost;
-    
-    return _totalCost;
-    
-}
-
--(Player*)playerPerformingAction {
-    if (_GameEvents.count) {
-        
-        if (![_GameEvents[0] playerPerformingAction]) {
-            NSLog(@"action.m could not infer player from events");
-        }
-        return [_GameEvents[0] playerPerformingAction];
-        
-    }
-    else {
-        NSLog(@"no player yet on this aciton");
-        return nil;
-    }
-}
-
--(Card*)playerReceivingAction {
-    if (_GameEvents.count) {
-        
-        if (![_GameEvents.lastObject playerPerformingAction]) {
-            NSLog(@"action.m could not infer player from events");
-        }
-        return [_GameEvents.lastObject playerPerformingAction];
-    }
-    else {
-        NSLog(@"no player yet on this aciton");
-        return nil;
-    }
-}
-
--(BOOL)isRunningAction {
-    return [[_GameEvents lastObject] isRunningEvent];
-}
-
--(EventType)type {
-    
-return [(GameEvent*)[_GameEvents lastObject] type];
-    
-}
-
--(NSString*)nameForAction{
-
-    return [[_GameEvents lastObject] nameForAction];
-    
-}
-
--(Manager*)manager {
-    
-    return [[_GameEvents lastObject] manager];
+-(void)addEvent:(GameEvent*)event {
+    [_GameEvents addObject:event];
+    event.parent = self;
     
 }
 
@@ -193,9 +52,8 @@ return [(GameEvent*)[_GameEvents lastObject] type];
 
 @implementation GameEvent
 
-+(instancetype) eventForAction:(GameSequence*)action{
++(instancetype) event {
     GameEvent *newEvent = [[GameEvent alloc]init];
-    newEvent.parent = action;
     newEvent.seed = [newEvent newSeed];
     
     return newEvent;
@@ -225,22 +83,10 @@ return [(GameEvent*)[_GameEvents lastObject] type];
     
 }
 
-//-(BOOL)isDeployEvent {
-//    
-//    if (_type == kDeployEvent || _type == kSpawnPlayerEvent || _type == kSpawnKeeperEvent) {
-//        return 1;
-//    }
-//    
-//    else return 0;
-//}
 
+-(NSString*)name{
 
-
--(NSString*)nameForAction{
-    
-    EventType actionType = [self type];
-    
-    switch (actionType) {
+    switch (_type) {
             case kNullAction: return @"NULL";
             // Player Actions
             case kEventAddPlayer: return @"ADD PLAYER";
@@ -275,7 +121,8 @@ return [(GameEvent*)[_GameEvents lastObject] type];
             case kEventMoveCamera: return @"MOVING CAMERA";
             case kEventMoveBoard: return @"MOVING CAMERA";
             
-            
+            // Sequence
+        case kEventSequence: return @"EVENT SEQUENCE";
          
     }
     
@@ -285,13 +132,13 @@ return [(GameEvent*)[_GameEvents lastObject] type];
 
 -(void)setCard:(Card *)card {
     _deck = card.deck;
-    _playerPerformingAction = card.deck.player;
-    self.manager = _playerPerformingAction.manager;
+    _playerPerforming = card.deck.player;
+    self.manager = _playerPerforming.manager;
 }
 
--(void)setPlayerPerformingAction:(Player *)playerPerformingAction {
-    _playerPerformingAction = playerPerformingAction;
-    self.manager = playerPerformingAction.manager;
+-(void)setPlayerPerforming:(Player *)playerPerforming {
+    _playerPerforming = playerPerforming;
+    self.manager = playerPerforming.manager;
 }
 
 -(void)setLocation:(BoardLocation *)location {
@@ -322,11 +169,11 @@ return [(GameEvent*)[_GameEvents lastObject] type];
         return nil;
     }
     
-
+    _wasSuccessful = [decoder decodeBoolForKey:@"wasSuccessful"];
     _type = [decoder decodeIntForKey:@"type"];
     _teamSide = [decoder decodeIntForKey:@"teamSide"];
     _seed = [decoder decodeIntForKey:@"seed"];
-    _actionCost = [decoder decodeIntForKey:@"actionCost"];
+    _cost = [decoder decodeIntForKey:@"cost"];
     
     int x = [decoder decodeIntForKey:@"x"];
     int y = [decoder decodeIntForKey:@"y"];
@@ -353,9 +200,10 @@ return [(GameEvent*)[_GameEvents lastObject] type];
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
+    [encoder encodeBool:_wasSuccessful forKey:@"wasSuccessful"];
     [encoder encodeInt:_teamSide forKey:@"teamSide"];
     [encoder encodeInt:_type forKey:@"type"];
-    [encoder encodeInt:_actionCost forKey:@"actionCost"];
+    [encoder encodeInt:_cost forKey:@"cost"];
     [encoder encodeInt:_seed forKey:@"seed"];
     
     [encoder encodeInt:_location.x forKey:@"x"];

@@ -202,7 +202,7 @@
 		61B289DB18D8FAEB00102278 /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B289D618D8FAEB00102278 /* Card.m */; };
 		61B289DC18D8FAEB00102278 /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B289D818D8FAEB00102278 /* Deck.m */; };
 		61B289DD18D8FAEB00102278 /* Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B289DA18D8FAEB00102278 /* Manager.m */; };
-		61B289E218D8FB2100102278 /* Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B289E118D8FB2100102278 /* Actions.m */; };
+		61B289E218D8FB2100102278 /* GameEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B289E118D8FB2100102278 /* GameEvent.m */; };
 		61B28A0118D8FB8500102278 /* NSData+CocoaDevUsersAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B289E518D8FB8500102278 /* NSData+CocoaDevUsersAdditions.m */; };
 		61B28A0218D8FB8500102278 /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = 61B289E718D8FB8500102278 /* adler32.c */; };
 		61B28A0318D8FB8500102278 /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 61B289E818D8FB8500102278 /* compress.c */; };
@@ -539,8 +539,8 @@
 		61B289DA18D8FAEB00102278 /* Manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Manager.m; sourceTree = "<group>"; };
 		61B289DE18D8FAF900102278 /* CardTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardTypes.h; sourceTree = "<group>"; };
 		61B289DF18D8FB1100102278 /* ModelHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelHeaders.h; sourceTree = "<group>"; };
-		61B289E018D8FB2100102278 /* Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actions.h; sourceTree = "<group>"; };
-		61B289E118D8FB2100102278 /* Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Actions.m; sourceTree = "<group>"; };
+		61B289E018D8FB2100102278 /* GameEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameEvent.h; sourceTree = "<group>"; };
+		61B289E118D8FB2100102278 /* GameEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameEvent.m; sourceTree = "<group>"; };
 		61B289E418D8FB8500102278 /* NSData+CocoaDevUsersAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CocoaDevUsersAdditions.h"; sourceTree = "<group>"; };
 		61B289E518D8FB8500102278 /* NSData+CocoaDevUsersAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+CocoaDevUsersAdditions.m"; sourceTree = "<group>"; };
 		61B289E718D8FB8500102278 /* adler32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = adler32.c; sourceTree = "<group>"; };
@@ -787,8 +787,8 @@
 				61B289D218D8FAC700102278 /* Game.h */,
 				61B289D318D8FAC700102278 /* Game.m */,
 				618E1D3618C0219E0038AD46 /* GlobalTypes.h */,
-				61B289E018D8FB2100102278 /* Actions.h */,
-				61B289E118D8FB2100102278 /* Actions.m */,
+				61B289E018D8FB2100102278 /* GameEvent.h */,
+				61B289E118D8FB2100102278 /* GameEvent.m */,
 				61B289DF18D8FB1100102278 /* ModelHeaders.h */,
 				61B289DE18D8FAF900102278 /* CardTypes.h */,
 				61B289D518D8FAEB00102278 /* Card.h */,
@@ -1644,7 +1644,7 @@
 				6124555118D91EB4003FF53D /* CardSprite.mm in Sources */,
 				61D0176618D7CD4C0085D7F9 /* NKLabelNode.mm in Sources */,
 				D5BC8C9318E0F8CE005E2F52 /* MiniCups.mm in Sources */,
-				61B289E218D8FB2100102278 /* Actions.m in Sources */,
+				61B289E218D8FB2100102278 /* GameEvent.m in Sources */,
 				61C0E1FF18EA1B2A00F5343A /* OpenGLTexture3D.m in Sources */,
 				61B28A0818D8FB8500102278 /* gzread.c in Sources */,
 				61B28A0318D8FB8500102278 /* compress.c in Sources */,

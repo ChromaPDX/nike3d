@@ -16,37 +16,25 @@
 
 @interface GameSequence : NSObject <NSCoding>
 
-+(instancetype) action;
++(instancetype) sequence;
 
 @property (nonatomic, strong) NSMutableArray *GameEvents;
 
-@property (nonatomic) float totalModifier;
-@property (nonatomic) float totalSucess;
-@property (nonatomic) int totalCost;
 @property (nonatomic) int boost;
-@property (nonatomic) int tag;
-@property (nonatomic) BOOL wasSuccessful;
+@property (nonatomic) int index;
 
 @property (nonatomic) float roll;
-
--(EventType)type;
--(Player*)playerPerformingAction;
--(Player*)playerReceivingAction;
-
--(BOOL)isRunningAction;
--(Manager*)manager;
--(NSString*)nameForAction;
 
 @end
 
 @interface GameEvent : NSObject <NSCoding>
 
 // NON-PERSISTENT
-@property (nonatomic, weak) Player *playerPerformingAction;
-@property (nonatomic, weak) Player *playerReceivingAction;
 
-@property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Manager *manager;
+@property (nonatomic, weak) Player *playerPerforming;
+@property (nonatomic, weak) Player *playerReceiving;
+@property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Card *card;
 
 @property (nonatomic, weak) GameSequence *parent;
@@ -54,19 +42,19 @@
 @property (nonatomic) float success;
 
 //PERSISTENT
+@property (nonatomic) bool wasSuccessful;
 @property (nonatomic) EventType type;
 @property (nonatomic) int teamSide;
-@property (nonatomic) int actionSlot;
-@property (nonatomic) int actionCost;
+@property (nonatomic) int index;
+@property (nonatomic) int cost;
 @property (nonatomic, strong) BoardLocation *location;
 @property (nonatomic, strong) BoardLocation *startingLocation;
 @property (nonatomic, strong) BoardLocation *scatter;
 @property (nonatomic) NSInteger seed;
 //@property (nonatomic) BOOL wasSuccessful;
 
-+(instancetype) eventForAction:(GameSequence*)action;
--(NSString*)nameForAction;
++(instancetype) event;
+-(NSString*)name;
 -(BOOL)isRunningEvent;
--(BOOL)isDeployEvent;
 
 @end

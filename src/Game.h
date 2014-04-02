@@ -23,7 +23,7 @@
 @class CardSprite;
 @class BallSprite;
 @class FuelBar;
-@class ActionWindow;
+@class SequenceWindow;
 @class GameEvent;
 @class GameSequence;
 @class Manager;
@@ -36,10 +36,10 @@
 typedef enum RTMessageType {
     RTMessageNone,
     RTMessagePlayer,
-    RTMessageShowAction,
-    RTMessageCancelAction,
+    RTMessageShowSequence,
+    RTMessageCancelSequence,
     RTMessageSortCards,
-    RTMessagePerformAction,
+    RTMessagePerformSequence,
     RTMessageCheckTurn,
     RTMessageBeginCardTouch,
     RTMessageMoveCardTouch
@@ -67,7 +67,7 @@ typedef enum RTMessageType {
 -(void)receiveRTPacket;
 
 -(void)addNetworkUIForEvent:(GameEvent*)event;
--(void)cleanUpUIForAction:(GameSequence*)action;
+-(void)cleanUpUIForSequence:(GameSequence*)sequence;
 
 -(void)opponentBeganCardTouch:(Card*)card atPoint:(CGPoint)point;
 -(void)opponentMovedCardTouch:(Card*)card atPoint:(CGPoint)point;
@@ -92,12 +92,12 @@ typedef enum RTMessageType {
 -(void)removeBlurWithCompletionBlock:(void (^)())block;
 
 // ANIMATION
--(void)finishActionsWithCompletionBlock:(void (^)())block;
+-(void)finishSequencesWithCompletionBlock:(void (^)())block;
 -(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block;
 -(void)rollEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
--(void)refreshActionWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block;
--(void)refreshActionPoints;
+-(void)refreshSequenceWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block;
+-(void)refreshSequencePoints;
 -(void)presentTrophyWithCompletionBlock:(void (^)())block;
 -(void)fadeOutHUD;
 
@@ -118,7 +118,7 @@ typedef enum RTMessageType {
     BOOL resumed;
     BOOL rtIsActive;
     BOOL singlePlayer;
-    int actionIndex;
+    int sequenceIndex;
     BOOL readingMatchData;
     dispatch_queue_t eventQueue;
 }
@@ -139,11 +139,11 @@ typedef enum RTMessageType {
 // GK TURN BASED MATCH
 @property (nonatomic, strong) GKTurnBasedMatch *match;
 @property (nonatomic, strong) GKMatch *rtmatch;
-// PERSISTENT
+// PERSISTENTa
 @property (nonatomic, strong) Manager *me;
 @property (nonatomic, strong) Manager *opponent;
 @property (nonatomic, strong) NSMutableArray *history;
-@property (nonatomic, strong) NSMutableArray *thisTurnActions;
+@property (nonatomic, strong) NSMutableArray *thisTurnSequences;
 @property (nonatomic, strong) NSMutableDictionary *matchInfo;
 // END PERSISTENT
 @property (nonatomic, strong) BoardLocation *score;
@@ -151,7 +151,7 @@ typedef enum RTMessageType {
 @property (nonatomic, weak)   Manager *scoreBoardManager;
 
 @property (nonatomic, strong) NSMutableArray *turnHeap;
-@property (nonatomic, strong) NSMutableArray *actionHeap;
+@property (nonatomic, strong) NSMutableArray *sequenceHeap;
 @property (nonatomic, strong) NSMutableArray *eventHeap;
 
 @property (nonatomic, strong) NSArray *playerNames;
@@ -174,8 +174,8 @@ typedef enum RTMessageType {
 -(BOOL)canDraw;
 
 // RT PROTOCOL
--(void)fetchThisTurnActions;
--(void)sendAction:(GameSequence*)action perform:(BOOL)perform;
+-(void)fetchThisTurnSequences;
+-(void)sendSequence:(GameSequence*)sequence perform:(BOOL)perform;
 -(void)sendRTPacketWithCard:(Card*)c point:(CGPoint)touch began:(BOOL)began;
 -(void)sendRTPacketWithType:(RTMessageType)type point:(BoardLocation*)location;
 -(void)receiveRTPacket:(NSData*)packet;
@@ -193,14 +193,14 @@ typedef enum RTMessageType {
 -(NSSet*)temporaryEnchantments;
 
 -(GameEvent*)canPlayCard:(Card*)card atLocation:(BoardLocation*)location;
--(GameEvent*)requestPlayerActionAtLocation:(BoardLocation*)location;
--(GameEvent*)addPlayerEventToAction:(GameSequence*)action from:(BoardLocation *)startLocation to:(BoardLocation*)location withType:(EventType)type;
--(GameEvent*)addGeneralEventToAction:(GameSequence*)action forManager:(Manager*)m withType:(EventType)type;
+-(GameEvent*)requestPlayerSequenceAtLocation:(BoardLocation*)location;
+-(GameEvent*)addPlayerEventToSequence:(GameSequence*)sequence from:(BoardLocation *)startLocation to:(BoardLocation*)location withType:(EventType)type;
+-(GameEvent*)addGeneralEventToSequence:(GameSequence*)sequence forManager:(Manager*)m withType:(EventType)type;
 -(GameEvent*)addEventToSequence:(GameSequence*)sequence fromCardOrPlayer:(Card*)card toLocation:(BoardLocation*)location withType:(EventType)type;
 
 -(Player*)playerAtLocation:(BoardLocation*)location;
 
--(BOOL)requestDrawAction;
+-(BOOL)requestDrawSequence;
 
 -(Manager*)opponentForManager:(Manager*)m;
 -(Manager*)managerForTeamSide:(int)teamSide;
@@ -208,9 +208,9 @@ typedef enum RTMessageType {
 -(NSArray*)allBoardLocations;
 
 -(BOOL)validatePlayerMove:(Card*)player;
--(BOOL)canPerformCurrentAction;
--(BOOL)shouldPerformCurrentAction;
--(BOOL)boostAction;
+-(BOOL)canPerformCurrentSequence;
+-(BOOL)shouldPerformCurrentSequence;
+-(BOOL)boostSequence;
 
 -(Abilities*)playerAbilitiesWithMod:(Card*)player;
 

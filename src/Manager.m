@@ -143,7 +143,7 @@
             [obstacles addObject:p.location];
         }
     }
-    for (Player* p in [_opponent.players allCards]) {
+    for (Player* p in [self.players allCards]) {
         // add all players that aren't on the ball to the obstacles
         if(!(p.location.x == ballLocation.x && p.location.y == ballLocation.y)){
             [obstacles addObject:p.location];
@@ -188,7 +188,7 @@
             [obstacles addObject:p.location];
         }
     }
-    for (Player* p in [_opponent.players allCards]) {
+    for (Player* p in [self.opponent.players allCards]) {
         // add all players that aren't on the ball to the obstacles
         if(!(p.location.x == goalLocation.x && p.location.y == goalLocation.y)){
             [obstacles addObject:p.location];
@@ -223,6 +223,16 @@
     return sortedPlayers;
 
     
+}
+
+-(Manager*)opponent{
+
+    if ([_game.me isEqual:self]){
+        return _game.opponent;
+    }
+    else {
+        return _game.me;
+    }
 }
 
 -(BoardLocation*)goal {
