@@ -44,7 +44,6 @@
 
 // CONVENIENCE / NORMALIZATION
 
-@property (nonatomic, weak) Manager *opponent;
 @property (nonatomic, weak) Game *game;
 
 -(bool)hasPossesion;
@@ -52,7 +51,7 @@
 -(Card*)cardInHandAtlocation:(BoardLocation*)location;
 
 -(BoardLocation*)goal;
-
+-(Manager*)opponent;
 -(NSArray*)playersClosestToBall;
 -(NSArray*)playersClosestToGoal;
 

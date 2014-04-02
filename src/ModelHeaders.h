@@ -17,7 +17,7 @@
 #import "Card.h"
 #import "Player.h"
 #import "BoardLocation.h"
-#import "Actions.h"
+#import "GameEvent.h"
 #import "NSData+CocoaDevUsersAdditions.h"
 #import "AStar.h"
 

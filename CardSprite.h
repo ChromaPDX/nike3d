@@ -12,7 +12,7 @@
 
 @class Card;
 @class GameScene;
-@class ActionWindow;
+@class UXWindow;
 
 @interface CardSprite : NKSpriteNode{
 
@@ -37,7 +37,7 @@
 
 @property (nonatomic, weak) Card* model;
 @property (nonatomic, weak) GameScene *delegate;
-@property (nonatomic, weak) ActionWindow *window;
+@property (nonatomic, weak) UXWindow *window;
 @property (nonatomic) CGPoint origin;
 @property (nonatomic) int order;
 

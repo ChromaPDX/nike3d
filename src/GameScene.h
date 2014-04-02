@@ -13,7 +13,7 @@
 @class GameBoardNode;
 @class BoardTile;
 @class MiniGameNode;
-@class ActionWindow;
+@class UXWindow;
 @class Card;
 @class Game;
 
@@ -39,7 +39,7 @@
 @property (nonatomic,strong) NKScrollNode* boardScroll;
 @property (nonatomic, strong) GameBoardNode *gameBoardNode;
 
-@property (nonatomic, strong) ActionWindow *actionWindow;
+@property (nonatomic, strong) UXWindow *uxWindow;
 
 @property (nonatomic, weak) NKNode *followNode;
 @property (nonatomic, strong) NKSpriteNode *RTSprite;

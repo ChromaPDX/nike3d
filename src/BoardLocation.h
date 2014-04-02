@@ -47,7 +47,7 @@ typedef NS_OPTIONS(UInt16, BorderMask) {
 -(id)initWithX:(NSInteger)x Y:(NSInteger)y;
 -(CGPoint)CGPoint;
 -(BOOL)isEqual:(BoardLocation*)point;
-
+-(int)isAdjacentTo:(BoardLocation*)b;
 -(void)setBorderShapeInContext:(NSArray*)arrayOfLocations;
 
 @end
