@@ -103,9 +103,6 @@
     [_me setTeamSide:1];
     [_opponent setTeamSide:0];
     
-    _me.opponent = _opponent;
-    _opponent.opponent = _me;
-    
     _rtmatchid = arc4random();
     NSNumber *uid = [NSNumber numberWithUnsignedInteger:_rtmatchid];
     
@@ -133,19 +130,19 @@
     NSLog(@"gameboard setup");
     
     _history = [NSMutableArray array];
-    _thisTurnActions = [NSMutableArray array];
+    _thisTurnSequences = [NSMutableArray array];
     _players = [NSMutableDictionary dictionary];
     
     [self setupNewPlayers];
     
     NSLog(@"added new players");
     
-    [self addStartTurnEventsToAction:_currentEventSequence];
+    [self addStartTurnEventsToSequence:_currentEventSequence];
     [self refreshGameBoard];
     
     NSLog(@"running new game action");
     
-    [self performAction:_currentEventSequence record:YES animate:YES];
+    [self performSequence:_currentEventSequence record:YES animate:YES];
     
     
 }
@@ -1589,17 +1586,10 @@
                     
                     //
                     if(_aiGameMode == 0){
-                        if (action.manager.teamSide == 1) {
-                            [self endActionForEricWithManager:action.manager.opponent];
-                        }
+
                     }
                     else if(_aiGameMode == 1){
-                        if (action.manager.teamSide == 1) {
-                            [self endActionForEricWithManager:action.manager.opponent];
-                        }
-                        else{
-                            [self endActionForEricWithManager:action.manager];
-                        }
+                            [self endSequenceForEricWithManager:sequence.manager.opponent];
                     }
 
                   

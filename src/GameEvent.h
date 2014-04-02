@@ -18,6 +18,7 @@
 
 +(instancetype) sequence;
 
+-(Manager*)manager;
 @property (nonatomic, strong) NSMutableArray *GameEvents;
 
 @property (nonatomic) int boost;

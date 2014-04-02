@@ -48,6 +48,10 @@
     
 }
 
+-(Manager*)manager{
+    return [_GameEvents.lastObject manager];
+}
+
 @end
 
 @implementation GameEvent
