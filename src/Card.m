@@ -144,8 +144,75 @@
 
 }
 
+#pragma mark - INTERROGATION
+
+-(Game*)game {
+    return self.deck.player.manager.game;
+}
+
+-(NSArray*)rangeMask {
+    
+    BoardLocation *center = [_deck.player.location copy];
+    
+    NSMutableArray *obstacles = [[self.game allBoardLocations] mutableCopy];
+    
+    NSLog(@"obstacles for %d,%d, range %d", center.x, center.y, _range);
+    for (int x = center.x - _range; x<=center.x + _range; x++){
+        
+        if (x >= 0 && x < 7) {
+            
+            for (int y = center.y - _range; y<=center.y + _range; y++){
+                
+                if (y >= 0 && y < 10) {
+                    
+                    [obstacles removeObject:[BoardLocation pX:x Y:y]];
+                    
+                }
+            }
+            
+        }
+        
+    }
+    
+    return obstacles;
+    
+}
 
 
+-(NSArray*)selectionPath {
+    NSMutableArray* obstacles = [[self rangeMask] mutableCopy];
+
+    // GET BOARD OBSTACLES
+    
+    if (self.deckType == DeckTypeMove) {
+        for (Player* p in [self.game.players allKeys]) {
+            [obstacles addObject:p.location];
+        }
+    }
+    else if (self.deckType == DeckTypeKick) {
+        for (Player* p in self.deck.player.manager.opponent.players.inGame) {
+            [obstacles addObject:p.location];
+        }
+    }
+    
+    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
+    NSArray *path;
+    
+    // CALCULATE NEIGHBORHOOD
+    
+    if (self.deckType == DeckTypeMove) {
+        path = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
+    }
+    if (self.deckType == DeckTypeKick) {
+        path = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRook walkDistance:_range];
+    }
+    
+    return path;
+    
+}
+
+
+#pragma mark - ENCODING
 
 //-(NSArray*)aArray {
 //    

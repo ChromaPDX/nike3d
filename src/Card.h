@@ -30,7 +30,7 @@
 @class BoardLocation;
 @class Manager;
 @class Abilities;
-
+@class Game;
 
 @interface Card : NSObject <NSCopying, NSCoding>
 
@@ -56,12 +56,13 @@
 //@property (nonatomic,strong) Abilities *nearOpponentModifiers;
 //@property (nonatomic,strong) Abilities *opponentModifiers;
 
+// INTEROGATION
 
 -(BOOL)isTemporary;
-
 -(EventType)discardAfterEventType;
-
 -(NSString*) descriptionForCard;
+-(Game*)game;
+-(NSArray*)selectionPath;
 
 @property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Player *enchantee;

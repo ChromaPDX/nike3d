@@ -2787,63 +2787,15 @@
 
 #pragma mark CARDS
 
--(NSArray*)wallsForCard:(Card*)c {
-    
-    BoardLocation *center = [c.deck.player.location copy];
-    
-    NSMutableArray *obstacles = [[self allBoardLocations] mutableCopy];
-    
-    int range = c.range;
-    NSLog(@"obstacles for %d,%d, range %d", center.x, center.y, c.range);
-    for (int x = center.x - range; x<=center.x + range; x++){
-        
-        if (x >= 0 && x < 7) {
-            
-            for (int y = center.y - range; y<=center.y + range; y++){
-                
-                if (y >= 0 && y < 10) {
-                    
-                    [obstacles removeObject:[BoardLocation pX:x Y:y]];
-                    
-                }
-            }
-            
-        }
-        
-    }
-    
-    return obstacles;
-    
-}
 
--(NSArray*)selectionPathForCard:(Card*)card {
-    NSMutableArray* obstacles = [[self wallsForCard:card] mutableCopy];
-    
-    for (Player* p in [_players allKeys]) {
-        [obstacles addObject:p.location];
-    }
-    
-    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
-    
-    NSArray *path;
-    
-    if (card.deckType == DeckTypeMove) {
-        path = [aStar cellsAccesibleFrom:card.deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:card.range];
-    }
-    if (card.deckType == DeckTypeKick) {
-        path = [aStar cellsAccesibleFrom:card.deck.player.location NeighborhoodType:NeighborhoodTypeRook walkDistance:card.range];
-    }
-    
-    return path;
 
-}
 
 -(void)setSelectedCard:(Card *)selectedCard {
     
     if (_myTurn) {
         
         if (!_animating) {
-            [_gameScene showCardPath:[self selectionPathForCard:selectedCard]];
+            [_gameScene showCardPath:[selectedCard selectionPath]];
         }
     }
     

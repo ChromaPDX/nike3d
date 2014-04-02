@@ -205,6 +205,7 @@ typedef enum RTMessageType {
 -(Manager*)opponentForManager:(Manager*)m;
 -(Manager*)managerForTeamSide:(int)teamSide;
 
+-(NSArray*)allBoardLocations;
 
 -(BOOL)validatePlayerMove:(Card*)player;
 -(BOOL)canPerformCurrentAction;
