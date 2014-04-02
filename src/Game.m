@@ -2176,6 +2176,20 @@
                     _animating = NO;
                     
                     //
+                    if(_aiGameMode == 0){
+                        if (action.manager.teamSide == 1) {
+                            [self endActionForEricWithManager:action.manager.opponent];
+                        }
+                    }
+                    else if(_aiGameMode == 1){
+                        if (action.manager.teamSide == 1) {
+                            [self endActionForEricWithManager:action.manager.opponent];
+                        }
+                        else{
+                            [self endActionForEricWithManager:action.manager];
+                        }
+                    }
+
                   
                     [self saveTurnWithCompletionBlock:^{
                         
