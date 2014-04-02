@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Chroma Developer. All rights reserved.
 //
 
+//#define OF_BACKED
+
 #ifndef NSFW_bench_GlobalTypes_h
 #define NSFW_bench_GlobalTypes_h
 

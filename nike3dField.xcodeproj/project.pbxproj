@@ -189,6 +189,10 @@
 		617BDD0A18D9298E005EC4B1 /* AlertSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0918D9298E005EC4B1 /* AlertSprite.mm */; };
 		6181275318E0EE35003B72F8 /* NKMesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6181275218E0EE35003B72F8 /* NKMesh.mm */; };
 		6183B7D518D90B1F002D426F /* touch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6183B7D418D90B1F002D426F /* touch.wav */; };
+		6188D77318EB90F6003D0BB7 /* NKView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6188D77218EB90F6003D0BB7 /* NKView.mm */; };
+		6188D77618EB913C003D0BB7 /* NKCamera.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6188D77518EB913C003D0BB7 /* NKCamera.mm */; };
+		6188D77918EB951B003D0BB7 /* NKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6188D77818EB951B003D0BB7 /* NKAppDelegate.m */; };
+		6188D77C18EB95C8003D0BB7 /* Iphone_Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6188D77B18EB95C8003D0BB7 /* Iphone_Storyboard.storyboard */; };
 		618E1D3218C01E620038AD46 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 618E1D3118C01E620038AD46 /* CoreMotion.framework */; };
 		618E1D3518C0217F0038AD46 /* BoardLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 618E1D3418C0217F0038AD46 /* BoardLocation.m */; };
 		618E1D3918C0231C0038AD46 /* GameBoardNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 618E1D3818C0231C0038AD46 /* GameBoardNode.mm */; };
@@ -506,6 +510,13 @@
 		6181275118E0EE35003B72F8 /* NKMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMesh.h; sourceTree = "<group>"; };
 		6181275218E0EE35003B72F8 /* NKMesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKMesh.mm; sourceTree = "<group>"; };
 		6183B7D418D90B1F002D426F /* touch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = touch.wav; sourceTree = "<group>"; };
+		6188D77118EB90F6003D0BB7 /* NKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKView.h; sourceTree = "<group>"; };
+		6188D77218EB90F6003D0BB7 /* NKView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKView.mm; sourceTree = "<group>"; };
+		6188D77418EB913C003D0BB7 /* NKCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCamera.h; sourceTree = "<group>"; };
+		6188D77518EB913C003D0BB7 /* NKCamera.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKCamera.mm; sourceTree = "<group>"; };
+		6188D77718EB951B003D0BB7 /* NKAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKAppDelegate.h; sourceTree = "<group>"; };
+		6188D77818EB951B003D0BB7 /* NKAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKAppDelegate.m; sourceTree = "<group>"; };
+		6188D77B18EB95C8003D0BB7 /* Iphone_Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Iphone_Storyboard.storyboard; sourceTree = "<group>"; };
 		618E1D3118C01E620038AD46 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		618E1D3318C0217F0038AD46 /* BoardLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardLocation.h; sourceTree = "<group>"; };
 		618E1D3418C0217F0038AD46 /* BoardLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardLocation.m; sourceTree = "<group>"; };
@@ -1207,6 +1218,10 @@
 				61C0E1E518EA102900F5343A /* NKMeshNode.mm */,
 				61D0174618D7CD4C0085D7F9 /* NKViewController.h */,
 				61D0174718D7CD4C0085D7F9 /* NKViewController.mm */,
+				6188D77118EB90F6003D0BB7 /* NKView.h */,
+				6188D77218EB90F6003D0BB7 /* NKView.mm */,
+				6188D77418EB913C003D0BB7 /* NKCamera.h */,
+				6188D77518EB913C003D0BB7 /* NKCamera.mm */,
 				61D0174918D7CD4C0085D7F9 /* shaderClasses */,
 			);
 			path = src;
@@ -1308,6 +1323,9 @@
 				6160990F18E247450004A938 /* MiniGameScene.h */,
 				6160991018E247450004A938 /* MiniGameScene.mm */,
 				E4D8936B11527B74007E1F53 /* main.mm */,
+				6188D77718EB951B003D0BB7 /* NKAppDelegate.h */,
+				6188D77818EB951B003D0BB7 /* NKAppDelegate.m */,
+				6188D77B18EB95C8003D0BB7 /* Iphone_Storyboard.storyboard */,
 				616BB2D918E39C4600A680D3 /* menus */,
 				6134207218C6ABA4003D7C9E /* mini_games */,
 				6116FB1E18C54CEA00BBD1CB /* FieldGameModel */,
@@ -1418,6 +1436,7 @@
 				D5F8FABD18E4E76100C764E5 /* success.png in Resources */,
 				E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */,
 				6134208518C6ABA4003D7C9E /* footlong.png in Resources */,
+				6188D77C18EB95C8003D0BB7 /* Iphone_Storyboard.storyboard in Resources */,
 				E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */,
 				6134204E18C6A4B1003D7C9E /* YOUR_TURN_BOX.png in Resources */,
 				6134202B18C6A4B1003D7C9E /* CardPlayerBlue.png in Resources */,
@@ -1607,6 +1626,7 @@
 			files = (
 				6134208618C6ABA4003D7C9E /* MiniMaze.mm in Sources */,
 				618E1D3918C0231C0038AD46 /* GameBoardNode.mm in Sources */,
+				6188D77318EB90F6003D0BB7 /* NKView.mm in Sources */,
 				61C0E20218EA1B2A00F5343A /* OpenGLWaveFrontObject.m in Sources */,
 				6124555118D91EB4003FF53D /* CardSprite.mm in Sources */,
 				61D0176618D7CD4C0085D7F9 /* NKLabelNode.mm in Sources */,
@@ -1641,8 +1661,10 @@
 				61C0E20118EA1B2A00F5343A /* OpenGLWaveFrontMaterial.m in Sources */,
 				618E1D3F18C024200038AD46 /* GameScene.mm in Sources */,
 				61B289D418D8FAC700102278 /* Game.m in Sources */,
+				6188D77618EB913C003D0BB7 /* NKCamera.mm in Sources */,
 				6124555418D92155003FF53D /* ButtonSprite.mm in Sources */,
 				61B28A0618D8FB8500102278 /* gzclose.c in Sources */,
+				6188D77918EB951B003D0BB7 /* NKAppDelegate.m in Sources */,
 				61B28A0718D8FB8500102278 /* gzlib.c in Sources */,
 				618E1D3518C0217F0038AD46 /* BoardLocation.m in Sources */,
 				61B28A1018D8FB8500102278 /* zutil.c in Sources */,
