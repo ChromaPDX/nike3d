@@ -73,12 +73,15 @@
         
     }
     else if ([cell.name isEqualToString:@"ERIC"]) {
-        newScene = [[MenuScene alloc]initWithSize:self.size];
-
+        newScene = [[GameScene alloc]initWithSize:self.size];
+        [[(GameScene*)newScene game] startAIGame];
         
     }
     else if ([cell.name isEqualToString:@"LEIF"]) {
         newScene = [[GameScene alloc]initWithSize:self.size];
+        
+        
+        [[(GameScene*)newScene game] startSinglePlayerGame];
 
     }
     

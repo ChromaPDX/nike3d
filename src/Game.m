@@ -95,7 +95,72 @@
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
     
+    _aiGameMode = 1;
+
     _score = [BoardLocation pX:0 Y:0];
+    
+    [_me setColor:[UIColor colorWithRed:0.0 green:80/255. blue:249/255. alpha:1.0]];
+    [_opponent setColor:[UIColor colorWithRed:1.0 green:40/255. blue:0 alpha:1.0]];
+    
+    [_me setTeamSide:1];
+    [_opponent setTeamSide:0];
+    
+    _me.opponent = _opponent;
+    _opponent.opponent = _me;
+    
+    _rtmatchid = arc4random();
+    NSNumber *uid = [NSNumber numberWithUnsignedInteger:_rtmatchid];
+    
+    
+    singlePlayer = 1;
+    
+    
+    _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
+                                                                 @"current player":@"single player game",
+                                                                 @"rtmatchid":uid,
+                                                                 @"boardLength": [NSNumber numberWithInt:BOARD_LENGTH],
+                                                                 @"singlePlayerMode": [NSNumber numberWithBool:YES]
+                                                                 }];
+    
+    
+    
+    
+    _me.name = @"HUMAN";
+    _opponent.name = @"COMPUTER";
+    
+    self.myTurn = YES;
+    
+    [_gameScene setupGameBoard];
+    
+    NSLog(@"gameboard setup");
+    
+    _history = [NSMutableArray array];
+    _thisTurnActions = [NSMutableArray array];
+    _players = [NSMutableDictionary dictionary];
+    
+    [self setupNewPlayers];
+    
+    NSLog(@"added new players");
+    
+    [self addStartTurnEventsToAction:_currentEventSequence];
+    [self refreshGameBoard];
+    
+    NSLog(@"running new game action");
+    
+    [self performAction:_currentEventSequence record:YES animate:YES];
+    
+    
+}
+
+
+-(void)startAIGame {
+    
+    _me = [[Manager alloc] initWithGame:self];
+    _opponent = [[Manager alloc] initWithGame:self];
+    
+    _score = [BoardLocation pX:0 Y:0];
+    
+    _aiGameMode = 1;
     
     [_me setColor:[UIColor colorWithRed:0.0 green:80/255. blue:249/255. alpha:1.0]];
     [_opponent setColor:[UIColor colorWithRed:1.0 green:40/255. blue:0 alpha:1.0]];
@@ -2111,11 +2176,7 @@
                     _animating = NO;
                     
                     //
-                    
-                    if (action.manager.teamSide == 1) {
-                        [self endActionForEricWithManager:action.manager.opponent]; // new?
-                    }
-
+                  
                     [self saveTurnWithCompletionBlock:^{
                         
                

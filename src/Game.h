@@ -163,9 +163,12 @@ typedef enum RTMessageType {
 
 @property (nonatomic) BOOL myTurn;
 @property (nonatomic) BOOL animating;
+@property (nonatomic) BOOL aiGameMode;
+
 
 -(void)startMultiPlayerGame;
 -(void)startSinglePlayerGame;
+-(void)startAIGame;
 -(void)startGameWithExistingMatch:(GKTurnBasedMatch*)match;
 -(BOOL)shouldEndTurn;
 -(void)endTurn;

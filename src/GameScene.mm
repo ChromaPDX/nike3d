@@ -89,7 +89,7 @@ float PARTICLE_SCALE;
         _game = [[Game alloc] init];
         _game.gameScene = self;
         
-        [_game startSinglePlayerGame];
+     
         
     }
     
