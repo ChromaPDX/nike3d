@@ -114,10 +114,10 @@ float PARTICLE_SCALE;
     [_pivot setPosition3d:(ofPoint(0,-h*.5,0))];
     
     
-    _actionWindow = [[ActionWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
-    [_actionWindow setPosition3d:ofPoint(0,-h*.42,20)];
-    _actionWindow.delegate = self;
-    [self addChild:_actionWindow];
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
+    [_uxWindow setPosition3d:ofPoint(0,-h*.42,20)];
+    _uxWindow.delegate = self;
+    [self addChild:_uxWindow];
     
 //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:CGSizeMake(TILE_WIDTH*4, TILE_WIDTH*5.2)];
 //    [_pivot addChild:logo];
@@ -300,7 +300,7 @@ float PARTICLE_SCALE;
 }
 
 
--(void)cleanUpUIForAction:(GameSequence *)action {
+-(void)cleanUpUIForSequence:(GameSequence *)sequence {
     for (BoardTile* tile in _gameTiles.allValues) {
         [tile setColor:nil];
         [tile setTexture:nil];
@@ -633,7 +633,7 @@ float PARTICLE_SCALE;
         // [self cameraShouldFollowSprite:nil withCompletionBlock:^{}];
         
         
-        CardSprite* card = [_actionWindow spriteForCard:event.playerPerforming];
+        CardSprite* card = [_uxWindow spriteForCard:event.playerPerforming];
         
         //            [card removeFromParent];
         //            [_gameBoardNode addChild:card];
@@ -642,7 +642,7 @@ float PARTICLE_SCALE;
         
         [card setZPosition:Z_INDEX_HUD];
         
-        //[_actionWindow removeCard:card.model animated:YES withCompletionBlock:^{}];
+        //[_uxWindow removeCard:card.model animated:YES withCompletionBlock:^{}];
         
         [card removeAllActions];
         
@@ -664,7 +664,7 @@ float PARTICLE_SCALE;
                     [card setZPosition:Z_INDEX_BOARD];
                     [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
                         block();
-                        [_actionWindow fadeOutChild:card duration:FAST_ANIM_DUR];
+                        [_uxWindow fadeOutChild:card duration:FAST_ANIM_DUR];
                     }];
                 }];
                 
@@ -743,7 +743,7 @@ float PARTICLE_SCALE;
 //                    if (_game.thisTurnActions.count < 2) { // ONLY TURN START
 //                        NSLog(@"GameScene.m : animate TURN START : draw");
 //                        
-//                        [_actionWindow addStartTurnCard:event.playerPerforming withCompletionBlock:^{
+//                        [_uxWindow addStartTurnCard:event.playerPerforming withCompletionBlock:^{
 //                            block();
 //                        }];
 //                        
@@ -755,7 +755,7 @@ float PARTICLE_SCALE;
 //            }
 //            
 //            
-//            [_actionWindow addCard:event.playerPerforming animated:YES withCompletionBlock:^{
+//            [_uxWindow addCard:event.playerPerforming animated:YES withCompletionBlock:^{
 //                block();
 //            }];
 //            
@@ -774,7 +774,7 @@ float PARTICLE_SCALE;
 //        if (event.playerPerforming) {
 //            
 //            NSLog(@"GameScene.m : animateEvent : draw");
-//            [_actionWindow addCard:event.playerPerforming animated:YES withCompletionBlock:^{
+//            [_uxWindow addCard:event.playerPerforming animated:YES withCompletionBlock:^{
 //                block();
 //            }];
 //            
@@ -848,7 +848,7 @@ float PARTICLE_SCALE;
     
 };
 
--(void)finishActionsWithCompletionBlock:(void (^)())block {
+-(void)finishSequenceWithCompletionBlock:(void (^)())block {
     NSLog(@"GameScene.m : finished actions, return camera to . . .");
     [self cameraShouldFollowSprite:Nil withCompletionBlock:^{
         block();
@@ -892,9 +892,9 @@ float PARTICLE_SCALE;
 }
 
 
--(void)refreshActionWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
+-(void)refreshUXWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
     
-    [_actionWindow refreshCardsForPlayer:p];
+    [_uxWindow refreshCardsForPlayer:p];
     
     //[self refreshActionPoints];
     
@@ -902,8 +902,8 @@ float PARTICLE_SCALE;
 
 -(void)refreshActionPoints {
 //    
-//    [_actionWindow.turnTokenCount setText:[NSString stringWithFormat:@"%d", _game.me.ActionPoints]];
-//    [_actionWindow.opTokenCount setText:[NSString stringWithFormat:@"%d", _game.opponent.ActionPoints]];
+//    [_uxWindow.turnTokenCount setText:[NSString stringWithFormat:@"%d", _game.me.ActionPoints]];
+//    [_uxWindow.opTokenCount setText:[NSString stringWithFormat:@"%d", _game.opponent.ActionPoints]];
 //    
 }
 
@@ -1087,11 +1087,11 @@ float PARTICLE_SCALE;
 }
 
 -(void)addCardToHand:(Card *)card {
-    //[_actionWindow addCard:card];
+    //[_uxWindow addCard:card];
 }
 
 -(void)removeCardFromHand:(Card *)card {
-   // [_actionWindow removeCard:card];
+   // [_uxWindow removeCard:card];
 }
 
 -(BallSprite*)ballSprite {
@@ -1223,7 +1223,7 @@ float PARTICLE_SCALE;
     if(_gameBoardNodeScrollOffset < 2) _gameBoardNodeScrollOffset = 2;
     else if (_gameBoardNodeScrollOffset > 15) _gameBoardNodeScrollOffset = 15;
     //  [self repositionGameBoardOnScreenAnimted:YES];
-    //    [_actionWindow refreshFieldHUDXOffset:_gameBoardNodeScrollOffset];
+    //    [_uxWindow refreshFieldHUDXOffset:_gameBoardNodeScrollOffset];
 }
 
 //-(void) setGameBoardGridPosition:(CGPoint)newFocus{
@@ -1294,7 +1294,7 @@ float PARTICLE_SCALE;
 #pragma mark - CALLED FROM GAME ENGINE
 //
 //-(void)enableSkip {
-//    [_actionWindow setActionButtonTo:@"skip"];
+//    [_uxWindow setActionButtonTo:@"skip"];
 //}
 
 -(void)setMyTurn:(BOOL)myTurn {
@@ -1304,16 +1304,16 @@ float PARTICLE_SCALE;
         if (myTurn) {
             
 //            if (_game.canDraw) {
-//                [_actionWindow setActionButtonTo:@"draw"];
+//                [_uxWindow setActionButtonTo:@"draw"];
 //            }
 //            else {
-//                [_actionWindow setActionButtonTo:@"end"];
+//                [_uxWindow setActionButtonTo:@"end"];
 //            }
 //            
             
         }
         else {
-           // [_actionWindow setActionButtonTo:nil];
+           // [_uxWindow setActionButtonTo:nil];
         }
         
         
@@ -1381,7 +1381,7 @@ float PARTICLE_SCALE;
         [s removeFromParent];
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
     
-    //[_actionWindow cleanup];
+    //[_uxWindow cleanup];
 }
 
 -(void)refreshScoreBoard {

@@ -27,7 +27,7 @@ typedef enum Z_INDEX_CHART {
 
 @interface GameBoardNode : NKSpriteNode
 
-//@property (nonatomic, strong) ActionWindow *actionWindow;
+//@property (nonatomic, strong) UXWindow *uxWindow;
 //@property (nonatomic, strong) ScoreBoard *scoreBoard;
 //@property (nonatomic, strong) BallSprite* ballSprite;
 @property (nonatomic, strong) NSArray* goalSprites;

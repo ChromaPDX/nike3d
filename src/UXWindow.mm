@@ -3,7 +3,7 @@
 #import "ModelHeaders.h"
 
 
-@implementation ActionWindow
+@implementation UXWindow
 
 -(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size {
     
@@ -13,7 +13,7 @@
 
         
         
-         //NSLog(@"init actionWindow, size: %f %f, cardSize: %f %f", w,h, cardSize.width, cardSize.height);
+         //NSLog(@"init uxWindow, size: %f %f, cardSize: %f %f", w,h, cardSize.width, cardSize.height);
         
         
 
@@ -608,7 +608,7 @@
 
 @implementation PlayerHand
 
--(instancetype)initWithPlayer:(Player*)p delegate:(ActionWindow*)delegate {
+-(instancetype)initWithPlayer:(Player*)p delegate:(UXWindow*)delegate {
     self = [super init];
     
     if (self){
@@ -656,7 +656,7 @@
         
         [self sortCards];
         
-        //[_actionWindow sortMyCards:YES WithCompletionBlock:nil];
+        //[_uxWindow sortMyCards:YES WithCompletionBlock:nil];
         
     }
     else {

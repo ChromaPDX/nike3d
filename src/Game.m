@@ -115,10 +115,7 @@
                                                                  @"boardLength": [NSNumber numberWithInt:BOARD_LENGTH],
                                                                  @"singlePlayerMode": [NSNumber numberWithBool:YES]
                                                                  }];
-    
-    
-    
-    
+
     _me.name = @"HUMAN";
     _opponent.name = @"COMPUTER";
     
@@ -720,7 +717,7 @@
                     [_gameScene cleanUpUIForSequence:_currentEventSequence];
                 }
                 
-                [_gameScene refreshSequenceWindowForPlayer:player withCompletionBlock:nil];
+                [_gameScene refreshUXWindowForPlayer:player withCompletionBlock:nil];
                 
                 return 1;
                 
@@ -1521,7 +1518,7 @@
             if (animate) {
                 
                 
-                [_gameScene finishSequencesWithCompletionBlock:^{
+                [_gameScene finishSequenceWithCompletionBlock:^{
                     
                     _animating = NO;
 
@@ -1592,7 +1589,7 @@
             
             if (animate) {
                 
-                [_gameScene finishSequencesWithCompletionBlock:^{
+                [_gameScene finishSequenceWithCompletionBlock:^{
                     [self enumerateTurnHeapAnimate:animate];
                 }];
                 

@@ -16,7 +16,7 @@
 		6102DCFE18E24EAE00AB39D1 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 6102DCFD18E24EAE00AB39D1 /* Player.m */; };
 		6116FB1C18C54CC200BBD1CB /* BoardTile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6116FB1B18C54CC200BBD1CB /* BoardTile.mm */; };
 		6124554B18D91866003FF53D /* NKEmitterNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6124554A18D91866003FF53D /* NKEmitterNode.mm */; };
-		6124554E18D91DB3003FF53D /* ActionWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6124554D18D91DB3003FF53D /* ActionWindow.mm */; };
+		6124554E18D91DB3003FF53D /* UXWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6124554D18D91DB3003FF53D /* UXWindow.mm */; };
 		6124555118D91EB4003FF53D /* CardSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6124555018D91EB4003FF53D /* CardSprite.mm */; };
 		6124555418D92155003FF53D /* ButtonSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6124555318D92155003FF53D /* ButtonSprite.mm */; };
 		61341FB818C69407003D7C9E /* PlayerSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61341FB718C69407003D7C9E /* PlayerSprite.mm */; };
@@ -324,8 +324,8 @@
 		6116FB1B18C54CC200BBD1CB /* BoardTile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BoardTile.mm; path = src/BoardTile.mm; sourceTree = "<group>"; };
 		6124554918D91866003FF53D /* NKEmitterNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKEmitterNode.h; sourceTree = "<group>"; };
 		6124554A18D91866003FF53D /* NKEmitterNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NKEmitterNode.mm; sourceTree = "<group>"; };
-		6124554C18D91DB3003FF53D /* ActionWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActionWindow.h; path = src/ActionWindow.h; sourceTree = "<group>"; };
-		6124554D18D91DB3003FF53D /* ActionWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ActionWindow.mm; path = src/ActionWindow.mm; sourceTree = "<group>"; };
+		6124554C18D91DB3003FF53D /* UXWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UXWindow.h; path = src/UXWindow.h; sourceTree = "<group>"; };
+		6124554D18D91DB3003FF53D /* UXWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = UXWindow.mm; path = src/UXWindow.mm; sourceTree = "<group>"; };
 		6124554F18D91EB4003FF53D /* CardSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardSprite.h; sourceTree = "<group>"; };
 		6124555018D91EB4003FF53D /* CardSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CardSprite.mm; sourceTree = "<group>"; };
 		6124555218D92155003FF53D /* ButtonSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonSprite.h; sourceTree = "<group>"; };
@@ -758,8 +758,8 @@
 				618E1D3A18C023370038AD46 /* NikeNodeHeaders.h */,
 				618E1D3D18C024200038AD46 /* GameScene.h */,
 				618E1D3E18C024200038AD46 /* GameScene.mm */,
-				6124554C18D91DB3003FF53D /* ActionWindow.h */,
-				6124554D18D91DB3003FF53D /* ActionWindow.mm */,
+				6124554C18D91DB3003FF53D /* UXWindow.h */,
+				6124554D18D91DB3003FF53D /* UXWindow.mm */,
 				6124555218D92155003FF53D /* ButtonSprite.h */,
 				6124555318D92155003FF53D /* ButtonSprite.mm */,
 				6124554F18D91EB4003FF53D /* CardSprite.h */,
@@ -1693,7 +1693,7 @@
 				6181275318E0EE35003B72F8 /* NKMesh.mm in Sources */,
 				61D0177118D7CD4C0085D7F9 /* NKDrawDepthShader.mm in Sources */,
 				6124554B18D91866003FF53D /* NKEmitterNode.mm in Sources */,
-				6124554E18D91DB3003FF53D /* ActionWindow.mm in Sources */,
+				6124554E18D91DB3003FF53D /* UXWindow.mm in Sources */,
 				61C0E1E618EA102900F5343A /* NKMeshNode.mm in Sources */,
 				61341FB818C69407003D7C9E /* PlayerSprite.mm in Sources */,
 				61B28A0C18D8FB8500102278 /* inflate.c in Sources */,

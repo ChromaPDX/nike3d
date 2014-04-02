@@ -13,26 +13,26 @@
 @class CardSprite;
 @class ButtonSprite;
 @class AlertSprite;
-@class ActionWindow;
+@class UXWindow;
 
 @interface PlayerHand : NKNode
 {
     CGSize cardSize;
 }
-    @property (nonatomic, weak) ActionWindow* delegate;
+    @property (nonatomic, weak) UXWindow* delegate;
     @property (nonatomic, weak) Player* player;
     @property (nonatomic, strong) NSMutableDictionary *cardSprites;
     @property (nonatomic, strong) NSMutableArray *myCards;
     @property (nonatomic, strong) NKLabelNode *playerName;
 
-    -(instancetype)initWithPlayer:(Player*)p delegate:(ActionWindow*)delegate;
+    -(instancetype)initWithPlayer:(Player*)p delegate:(UXWindow*)delegate;
     -(void)addCard:(Card*)card;
     -(void)removeCard:(Card*)card;
     -(void)sortCards;
     -(void)shuffleAroundCard:(CardSprite*)card;
 @end
 
-@interface ActionWindow : NKSpriteNode
+@interface UXWindow : NKSpriteNode
 
 @property (nonatomic, strong) NSMutableDictionary *playerHands;
 

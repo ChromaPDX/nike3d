@@ -13,7 +13,7 @@
 #import "BoardTile.h"
 #import "GameScene.h"
 
-#import "ActionWindow.h"
+#import "UXWindow.h"
 
 #import "PlayerSprite.h"
 #import "CardSprite.h"

@@ -23,7 +23,7 @@
 @class CardSprite;
 @class BallSprite;
 @class FuelBar;
-@class SequenceWindow;
+@class UXWindow;
 @class GameEvent;
 @class GameSequence;
 @class Manager;
@@ -92,11 +92,11 @@ typedef enum RTMessageType {
 -(void)removeBlurWithCompletionBlock:(void (^)())block;
 
 // ANIMATION
--(void)finishSequencesWithCompletionBlock:(void (^)())block;
+-(void)finishSequenceWithCompletionBlock:(void (^)())block;
 -(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block;
 -(void)rollEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
--(void)refreshSequenceWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block;
+-(void)refreshUXWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block;
 -(void)refreshSequencePoints;
 -(void)presentTrophyWithCompletionBlock:(void (^)())block;
 -(void)fadeOutHUD;
