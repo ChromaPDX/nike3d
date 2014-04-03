@@ -159,6 +159,8 @@
     
 }
 
+#pragma mark - AI FUNCTIONS
+
 -(NSArray*)pathToBall{
     BoardLocation *ballLocation = _manager.game.ball.location;
     return [self pathToBoardLocation:ballLocation];

@@ -1267,6 +1267,23 @@
 
 #pragma mark - META DATA
 
+/*
+-(void)endSequenceForEricWithManager:(Manager*)m{
+    NSLog(@"hi eric, this is: %@",m.name);
+    
+
+    if(m.hasPossesion){  // OFFENSE
+        
+        
+        
+    }
+    else{  // DEFENSE
+        
+    }
+    
+}
+*/
+
 -(void)endSequenceForEricWithManager:(Manager*)m{
     NSLog(@"hi eric, this is: %@",m.name);
     
@@ -1318,7 +1335,6 @@
         }
     }
 }
-
 
 -(void)processMetaDataForSequence:(GameSequence*)sequence {
  
