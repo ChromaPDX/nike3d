@@ -171,7 +171,6 @@
         case CardCategoryKick: return @"Kick";
         case CardCategoryChallenge: return @"Chal";
         case CardCategorySpecial:
-            
             switch (_model.specialCategory) {
                 case CardCategoryMove: return @"SpecM";
                 case CardCategoryKick: return @"SpecK";

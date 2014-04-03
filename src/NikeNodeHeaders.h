@@ -28,4 +28,4 @@
 
 #define NSFWPlayerImage @"PlayerIndicator_PlayerON.png"
 #define NSFWPlayerShadow @"PlayerIndicator_PlayerSHADOW.png"
-#define NSFWPlayerHighlight @"CardCategory_HUD"
+#define NSFWPlayerHighlight @"CardType_HUD"

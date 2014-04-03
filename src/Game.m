@@ -558,99 +558,15 @@
 
 
 
-
-#pragma mark - PERFORM TURN
-
--(void)enumerateTurnHeapAnimate:(BOOL)animate {
-    
-    if (_turnHeap.count) {
-        
-        [self performTurn:[_turnHeap lastObject] animate:animate];
-        
-    }
-    
-    else {
-        [self didFinishAllReplays:animate];
-    }
-    
-}
-
-
-
--(void)startMyTurn {
-    
-    NSLog(@"------------ START MY TURN ------------");
-    
-    NSLog(@"starting turn %d", _history.count);
-    
-    _currentEventSequence = [GameSequence sequence];
-    
-    [self addStartTurnEventsToSequence:_currentEventSequence];
-    
-    if ([self shouldPerformCurrentSequence]) {
-        NSLog(@"start turn success");
-    }
-    else {
-        NSLog(@"failed turn start sequences");
-    }
-    
-}
-
--(void)didFinishAllReplays:(BOOL)animate {
-    
-    NSLog(@"------------ COMPLETE REPLAY ------------");
-    
-    _animating = NO;
-    
-    [self fetchThisTurnSequences];
-    
-    
-    
-}
-
-
--(void)performTurn:(NSArray*)turn animate:(BOOL)animate { // ONLY PLAYBACK
-    
-    
-    
-    if (turn) {
-        
-        _sequenceHeap = [[NSMutableArray alloc]initWithCapacity:5];
-        
-        NSLog(@"Game.m : performSequenceSequence : starting sequence sequence");
-        
-        for (int i = 0; i < turn.count; i++){
-            [_sequenceHeap addObject:turn[turn.count - (i + 1)]];
-        }
-        
-        [self performSequence:[_sequenceHeap lastObject] record:NO animate:animate];
-        
-        
-    }
-    
-    else {
-        NSLog(@"###error### trying to perform nil turn");
-    }
-    
-    // GET MANAGER FOR TURN
-    
-    
-    
-    
-}
-
 #pragma mark - PERFORM SEQUENCE
 
--(void)clearSelection {
-    _selectedCard = nil;
-    _selectedLocation = nil;
-    _selectedPlayer = nil;
-    _currentEventSequence = nil;
-}
+
 
 -(void)performSequence:(GameSequence*)sequence record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
     
     [self clearSelection];
+    
+    [_gameScene refreshUXWindowForPlayer:nil withCompletionBlock:nil];
     
     if (animate) {
         _animating = YES;
@@ -1253,6 +1169,88 @@
 }
 
 
+
+#pragma mark - PERFORM TURN
+
+-(void)enumerateTurnHeapAnimate:(BOOL)animate {
+    
+    if (_turnHeap.count) {
+        
+        [self performTurn:[_turnHeap lastObject] animate:animate];
+        
+    }
+    
+    else {
+        [self didFinishAllReplays:animate];
+    }
+    
+}
+
+
+
+-(void)startMyTurn {
+    
+    NSLog(@"------------ START MY TURN ------------");
+    
+    NSLog(@"starting turn %d", _history.count);
+    
+    _currentEventSequence = [GameSequence sequence];
+    
+    [self addStartTurnEventsToSequence:_currentEventSequence];
+    
+    if ([self shouldPerformCurrentSequence]) {
+        NSLog(@"start turn success");
+    }
+    else {
+        NSLog(@"failed turn start sequences");
+    }
+    
+}
+
+-(void)didFinishAllReplays:(BOOL)animate {
+    
+    NSLog(@"------------ COMPLETE REPLAY ------------");
+    
+    _animating = NO;
+    
+    [self fetchThisTurnSequences];
+    
+    
+    
+}
+
+
+-(void)performTurn:(NSArray*)turn animate:(BOOL)animate { // ONLY PLAYBACK
+    
+    
+    
+    if (turn) {
+        
+        _sequenceHeap = [[NSMutableArray alloc]initWithCapacity:5];
+        
+        NSLog(@"Game.m : performSequenceSequence : starting sequence sequence");
+        
+        for (int i = 0; i < turn.count; i++){
+            [_sequenceHeap addObject:turn[turn.count - (i + 1)]];
+        }
+        
+        [self performSequence:[_sequenceHeap lastObject] record:NO animate:animate];
+        
+        
+    }
+    
+    else {
+        NSLog(@"###error### trying to perform nil turn");
+    }
+    
+    // GET MANAGER FOR TURN
+    
+    
+    
+    
+}
+
+
 #pragma mark - META DATA
 
 -(void)endSequenceForEricWithManager:(Manager*)m{
@@ -1588,6 +1586,13 @@
 }
 
 #pragma mark - GAME KIT CONVENIENCE
+
+-(void)clearSelection {
+    _selectedCard = nil;
+    _selectedLocation = nil;
+    _selectedPlayer = nil;
+    _currentEventSequence = nil;
+}
 
 -(void)setCurrentManagerFromMatch {
     

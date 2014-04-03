@@ -40,6 +40,7 @@
                     self.specialCategory = CardCategoryChallenge;
                     break;
                 default:
+                    self.specialCategory = CardCategoryMove;
                     break;
             }
         }

@@ -589,13 +589,16 @@
     }
     _selectedPlayer = p;
 
-    PlayerHand *nHand = [[PlayerHand alloc] initWithPlayer:p delegate:self];
-    
-    [_playerHands setObject:nHand forKey:p];
-    
-    [self addChild:nHand];
-    
-    [nHand sortCards];
+    if (p) {
+        PlayerHand *nHand = [[PlayerHand alloc] initWithPlayer:p delegate:self];
+        
+        [_playerHands setObject:nHand forKey:p];
+        
+        [self addChild:nHand];
+        
+        [nHand sortCards];
+    }
+
 }
 
 -(void)sortCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block{
