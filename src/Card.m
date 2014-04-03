@@ -216,9 +216,16 @@
 }
 
 -(NSArray*)selectionPath {
+    
+    if (self.category == CardCategoryKick) {
+        if (!self.deck.player.ball) {
+            return nil;
+        }
+    }
+    
     NSMutableArray* obstacles = [[self rangeMask] mutableCopy];
 
-    // GET BOARD OBSTACLES
+    // STEP 1:  GET BOARD OBSTACLES
     
     if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
         for (Player* p in [self.game.players allKeys]) {
@@ -237,16 +244,51 @@
     
 
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
-    NSArray *path;
+    NSArray *accesible;
     
-    // CALCULATE NEIGHBORHOOD
+    // STEP 2: CALCULATE ACCESSIBLE WITH RANGE
     
     if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
-        path = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
+        accesible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
     }
+    else if (self.category == CardCategoryKick) {
+        accesible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRook walkDistance:_range];
+    }
+    
+    // IF MOVING WE'RE DONE
+    
+    if (self.category == CardCategoryMove){
+        return accesible;
+    }
+    
+    // STEP 3: LIMIT TO PLAYERS
+    
+    NSMutableArray* path = [NSMutableArray array];
+    
     if (self.category == CardCategoryKick) {
-        path = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRook walkDistance:_range];
+        for (Player* p in self.deck.player.manager.players.inGame) {
+            if ([accesible containsObject:p.location]){
+                [path addObject:p.location];
+            }
+        }
+        if ([accesible containsObject:self.deck.player.manager.goal]) {
+            [path addObject:self.deck.player.manager.goal];
+        }
     }
+    
+    else if (self.category == CardCategoryChallenge) {
+        for (Player* p in self.deck.player.manager.opponent.players.inGame) {
+            if (p.ball) {
+                if ([accesible containsObject:p.location]) {
+                    [path addObject:p.location];
+                }
+            }
+        }
+    }
+    
+    [path removeObject:self.location];
+    
+    if (!path.count) return nil;
     
     return path;
     

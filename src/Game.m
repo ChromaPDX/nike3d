@@ -307,9 +307,19 @@
     if (_selectedPlayer) {
         if (_selectedCard) {
             _currentEventSequence = [GameSequence sequence];
+            
             if (_selectedCard.category == CardCategoryMove) {
                  [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventMove];
             }
+            else if (_selectedCard.category == CardCategoryKick){
+                if ([_selectedLocation isEqual:_selectedPlayer.manager.goal]) {
+                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickGoal];
+                }
+                else {
+                     [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickPass];
+                }
+            }
+            
             [self performSequence:_currentEventSequence record:YES animate:YES];
         }
     }
@@ -822,6 +832,8 @@
 
 -(BOOL)performEvent:(GameEvent*)event {
     
+    event.wasSuccessful = true;
+    
     // FIRST INHERIT WHO IS INVOLVED FROM PERSISTENT LOCATIONS
     
     [self getPlayerPointersForEvent:event];
@@ -1052,9 +1064,9 @@
             
             
             event.playerPerforming.location = [event.location copy];
+            
             [_players setObject:event.location forKey:event.playerPerforming];
             
-            [self assignBallIfPossible];
             
         }
         
