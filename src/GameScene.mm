@@ -472,7 +472,7 @@ float PARTICLE_SCALE;
             
             [player stopPosession:^{
                 
-                if ((event.type == kEventKickPass && event.wasSuccessful)|| (event.type == kEventKickGoal && !event.wasSuccessful)) {
+                if ((event.type == kEventKickPass && event.wasSuccessful) || (event.type == kEventKickGoal && !event.wasSuccessful)) {
                     
                     // SUCESSFULL PASS OR FAILED GOAL
                     
@@ -520,18 +520,10 @@ float PARTICLE_SCALE;
                     // SUCCESSFUL GOAL
                     
 
-                        CGPoint dest;
-                        
-                        if (event.manager.teamSide) {
-                            dest = CGPointMake(-_gameBoardNode.size.width, 0);
-                        }
-                        else {
-                            dest = CGPointMake(_gameBoardNode.size.width, 0);
-                            
-                        }
-                        
+                        CGPoint dest = CGPointMake(0,_gameBoardNode.size.height);
                     
                         NKAction *move = [NKAction moveTo:dest duration:.3];
+                    
                         [move setTimingMode:NKActionTimingEaseOut];
                         
                         [self.ballSprite runAction:move completion:^(){
@@ -849,14 +841,15 @@ float PARTICLE_SCALE;
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block {
     
     NKLabelNode *bigText = [[NKLabelNode alloc] initWithFontNamed:@"TradeGothicLTStd-BdCn20"];
-    bigText.text = theText;
+
     bigText.fontSize = 150;
     bigText.fontColor = [NKColor whiteColor];//[NKColor colorWithRed:.2 green:.2 blue:1. alpha:1.];
+    bigText.text = theText;
     
     [bigText setScale:.1];
     [self addChild:bigText];
-    [bigText setZPosition:Z_INDEX_FX];
-    [bigText setPosition:CGPointMake(self.size.width * .64, self.size.height/2)];
+    
+    [bigText setPosition3d:ofPoint(0, 0,100)];
     
     [bigText runAction:[NKAction scaleTo:1. duration:1.5] completion:^{
         [bigText removeFromParent];
@@ -1360,8 +1353,7 @@ float PARTICLE_SCALE;
 }
 
 -(void)refreshScoreBoard {
-//    [_scoreBoard setScore:_game.score];
-//    [_scoreBoard setManager:_game.scoreBoardManager];
+
 }
 
 
