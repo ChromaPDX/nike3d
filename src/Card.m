@@ -184,23 +184,27 @@
 
     // GET BOARD OBSTACLES
     
-    if (self.deckType == DeckTypeMove) {
+    if (self.deckType == DeckTypeMove || self.deckType == DeckTypeChallenge) {
         for (Player* p in [self.game.players allKeys]) {
             [obstacles addObject:p.location];
         }
+        if (self.deckType == DeckTypeChallenge) {
+            [obstacles removeObject:self.game.ball.location];
+        }
     }
+
     else if (self.deckType == DeckTypeKick) {
         for (Player* p in self.deck.player.manager.opponent.players.inGame) {
             [obstacles addObject:p.location];
         }
     }
-    
+
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
     NSArray *path;
     
     // CALCULATE NEIGHBORHOOD
     
-    if (self.deckType == DeckTypeMove) {
+    if (self.deckType == DeckTypeMove || self.deckType == DeckTypeChallenge) {
         path = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
     }
     if (self.deckType == DeckTypeKick) {
