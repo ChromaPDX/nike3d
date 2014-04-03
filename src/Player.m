@@ -205,4 +205,34 @@
     return path;
 }
 
+-(NSArray*)pathToKickRange:(Player *)player{
+    NSArray *retPath;
+    NSArray *kickPath;
+    NSArray *movePath;
+    
+    Card* kickCard = player.kickDeck.inHand[0];
+    
+    if(kickCard){
+        kickPath = kickCard.selectionPath;
+    }
+    else{
+        return retPath;
+    }
+    if(kickPath){
+        Card* moveCard = self.moveDeck.inHand[0];
+        if(moveCard){
+            movePath = moveCard.selectionPath;
+            if(movePath){
+                
+            }
+        }
+        else{
+            return retPath;
+        }
+        
+    }
+    
+    
+    return retPath;
+}
 @end
