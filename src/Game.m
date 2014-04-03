@@ -294,7 +294,7 @@
     if (_myTurn) {
         
         if (!_animating) {
-            [_gameScene showCardPath:[selectedCard selectionPath]];
+            [_gameScene showCardPath:[selectedCard selectionSet]];
         }
     }
     

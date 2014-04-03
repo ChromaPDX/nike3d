@@ -215,7 +215,7 @@
     
 }
 
--(NSArray*)selectionPath {
+-(NSArray*)selectionSet {
     
     if (self.category == CardCategoryKick) {
         if (!self.deck.player.ball) {
@@ -263,16 +263,16 @@
     
     // STEP 3: LIMIT TO PLAYERS
     
-    NSMutableArray* path = [NSMutableArray array];
+    NSMutableArray* set = [NSMutableArray array];
     
     if (self.category == CardCategoryKick) {
         for (Player* p in self.deck.player.manager.players.inGame) {
             if ([accesible containsObject:p.location]){
-                [path addObject:p.location];
+                [set addObject:p.location];
             }
         }
         if ([accesible containsObject:self.deck.player.manager.goal]) {
-            [path addObject:self.deck.player.manager.goal];
+            [set addObject:self.deck.player.manager.goal];
         }
     }
     
@@ -280,17 +280,17 @@
         for (Player* p in self.deck.player.manager.opponent.players.inGame) {
             if (p.ball) {
                 if ([accesible containsObject:p.location]) {
-                    [path addObject:p.location];
+                    [set addObject:p.location];
                 }
             }
         }
     }
     
-    [path removeObject:self.location];
+    [set removeObject:self.location];
     
-    if (!path.count) return nil;
+    if (!set.count) return nil;
     
-    return path;
+    return set;
     
 }
 

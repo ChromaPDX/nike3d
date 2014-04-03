@@ -62,7 +62,7 @@
 -(EventType)discardAfterEventType;
 -(NSString*) descriptionForCard;
 -(Game*)game;
--(NSArray*)selectionPath;
+-(NSArray*)selectionSet;
 
 @property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Player *enchantee;

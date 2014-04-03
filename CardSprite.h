@@ -44,4 +44,6 @@
 @property (nonatomic, strong) NKSpriteNode *art;
 @property (nonatomic,strong) NKSpriteNode *shadow;
 
+-(NKColor*)colorForCategory;
+
 @end
