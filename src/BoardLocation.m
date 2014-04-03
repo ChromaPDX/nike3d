@@ -122,6 +122,18 @@
     return 0;
 }
 
++(NSArray*)pathIntersect:(NSArray*)pathA withPath:(NSArray*)pathB{
+    NSMutableArray *retPath;
+    for(BoardLocation *locA in pathA){
+        for(BoardLocation *locB in pathB){
+            if(locA.x == locB.x && locA.y == locB.y){
+                [retPath addObject:locA];
+            }
+        }
+    }
+    return retPath;
+}
+
 
 
 @end
