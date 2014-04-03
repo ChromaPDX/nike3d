@@ -1398,7 +1398,6 @@ float PARTICLE_SCALE;
     [[playerSprites objectForKey:selectedPlayer] setHighlighted:true];
     
     _selectedPlayer = selectedPlayer;
-    _game.selectedPlayer = selectedPlayer;
     
 }
 

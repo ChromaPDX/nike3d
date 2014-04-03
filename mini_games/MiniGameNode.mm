@@ -31,7 +31,7 @@
         [self setUserInteractionEnabled:YES];
         self.name = @"miniGame Node";
 // hardcode setting the title of the card
-        _cardTypeTitle = @"MOVE CARD";
+        _cardCategoryTitle = @"MOVE CARD";
         ofLoadImage(titleTexture, "twitch_label.png");
         printf("HEIGHT OF FRAME %f",[self getDrawFrame].width*.8 * 1.17);
         titleFont.loadFont("Avenir.ttf", 17);
@@ -127,7 +127,7 @@
 //        ofTranslate([self getDrawFrame].x + [self getDrawFrame].width*.1,  [self getDrawFrame].width*.4 * 1.17 + /*height of image */ 45);
 //        titleTexture.draw(0,0);//, [self getDrawFrame].width*.8 * 1.17);
 //        ofSetColor(0, 168, 171);
-//        titleFont.drawString([_cardTypeTitle cStringUsingEncoding:NSUTF8StringEncoding], 5, 33);
+//        titleFont.drawString([_cardCategoryTitle cStringUsingEncoding:NSUTF8StringEncoding], 5, 33);
 //        font.drawString("LEVEL 2 CARD", 5, 7);
 //        font.drawString("COST +200", 130, 7);
 //        ofSetColor(255, 255, 255);

@@ -36,9 +36,7 @@
     AudioServicesPlaySystemSound(touchSound);
 }
 
-
-
-#pragma mark - GAMEBOARD / INITIAL SETUP
+#pragma mark - INITIAL SETUP of THE GAME
 
 //-(void)startMultiPlayerGame {
 //
@@ -93,7 +91,7 @@
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
     
-    _aiGameMode = 1;
+
 
     _score = [BoardLocation pX:0 Y:0];
     
@@ -108,6 +106,7 @@
     
     
     singlePlayer = 1;
+    _aiGameMode = 0;
     
     
     _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
@@ -178,8 +177,8 @@
                                                                  @"singlePlayerMode": [NSNumber numberWithBool:YES]
                                                                  }];
 
-    _me.name = @"HUMAN";
-    _opponent.name = @"COMPUTER";
+    _me.name = @"AI - DEEP BLUE";
+    _opponent.name = @"AI - DEEP RED";
     
     self.myTurn = YES;
     
@@ -246,525 +245,7 @@
 }
 
 
-
-
-
--(void)replayGame:(BOOL)animate {
-    
-    [_gameScene setWaiting:NO];
-    
-    self.myTurn = NO;
-    
-    NSLog(@"Game.m : performSequenceSequence : starting sequence sequence");
-    
-    NSLog(@"Game has %d total sequences", [self totalGameSequences]);
-    
-    _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
-    
-    if (_thisTurnSequences) {
-        [_turnHeap addObject:_thisTurnSequences];
-    }
-    
-    if (_history) {
-        
-        for (int i = 0; i < _history.count; i++)
-            [_turnHeap addObject:_history[_history.count - (i + 1)]];
-    }
-    
-    // GET MANAGER FOR TURN
-    
-    [self wipeBoard];
-    
-    if (animate) {
-        
-        [self refreshGameBoard];
-        [self enumerateTurnHeapAnimate:YES];
-        
-    }
-    
-    else {
-        
-        [self enumerateTurnHeapAnimate:NO];
-        
-    }
-    
-    
-}
-
--(void)replayLastTurn {
-    
-    [_gameScene setWaiting:NO];
-    
-    self.myTurn = NO;
-    
-    NSLog(@"------------ REPLAY HISTORY ------------");
-    
-    sequenceIndex = 0;
-    
-    [self wipeBoard];
-    [self refreshGameBoard];
-    
-    _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
-    
-    if (_history) {
-        
-        NSArray* allButLast = [self allButLastTurn];
-        
-        if (allButLast.count) {
-            for (int i = 0; i < allButLast.count; i++){
-                [_turnHeap addObject:allButLast[allButLast.count - (i + 1)]];
-            }
-        }
-        
-        NSLog(@"Game has %d total sequences", [self totalGameSequences]);
-        NSLog(@"non-animate sequences %d", [self sequenceCountForArray:allButLast]);
-        NSLog(@"animate sequences %d", [[_history lastObject] count] + _thisTurnSequences.count);
-        
-    }
-    else {
-        NSLog(@"------------ NO HISTORY YET ------------");
-    }
-    
-    
-    if (_turnHeap.count) {
-        NSLog(@"------------ NON-ANIMATE RESTORE ------------");
-        [self enumerateTurnHeapAnimate:NO];
-        NSLog(@"------------ REBUILD VISUALS ------------");
-        [self buildBoardFromCurrentState];
-    }
-    
-    
-    // THEN
-    
-    
-    _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
-    
-    NSLog(@"------------ ANIMATE REPLAY ------------");
-    NSLog(@"Game has %d total sequences", [self totalGameSequences]);
-    NSLog(@"already restored %d sequences", [self sequenceCountForArray:[self allButLastTurn]]);
-    NSLog(@"animate %d from last turn", [[_history lastObject] count]);
-    NSLog(@"animate %d from this turn", [_thisTurnSequences count]);
-    
-    
-    
-    if (_thisTurnSequences.count) {
-        [_turnHeap addObject:_thisTurnSequences];
-    }
-    
-    
-    //NSArray* allButLast = [self allButLastTurn]; // CHECK THAT WE DID HAVE ONE THAT DIDN'T GET PLAYED
-    
-    if (_history.count) {
-        [_turnHeap addObject:[_history lastObject]];
-    }
-    
-    if (_turnHeap.count) { // BETTER BE YES
-        NSLog(@"------------ BEGIN ANIMATING ------------");
-        [self enumerateTurnHeapAnimate:YES];
-    }
-    
-    else {
-        NSLog(@"------------ SOMETHING WENT HORRIBLY WRONG ------------");
-        
-    }
-    
-    
-}
-
--(void)replayLastSequence {
-    
-    [_gameScene setWaiting:NO];
-    
-    self.myTurn = NO;
-    
-    NSLog(@"------------ REPLAY HISTORY ------------");
-    
-    sequenceIndex = 0;
-    
-    [self wipeBoard];
-    [self refreshGameBoard];
-    
-    NSMutableArray* allSequences = [self allSequencesLinear];
-    
-    GameSequence *last = [allSequences lastObject];
-    
-    [allSequences removeLastObject];
-    
-    _sequenceHeap = [NSMutableArray array];
-    
-    for (int i = 0; i < allSequences.count; i++){
-        [_sequenceHeap addObject:allSequences[allSequences.count - (i + 1)]];
-    }
-    
-    [self performSequence:[_sequenceHeap lastObject] record:NO animate:NO];
-    
-    [self buildBoardFromCurrentState];
-    
-    [self performSequence:last record:NO animate:YES];
-    
-    
-}
-
--(NSMutableArray*)allSequencesLinear {
-    
-    NSMutableArray *allSequences = [NSMutableArray array];
-    
-    for (int i = 0; i < _history.count; i++){
-        NSArray* turn = _history[i];
-        for (int i = 0; i < turn.count; i++){
-            [allSequences addObject:turn[i]];
-        }
-        
-    }
-    
-    for (int i = 0; i < _thisTurnSequences.count; i++){
-        [allSequences addObject:_thisTurnSequences[i]];
-    }
-    
-    //NSLog(@"BUILD ACTION ARRAY %d items", allSequences.count);
-    
-    return allSequences;
-    
-}
-
--(int)totalEvents {
-    
-    int total = 0;
-    for (GameSequence *g in [self allSequencesLinear]) {
-        total += g.GameEvents.count;
-    }
-    
-    return total;
-    
-}
-
--(void)fetchThisTurnSequences {
-    
-    
-    [_match loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error){
-        
-        if (!_animating) {
-            NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:[matchData gzipInflate]];
-            //NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:matchData];
-            
-            [self loadSequencesFromUnarchiver:unarchiver];
-            
-            [self checkMyTurn];
-            [self checkRTConnection];
-            
-            if ([self catchUpOnSequences]){
-                
-                
-                
-            }
-            
-        }
-        
-        else {
-            NSLog(@"animating, wait . . .");
-            //            double delayInSeconds = 2.0;
-            //            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            //            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            //                [self fetchThisTurnSequences];
-            //            });
-        }
-        
-        
-        
-    }];
-    
-    
-    
-}
-
--(BOOL)catchUpOnSequences {
-    
-    
-    
-    if (sequenceIndex == 0) {
-        [self replayLastTurn];
-        return 0;
-    }
-    
-    NSLog(@"--- LOADED CURRENT ACTIONS ---");
-    
-    NSArray *allSequences = [self allSequencesLinear];
-    
-    NSLog(@"%d TOTAL, %d ALREADY PERFORMED", allSequences.count, sequenceIndex);
-    
-    int difference = allSequences.count - sequenceIndex;
-    
-    if (allSequences.count == sequenceIndex) {
-        NSLog(@"FETCH IS CURRENT");
-        
-        if (!_thisTurnSequences) {
-            _thisTurnSequences = [NSMutableArray array];
-        }
-        
-        if (!_thisTurnSequences.count) {
-            NSLog(@"NO ACTIONS FOR THIS TURN");
-            if ([self checkMyTurn]) {
-                // BEGINNING OF MY TURN
-                [self startMyTurn];
-            }
-            
-        }
-        
-        return 1;
-    }
-    
-    else if (allSequences.count < sequenceIndex){
-        NSLog(@"FETCH IS OLDER THAN RT, CHECK BACK SHORTLY");
-        
-        double delayInSeconds = 5.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self fetchThisTurnSequences];
-        });
-        
-        return 0;
-    }
-    
-    // SOMETHING FOR CATCH UP
-    else { // sequences > index
-        
-        NSLog(@"FETCH IS NEW by %d new sequences", difference);
-        
-        _sequenceHeap = [NSMutableArray array];
-        
-        NSMutableArray *allSequences = [self allSequencesLinear];
-        
-        for (int i = 0; i < difference; i ++){
-            
-            [_sequenceHeap addObject:[allSequences lastObject]];
-            [allSequences removeLastObject];
-            
-        }
-        
-        [self performSequence:[_sequenceHeap lastObject] record:NO animate:YES];
-        
-        
-    }
-    
-    //        else {
-    //            NSLog(@"FETCH IS REALLY NEW");
-    //            [self logCurrentGameData];
-    //            [self wipeBoard];
-    //            [self refreshGameBoard];
-    //            [self restoreGameWithData:_match];
-    //            [self replayLastTurn];
-    //        }
-    
-    
-    
-    return 0;
-    
-}
-
-
-
-// withCompletionBlock:(void (^)())block
-
--(void)enumerateTurnHeapAnimate:(BOOL)animate {
-    
-    if (_turnHeap.count) {
-        
-        [self performTurn:[_turnHeap lastObject] animate:animate];
-        
-    }
-    
-    else {
-        [self didFinishAllReplays:animate];
-    }
-    
-}
-
-
--(void)didFinishAllReplays:(BOOL)animate {
-    
-    NSLog(@"------------ COMPLETE REPLAY ------------");
-    
-    _animating = NO;
-    
-    [self fetchThisTurnSequences];
-    
-    
-    
-}
-
--(void)startMyTurn {
-    
-    NSLog(@"------------ START MY TURN ------------");
-    
-    NSLog(@"starting turn %d", _history.count);
-    
-    _currentEventSequence = [GameSequence sequence];
-    
-    [self addStartTurnEventsToSequence:_currentEventSequence];
-    
-    if ([self shouldPerformCurrentSequence]) {
-        NSLog(@"start turn success");
-    }
-    else {
-        NSLog(@"failed turn start sequences");
-    }
-    
-}
-
--(void)wipeBoard {
-    _ball = [[Card alloc] init];
-    _ball.specialType = CardTypeBall;
-    
-    _players = [NSMutableDictionary dictionary];
-    [_gameScene cleanupGameBoard];
-}
-
--(void) addCardToBoard:(Card*)c {
-    [_players setObject:[c.location copy] forKey:c];
-    [_gameScene addCardToBoardScene:c];
-}
-
-
-//-(void)delegateSetupBoardWithPlayersComplete{
-//    // manager who has the most fuel from yesterday goes first
-//    myTurn = true;
-//    [self playTurn];
-//}
-
--(void) setupNewPlayers{
-
-    _ball = [[Card alloc] init];
-    _ball.specialType = CardTypeBall;
-    
-    _currentEventSequence = [GameSequence sequence];
-    
-    [self addShuffleEventToSequence:_currentEventSequence forDeck:_me.players];
-    
-    [self addShuffleEventToSequence:_currentEventSequence forDeck:_opponent.players];
-    
-    [self setupCoinTossPositionsForSequence:_currentEventSequence];
-    
-    [self addSetBallEventForSequence:_currentEventSequence location:[BoardLocation pX:3 Y:BOARD_LENGTH/2-1]];
-    
-    
-}
-
--(void) setupCoinTossPositionsForSequence:(GameSequence*)sequence {
-    
-    // automated loop, finds your first 3 player cards
-    
-    // CHECK WE HAVE PLAYERS
-    
-    for (int i = 0; i<3; i++) {
-
-        GameEvent* spawn = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+!i] withType:kEventAddPlayer];
-        spawn.manager = [self managerForTeamSide:0];
-        
-        GameEvent* spawn2 = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1] withType:kEventAddPlayer];
-        spawn2.manager = [self managerForTeamSide:1];
-
-    }
-    
-}
-
--(void) buildBoardFromCurrentState{
-    
-    NSLog(@"---***---*** UI RESTORE ---***---***");
-    
-    
-    NSLog(@"I have %d players on the board", [_me players].inGame.count);
-    
-    for (Player *p in [_me players].inGame) {
-        
-        
-        
-        if ([p.location isEqual:_ball.location]) {
-            [p setBall:_ball];
-        }
-        [self addCardToBoard:p];
-        
-        
-    }
-    
-    
-    NSLog(@"They have %d players on the board", [_me players].inGame.count);
-    
-    for (Player *p in [_opponent players].inGame) {
-        
-        if ([p.location isEqual:_ball.location]) {
-            [p setBall:_ball];
-        }
-        [self addCardToBoard:p];
-        
-        
-    }
-    
-    NSLog(@"-------- FINISH UI RESTORE --------");
-    
-    [self refreshGameBoard];
-    
-}
-
--(void)refreshGameBoard {
-    
-    // [_gameScene setRotationForManager:_me];
-    
-    [_gameScene moveBallToLocation:_ball.location];
-    
-    [_gameScene refreshScoreBoard];
-    
-}
-
-#pragma mark - UI INTERACTION
-
--(void)setCurrentSequence:(GameSequence *)currentEventSequence {
-    
-    if (_currentEventSequence && !currentEventSequence) {
-        
-        [_gameScene cleanUpUIForSequence:_currentEventSequence];
-        
-        //        if (_gameScene.currentCard) {
-        //            [_gameScene setCurrentCard:nil];
-        //        }
-        
-        if (_myTurn) {
-            [self sendRTPacketWithType:RTMessageCancelSequence point:nil];
-        }
-        
-        [_gameScene fadeOutHUD];
-        
-    }
-    
-    _currentEventSequence = currentEventSequence;
-    
-}
-
--(NSArray*)allBoardLocations {
-    NSMutableArray *boardLocations = [NSMutableArray array];
-    
-    for (int x = 0; x < BOARD_WIDTH; x++) {
-        for (int y = 0; y < BOARD_LENGTH; y++) {
-            [boardLocations addObject:[BoardLocation pX:x Y:y]];
-        }
-    }
-    
-    return boardLocations;
-    
-}
-
-
-
--(void)setSelectedLocation:(BoardLocation *)selectedLocation {
-    
-    if (_selectedPlayer) {
-        if (_selectedCard) {
-            
-            _currentEventSequence = [GameSequence sequence];
-            [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventMove];
-            [self performSequence:_currentEventSequence record:YES animate:YES];
-        }
-    }
-}
+#pragma mark - CREATING EVENTS
 
 // MOVING PLAYER ON FIELD
 -(BOOL)canUsePlayer:(Player*)player {
@@ -781,6 +262,8 @@
                 
                 [_gameScene refreshUXWindowForPlayer:player withCompletionBlock:nil];
                 
+                self.selectedPlayer = player;
+                
                 return 1;
                 
             }
@@ -794,7 +277,7 @@
                 
             }
             
-          
+            
             
         }
         
@@ -805,328 +288,33 @@
     return 0;
 }
 
-#pragma mark - TB NETWORK EVENTS
 
--(BOOL)checkMyTurn{
-    
-    if (!_animating) {
-        
-        if ([_match.currentParticipant.playerID
-             isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-            // It's your turn!
-            
-            self.myTurn = YES;
-            
-            return NO;
-            
-        } else {
-            // It's not your turn, just display the game state.
-            
-            self.myTurn = NO;
-            
-            
-            
-        }
-        
-    }
-    
-    return NO;
-    
-}
-
-#pragma mark - RT NETWORK EVENTS
-
--(void)rtIsActive:(BOOL)active {
-    
-    rtIsActive = active;
-    
-    if (active) {
-        
-    }
-    
-    
-    
-}
-
--(void)setRtmatch:(GKMatch *)rtmatch {
-    
-    if (!_rtmatch && rtmatch) {
-        [self fetchThisTurnSequences];
-    }
-    
-    _rtmatch = rtmatch;
-    
-    
-}
-
--(BOOL)checkRTConnection {
-    
-    if (_rtmatch) {
-        
-        if (_rtmatch.playerIDs.count) {
-            NSLog(@"RT IS INACTIVE");
-            [_gameScene rtIsActive:YES];
-            return 1;
-        }
-        
-    }
-    
-    NSLog(@"RT IS INACTIVE, FIRING UP");
-    
-    [_gcController initRealTimeConnection];
-    
-    [_gameScene rtIsActive:NO];
-    return 0;
-    
-}
-
--(void)receiveRTPacket:(NSData*)packet {
-    
-    
-    if (!_animating) {
-        
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:packet];
-        
-        RTMessageType type = [unarchiver decodeIntForKey:@"type"];
-        
-        //NSLog(@"receiving packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
-        
-        [_gameScene receiveRTPacket];
-        
-        if (type == RTMessageNone) {
-            return;
-        }
-        
-        else if (type == RTMessagePerformSequence) {
-
-            GameSequence *sequence = [unarchiver decodeObjectForKey:@"sequence"];
-
-            if (sequence.index == sequenceIndex+1) { // WE ARE CURRENT
-                
-                [self setUpPointersForSequenceArray:sequence];
-                
-                
-                
-                [self performSequence:sequence record:NO animate:YES];
-                
-            }
-            
-            else {
-                NSLog(@"NOT IN SYNC - CATCHING UP IF POSSIBLE LATEST ACTION");
-                [self fetchThisTurnSequences];
-                
-            }
-            
-
-        }
-        else if (type == RTMessageShowSequence) {
-            
-            
-            GameSequence *sequence = [unarchiver decodeObjectForKey:@"sequence"];
-            
-            [self setUpPointersForSequenceArray:sequence];
-            
-            for (GameEvent* e in sequence.GameEvents) {
-                [self getPlayerPointersForEvent:e];
-            }
-            
-            _currentEventSequence = sequence;
-            
-            [_gameScene addNetworkUIForEvent:[_currentEventSequence.GameEvents lastObject]];
-            
-            
-        }
-        
-        else if (type == RTMessageCancelSequence){
-            
-            [self setCurrentSequence:Nil];
-            
-        }
-        
-        else if (type == RTMessageCheckTurn){
-            
-            
-            [self fetchThisTurnSequences];
-            
-            
-        }
-        
-        else if (type == RTMessageSortCards){
-            
-            
-            [_gameScene sortHandForManager:_opponent animated:YES];
-            
-            
-        }
-        
-        else if (type == RTMessageBeginCardTouch || type == RTMessageMoveCardTouch){
-            
-//            BoardLocation *location = [unarchiver decodeObjectForKey:@"location"];
-//            //Card *c = [self cardInHandForManager:_opponent location:location];
-//            
-//            CGPoint touch = [unarchiver decodeCGPointForKey:@"touch"];
-//            CGSize inSize = [unarchiver decodeCGSizeForKey:@"bounds"];
-//            CGSize outSize = [[UIScreen mainScreen] bounds].size;
-//            
-//            float xScale = outSize.width / inSize.width;
-//            float yScale = outSize.height / inSize.height;
-//            
-//            CGPoint pos = CGPointMake(touch.x * xScale, touch.y * yScale);
-//            
-//            if (type == RTMessageBeginCardTouch) {
-//                
-//                [_gameScene opponentBeganCardTouch:c atPoint:pos];
-//                
-//            }
-//            
-//            else if (type == RTMessageMoveCardTouch) {
-//                
-//                [_gameScene opponentMovedCardTouch:c atPoint:pos];
-//                
-//            }
-            
-        }
-        
-        else if (type == RTMessagePlayer) {
-            
-        }
-        
-    }
-    
-    else {
-        
-        NSLog(@"already animating, check back later . . .");
-    }
-    
-    
-}
-
-
--(void)sendSequence:(GameSequence*)sequence perform:(BOOL)perform {
-    
-    if (_myTurn || perform) {
-        
-        
-        if (_rtmatch) {
-            
-            NSMutableData* packet = [[NSMutableData alloc]init];
-            
-            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
-            
-            int type;
-            
-            if (perform) {
-                type = RTMessagePerformSequence;
-            }
-            else {
-                type = RTMessageShowSequence;
-            }
-            
-            [archiver encodeInt:type forKey:@"type"];
-            [archiver encodeObject:sequence forKey:@"sequence"];
-            
-            [archiver finishEncoding];
-            
-            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
-            
-            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
-            
-        }
-        
-        
-    }
-    
-}
-
-
--(void)sendRTPacketWithType:(RTMessageType)type point:(BoardLocation*)location {
-    
-    if (_myTurn) {
-        if (_rtmatch) {
-            
-            NSMutableData* packet = [[NSMutableData alloc]init];
-            
-            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
-            
-            [archiver encodeInt:type forKey:@"type"];
-            [archiver encodeObject:location forKey:@"location"];
-            
-            [archiver finishEncoding];
-            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
-            
-            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
-            
-            
-        }
-    }
-    
-}
-
--(void)sendRTPacketWithCard:(Card*)c point:(CGPoint)touch began:(BOOL)began{
+-(void)setSelectedCard:(Card *)selectedCard {
     
     if (_myTurn) {
         
-        if (_rtmatch) {
-            
-            RTMessageType type;
-            if (began) {
-                type = RTMessageBeginCardTouch;
+        if (!_animating) {
+            [_gameScene showCardPath:[selectedCard selectionPath]];
+        }
+    }
+    
+    _selectedCard = selectedCard;
+    
+}
+
+-(void)setSelectedLocation:(BoardLocation *)selectedLocation {
+    
+    if (_selectedPlayer) {
+        if (_selectedCard) {
+            _currentEventSequence = [GameSequence sequence];
+            if (_selectedCard.category == CardCategoryMove) {
+                 [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventMove];
             }
-            else{
-                type = RTMessageMoveCardTouch;
-            }
-            
-            NSMutableData* packet = [[NSMutableData alloc]init];
-            
-            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
-            
-            [archiver encodeInt:type forKey:@"type"];
-            [archiver encodeObject:c.location forKey:@"location"];
-            [archiver encodeCGPoint:touch forKey:@"touch"];
-            [archiver encodeCGSize:[[UIScreen mainScreen] bounds].size forKey:@"bounds"];
-            
-            [archiver finishEncoding];
-            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
-            
-            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
-            
+            [self performSequence:_currentEventSequence record:YES animate:YES];
         }
     }
     
 }
-
--(NSString*)stringForMessageType:(RTMessageType)type {
-    NSString *stype;
-    
-    if (type == RTMessagePlayer) {
-        stype = @"RTMessagePlayer";
-    }
-    else if (type == RTMessageBeginCardTouch) {
-        stype = @"RTMessageBeginCardTouch";
-    }
-    else if (type == RTMessageMoveCardTouch) {
-        stype = @"RTMessageMoveCardTouch";
-    }
-    else if (type == RTMessagePerformSequence) {
-        stype = @"RTMessagePerformSequence";
-    }
-    else if (type == RTMessageShowSequence) {
-        stype = @"RTMessageShowSequence";
-    }
-    else if (type == RTMessageCancelSequence) {
-        stype = @"RTMessageCancelSequence";
-    }
-    else if (type == RTMessageCheckTurn) {
-        stype = @"RTMessageCheckTurn";
-    }
-    
-    else {
-        stype = @"RT-TYPE-UNKNOWN";
-    }
-    return stype;
-    
-}
-#pragma mark - CREATING EVENTS
 
 
 -(void)getPlayerPointersForEvent:(GameEvent*)event {
@@ -1204,13 +392,11 @@
         event.playerReceiving = [self playerAtLocation:event.location];
     }
     
-    
 }
 
 -(GameEvent*)addEventToSequence:(GameSequence*)sequence fromCardOrPlayer:(Card*)card toLocation:(BoardLocation*)location withType:(EventType)type {
     
-    NSLog(@"CARD'S DECK LOCATION IS %d %d", card.location.x, card.location.y);
-    
+   // NSLog(@"CARD'S DECK LOCATION IS %d %d", card.location.x, card.location.y);
 
     GameEvent *event = [GameEvent event];
     
@@ -1281,28 +467,6 @@
     
     GameSequence* endTurn = [GameSequence sequence];
     
-    // this did wipe the board of out of zone players
-    
-//    for (Card* p in players.allKeys) {
-//        
-//        if ([p isTypePlayer]) {
-//            
-//            if (p.location.x < _activeZone.x || p.location.x > _activeZone.y) {
-//                
-//                GameEvent *e = [GameEvent event]:endTurn];
-//                e.location = [p.location copy];
-//                e.playerPerforming = p;
-//                e.type = kRemovePlayerSequence;
-//                [endTurn.GameEvents addObject:e];
-//                //e.index = endTurn.GameEvents.count;
-//                
-//            }
-//            
-//        }
-//        
-//    }
-    
-    
     GameEvent *e2 = [GameEvent event];
     e2.type = kEventRemoveSpecial;
     e2.manager = _me;
@@ -1314,9 +478,7 @@
     e3.manager = _me;
     [endTurn.GameEvents addObject:e3];
     //e.index = endTurn.GameEvents.count;
-    
-    
-    
+
     return endTurn;
     
 }
@@ -1394,13 +556,101 @@
     
 }
 
-#pragma mark - PERFORMING EVENTS
+
+
+
+#pragma mark - PERFORM TURN
+
+-(void)enumerateTurnHeapAnimate:(BOOL)animate {
+    
+    if (_turnHeap.count) {
+        
+        [self performTurn:[_turnHeap lastObject] animate:animate];
+        
+    }
+    
+    else {
+        [self didFinishAllReplays:animate];
+    }
+    
+}
+
+
+
+-(void)startMyTurn {
+    
+    NSLog(@"------------ START MY TURN ------------");
+    
+    NSLog(@"starting turn %d", _history.count);
+    
+    _currentEventSequence = [GameSequence sequence];
+    
+    [self addStartTurnEventsToSequence:_currentEventSequence];
+    
+    if ([self shouldPerformCurrentSequence]) {
+        NSLog(@"start turn success");
+    }
+    else {
+        NSLog(@"failed turn start sequences");
+    }
+    
+}
+
+-(void)didFinishAllReplays:(BOOL)animate {
+    
+    NSLog(@"------------ COMPLETE REPLAY ------------");
+    
+    _animating = NO;
+    
+    [self fetchThisTurnSequences];
+    
+    
+    
+}
+
+
+-(void)performTurn:(NSArray*)turn animate:(BOOL)animate { // ONLY PLAYBACK
+    
+    
+    
+    if (turn) {
+        
+        _sequenceHeap = [[NSMutableArray alloc]initWithCapacity:5];
+        
+        NSLog(@"Game.m : performSequenceSequence : starting sequence sequence");
+        
+        for (int i = 0; i < turn.count; i++){
+            [_sequenceHeap addObject:turn[turn.count - (i + 1)]];
+        }
+        
+        [self performSequence:[_sequenceHeap lastObject] record:NO animate:animate];
+        
+        
+    }
+    
+    else {
+        NSLog(@"###error### trying to perform nil turn");
+    }
+    
+    // GET MANAGER FOR TURN
+    
+    
+    
+    
+}
+
+#pragma mark - PERFORM SEQUENCE
+
+-(void)clearSelection {
+    _selectedCard = nil;
+    _selectedLocation = nil;
+    _selectedPlayer = nil;
+    _currentEventSequence = nil;
+}
 
 -(void)performSequence:(GameSequence*)sequence record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
     
-    
-   // [_gameScene cleanUpUIForSequence:sequence];
-    [self setCurrentSequence:nil];
+    [self clearSelection];
     
     if (animate) {
         _animating = YES;
@@ -1445,37 +695,6 @@
     
     
     [self enumerateSequence:sequence record:shouldRecordSequence animate:animate];
-    
-    
-}
-
-
--(void)performTurn:(NSArray*)turn animate:(BOOL)animate { // ONLY PLAYBACK
-    
-    
-    
-    if (turn) {
-        
-        _sequenceHeap = [[NSMutableArray alloc]initWithCapacity:5];
-        
-        NSLog(@"Game.m : performSequenceSequence : starting sequence sequence");
-        
-        for (int i = 0; i < turn.count; i++){
-            [_sequenceHeap addObject:turn[turn.count - (i + 1)]];
-        }
-        
-        [self performSequence:[_sequenceHeap lastObject] record:NO animate:animate];
-        
-        
-    }
-    
-    else {
-        NSLog(@"###error### trying to perform nil turn");
-    }
-    
-    // GET MANAGER FOR TURN
-    
-    
     
     
 }
@@ -1678,31 +897,11 @@
     
 }
 
--(void)logEvent:(GameEvent*)event{
-    
-    if (event.playerPerforming) {
-        NSLog(@">>%d %@ is %@ >> %d,%d to %d,%d", event.index, event.playerPerforming.name, event.name, event.startingLocation.x, event.startingLocation.y, event.location.x, event.location.y);
-    }
-    else if (event.startingLocation) {
-        NSLog(@">>%d %@ for %@ from %d %d", event.index, event.name, event.manager.name, event.startingLocation.x, event.startingLocation.y);
-    }
-    else {
-        NSLog(@">>%d %@ for %@", event.index, event.name, event.manager.name);
-    }
-    
-}
 
--(id)previousObjectInArray:(NSArray*)array thisObject:(id)object {
-    
-    int index = [array indexOfObject:object];
-    
-    if (index == 0) {
-        return nil;
-    }
-    
-    return array[index-1];
-    
-}
+
+#pragma mark - PERFORM EVENT
+
+
 
 
 -(BOOL)performEvent:(GameEvent*)event {
@@ -1712,8 +911,6 @@
     [self getPlayerPointersForEvent:event];
     
     //event.manager.SequencePoints -= event.cost;
-    
-#pragma mark - CARD / SYSTEM EVENTS
     
     
     if (event.type == kEventStartTurn){
@@ -1876,7 +1073,7 @@
     [self logEvent:event];
     
     
-#pragma mark SUCCESSFUL SKILL EVENT
+#pragma mark card successful
     
     if (event.wasSuccessful) {
         
@@ -1985,7 +1182,7 @@
         return 1;
     }
     
-#pragma mark FAILED SKILL EVENT
+#pragma mark card failed
     
     else { // NOT SUCCESSFUL
         
@@ -2025,6 +1222,33 @@
         
     }
     
+    
+}
+
+
+-(void)logEvent:(GameEvent*)event{
+    
+    if (event.playerPerforming) {
+        NSLog(@">>%d %@ is %@ >> %d,%d to %d,%d", event.index, event.playerPerforming.name, event.name, event.startingLocation.x, event.startingLocation.y, event.location.x, event.location.y);
+    }
+    else if (event.startingLocation) {
+        NSLog(@">>%d %@ for %@ from %d %d", event.index, event.name, event.manager.name, event.startingLocation.x, event.startingLocation.y);
+    }
+    else {
+        NSLog(@">>%d %@ for %@", event.index, event.name, event.manager.name);
+    }
+    
+}
+
+-(id)previousObjectInArray:(NSArray*)array thisObject:(id)object {
+    
+    int index = [array indexOfObject:object];
+    
+    if (index == 0) {
+        return nil;
+    }
+    
+    return array[index-1];
     
 }
 
@@ -2186,28 +1410,116 @@
 //    [_gcController showMetaDataForMatch:_match];
 //}
 
-#pragma mark - INTEROGATION CONVENIENCE
 
+#pragma mark - GLOBAL ADD / REMOVE FROM BOARD
 #pragma mark -
 
-#pragma mark CARDS
-
-
-
-
--(void)setSelectedCard:(Card *)selectedCard {
-    
-    if (_myTurn) {
-        
-        if (!_animating) {
-            [_gameScene showCardPath:[selectedCard selectionPath]];
+-(Player*)playerAtLocation:(BoardLocation*)location {
+    for (Player* inPlay in [_players allKeys]) {
+        if ([inPlay.location isEqual:location]) {
+            return inPlay;
         }
     }
+    return Nil;
+}
+
+-(void) buildBoardFromCurrentState{
     
-    _selectedCard = selectedCard;
+    NSLog(@"---***---*** UI RESTORE ---***---***");
+    
+    
+    NSLog(@"I have %d players on the board", [_me players].inGame.count);
+    
+    for (Player *p in [_me players].inGame) {
+        
+        
+        
+        if ([p.location isEqual:_ball.location]) {
+            [p setBall:_ball];
+        }
+        [self addCardToBoard:p];
+        
+        
+    }
+    
+    
+    NSLog(@"They have %d players on the board", [_me players].inGame.count);
+    
+    for (Player *p in [_opponent players].inGame) {
+        
+        if ([p.location isEqual:_ball.location]) {
+            [p setBall:_ball];
+        }
+        [self addCardToBoard:p];
+        
+        
+    }
+    
+    NSLog(@"-------- FINISH UI RESTORE --------");
+    
+    [self refreshGameBoard];
     
 }
 
+-(void)refreshGameBoard {
+    
+    // [_gameScene setRotationForManager:_me];
+    
+    [_gameScene moveBallToLocation:_ball.location];
+    
+    [_gameScene refreshScoreBoard];
+    
+}
+
+-(void) setupNewPlayers{
+    
+    _ball = [[Card alloc] init];
+    _ball.specialCategory = CardCategoryBall;
+    
+    _currentEventSequence = [GameSequence sequence];
+    
+    [self addShuffleEventToSequence:_currentEventSequence forDeck:_me.players];
+    
+    [self addShuffleEventToSequence:_currentEventSequence forDeck:_opponent.players];
+    
+    [self setupCoinTossPositionsForSequence:_currentEventSequence];
+    
+    [self addSetBallEventForSequence:_currentEventSequence location:[BoardLocation pX:3 Y:BOARD_LENGTH/2-1]];
+    
+    
+}
+
+-(void) addCardToBoard:(Card*)c {
+    [_players setObject:[c.location copy] forKey:c];
+    [_gameScene addCardToBoardScene:c];
+}
+
+
+-(void) setupCoinTossPositionsForSequence:(GameSequence*)sequence {
+    
+    // automated loop, finds your first 3 player cards
+    
+    // CHECK WE HAVE PLAYERS
+    
+    for (int i = 0; i<3; i++) {
+        
+        GameEvent* spawn = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+!i] withType:kEventAddPlayer];
+        spawn.manager = [self managerForTeamSide:0];
+        
+        GameEvent* spawn2 = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1] withType:kEventAddPlayer];
+        spawn2.manager = [self managerForTeamSide:1];
+        
+    }
+    
+}
+
+-(void)wipeBoard {
+    _ball = [[Card alloc] init];
+    _ball.specialCategory = CardCategoryBall;
+    
+    _players = [NSMutableDictionary dictionary];
+    [_gameScene cleanupGameBoard];
+}
 
 
 -(NSSet*)temporaryEnchantments {
@@ -2252,45 +1564,6 @@
     
 }
 
-
--(BOOL)requireEmptyLocation:(BoardLocation*)location {
-    return ![self requirePlayerAtLocation:location];
-}
-
--(BOOL)requirePlayerAtLocation:(BoardLocation*)location {
-    if ([self playerAtLocation:location]) {
-        return 1;
-    }
-    return 0;
-}
-
--(Player*)playerAtLocation:(BoardLocation*)location {
-    for (Player* inPlay in [_players allKeys]) {
-        if ([inPlay.location isEqual:location]) {
-            return inPlay;
-        }
-    }
-    return Nil;
-}
-
-
--(BOOL)requirePossesion:(Manager*)m {
-    return m.hasPossesion;
-}
-
-
--(GameSequence*)lastSequence {
-    return [_thisTurnSequences lastObject];
-    return nil;
-}
-
-
--(GameEvent*)firstEvent {
-    
-    return _currentEventSequence.GameEvents[0];
-    
-}
-
 -(void)assignBallIfPossible {
     
     for (Player *p in [_players allKeys]){
@@ -2301,59 +1574,20 @@
 
 }
 
--(BOOL)willHaveBallForCurrentSequence {
-    for (GameEvent *e in _currentEventSequence.GameEvents) { // Will have successfully picked up or challenged
-        if ([e.location isEqual:_ball.location]) {
-            // NSLog(@"found event with ball is : %d : %d current", e.index, event.index);
-            // return e.index < event.index;
-            return YES;
-            
-        }
-    }
-    return 0;
-}
-
--(BOOL)willHaveBallDuringEvent:(GameEvent*)event {
+-(NSArray*)allBoardLocations {
+    NSMutableArray *boardLocations = [NSMutableArray array];
     
-    for (GameEvent *e in event.parent.GameEvents) { // Will have successfully picked up or challenged
-        if ([e.location isEqual:_ball.location]) {
-            NSLog(@"found event with ball is : %d : %d current", e.index, event.index);
-            return e.index < event.index;
-            
+    for (int x = 0; x < BOARD_WIDTH; x++) {
+        for (int y = 0; y < BOARD_LENGTH; y++) {
+            [boardLocations addObject:[BoardLocation pX:x Y:y]];
         }
     }
     
-    return 0;
+    return boardLocations;
     
 }
 
--(BOOL)boostSequence {
-    
-    if (_currentEventSequence) {
-        
-        if ([self canPerformCurrentSequence]) {
-            
-            if (_currentEventSequence.boost < 5) {
-                
-                _currentEventSequence.boost++;
-                
-            }
-            
-            if (![self canPerformCurrentSequence]) {
-                _currentEventSequence.boost--;
-                return 0;
-            }
-            
-            return 1;
-            
-            // NSLog(@"Game.m : boostSequence :mod %f: success :%f", event.parent.totalModifier, event.parent.totalSucess);
-            
-        }
-        
-    }
-    return 0;
-    
-}
+#pragma mark - GAME KIT CONVENIENCE
 
 -(void)setCurrentManagerFromMatch {
     
@@ -2419,6 +1653,644 @@
     NSMutableArray* all = [_history mutableCopy];
     [all removeLastObject];
     return all;
+}
+
+
+-(void)fetchThisTurnSequences {
+    
+    
+    [_match loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error){
+        
+        if (!_animating) {
+            NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:[matchData gzipInflate]];
+            //NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:matchData];
+            
+            [self loadSequencesFromUnarchiver:unarchiver];
+            
+            [self checkMyTurn];
+            [self checkRTConnection];
+            
+            if ([self catchUpOnSequences]){
+                
+                
+                
+            }
+            
+        }
+        
+        else {
+            NSLog(@"animating, wait . . .");
+            //            double delayInSeconds = 2.0;
+            //            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            //            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            //                [self fetchThisTurnSequences];
+            //            });
+        }
+        
+        
+        
+    }];
+    
+    
+    
+}
+
+-(BOOL)catchUpOnSequences {
+    
+    
+    
+    if (sequenceIndex == 0) {
+        [self replayLastTurn];
+        return 0;
+    }
+    
+    NSLog(@"--- LOADED CURRENT ACTIONS ---");
+    
+    NSArray *allSequences = [self allSequencesLinear];
+    
+    NSLog(@"%d TOTAL, %d ALREADY PERFORMED", allSequences.count, sequenceIndex);
+    
+    int difference = allSequences.count - sequenceIndex;
+    
+    if (allSequences.count == sequenceIndex) {
+        NSLog(@"FETCH IS CURRENT");
+        
+        if (!_thisTurnSequences) {
+            _thisTurnSequences = [NSMutableArray array];
+        }
+        
+        if (!_thisTurnSequences.count) {
+            NSLog(@"NO ACTIONS FOR THIS TURN");
+            if ([self checkMyTurn]) {
+                // BEGINNING OF MY TURN
+                [self startMyTurn];
+            }
+            
+        }
+        
+        return 1;
+    }
+    
+    else if (allSequences.count < sequenceIndex){
+        NSLog(@"FETCH IS OLDER THAN RT, CHECK BACK SHORTLY");
+        
+        double delayInSeconds = 5.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self fetchThisTurnSequences];
+        });
+        
+        return 0;
+    }
+    
+    // SOMETHING FOR CATCH UP
+    else { // sequences > index
+        
+        NSLog(@"FETCH IS NEW by %d new sequences", difference);
+        
+        _sequenceHeap = [NSMutableArray array];
+        
+        NSMutableArray *allSequences = [self allSequencesLinear];
+        
+        for (int i = 0; i < difference; i ++){
+            
+            [_sequenceHeap addObject:[allSequences lastObject]];
+            [allSequences removeLastObject];
+            
+        }
+        
+        [self performSequence:[_sequenceHeap lastObject] record:NO animate:YES];
+        
+        
+    }
+    
+    //        else {
+    //            NSLog(@"FETCH IS REALLY NEW");
+    //            [self logCurrentGameData];
+    //            [self wipeBoard];
+    //            [self refreshGameBoard];
+    //            [self restoreGameWithData:_match];
+    //            [self replayLastTurn];
+    //        }
+    
+    
+    
+    return 0;
+    
+}
+
+
+-(void)replayGame:(BOOL)animate {
+    
+    [_gameScene setWaiting:NO];
+    
+    self.myTurn = NO;
+    
+    NSLog(@"Game.m : performSequenceSequence : starting sequence sequence");
+    
+    NSLog(@"Game has %d total sequences", [self totalGameSequences]);
+    
+    _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
+    
+    if (_thisTurnSequences) {
+        [_turnHeap addObject:_thisTurnSequences];
+    }
+    
+    if (_history) {
+        
+        for (int i = 0; i < _history.count; i++)
+            [_turnHeap addObject:_history[_history.count - (i + 1)]];
+    }
+    
+    // GET MANAGER FOR TURN
+    
+    [self wipeBoard];
+    
+    if (animate) {
+        
+        [self refreshGameBoard];
+        [self enumerateTurnHeapAnimate:YES];
+        
+    }
+    
+    else {
+        
+        [self enumerateTurnHeapAnimate:NO];
+        
+    }
+    
+    
+}
+
+-(void)replayLastTurn {
+    
+    [_gameScene setWaiting:NO];
+    
+    self.myTurn = NO;
+    
+    NSLog(@"------------ REPLAY HISTORY ------------");
+    
+    sequenceIndex = 0;
+    
+    [self wipeBoard];
+    [self refreshGameBoard];
+    
+    _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
+    
+    if (_history) {
+        
+        NSArray* allButLast = [self allButLastTurn];
+        
+        if (allButLast.count) {
+            for (int i = 0; i < allButLast.count; i++){
+                [_turnHeap addObject:allButLast[allButLast.count - (i + 1)]];
+            }
+        }
+        
+        NSLog(@"Game has %d total sequences", [self totalGameSequences]);
+        NSLog(@"non-animate sequences %d", [self sequenceCountForArray:allButLast]);
+        NSLog(@"animate sequences %d", [[_history lastObject] count] + _thisTurnSequences.count);
+        
+    }
+    else {
+        NSLog(@"------------ NO HISTORY YET ------------");
+    }
+    
+    
+    if (_turnHeap.count) {
+        NSLog(@"------------ NON-ANIMATE RESTORE ------------");
+        [self enumerateTurnHeapAnimate:NO];
+        NSLog(@"------------ REBUILD VISUALS ------------");
+        [self buildBoardFromCurrentState];
+    }
+    
+    
+    // THEN
+    
+    
+    _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
+    
+    NSLog(@"------------ ANIMATE REPLAY ------------");
+    NSLog(@"Game has %d total sequences", [self totalGameSequences]);
+    NSLog(@"already restored %d sequences", [self sequenceCountForArray:[self allButLastTurn]]);
+    NSLog(@"animate %d from last turn", [[_history lastObject] count]);
+    NSLog(@"animate %d from this turn", [_thisTurnSequences count]);
+    
+    
+    
+    if (_thisTurnSequences.count) {
+        [_turnHeap addObject:_thisTurnSequences];
+    }
+    
+    
+    //NSArray* allButLast = [self allButLastTurn]; // CHECK THAT WE DID HAVE ONE THAT DIDN'T GET PLAYED
+    
+    if (_history.count) {
+        [_turnHeap addObject:[_history lastObject]];
+    }
+    
+    if (_turnHeap.count) { // BETTER BE YES
+        NSLog(@"------------ BEGIN ANIMATING ------------");
+        [self enumerateTurnHeapAnimate:YES];
+    }
+    
+    else {
+        NSLog(@"------------ SOMETHING WENT HORRIBLY WRONG ------------");
+        
+    }
+    
+    
+}
+
+-(void)replayLastSequence {
+    
+    [_gameScene setWaiting:NO];
+    
+    self.myTurn = NO;
+    
+    NSLog(@"------------ REPLAY HISTORY ------------");
+    
+    sequenceIndex = 0;
+    
+    [self wipeBoard];
+    [self refreshGameBoard];
+    
+    NSMutableArray* allSequences = [self allSequencesLinear];
+    
+    GameSequence *last = [allSequences lastObject];
+    
+    [allSequences removeLastObject];
+    
+    _sequenceHeap = [NSMutableArray array];
+    
+    for (int i = 0; i < allSequences.count; i++){
+        [_sequenceHeap addObject:allSequences[allSequences.count - (i + 1)]];
+    }
+    
+    [self performSequence:[_sequenceHeap lastObject] record:NO animate:NO];
+    
+    [self buildBoardFromCurrentState];
+    
+    [self performSequence:last record:NO animate:YES];
+    
+    
+}
+
+-(NSMutableArray*)allSequencesLinear {
+    
+    NSMutableArray *allSequences = [NSMutableArray array];
+    
+    for (int i = 0; i < _history.count; i++){
+        NSArray* turn = _history[i];
+        for (int i = 0; i < turn.count; i++){
+            [allSequences addObject:turn[i]];
+        }
+        
+    }
+    
+    for (int i = 0; i < _thisTurnSequences.count; i++){
+        [allSequences addObject:_thisTurnSequences[i]];
+    }
+    
+    //NSLog(@"BUILD ACTION ARRAY %d items", allSequences.count);
+    
+    return allSequences;
+    
+}
+
+-(int)totalEvents {
+    
+    int total = 0;
+    for (GameSequence *g in [self allSequencesLinear]) {
+        total += g.GameEvents.count;
+    }
+    
+    return total;
+    
+}
+
+
+#pragma mark - TB NETWORK EVENTS
+
+-(BOOL)checkMyTurn{
+    
+    if (!_animating) {
+        
+        if ([_match.currentParticipant.playerID
+             isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+            // It's your turn!
+            
+            self.myTurn = YES;
+            
+            return NO;
+            
+        } else {
+            // It's not your turn, just display the game state.
+            
+            self.myTurn = NO;
+            
+            
+            
+        }
+        
+    }
+    
+    return NO;
+    
+}
+
+
+#pragma mark - RT NETWORK EVENTS
+
+-(void)rtIsActive:(BOOL)active {
+    
+    rtIsActive = active;
+    
+    if (active) {
+        
+    }
+    
+    
+    
+}
+
+-(void)setRtmatch:(GKMatch *)rtmatch {
+    
+    if (!_rtmatch && rtmatch) {
+        [self fetchThisTurnSequences];
+    }
+    
+    _rtmatch = rtmatch;
+    
+    
+}
+
+-(BOOL)checkRTConnection {
+    
+    if (_rtmatch) {
+        
+        if (_rtmatch.playerIDs.count) {
+            NSLog(@"RT IS INACTIVE");
+            [_gameScene rtIsActive:YES];
+            return 1;
+        }
+        
+    }
+    
+    NSLog(@"RT IS INACTIVE, FIRING UP");
+    
+    [_gcController initRealTimeConnection];
+    
+    [_gameScene rtIsActive:NO];
+    return 0;
+    
+}
+
+-(void)receiveRTPacket:(NSData*)packet {
+    
+    
+    if (!_animating) {
+        
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:packet];
+        
+        RTMessageType type = [unarchiver decodeIntForKey:@"type"];
+        
+        //NSLog(@"receiving packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
+        
+        [_gameScene receiveRTPacket];
+        
+        if (type == RTMessageNone) {
+            return;
+        }
+        
+        else if (type == RTMessagePerformSequence) {
+            
+            GameSequence *sequence = [unarchiver decodeObjectForKey:@"sequence"];
+            
+            if (sequence.index == sequenceIndex+1) { // WE ARE CURRENT
+                
+                [self setUpPointersForSequenceArray:sequence];
+                
+                
+                
+                [self performSequence:sequence record:NO animate:YES];
+                
+            }
+            
+            else {
+                NSLog(@"NOT IN SYNC - CATCHING UP IF POSSIBLE LATEST ACTION");
+                [self fetchThisTurnSequences];
+                
+            }
+            
+            
+        }
+        else if (type == RTMessageShowSequence) {
+            
+            
+            GameSequence *sequence = [unarchiver decodeObjectForKey:@"sequence"];
+            
+            [self setUpPointersForSequenceArray:sequence];
+            
+            for (GameEvent* e in sequence.GameEvents) {
+                [self getPlayerPointersForEvent:e];
+            }
+            
+            _currentEventSequence = sequence;
+            
+            [_gameScene addNetworkUIForEvent:[_currentEventSequence.GameEvents lastObject]];
+            
+            
+        }
+        
+        else if (type == RTMessageCancelSequence){
+            
+            [self clearSelection];
+            
+        }
+        
+        else if (type == RTMessageCheckTurn){
+            
+            
+            [self fetchThisTurnSequences];
+            
+            
+        }
+        
+        else if (type == RTMessageSortCards){
+            
+            
+            [_gameScene sortHandForManager:_opponent animated:YES];
+            
+            
+        }
+        
+        else if (type == RTMessageBeginCardTouch || type == RTMessageMoveCardTouch){
+            
+            //            BoardLocation *location = [unarchiver decodeObjectForKey:@"location"];
+            //            //Card *c = [self cardInHandForManager:_opponent location:location];
+            //
+            //            CGPoint touch = [unarchiver decodeCGPointForKey:@"touch"];
+            //            CGSize inSize = [unarchiver decodeCGSizeForKey:@"bounds"];
+            //            CGSize outSize = [[UIScreen mainScreen] bounds].size;
+            //
+            //            float xScale = outSize.width / inSize.width;
+            //            float yScale = outSize.height / inSize.height;
+            //
+            //            CGPoint pos = CGPointMake(touch.x * xScale, touch.y * yScale);
+            //
+            //            if (type == RTMessageBeginCardTouch) {
+            //
+            //                [_gameScene opponentBeganCardTouch:c atPoint:pos];
+            //
+            //            }
+            //
+            //            else if (type == RTMessageMoveCardTouch) {
+            //
+            //                [_gameScene opponentMovedCardTouch:c atPoint:pos];
+            //
+            //            }
+            
+        }
+        
+        else if (type == RTMessagePlayer) {
+            
+        }
+        
+    }
+    
+    else {
+        
+        NSLog(@"already animating, check back later . . .");
+    }
+    
+    
+}
+
+
+-(void)sendSequence:(GameSequence*)sequence perform:(BOOL)perform {
+    
+    if (_myTurn || perform) {
+        
+        
+        if (_rtmatch) {
+            
+            NSMutableData* packet = [[NSMutableData alloc]init];
+            
+            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
+            
+            int type;
+            
+            if (perform) {
+                type = RTMessagePerformSequence;
+            }
+            else {
+                type = RTMessageShowSequence;
+            }
+            
+            [archiver encodeInt:type forKey:@"type"];
+            [archiver encodeObject:sequence forKey:@"sequence"];
+            
+            [archiver finishEncoding];
+            
+            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
+            
+            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
+            
+        }
+        
+        
+    }
+    
+}
+
+
+-(void)sendRTPacketWithType:(RTMessageType)type point:(BoardLocation*)location {
+    
+    if (_myTurn) {
+        if (_rtmatch) {
+            
+            NSMutableData* packet = [[NSMutableData alloc]init];
+            
+            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
+            
+            [archiver encodeInt:type forKey:@"type"];
+            [archiver encodeObject:location forKey:@"location"];
+            
+            [archiver finishEncoding];
+            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
+            
+            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
+            
+            
+        }
+    }
+    
+}
+
+-(void)sendRTPacketWithCard:(Card*)c point:(CGPoint)touch began:(BOOL)began{
+    
+    if (_myTurn) {
+        
+        if (_rtmatch) {
+            
+            RTMessageType type;
+            if (began) {
+                type = RTMessageBeginCardTouch;
+            }
+            else{
+                type = RTMessageMoveCardTouch;
+            }
+            
+            NSMutableData* packet = [[NSMutableData alloc]init];
+            
+            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
+            
+            [archiver encodeInt:type forKey:@"type"];
+            [archiver encodeObject:c.location forKey:@"location"];
+            [archiver encodeCGPoint:touch forKey:@"touch"];
+            [archiver encodeCGSize:[[UIScreen mainScreen] bounds].size forKey:@"bounds"];
+            
+            [archiver finishEncoding];
+            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
+            
+            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
+            
+        }
+    }
+    
+}
+
+-(NSString*)stringForMessageType:(RTMessageType)type {
+    NSString *stype;
+    
+    if (type == RTMessagePlayer) {
+        stype = @"RTMessagePlayer";
+    }
+    else if (type == RTMessageBeginCardTouch) {
+        stype = @"RTMessageBeginCardTouch";
+    }
+    else if (type == RTMessageMoveCardTouch) {
+        stype = @"RTMessageMoveCardTouch";
+    }
+    else if (type == RTMessagePerformSequence) {
+        stype = @"RTMessagePerformSequence";
+    }
+    else if (type == RTMessageShowSequence) {
+        stype = @"RTMessageShowSequence";
+    }
+    else if (type == RTMessageCancelSequence) {
+        stype = @"RTMessageCancelSequence";
+    }
+    else if (type == RTMessageCheckTurn) {
+        stype = @"RTMessageCheckTurn";
+    }
+    
+    else {
+        stype = @"RT-TYPE-UNKNOWN";
+    }
+    return stype;
+    
 }
 
 #pragma mark - ARCHIVING

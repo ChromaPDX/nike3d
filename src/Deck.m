@@ -20,33 +20,33 @@
     return self;
 }
 
--(id)initWithPlayer:(Player*)p type:(CardType)type
+-(id)initWithPlayer:(Player*)p type:(CardCategory)category
 {
     self = [super init];
     if(self){
-        _type = type;
+        _category = category;
 
-        switch (type) {
-            case CardTypeKick:
+        switch (_category) {
+            case CardCategoryKick:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
-            case CardTypeChallenge:
+            case CardCategoryChallenge:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
-            case CardTypeMove:
+            case CardCategoryMove:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
                 
-            case CardTypeSpecial:
+            case CardCategorySpecial:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
@@ -61,31 +61,31 @@
         
           [self setPlayer:p];
         
-//        _allCards = @[[[Card alloc] initWithType:kCardTypePlayerKeeper Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerForward Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerForward Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerForward Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerMidFielder Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerMidFielder Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerMidFielder Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerMidFielder Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerDefender Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerDefender Manager:m],
-//                    [[Card alloc] initWithType:kCardTypePlayerDefender Manager:m],
+//        _allCards = @[[[Card alloc] initWithType:kCardCategoryPlayerKeeper Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerForward Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerForward Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerForward Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerMidFielder Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerMidFielder Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerMidFielder Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerMidFielder Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerDefender Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerDefender Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryPlayerDefender Manager:m],
         
-                    //[[Card alloc] initWithType:kCardTypeActionHeader Manager:self.manager],
-//                    [[Card alloc] initWithType:kCardTypeActionSlideTackle Manager:self.manager],
-//                    [[Card alloc] initWithType:kCardTypeActionKamikazeKick Manager:self.manager],
-//                    [[Card alloc] initWithType:kCardTypeActionCaptainsBand Manager:m],
-//                     [[Card alloc] initWithType:kCardTypeActionCaptainsBand Manager:m],
-////                    [[Card alloc] initWithType:kCardTypeActionMercurialAcceleration Manager:self.manager],
-//                    [[Card alloc] initWithType:kCardTypeActionAdrenalBoost Manager:m],
-//                     [[Card alloc] initWithType:kCardTypeActionAdrenalBoost Manager:m],
-//                    [[Card alloc] initWithType:kCardTypeActionAdrenalFlood Manager:m],
-////                    [[Card alloc] initWithType:kCardTypeActionNeuralTriggerFear Manager:self.manager],
-////                    [[Card alloc] initWithType:kCardTypeActionAutoPlayerTrackingSystem Manager:self.manager],
-//                    [[Card alloc] initWithType:kCardTypeActionPredictiveAnalysis1 Manager:m],
-//                    [[Card alloc] initWithType:kCardTypeActionPredictiveAnalysis2 Manager:m]
+                    //[[Card alloc] initWithType:kCardCategoryActionHeader Manager:self.manager],
+//                    [[Card alloc] initWithType:kCardCategoryActionSlideTackle Manager:self.manager],
+//                    [[Card alloc] initWithType:kCardCategoryActionKamikazeKick Manager:self.manager],
+//                    [[Card alloc] initWithType:kCardCategoryActionCaptainsBand Manager:m],
+//                     [[Card alloc] initWithType:kCardCategoryActionCaptainsBand Manager:m],
+////                    [[Card alloc] initWithType:kCardCategoryActionMercurialAcceleration Manager:self.manager],
+//                    [[Card alloc] initWithType:kCardCategoryActionAdrenalBoost Manager:m],
+//                     [[Card alloc] initWithType:kCardCategoryActionAdrenalBoost Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryActionAdrenalFlood Manager:m],
+////                    [[Card alloc] initWithType:kCardCategoryActionNeuralTriggerFear Manager:self.manager],
+////                    [[Card alloc] initWithType:kCardCategoryActionAutoPlayerTrackingSystem Manager:self.manager],
+//                    [[Card alloc] initWithType:kCardCategoryActionPredictiveAnalysis1 Manager:m],
+//                    [[Card alloc] initWithType:kCardCategoryActionPredictiveAnalysis2 Manager:m]
 //                     
 //                     ];
 //        
@@ -128,11 +128,11 @@
 }
 
 -(NSString*)name{
-    switch (_type) {
-        case CardTypeChallenge:return @"CHALLENGE DECK";
-        case CardTypeKick:return @"KICK DECK";
-        case CardTypeMove:return @"MOVE DECK";
-        case CardTypeSpecial:return @"SPECIAL DECK";
+    switch (_category) {
+        case CardCategoryChallenge:return @"CHALLENGE DECK";
+        case CardCategoryKick:return @"KICK DECK";
+        case CardCategoryMove:return @"MOVE DECK";
+        case CardCategorySpecial:return @"SPECIAL DECK";
         default: return @"** ERROR, NO DECK TYPE **";
     }
 }

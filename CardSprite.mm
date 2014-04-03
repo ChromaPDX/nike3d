@@ -165,17 +165,17 @@
     }
 }
 
--(NSString*)cardStringForType {
-    switch (_model.deckType) {
-        case CardTypeMove: return @"Move";
-        case CardTypeKick: return @"Kick";
-        case CardTypeChallenge: return @"Chal";
-        case CardTypeSpecial:
+-(NSString*)cardImageStringForType {
+    switch (_model.deck.category) {
+        case CardCategoryMove: return @"Move";
+        case CardCategoryKick: return @"Kick";
+        case CardCategoryChallenge: return @"Chal";
+        case CardCategorySpecial:
             
-            switch (_model.specialType) {
-                case CardTypeMove: return @"SpecM";
-                case CardTypeKick: return @"SpecK";
-                case CardTypeChallenge: return @"SpecC";
+            switch (_model.specialCategory) {
+                case CardCategoryMove: return @"SpecM";
+                case CardCategoryKick: return @"SpecK";
+                case CardCategoryChallenge: return @"SpecC";
                 default: break;
             }
             
@@ -188,7 +188,7 @@
 
 -(void)setCorrectTexture {
     
-    NSString *fileName = [NSString stringWithFormat:@"Card_Icon_%@_L%d", [self cardStringForType], _model.level];
+    NSString *fileName = [NSString stringWithFormat:@"Card_Icon_%@_L%d", [self cardImageStringForType], _model.level];
     self.texture = [NKTexture textureWithImageNamed:fileName];
  //   if (!_flipped) {
         

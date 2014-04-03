@@ -18,12 +18,12 @@
     int shuffleCount;
 }
 
--(id)initWithPlayer:(Player*)p type:(CardType)type;
+-(id)initWithPlayer:(Player*)p type:(CardCategory)category;
 
 // PERSISTENT
 @property (nonatomic,strong) NSArray *allCards;
 @property (nonatomic,weak) Player *player;
-@property (nonatomic) CardType type;
+@property (nonatomic) CardCategory category;
 
 // NON-PERSISTENT
 @property (nonatomic,strong) NSArray *theDeck;

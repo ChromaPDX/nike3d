@@ -22,10 +22,10 @@
     
     _cardSlots = 4;
     
-    _moveDeck = [[Deck alloc]initWithPlayer:self type:CardTypeMove];
-    _kickDeck = [[Deck alloc]initWithPlayer:self type:CardTypeKick];
-    _challengeDeck = [[Deck alloc]initWithPlayer:self type:CardTypeChallenge];
-    _specialDeck = [[Deck alloc]initWithPlayer:self type:CardTypeSpecial];
+    _moveDeck = [[Deck alloc]initWithPlayer:self type:CardCategoryMove];
+    _kickDeck = [[Deck alloc]initWithPlayer:self type:CardCategoryKick];
+    _challengeDeck = [[Deck alloc]initWithPlayer:self type:CardCategoryChallenge];
+    _specialDeck = [[Deck alloc]initWithPlayer:self type:CardCategorySpecial];
     
 }
 

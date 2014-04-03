@@ -1,5 +1,5 @@
 //
-//  CardTypes.h
+//  CardCategorys.h
 //  ChromaNSFW
 //
 //  Created by Chroma Developer on 11/26/13.
@@ -9,17 +9,16 @@
 #ifndef ChromaNSFW_CardTypes_h
 #define ChromaNSFW_CardTypes_h
 
-typedef NS_ENUM(int32_t, CardType) {
-    CardTypeNull,
+typedef NS_ENUM(int32_t, CardCategory) {
+    CardCategoryNull,
     
-    CardTypePlayer,
-    CardTypeBall,
+    CardCategoryPlayer,
+    CardCategoryBall,
     
-    CardTypeKick,
-    CardTypeChallenge,
-    CardTypeMove,
-    CardTypeSpecial
-    
+    CardCategoryKick,
+    CardCategoryChallenge,
+    CardCategoryMove,
+    CardCategorySpecial
 };
 
 typedef NS_ENUM(int32_t, EventType) {

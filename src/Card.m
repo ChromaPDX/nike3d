@@ -28,16 +28,16 @@
         _range = _level;
         _actionPointEarn = 0;
         _actionPointCost = 0;
-        if (self.deckType == CardTypeSpecial){
+        if (_deck.category == CardCategorySpecial){
             switch (rand()%3) {
                 case 0:
-                    self.specialType = CardTypeMove;
+                    self.specialCategory = CardCategoryMove;
                     break;
                 case 1:
-                    self.specialType = CardTypeKick;
+                    self.specialCategory = CardCategoryKick;
                     break;
                 case 2:
-                    self.specialType = CardTypeChallenge;
+                    self.specialCategory = CardCategoryChallenge;
                     break;
                 default:
                     break;
@@ -47,8 +47,13 @@
     return self;
 }
 
--(CardType)deckType{
-    return _deck.type;
+-(CardCategory)category{
+    if (_deck.category == CardCategorySpecial) {
+        return self.specialCategory;
+    }
+    else {
+        return _deck.category;
+    }
 }
 
 -(void)setDeck:(Deck *)deck {
@@ -76,30 +81,30 @@
     }
     
     else {
-        switch (self.deckType) {
-            case CardTypeKick:
+        switch (self.category) {
+            case CardCategoryKick:
                 return @"KICK";
                 break;
                 
-            case CardTypeMove:
+            case CardCategoryMove:
                 return @"MOVE";
                 break;
                 
-            case CardTypeChallenge:
+            case CardCategoryChallenge:
                 return @"CHALLENGE";
                 break;
                 
-            case CardTypeSpecial:
-                switch (self.specialType) {
-                    case CardTypeKick:
+            case CardCategorySpecial:
+                switch (self.category) {
+                    case CardCategoryKick:
                         return @"SPECIAL KICK";
                         break;
                         
-                    case CardTypeMove:
+                    case CardCategoryMove:
                         return @"SPECIAL MOVE";
                         break;
                         
-                    case CardTypeChallenge:
+                    case CardCategoryChallenge:
                         return @"SPECIAL CHALLENGE";
                         break;
                         
@@ -150,19 +155,19 @@
 
 -(NSString*) descriptionForCard  {
     
-//    if(_cardType == kCardTypeActionHeader) return @"GOAL KICK ON \n SUCCESSFUL PASS";
-//    if(_cardType == kCardTypeActionSlideTackle) return @"Slide Tackle";
-//    if(_cardType == kCardTypeActionKamikazeKick) return @"Kamikaze Kick";
-//      if(_cardType == kCardTypeActionAdrenalBoost) return [NSString stringWithFormat:@"GET %d BONUS \n AP", _actionPointEarn];
-//    if(_cardType == kCardTypeActionAdrenalFlood) return [NSString stringWithFormat:@"GET %d BONUS \n AP", _actionPointEarn];
+//    if(_cardCategory == kCardCategoryActionHeader) return @"GOAL KICK ON \n SUCCESSFUL PASS";
+//    if(_cardCategory == kCardCategoryActionSlideTackle) return @"Slide Tackle";
+//    if(_cardCategory == kCardCategoryActionKamikazeKick) return @"Kamikaze Kick";
+//      if(_cardCategory == kCardCategoryActionAdrenalBoost) return [NSString stringWithFormat:@"GET %d BONUS \n AP", _actionPointEarn];
+//    if(_cardCategory == kCardCategoryActionAdrenalFlood) return [NSString stringWithFormat:@"GET %d BONUS \n AP", _actionPointEarn];
 //    
-//    if(_cardType == kCardTypeActionMercurialAcceleration) return @"Mercurial Acceleration";
+//    if(_cardCategory == kCardCategoryActionMercurialAcceleration) return @"Mercurial Acceleration";
 //    
-//    if(_cardType == kCardTypeActionPredictiveAnalysis1) return [NSString stringWithFormat:@"CHALLENGE \n WITH +%@", [self pP:_abilities.handling]];
-//    if(_cardType == kCardTypeActionPredictiveAnalysis2) return [NSString stringWithFormat:@"CHALLENGE \n WITH +%@", [self pP:_abilities.handling]];
+//    if(_cardCategory == kCardCategoryActionPredictiveAnalysis1) return [NSString stringWithFormat:@"CHALLENGE \n WITH +%@", [self pP:_abilities.handling]];
+//    if(_cardCategory == kCardCategoryActionPredictiveAnalysis2) return [NSString stringWithFormat:@"CHALLENGE \n WITH +%@", [self pP:_abilities.handling]];
 //    
-//    if(_cardType == kCardTypeActionNeuralTriggerFear) return @"Neural Trigger Fear";
-//    if(_cardType == kCardTypeActionAutoPlayerTrackingSystem) return @"Auto Player  Tracking System";
+//    if(_cardCategory == kCardCategoryActionNeuralTriggerFear) return @"Neural Trigger Fear";
+//    if(_cardCategory == kCardCategoryActionAutoPlayerTrackingSystem) return @"Auto Player  Tracking System";
 //    
     return @"add card descriptions";
     
@@ -209,28 +214,21 @@
     
 }
 
-
 -(NSArray*)selectionPath {
     NSMutableArray* obstacles = [[self rangeMask] mutableCopy];
 
     // GET BOARD OBSTACLES
     
-    CardType type = self.deckType;
-    
-    if (self.deckType == CardTypeSpecial) {
-        type = self.specialType;
-    }
-    
-    if (type == CardTypeMove || type == CardTypeChallenge) {
+    if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
         for (Player* p in [self.game.players allKeys]) {
             [obstacles addObject:p.location];
         }
-        if (self.deckType == CardTypeChallenge) {
+        if (self.category == CardCategoryChallenge) {
             [obstacles removeObject:self.game.ball.location];
         }
     }
 
-    else if (type == CardTypeKick) {
+    else if (self.category == CardCategoryKick) {
         for (Player* p in self.deck.player.manager.opponent.players.inGame) {
             [obstacles addObject:p.location];
         }
@@ -242,10 +240,10 @@
     
     // CALCULATE NEIGHBORHOOD
     
-    if (type == CardTypeMove || type == CardTypeChallenge) {
+    if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
         path = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
     }
-    if (type == CardTypeKick) {
+    if (self.category == CardCategoryKick) {
         path = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRook walkDistance:_range];
     }
     
@@ -279,7 +277,7 @@
     
     if (self) {
    
-    _specialType = [decoder decodeIntForKey:NSFWKeyType];
+    _specialCategory = [decoder decodeIntForKey:NSFWKeyType];
     _deck = [decoder decodeObjectForKey:NSFWKeyPlayer];
     
     _name = [decoder decodeObjectForKey:NSFWKeyName];
@@ -300,7 +298,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
-    [encoder encodeInt:_specialType forKey:NSFWKeyType];
+    [encoder encodeInt:_specialCategory forKey:NSFWKeyType];
     [encoder encodeObject:_deck forKey:NSFWKeyPlayer];
 
     [encoder encodeObject:_name forKey:NSFWKeyName];
