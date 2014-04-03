@@ -613,7 +613,7 @@
 
 -(void)wipeBoard {
     _ball = [[Card alloc] init];
-    _ball.cardType = kCardTypeBall;
+    _ball.specialType = CardTypeBall;
     
     _players = [NSMutableDictionary dictionary];
     [_gameScene cleanupGameBoard];
@@ -634,7 +634,7 @@
 -(void) setupNewPlayers{
 
     _ball = [[Card alloc] init];
-    _ball.cardType = kCardTypeBall;
+    _ball.specialType = CardTypeBall;
     
     _currentEventSequence = [GameSequence sequence];
     

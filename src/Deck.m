@@ -20,33 +20,33 @@
     return self;
 }
 
--(id)initWithPlayer:(Player*)p type:(DeckType)type
+-(id)initWithPlayer:(Player*)p type:(CardType)type
 {
     self = [super init];
     if(self){
         _type = type;
 
         switch (type) {
-            case DeckTypeKick:
+            case CardTypeKick:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
-            case DeckTypeChallenge:
+            case CardTypeChallenge:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
-            case DeckTypeMove:
+            case CardTypeMove:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
                 
-            case DeckTypeSpecial:
+            case CardTypeSpecial:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
@@ -129,10 +129,10 @@
 
 -(NSString*)name{
     switch (_type) {
-        case DeckTypeChallenge:return @"CHALLENGE DECK";
-        case DeckTypeKick:return @"KICK DECK";
-        case DeckTypeMove:return @"MOVE DECK";
-        case DeckTypeSpecial:return @"SPECIAL DECK";
+        case CardTypeChallenge:return @"CHALLENGE DECK";
+        case CardTypeKick:return @"KICK DECK";
+        case CardTypeMove:return @"MOVE DECK";
+        case CardTypeSpecial:return @"SPECIAL DECK";
         default: return @"** ERROR, NO DECK TYPE **";
     }
 }

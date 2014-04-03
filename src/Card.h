@@ -36,11 +36,11 @@
 
 -(id) initWithDeck:(Deck*)deck;
 
--(DeckType)deckType;
+-(CardType)deckType;
 
 // PERSISTENT
 
-@property (nonatomic) CardType cardType;
+@property (nonatomic) CardType specialType;
 
 @property (nonatomic, strong) NSString *name;
 

@@ -28,11 +28,26 @@
         _range = _level;
         _actionPointEarn = 0;
         _actionPointCost = 0;
+        if (self.deckType == CardTypeSpecial){
+            switch (rand()%3) {
+                case 0:
+                    self.specialType = CardTypeMove;
+                    break;
+                case 1:
+                    self.specialType = CardTypeKick;
+                    break;
+                case 2:
+                    self.specialType = CardTypeChallenge;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     return self;
 }
 
--(DeckType)deckType{
+-(CardType)deckType{
     return _deck.type;
 }
 
@@ -62,20 +77,36 @@
     
     else {
         switch (self.deckType) {
-            case DeckTypeKick:
+            case CardTypeKick:
                 return @"KICK";
                 break;
                 
-            case DeckTypeMove:
+            case CardTypeMove:
                 return @"MOVE";
                 break;
                 
-            case DeckTypeChallenge:
+            case CardTypeChallenge:
                 return @"CHALLENGE";
                 break;
                 
-            case DeckTypeSpecial:
-                return @"SPECIAL";
+            case CardTypeSpecial:
+                switch (self.specialType) {
+                    case CardTypeKick:
+                        return @"SPECIAL KICK";
+                        break;
+                        
+                    case CardTypeMove:
+                        return @"SPECIAL MOVE";
+                        break;
+                        
+                    case CardTypeChallenge:
+                        return @"SPECIAL CHALLENGE";
+                        break;
+                        
+                    default:
+                        return @"UNKNOWN SPECIAL";
+                        break;
+                }
                 break;
 
             default:
@@ -184,30 +215,37 @@
 
     // GET BOARD OBSTACLES
     
-    if (self.deckType == DeckTypeMove || self.deckType == DeckTypeChallenge) {
+    CardType type = self.deckType;
+    
+    if (self.deckType == CardTypeSpecial) {
+        type = self.specialType;
+    }
+    
+    if (type == CardTypeMove || type == CardTypeChallenge) {
         for (Player* p in [self.game.players allKeys]) {
             [obstacles addObject:p.location];
         }
-        if (self.deckType == DeckTypeChallenge) {
+        if (self.deckType == CardTypeChallenge) {
             [obstacles removeObject:self.game.ball.location];
         }
     }
 
-    else if (self.deckType == DeckTypeKick) {
+    else if (type == CardTypeKick) {
         for (Player* p in self.deck.player.manager.opponent.players.inGame) {
             [obstacles addObject:p.location];
         }
     }
+    
 
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
     NSArray *path;
     
     // CALCULATE NEIGHBORHOOD
     
-    if (self.deckType == DeckTypeMove || self.deckType == DeckTypeChallenge) {
+    if (type == CardTypeMove || type == CardTypeChallenge) {
         path = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
     }
-    if (self.deckType == DeckTypeKick) {
+    if (type == CardTypeKick) {
         path = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRook walkDistance:_range];
     }
     
@@ -241,7 +279,7 @@
     
     if (self) {
    
-    _cardType = [decoder decodeIntForKey:NSFWKeyType];
+    _specialType = [decoder decodeIntForKey:NSFWKeyType];
     _deck = [decoder decodeObjectForKey:NSFWKeyPlayer];
     
     _name = [decoder decodeObjectForKey:NSFWKeyName];
@@ -262,7 +300,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
-    [encoder encodeInt:_cardType forKey:NSFWKeyType];
+    [encoder encodeInt:_specialType forKey:NSFWKeyType];
     [encoder encodeObject:_deck forKey:NSFWKeyPlayer];
 
     [encoder encodeObject:_name forKey:NSFWKeyName];

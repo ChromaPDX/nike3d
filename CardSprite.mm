@@ -167,15 +167,18 @@
 
 -(NSString*)cardStringForType {
     switch (_model.deckType) {
-        case DeckTypeMove: return @"Move";
-        case DeckTypeKick: return @"Kick";
-            case DeckTypeChallenge: return @"Chal";
-            case DeckTypeSpecial:
+        case CardTypeMove: return @"Move";
+        case CardTypeKick: return @"Kick";
+        case CardTypeChallenge: return @"Chal";
+        case CardTypeSpecial:
             
-            switch (_model.cardType) {
-                default:   return @"SpecM";
+            switch (_model.specialType) {
+                case CardTypeMove: return @"SpecM";
+                case CardTypeKick: return @"SpecK";
+                case CardTypeChallenge: return @"SpecC";
+                default: break;
             }
-          
+            
         default:
             break;
     }

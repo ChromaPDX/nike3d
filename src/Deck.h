@@ -11,13 +11,6 @@
 @class Manager;
 @class Player;
 
-typedef NS_ENUM(int, DeckType){
-    DeckTypeNull,
-    DeckTypeKick,
-    DeckTypeChallenge,
-    DeckTypeMove,
-    DeckTypeSpecial
-};
 
 @interface Deck : NSObject <NSCoding, NSCopying>
 
@@ -25,12 +18,12 @@ typedef NS_ENUM(int, DeckType){
     int shuffleCount;
 }
 
--(id)initWithPlayer:(Player*)p type:(DeckType)type;
+-(id)initWithPlayer:(Player*)p type:(CardType)type;
 
 // PERSISTENT
 @property (nonatomic,strong) NSArray *allCards;
 @property (nonatomic,weak) Player *player;
-@property (nonatomic) DeckType type;
+@property (nonatomic) CardType type;
 
 // NON-PERSISTENT
 @property (nonatomic,strong) NSArray *theDeck;

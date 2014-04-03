@@ -10,15 +10,15 @@
 #define ChromaNSFW_CardTypes_h
 
 typedef NS_ENUM(int32_t, CardType) {
-    kCardTypeNull,
+    CardTypeNull,
     
-    kCardTypePlayer,
-    kCardTypeBall,
+    CardTypePlayer,
+    CardTypeBall,
     
-    kCardTypeKick,
-    kCardTypeChallenge,
-    kCardTypeMove,
-    kCardTypeSpecial
+    CardTypeKick,
+    CardTypeChallenge,
+    CardTypeMove,
+    CardTypeSpecial
     
 };
 
