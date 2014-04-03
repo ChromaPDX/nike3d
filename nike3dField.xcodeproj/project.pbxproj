@@ -112,6 +112,7 @@
 		6136A02018EC9F6C00B9267F /* NKTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6136A01F18EC9F6C00B9267F /* NKTypes.cpp */; };
 		6160991118E247450004A938 /* MiniGameScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6160991018E247450004A938 /* MiniGameScene.mm */; };
 		616356C618ECDA1D00D0C6A3 /* GameEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 616356C518ECDA1D00D0C6A3 /* GameEvent.m */; };
+		616356C818ECE46300D0C6A3 /* Card_Icon_SpecK_L1.png in Resources */ = {isa = PBXBuildFile; fileRef = 616356C718ECE46300D0C6A3 /* Card_Icon_SpecK_L1.png */; };
 		616BB2D818E39C3F00A680D3 /* MenuScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 616BB2D718E39C3F00A680D3 /* MenuScene.mm */; };
 		616BB2DD18E39C4600A680D3 /* MenuNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 616BB2DB18E39C4600A680D3 /* MenuNode.mm */; };
 		616BB2FC18E39D2500A680D3 /* Background_Field.png in Resources */ = {isa = PBXBuildFile; fileRef = 616BB2DF18E39D2500A680D3 /* Background_Field.png */; };
@@ -429,6 +430,7 @@
 		6160991018E247450004A938 /* MiniGameScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MiniGameScene.mm; sourceTree = "<group>"; };
 		616356C418ECDA1D00D0C6A3 /* GameEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameEvent.h; sourceTree = "<group>"; };
 		616356C518ECDA1D00D0C6A3 /* GameEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameEvent.m; sourceTree = "<group>"; };
+		616356C718ECE46300D0C6A3 /* Card_Icon_SpecK_L1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecK_L1.png; sourceTree = "<group>"; };
 		616BB2D618E39C3F00A680D3 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuScene.h; path = ../MenuScene.h; sourceTree = "<group>"; };
 		616BB2D718E39C3F00A680D3 /* MenuScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MenuScene.mm; path = ../MenuScene.mm; sourceTree = "<group>"; };
 		616BB2DA18E39C4600A680D3 /* MenuNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuNode.h; sourceTree = "<group>"; };
@@ -1078,6 +1080,7 @@
 				616BB37118E4F9DF00A680D3 /* Card_Icon_SpecC_L1.png */,
 				616BB37218E4F9DF00A680D3 /* Card_Icon_SpecC_L2.png */,
 				616BB37318E4F9DF00A680D3 /* Card_Icon_SpecC_L3.png */,
+				616356C718ECE46300D0C6A3 /* Card_Icon_SpecK_L1.png */,
 				616BB37518E4F9DF00A680D3 /* Card_Icon_SpecK_L2.png */,
 				616BB37618E4F9DF00A680D3 /* Card_Icon_SpecK_L3.png */,
 				616BB37718E4F9DF00A680D3 /* Card_Icon_SpecM_L1.png */,
@@ -1448,6 +1451,7 @@
 				6134208518C6ABA4003D7C9E /* footlong.png in Resources */,
 				6188D77C18EB95C8003D0BB7 /* Iphone_Storyboard.storyboard in Resources */,
 				E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */,
+				616356C818ECE46300D0C6A3 /* Card_Icon_SpecK_L1.png in Resources */,
 				6134204E18C6A4B1003D7C9E /* YOUR_TURN_BOX.png in Resources */,
 				6134202B18C6A4B1003D7C9E /* CardPlayerBlue.png in Resources */,
 				6134201718C6A4B1003D7C9E /* Button_Confirm.png in Resources */,
