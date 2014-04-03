@@ -213,7 +213,7 @@
     Card* kickCard = player.kickDeck.inHand[0];
     
     if(kickCard){
-        kickPath = kickCard.selectionPath;
+        kickPath = [kickCard selectionPath];
     }
     else{
         return retPath;
@@ -223,7 +223,11 @@
         if(moveCard){
             movePath = moveCard.selectionPath;
             if(movePath){
-                
+                // NSArray *intersectPath = [BoardLocation setIntersect:movePath withSet:kickPath];
+                NSArray *intersectPath = [BoardLocation  tileSetIntersect:movePath withTileSet:kickPath];
+                if(intersectPath){
+                    
+                }
             }
         }
         else{
