@@ -221,64 +221,6 @@ float PARTICLE_SCALE;
 }
 
 
--(BOOL)requestActionWithPlayer:(PlayerSprite*)player {
-    
-    [self resetFingerLocation];
-    
-    if (_selectedCard) {
-        // NSLog(@"has card, returning");
-        [self setSelectedCard:nil];
-    }
-    _selectedPlayer = player.model;
-    
-    if ([_game canUsePlayer:player.model]){
-        
-        NSLog(@"CAN USE PLAYER: %@", player.model.name);
-        
-//        [_infoHUD setPlayer:player.model];
-//        [_infoHUD setZPosition:Z_BOARD_LOW];
-  //      [_gameBoardNode fadeInSprite:_infoHUD];
-        
-        return YES;
-    }
-    
-    else {
-        
-        NSLog(@"NOPE NOT FOR PLAYER: %@", player.model.name);
-        
-//        [_infoHUD setPlayer:player.model];
-//        [_infoHUD setZPosition:Z_BOARD_LOW];
-//        [_gameBoardNode fadeInSprite:_infoHUD];
-        
-        return NO;
-    }
-}
-
-// ADD ACTION STATISTICS TO GAME TILE VIEWS
-// convert finger position to BoardLocation,
-// get tile, add stuff to it
-
-
--(BOOL)validatePlayerMove:(Player *)card {
-    
-    if ([_game validatePlayerMove:card]) {
-        NSLog(@"action is valid!");
-
-        return 1;
-    }
-    
-    else {
-        
-        NSLog(@"GameScene.m : shouldMovePlayer : remove action UI");
-//        [_infoHUD setZPosition:Z_BOARD_LOW];
-//        [_infoHUD validate:NO];
-        
-    }
-    
-    return 0;
-    
-}
-
 #pragma mark - UX INTERACTION
 
 -(BoardLocation*)locationOnBoardFromPoint:(CGPoint)location {
@@ -308,12 +250,7 @@ float PARTICLE_SCALE;
     }
 }
 
--(void)setSelectedCard:(Card *)selectedCard {
-    
-    _game.selectedCard = selectedCard;
-    _selectedCard = selectedCard;
-    
-}
+
 
 -(void)showCardPath:(NSArray*)path{
     
@@ -329,6 +266,44 @@ float PARTICLE_SCALE;
         [tile setTextureForBorder:tile.location.borderShape];
         [tile setUserInteractionEnabled:true];
     }
+    
+}
+
+-(void)setSelectedPlayer:(Player *)selectedPlayer {
+    
+    // ABORT IF SELECTING PLAYER AS CARD TARGET
+    BoardTile *tile = [_gameTiles objectForKey:selectedPlayer.location];
+    
+    if (tile.userInteractionEnabled) {
+        [self setSelectedBoardTile:tile];
+        return;
+    }
+    
+    // ELSE DO SELECTION IF POSSIBLE
+    if ([_game canUsePlayer:selectedPlayer]) {
+        
+        
+        if (_selectedCard) {
+            [self setSelectedCard:nil];
+        }
+        
+        for (PlayerSprite *p in playerSprites.allValues) {
+            [p setHighlighted:false];
+        }
+        
+        [[playerSprites objectForKey:selectedPlayer] setHighlighted:true];
+        
+        _selectedPlayer = selectedPlayer;
+        
+        
+    }
+    
+}
+
+-(void)setSelectedCard:(Card *)selectedCard {
+    
+    _game.selectedCard = selectedCard;
+    _selectedCard = selectedCard;
     
 }
 
@@ -1389,17 +1364,7 @@ float PARTICLE_SCALE;
 //    [_scoreBoard setManager:_game.scoreBoardManager];
 }
 
--(void)setSelectedPlayer:(Player *)selectedPlayer {
-    
-    for (PlayerSprite *p in playerSprites.allValues) {
-        [p setHighlighted:false];
-    }
-    
-    [[playerSprites objectForKey:selectedPlayer] setHighlighted:true];
-    
-    _selectedPlayer = selectedPlayer;
-    
-}
+
 
 #pragma mark - UPDATE CYCLE
 

@@ -685,7 +685,7 @@
     newCard.model = card;
     newCard.window = _delegate;
     
-    if (card.selectionSet) {
+    if (card.validatedSelectionSet) {
         newCard.color = newCard.colorForCategory;
     }
     else {

@@ -213,7 +213,7 @@
     Card* kickCard = player.kickDeck.inHand[0];
     
     if(kickCard){
-        kickPath = kickCard.selectionPath;
+        kickPath = kickCard.selectionSet;
     }
     else{
         return retPath;
@@ -221,7 +221,7 @@
     if(kickPath){
         Card* moveCard = self.moveDeck.inHand[0];
         if(moveCard){
-            movePath = moveCard.selectionPath;
+            movePath = moveCard.selectionSet;
             if(movePath){
                 
             }

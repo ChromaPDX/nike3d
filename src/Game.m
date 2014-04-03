@@ -294,7 +294,7 @@
     if (_myTurn) {
         
         if (!_animating) {
-            [_gameScene showCardPath:[selectedCard selectionSet]];
+            [_gameScene showCardPath:[selectedCard validatedSelectionSet]];
         }
     }
     

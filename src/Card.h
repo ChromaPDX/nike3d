@@ -62,6 +62,7 @@
 -(EventType)discardAfterEventType;
 -(NSString*) descriptionForCard;
 -(Game*)game;
+-(NSArray*)validatedSelectionSet;
 -(NSArray*)selectionSet;
 
 @property (nonatomic, weak) Deck *deck;
