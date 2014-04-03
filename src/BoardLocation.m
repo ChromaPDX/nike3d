@@ -122,10 +122,10 @@
     return 0;
 }
 
-+(NSArray*)tileSetIntersect:(NSArray*)pathA withTileSet:(NSArray*)pathB{
++(NSArray*)tileSetIntersect:(NSArray*)tileSetA withTileSet:(NSArray*)tileSetB{
     NSMutableArray *retPath;
-    for(BoardLocation *locA in pathA){
-        for(BoardLocation *locB in pathB){
+    for(BoardLocation *locA in tileSetA){
+        for(BoardLocation *locB in tileSetB){
             if([locA isEqual:locB]){
                 [retPath addObject:locA];
             }
@@ -133,6 +133,9 @@
     }
     return retPath;
 }
+
+
+
 
 
 

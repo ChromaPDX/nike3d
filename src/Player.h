@@ -44,7 +44,9 @@
 
 -(NSArray*)pathToBall;
 -(NSArray*)pathToGoal;
-
+-(NSArray*)pathToBoardLocation:(BoardLocation*)location;
 -(NSArray*)pathToKickRange:(Player*)player;
+-(BoardLocation*)closestLocation:(NSArray*)tileSet;
+
 
 @end
