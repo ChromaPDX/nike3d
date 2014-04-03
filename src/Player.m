@@ -221,7 +221,7 @@
     if(kickPath){
         Card* moveCard = self.moveDeck.inHand[0];
         if(moveCard){
-            movePath = moveCard.selectionPath;
+            movePath = moveCard.selectionSet;
             if(movePath){
                 // NSArray *intersectPath = [BoardLocation setIntersect:movePath withSet:kickPath];
                 NSArray *intersectPath = [BoardLocation  tileSetIntersect:movePath withTileSet:kickPath];

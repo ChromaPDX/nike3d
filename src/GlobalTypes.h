@@ -33,17 +33,17 @@
 
 // UI COLORS
 
-#define V2RED [SKColor colorWithRed:255./255. green:42./255. blue:0./255. alpha:1.]
-#define V2BLUE [SKColor colorWithRed:0./255. green:92./255. blue:255./255. alpha:1.]
-#define V2GREEN [SKColor colorWithRed:52./255. green:255./255. blue:42./255. alpha:1.]
+#define V2RED [NKColor colorWithRed:224./255. green:82./255. blue:98./255. alpha:1.]
+#define V2BLUE [NKColor colorWithRed:13./255. green:107./255. blue:209./255. alpha:1.]
+#define V2GREEN [NKColor colorWithRed:0./255. green:168./255. blue:171./255. alpha:1.]
+#define V2YELLOW [NKColor colorWithRed:231./255. green:174./255. blue:31./255. alpha:1.]
+#define V2ORANGE [NKColor colorWithRed:247./255. green:138./255. blue:37./255. alpha:1.]
+#define V2PURPLE [NKColor colorWithRed:138./255. green:85./255. blue:255./255. alpha:1.]
+#define V2MAGENTA [NKColor colorWithRed:184./255. green:39./255. blue:244./255. alpha:1.]
 
 #define OFRED ofColor(255, 42, 0, 150)
 #define OFBLUE ofColor(0, 92, 255, 150)
 #define OFGREEN ofColor(0, 100, 40, 220)
-
-#define V2SKILL [SKColor colorWithRed:154./255. green:0./255. blue:226./255. alpha:1.]
-#define V2GEAR [SKColor colorWithRed:255./255. green:206/255. blue:0./255. alpha:1.]
-#define V2BOOST V2RED
 
 #define MOVE_CAMERA 1
 #define BALL_SCALE_BIG .5

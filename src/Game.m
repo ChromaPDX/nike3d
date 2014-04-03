@@ -294,7 +294,7 @@
     if (_myTurn) {
         
         if (!_animating) {
-            [_gameScene showCardPath:[selectedCard selectionPath]];
+            [_gameScene showCardPath:[selectedCard validatedSelectionSet]];
         }
     }
     
@@ -311,6 +311,7 @@
             if (_selectedCard.category == CardCategoryMove) {
                  [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventMove];
             }
+            
             else if (_selectedCard.category == CardCategoryKick){
                 if ([_selectedLocation isEqual:_selectedPlayer.manager.goal]) {
                     [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickGoal];
@@ -318,6 +319,10 @@
                 else {
                      [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickPass];
                 }
+            }
+            
+            else if (_selectedCard.category == CardCategoryChallenge){
+                 [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventChallenge];
             }
             
             [self performSequence:_currentEventSequence record:YES animate:YES];
@@ -395,7 +400,7 @@
         
     }
     
-    else if (event.type == kEventKickGoal || event.type == kEventKickPass) {
+    else if (event.type == kEventKickPass) {
         
         event.playerPerforming = [self playerAtLocation:event.startingLocation];
         
@@ -435,7 +440,7 @@
     
     event.cost = 0;
     
-    [self getPlayerPointersForEvent:event];
+    //[self getPlayerPointersForEvent:event];
 
     return event;
     
@@ -1087,11 +1092,8 @@
             //NSLog(@"GOAL !!!!!!! %@ !!!!!", event.manager.name);
             //}
             
-            if (event.manager.teamSide)
-                [_ball setLocation:[BoardLocation pX:-1 Y:1]];
-            else
-                [_ball setLocation:[BoardLocation pX:BOARD_LENGTH Y:1]];
-            
+            [_ball setLocation:event.manager.goal];
+
             if (!_score) {
                 _score = [BoardLocation pX:0 Y:0];
             }

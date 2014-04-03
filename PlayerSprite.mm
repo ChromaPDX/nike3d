@@ -198,10 +198,7 @@
     NKTouchState touchState = [super touchUp:location id:touchId];
     
     if (touchState == NKTouchIsFirstResponder){
-        if ([_delegate requestActionWithPlayer:self]){
-            // [_delegate movingPlayer:_model withTouch:[touches anyObject]];
             [_delegate setSelectedPlayer:self.model];
-        }
     }
 
     return touchState;
