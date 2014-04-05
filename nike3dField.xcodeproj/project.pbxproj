@@ -135,6 +135,8 @@
 		616BB2DD18E39C4600A680D3 /* MenuNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 616BB2DB18E39C4600A680D3 /* MenuNode.mm */; };
 		616BB31B18E4CFDE00A680D3 /* NKTextureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 616BB31A18E4CFDE00A680D3 /* NKTextureManager.m */; };
 		616BB31E18E4E67400A680D3 /* libofxiOS_iphoneos_Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D410213B3A0D800A75A5D /* libofxiOS_iphoneos_Debug.a */; };
+		61775ED618EE25F8002F8488 /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 61775ED518EE25F8002F8488 /* SimpleFragment.glsl */; };
+		61775ED818EE260D002F8488 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 61775ED718EE260D002F8488 /* SimpleVertex.glsl */; };
 		617BDD0718D92491005EC4B1 /* BallSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0618D92491005EC4B1 /* BallSprite.mm */; };
 		617BDD0A18D9298E005EC4B1 /* AlertSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 617BDD0918D9298E005EC4B1 /* AlertSprite.mm */; };
 		6181275318E0EE35003B72F8 /* NKMesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6181275218E0EE35003B72F8 /* NKMesh.mm */; };
@@ -387,6 +389,8 @@
 		616BB2DC18E39C4600A680D3 /* Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
 		616BB31918E4CFDE00A680D3 /* NKTextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTextureManager.h; sourceTree = "<group>"; };
 		616BB31A18E4CFDE00A680D3 /* NKTextureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKTextureManager.m; sourceTree = "<group>"; };
+		61775ED518EE25F8002F8488 /* SimpleFragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleFragment.glsl; sourceTree = "<group>"; };
+		61775ED718EE260D002F8488 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimpleVertex.glsl; sourceTree = "<group>"; };
 		617BDD0518D92491005EC4B1 /* BallSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallSprite.h; sourceTree = "<group>"; };
 		617BDD0618D92491005EC4B1 /* BallSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallSprite.mm; sourceTree = "<group>"; };
 		617BDD0818D9298E005EC4B1 /* AlertSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertSprite.h; sourceTree = "<group>"; };
@@ -1022,6 +1026,8 @@
 				6188D77218EB90F6003D0BB7 /* NKView.mm */,
 				6188D77418EB913C003D0BB7 /* NKCamera.h */,
 				6188D77518EB913C003D0BB7 /* NKCamera.mm */,
+				61775ED518EE25F8002F8488 /* SimpleFragment.glsl */,
+				61775ED718EE260D002F8488 /* SimpleVertex.glsl */,
 			);
 			name = Native;
 			sourceTree = "<group>";
@@ -1167,6 +1173,7 @@
 				6163573218ECFB0F00D0C6A3 /* cameroon.1.png in Resources */,
 				6134208318C6ABA4003D7C9E /* background.png in Resources */,
 				6163575618ECFB0F00D0C6A3 /* tile_horizontal.png in Resources */,
+				61775ED618EE25F8002F8488 /* SimpleFragment.glsl in Resources */,
 				6163576618ECFB0F00D0C6A3 /* Card_Icon_Move_L3.png in Resources */,
 				D569A86E18EA3B880032A5DA /* icosahedron.obj in Resources */,
 				6163578918ECFB0F00D0C6A3 /* PlayerIndicator_PlayerSHADOW.png in Resources */,
@@ -1287,6 +1294,7 @@
 				6163575F18ECFB0F00D0C6A3 /* Card_Icon_Chal_L2.png in Resources */,
 				6163577318ECFB0F00D0C6A3 /* Kick_L1a.png in Resources */,
 				6163575C18ECFB0F00D0C6A3 /* tile_topright.png in Resources */,
+				61775ED818EE260D002F8488 /* SimpleVertex.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
