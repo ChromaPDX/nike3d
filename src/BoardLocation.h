@@ -49,6 +49,5 @@ typedef NS_OPTIONS(UInt16, BorderMask) {
 -(BOOL)isEqual:(BoardLocation*)point;
 -(int)isAdjacentTo:(BoardLocation*)b;
 -(void)setBorderShapeInContext:(NSArray*)arrayOfLocations;
-+(NSArray*)pathIntersect:(NSArray*)pathA withPath:(NSArray*)pathB;
-
++(NSArray*)tileSetIntersect:(NSArray*)tileSetA withTileSet:(NSArray*)tileSetB;
 @end
