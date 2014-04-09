@@ -762,7 +762,7 @@
                         
                         else {
                             if (sequence.manager.isAI) {
-                                [self AIChoosePlayer:sequence.manager];
+                                [self AIChoosePlayerForManager:sequence.manager];
                             }
                             
                             [self saveTurnWithCompletionBlock:^{
@@ -1220,16 +1220,100 @@
 
 #pragma mark - AI DECISION TREE
 
--(void)AIChoosePlayer:(Manager*)m {
+-(void)AIChoosePlayerForManager:(Manager*)m { // called from end sequence, if we have unused player
     NSLog(@"AI: %@ : is choosing a player", m.name);
-    [self endSequenceForEricWithManager:m];
-}
-
--(void)AIChooseCard:(Manager*)m{
+    
+    if (m.hasPossesion) { // OFFENSE
+        
+        // player with ball
+        for (Player *p in m.players.inGame ) {
+            if (p.ball && !p.used) {
+                [_gameScene AISelectedPlayer:p];
+                return;
+            }
+        }
+        
+        // do something else wise ??
+        for (Player *p in [m playersClosestToGoal]) {
+            if (!p.used) {
+                [_gameScene AISelectedPlayer:p];
+                return;
+            }
+        }
+        
+        // last call find somebody available
+        for (Player *p in m.players.inGame ) {
+            if (!p.used) {
+                [_gameScene AISelectedPlayer:p];
+                return;
+            }
+        }
+        
+    }
+    
+    else { // DEFENSE
+        
+        // nearest to ball first ??
+        
+        for (Player *p in [m playersClosestToBall]) {
+            if (!p.used) {
+                [_gameScene AISelectedPlayer:p];
+                return;
+            }
+        }
+        
+        // last call find somebody available
+        for (Player *p in m.players.inGame ) {
+            if (!p.used) {
+                [_gameScene AISelectedPlayer:p];
+                return;
+            }
+        }
+        
+    }
     
 }
 
--(void)AIChooseLocation:(Manager*)m {
+-(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
+    NSLog(@"AI is choosing card for Player: %@", p.name);
+    
+    Card* moveCard = p.moveDeck.inHand[0];
+    [_gameScene AISelectedCard:moveCard];
+    
+}
+
+-(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
+    
+     NSLog(@"AI is choosing a location for card: %@", c.name);
+    
+    if (c.category == CardCategoryMove) { // CALCULATE MOVE CARD
+        
+        NSArray *path;
+        if (c.deck.player.manager.hasPossesion) {
+            path = [c.deck.player pathToGoal];
+        }
+        else {
+            path = [c.deck.player pathToBall];
+        }
+        
+        BoardLocation *newLoc;
+        
+        int maxDist = [path count] - 1;
+        
+        int travelDistance = MAX(0,MIN(maxDist, c.range));
+        // NSLog(@"travelDistance = %d", travelDistance);
+        // NSLog(@"path count = %d", [path count]);
+        
+        if(path && travelDistance > 0){
+            newLoc = [path objectAtIndex:[path count]-travelDistance];
+            [_gameScene AISelectedLocation:newLoc];
+        }
+        else {
+            NSLog(@"AI HAS NO VALID MOVE: STAY");
+            [_gameScene AISelectedLocation:c.deck.player.location];
+        }
+        
+    }
     
 }
 

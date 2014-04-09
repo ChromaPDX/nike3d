@@ -300,10 +300,38 @@ float PARTICLE_SCALE;
     
 }
 
--(void)setSelectedCard:(Card *)selectedCard {
+-(void)AISelectedPlayer:(Player *)selectedPlayer {
     
-    _game.selectedCard = selectedCard;
+    PlayerSprite *p = [playerSprites objectForKey:selectedPlayer];
+    [p setHighlighted:true];
+    
+    _selectedPlayer = selectedPlayer;
+    _game.selectedPlayer = selectedPlayer;
+    
+    if (_selectedCard) {
+        [self setSelectedCard:nil];
+    }
+    
+    [p runAction:[NKAction moveByX:0 y:0 duration:1.] completion:^{
+        [_game AIChooseCardForPlayer:selectedPlayer];
+    }];
+    
+}
+
+-(void)setSelectedCard:(Card *)selectedCard {
     _selectedCard = selectedCard;
+    _game.selectedCard = selectedCard;
+}
+
+-(void)AISelectedCard:(Card *)selectedCard {
+    
+    _selectedCard = selectedCard;
+    _game.selectedCard = selectedCard;
+    [self showCardPath:[_selectedCard validatedSelectionSet]];
+    
+    [self runAction:[NKAction moveByX:0 y:0 duration:1.] completion:^{
+        [_game AIChooseLocationForCard:selectedCard];
+    }];
     
 }
 
@@ -315,6 +343,18 @@ float PARTICLE_SCALE;
     }
     
     _selectedBoardTile = selectedBoardTile;
+}
+
+-(void)AISelectedLocation:(BoardLocation*)selectedLocation {
+    
+    BoardTile *selectedBoardTile = [_gameTiles objectForKey:selectedLocation];
+    
+    if (_selectedCard) {
+        _game.selectedLocation = selectedBoardTile.location;
+    }
+    
+    _selectedBoardTile = selectedBoardTile;
+    
 }
 
 
@@ -597,26 +637,35 @@ float PARTICLE_SCALE;
 
         if (event.card) {
             
-        
-        CardSprite* card = [_uxWindow spriteForCard:event.card];
-
-        [card removeAllActions];
-        
-        [card runAction:[NKAction move3dByX:0 Y:h*.5 Z:300 duration:CARD_ANIM_DUR] completion:^{
-            [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR*2] completion:^{
+            
+            CardSprite* card = [_uxWindow spriteForCard:event.card];
+            
+            if (card) {
                 
-                NKAction *fall = [NKAction move3dByX:0 Y:h*.5 Z:-600 duration:CARD_ANIM_DUR];
-                [card runAction:fall completion:^{
-                    [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
-                        block();
-                        [_uxWindow fadeOutChild:card duration:FAST_ANIM_DUR];
+                
+                [card removeAllActions];
+                
+                [card runAction:[NKAction move3dByX:0 Y:h*.5 Z:300 duration:CARD_ANIM_DUR] completion:^{
+                    [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR*2] completion:^{
+                        
+                        NKAction *fall = [NKAction move3dByX:0 Y:h*.5 Z:-600 duration:CARD_ANIM_DUR];
+                        [card runAction:fall completion:^{
+                            [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
+                                block();
+                                [_uxWindow fadeOutChild:card duration:FAST_ANIM_DUR];
+                            }];
+                        }];
+                        
                     }];
+                    
+                    
                 }];
                 
-            }];
+            }
             
-            
-        }];
+            else { // WERE USING AN AI CARD WITH NO GRAPHICS
+                block();
+            }
             
         }
         else {
