@@ -10,6 +10,10 @@
 #import <SpriteKit/SpriteKit.h>
 
 @class Deck;
+@class Game;
+@class BoardLocation;
+@class Card;
+@class Player;
 
 @interface Manager : NSObject <NSCoding, NSCopying>
 

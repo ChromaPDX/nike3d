@@ -326,11 +326,13 @@
             }
             
             else if (_selectedCard.category == CardCategoryKick){
-                if ([_selectedLocation isEqual:_selectedPlayer.manager.goal]) {
+                if ([selectedLocation isEqual:_selectedPlayer.manager.goal]) {
                     [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickGoal];
+                    NSLog(@"is goal add SHOOT");
                 }
                 else {
                     [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickPass];
+                    NSLog(@"not goal add PASS");
                 }
             }
             
@@ -1264,7 +1266,21 @@
     
     if (p.manager.hasPossesion) { // OFFENSE
         
-        // do kick check
+
+        if (p.ball) {         // do kick check
+            Card* kickCard = p.kickDeck.inHand[0];
+            
+            for (BoardLocation *l in [kickCard validatedSelectionSet]) {
+                if ([l distanceToGoalForManager:p.manager neighborhoodType:NeighborhoodTypeRook] < [p.location distanceToGoalForManager:p.manager neighborhoodType:NeighborhoodTypeRook]) {  // pass / kick towards goal
+                    
+                    [_gameScene AISelectedCard:kickCard];
+                    return;
+                }
+            }
+        }
+        
+        // BAIL TO MOVE IF NO KICK
+        
         [_gameScene AISelectedCard:p.moveDeck.inHand[0]];
         return;
     }
@@ -1321,6 +1337,24 @@
     
     else if (c.category == CardCategoryChallenge){
         [_gameScene AISelectedLocation:_ball.location];
+    }
+    
+    else if (c.category == CardCategoryKick){ // we only got here if kick has a valid set
+        if ([[c validatedSelectionSet] containsObject:c.deck.player.manager.goal]){ // stay on target, stay on target
+            [_gameScene AISelectedLocation:c.deck.player.manager.goal];
+        }
+        else { // pick pass that is closest to goal
+            BoardLocation *closestToGoal = [BoardLocation pX:3 Y:5]; // choose middle of field
+            
+            for (BoardLocation *loc in [c validatedSelectionSet]) {
+                if ([loc distanceToGoalForManager:c.deck.player.manager neighborhoodType:NeighborhoodTypeRook] < [closestToGoal distanceToGoalForManager:c.deck.player.manager neighborhoodType:NeighborhoodTypeRook]) {
+                    closestToGoal = [loc copy];
+                }
+            }
+            
+            [_gameScene AISelectedLocation:closestToGoal];
+            
+        }
     }
     
 }

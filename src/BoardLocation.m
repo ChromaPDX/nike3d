@@ -7,6 +7,8 @@
 //
 
 #import "BoardLocation.h"
+#import "Manager.h"
+#import "AStar.h"
 
 @implementation BoardLocation
 
@@ -102,6 +104,13 @@
     if(!above &&  right &&  below &&  left) _borderShape = BorderMask3Bottom;
     if( above &&  right &&  below &&  left) _borderShape = BorderMaskAll;
     
+    
+}
+
+-(int)distanceToGoalForManager:(Manager*)m neighborhoodType:(int)type{
+    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:nil];
+    
+    return [aStar pathFromAtoB:self B:m.goal NeighborhoodType:type].count;
     
 }
 
