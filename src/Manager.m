@@ -244,4 +244,13 @@
     }
 }
 
+-(Player*)playerWithBall{
+    for (Player* p in _players.inGame) {
+        if (p.ball) {
+            return p;
+        }
+    }
+    return NULL;
+}
+
 @end

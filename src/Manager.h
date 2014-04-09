@@ -54,8 +54,9 @@
 
 -(BoardLocation*)goal;
 -(Manager*)opponent;
+
 -(NSArray*)playersClosestToBall;
 -(NSArray*)playersClosestToGoal;
-
+-(Player*)playerWithBall;
 
 @end

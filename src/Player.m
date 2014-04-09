@@ -159,6 +159,8 @@
     
 }
 
+#pragma mark - AI FUNCTIONS
+
 -(NSArray*)pathToBall{
     BoardLocation *ballLocation = _manager.game.ball.location;
     return [self pathToBoardLocation:ballLocation];
@@ -214,7 +216,7 @@
                 // NSArray *intersectPath = [BoardLocation setIntersect:movePath withSet:kickPath];
                 NSArray *intersectPath = [BoardLocation  tileSetIntersect:movePath withTileSet:kickPath];
                 if(intersectPath){
-                    BoardLocation *closestLocation = [self closestLocation:intersectPath];
+                    BoardLocation *closestLocation = [self closestLocationInTileSet:intersectPath];
                     if(closestLocation){
                         retPath = [self pathToBoardLocation:closestLocation];
                     }
@@ -229,7 +231,15 @@
     return retPath;
 }
 
--(BoardLocation*)closestLocation:(NSArray*)tileSet{
+-(NSArray*)pathToChallenge:(Player *)player{
+    NSMutableArray *retPath;
+   
+    retPath = [NSMutableArray arrayWithArray:[self pathToBoardLocation:player.location]];
+    [retPath removeObjectAtIndex:[retPath count]-1];
+    return retPath;
+}
+
+-(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet{
     int minPath = 10000;
     BoardLocation* retVal;
     for(BoardLocation* location in tileSet){
@@ -238,7 +248,6 @@
             minPath = path.count;
             retVal = location;
         }
-        
     }
     return retVal;
 }
