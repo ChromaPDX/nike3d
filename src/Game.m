@@ -761,11 +761,13 @@
                         }
                         
                         else {
+                            if (sequence.manager.isAI) {
+                                [self AIChoosePlayer:sequence.manager];
+                            }
+                            
                             [self saveTurnWithCompletionBlock:^{
                                 
-                                if (sequence.manager.isAI) {
-                                    [self AIChoosePlayer:sequence.manager];
-                                }
+                     
                                 
                             }];
                         }
@@ -2446,19 +2448,19 @@
 
 -(void)saveTurnWithCompletionBlock:(void (^)())block {
     
-    [_match saveCurrentTurnWithMatchData:[self saveGameToData] completionHandler:^(NSError *error){
-        if (error) {
-            NSLog(@"%@", error);
-        }
-        
-        NSLog(@"**** FINISH SAVING GAME STATE ****");
-        [self logCurrentGameData];
-        
-        [self sendRTPacketWithType:RTMessageCheckTurn point:nil];
-        
-        block();
-        
-    }];
+//    [_match saveCurrentTurnWithMatchData:[self saveGameToData] completionHandler:^(NSError *error){
+//        if (error) {
+//            NSLog(@"%@", error);
+//        }
+//        
+//        NSLog(@"**** FINISH SAVING GAME STATE ****");
+//        [self logCurrentGameData];
+//        
+//        [self sendRTPacketWithType:RTMessageCheckTurn point:nil];
+//        
+//        block();
+//        
+//    }];
     
 }
 
