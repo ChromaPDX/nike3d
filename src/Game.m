@@ -1267,23 +1267,51 @@
 
 #pragma mark - META DATA
 
-/*
+
 -(void)endSequenceForEricWithManager:(Manager*)m{
-    NSLog(@"hi eric, this is: %@",m.name);
+    NSLog(@"****** AI moving for %@, possesion = %d *******",m.name, m.hasPossesion);
     
 
     if(m.hasPossesion){  // OFFENSE
         
-        
-        
+        Player* playerWithBall = [m playerWithBall];
+        NSArray *playersToBall = [m playersClosestToBall];
+        Player* playerRecieving = playersToBall[[playersToBall count]-1];
+        GameSequence *gs = [GameSequence sequence];
+        [self addEventToSequence:gs fromCardOrPlayer:playerWithBall toLocation:playerRecieving.location withType:kEventKickPass];
+        [self performSequence:gs record:YES animate:YES];
     }
     else{  // DEFENSE
+        NSArray *players = [m playersClosestToBall];
+        int upperBound = [players count];
+        int playerIndex = arc4random() % (upperBound);
+        Player *p = [players objectAtIndex:playerIndex];
+        //Player *p = [players objectAtIndex:0];
+        NSArray *path = [p pathToBall];
+        BoardLocation *newLoc;
+        Card* moveCard = p.moveDeck.inHand[0];
+        int maxDist = [path count] - 1;
         
+        int travelDistance = MAX(0,MIN(maxDist, moveCard.range));
+        // NSLog(@"travelDistance = %d", travelDistance);
+        // NSLog(@"path count = %d", [path count]);
+        
+        if(path && travelDistance > 0){
+            //newLoc = [path objectAtIndex:[path count]-travelDistance];
+            newLoc = [path objectAtIndex:[path count]-travelDistance];
+            
+            
+            GameSequence *gs = [GameSequence sequence];
+            
+            [self addEventToSequence:gs fromCardOrPlayer:p toLocation:newLoc withType:kEventMove];
+            [self performSequence:gs record:YES animate:YES];
+        }
+
     }
     
 }
-*/
 
+/*
 -(void)endSequenceForEricWithManager:(Manager*)m{
     NSLog(@"hi eric, this is: %@",m.name);
     
@@ -1335,6 +1363,7 @@
         }
     }
 }
+*/
 
 -(void)processMetaDataForSequence:(GameSequence*)sequence {
  

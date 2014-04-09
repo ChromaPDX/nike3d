@@ -42,11 +42,12 @@
 -(Card*)cardInHandAtlocation:(BoardLocation*)location;
 -(Card*)cardInDeckAtLocation:(BoardLocation*)location;
 
+-(NSArray*)pathToBoardLocation:(BoardLocation*)location;
 -(NSArray*)pathToBall;
 -(NSArray*)pathToGoal;
--(NSArray*)pathToBoardLocation:(BoardLocation*)location;
 -(NSArray*)pathToKickRange:(Player*)player;
--(BoardLocation*)closestLocation:(NSArray*)tileSet;
+-(NSArray*)pathToChallenge:(Player*)player;
+-(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet;
 
 
 @end
