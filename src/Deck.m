@@ -30,11 +30,15 @@
             case CardCategoryKick:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
             case CardCategoryChallenge:
                 _allCards = @[[[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
@@ -42,12 +46,23 @@
             case CardCategoryMove:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
                 
             case CardCategorySpecial:
                 _allCards = @[[[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;

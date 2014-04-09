@@ -287,11 +287,7 @@ float PARTICLE_SCALE;
             [self setSelectedCard:nil];
         }
         
-        for (PlayerSprite *p in playerSprites.allValues) {
-            [p setHighlighted:false];
-        }
-        
-        [[playerSprites objectForKey:selectedPlayer] setHighlighted:true];
+        [self showPlayerSelection:selectedPlayer];
         
         _selectedPlayer = selectedPlayer;
         
@@ -300,10 +296,18 @@ float PARTICLE_SCALE;
     
 }
 
+-(void)showPlayerSelection:(Player*)p{
+    for (PlayerSprite *p in playerSprites.allValues) {
+        [p setHighlighted:false];
+    }
+    [[playerSprites objectForKey:p] setHighlighted:true];
+}
+
 -(void)AISelectedPlayer:(Player *)selectedPlayer {
     
-    PlayerSprite *p = [playerSprites objectForKey:selectedPlayer];
-    [p setHighlighted:true];
+    PlayerSprite *ps = [playerSprites objectForKey:selectedPlayer];
+    
+    [self showPlayerSelection:selectedPlayer];
     
     _selectedPlayer = selectedPlayer;
     _game.selectedPlayer = selectedPlayer;
@@ -312,7 +316,7 @@ float PARTICLE_SCALE;
         [self setSelectedCard:nil];
     }
     
-    [p runAction:[NKAction moveByX:0 y:0 duration:1.] completion:^{
+    [ps runAction:[NKAction moveByX:0 y:0 duration:AI_SPEED] completion:^{
         [_game AIChooseCardForPlayer:selectedPlayer];
     }];
     
@@ -329,7 +333,7 @@ float PARTICLE_SCALE;
     _game.selectedCard = selectedCard;
     [self showCardPath:[_selectedCard validatedSelectionSet]];
     
-    [self runAction:[NKAction moveByX:0 y:0 duration:1.] completion:^{
+    [self runAction:[NKAction moveByX:0 y:0 duration:AI_SPEED] completion:^{
         [_game AIChooseLocationForCard:selectedCard];
     }];
     
@@ -424,58 +428,45 @@ float PARTICLE_SCALE;
         
         PlayerSprite* receiver = [playerSprites objectForKey:event.playerReceiving];
         
-        NKEmitterNode *glow = [self ballGlowWithColor:receiver.color];
-        
-        [self.ballSprite addChild:glow];
-        
-        [glow runAction:[NKAction scaleTo:1. * PARTICLE_SCALE duration:CAM_SPEED*.5] completion:^{}];
+        //NKEmitterNode *glow = [self ballGlowWithColor:receiver.color];
+        //[self.ballSprite addChild:glow];
+        //[glow runAction:[NKAction scaleTo:1. * PARTICLE_SCALE duration:CAM_SPEED*.5] completion:^{}];
         
         [player runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.location] position] duration:MOVE_SPEED] completion:^(){
             
             if (event.wasSuccessful) {
-                
-                NKEmitterNode *glow2 = [self ballGlowWithColor:player.color];
-                [self.ballSprite addChild:glow2];
-                
-                [glow2 runAction:[NKAction scaleTo:2. * PARTICLE_SCALE duration:.01] completion:^{
-                    
+               // NKEmitterNode *glow2 = [self ballGlowWithColor:player.color];
+                //[self.ballSprite addChild:glow2];
+                //[glow2 runAction:[NKAction scaleTo:2. * PARTICLE_SCALE duration:.01] completion:^{
                     [receiver stopPosession:^{
-                        
                         [receiver runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.startingLocation] position] duration:MOVE_SPEED]];
-                        
-                        [glow removeFromParent];
-                        [receiver addChild:glow];
-                        [glow setPosition3d:[receiver.ballTarget positionInNode3d:_gameBoardNode]];
-                        
-                        [glow runAction:[NKAction moveTo:CGPointZero duration:CAM_SPEED*.25] completion:^{
-                        }];
-                        [glow runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED] completion:^{
-                            [glow removeFromParent];
-                        }];
-                        
-                        
+                       // [glow removeFromParent];
+                       // [receiver addChild:glow];
+                       // [glow setPosition3d:[receiver.ballTarget positionInNode3d:_gameBoardNode]];
+                       // [glow runAction:[NKAction moveTo:CGPointZero duration:CAM_SPEED*.25] completion:^{
+                       // }];
+                       // [glow runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED] completion:^{
+                        //    [glow removeFromParent];
+                        //}];
                         [player stealPossesionFromPlayer:receiver];
                         [player startPossession];
-                        
-                        [glow2 runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED] completion:^{
-                            [glow2 removeFromParent];
-                        }];
-                        
-                        
+//                        [glow2 runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED] completion:^{
+//                            [glow2 removeFromParent];
+//                        }];
                         block();
                         
                     }];
                     
-                }];
+                }
                 
-            }
+    
             else {
                 
                 
                 [player runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.startingLocation] position] duration:MOVE_SPEED] completion:^{
-                    [glow runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED*.25] completion:^{
-                        [glow removeFromParent];
-                    }];
+                    //[glow runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED*.25] completion:^{
+                    //    [glow removeFromParent];
+                    //}];
                     block();
                 }];
                 

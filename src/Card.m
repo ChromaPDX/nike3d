@@ -29,7 +29,8 @@
         _actionPointEarn = 0;
         _actionPointCost = 0;
         if (_deck.category == CardCategorySpecial){
-            switch (rand()%3) {
+            int special = rand() % 3;
+            switch (special) {
                 case 0:
                     self.specialCategory = CardCategoryMove;
                     break;
@@ -282,6 +283,8 @@
         if ([accessible containsObject:self.deck.player.manager.goal]) {
             [set addObject:self.deck.player.manager.goal];
         }
+        
+        [set removeObject:self.deck.player.location];
     }
     
     else if (self.category == CardCategoryChallenge) {
@@ -293,8 +296,6 @@
             }
         }
     }
-    
-    [set removeObject:self.deck.player.location];
     
     if (!set.count) return nil;
 

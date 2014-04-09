@@ -355,17 +355,8 @@
         event.playerPerforming = [self playerAtLocation:event.location];
     }
     
-    else if (event.isRunningEvent) {
-        
-        int index = [event.parent.GameEvents indexOfObject:event];
-        
-        for (int i = index; i >= 0; i--){
-            GameEvent* testEvent = event.parent.GameEvents[i];
-            if (testEvent.type == kEventSequence) {
-                event.playerPerforming = testEvent.playerPerforming;
-            }
-        }
-        
+    else if (event.type == kEventMove || event.type == kEventChallenge) {
+
         if (event.type == kEventChallenge) {
             event.playerReceiving = [self playerAtLocation:event.location];
         }
@@ -1270,8 +1261,28 @@
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
     NSLog(@"AI is choosing card for Player: %@", p.name);
     
-    Card* moveCard = p.moveDeck.inHand[0];
-    [_gameScene AISelectedCard:moveCard];
+    
+    if (p.manager.hasPossesion) { // OFFENSE
+        
+        // do kick check
+        [_gameScene AISelectedCard:p.moveDeck.inHand[0]];
+        return;
+    }
+    
+    else { // DEFENSE
+        
+        Card* challengeCard = p.challengeDeck.inHand[0];
+        
+        if ([[challengeCard validatedSelectionSet] count]) { // can challenge
+             [_gameScene AISelectedCard:challengeCard];
+            return;
+        }
+        
+    }
+ 
+    // LAST CALL, fall back to move
+    
+   [_gameScene AISelectedCard:p.moveDeck.inHand[0]];
     
 }
 
@@ -1282,11 +1293,11 @@
     if (c.category == CardCategoryMove) { // CALCULATE MOVE CARD
         
         NSArray *path;
-        if (c.deck.player.manager.hasPossesion) {
+        if (c.deck.player.manager.hasPossesion) { // OFFENSE
             path = [c.deck.player pathToGoal];
         }
         else {
-            path = [c.deck.player pathToBall];
+            path = [c.deck.player pathToBall]; // DEFENSE
         }
         
         BoardLocation *newLoc;
@@ -1306,6 +1317,10 @@
             [_gameScene AISelectedLocation:c.deck.player.location];
         }
         
+    }
+    
+    else if (c.category == CardCategoryChallenge){
+        [_gameScene AISelectedLocation:_ball.location];
     }
     
 }
