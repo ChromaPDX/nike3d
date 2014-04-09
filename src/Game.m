@@ -1267,7 +1267,6 @@
 
 #pragma mark - META DATA
 
-
 -(void)endSequenceForEricWithManager:(Manager*)m{
     NSLog(@"****** AI moving for %@, possesion = %d *******",m.name, m.hasPossesion);
     
@@ -1278,15 +1277,29 @@
         NSArray *playersToBall = [m playersClosestToBall];
         Player* playerRecieving = playersToBall[[playersToBall count]-1];
         GameSequence *gs = [GameSequence sequence];
+        NSLog(@"AI: passing from %@ to %@", playerWithBall.name, playerRecieving.name);
         [self addEventToSequence:gs fromCardOrPlayer:playerWithBall toLocation:playerRecieving.location withType:kEventKickPass];
         [self performSequence:gs record:YES animate:YES];
     }
     else{  // DEFENSE
         NSArray *players = [m playersClosestToBall];
-        int upperBound = [players count];
-        int playerIndex = arc4random() % (upperBound);
-        Player *p = [players objectAtIndex:playerIndex];
-        //Player *p = [players objectAtIndex:0];
+        Player *p = [players objectAtIndex:[players count]-1];
+        Card* moveCard = p.moveDeck.inHand[0];
+        NSArray *possibleMoves = moveCard.validatedSelectionSet;
+        int selectedPosition = arc4random() % [possibleMoves count];
+        BoardLocation *chosenLocation = possibleMoves[selectedPosition];
+        
+        GameSequence *gs = [GameSequence sequence];
+        
+        [self addEventToSequence:gs fromCardOrPlayer:p toLocation:chosenLocation withType:kEventMove];
+        [self performSequence:gs record:YES animate:YES];
+        
+        /*
+        NSArray *players = [m playersClosestToBall];
+      //  int upperBound = [players count];
+       // int playerIndex = arc4random() % (upperBound);
+       // Player *p = [players objectAtIndex:playerIndex];
+        Player *p = [players objectAtIndex:[players count]-1];
         NSArray *path = [p pathToBall];
         BoardLocation *newLoc;
         Card* moveCard = p.moveDeck.inHand[0];
@@ -1303,13 +1316,14 @@
             
             GameSequence *gs = [GameSequence sequence];
             
-            [self addEventToSequence:gs fromCardOrPlayer:p toLocation:newLoc withType:kEventMove];
+            [self addEventToSequence:gs fromCardOrPlayer:p toLocation:newLoc withType:kEventKickPass];
             [self performSequence:gs record:YES animate:YES];
         }
-
+         */
     }
     
 }
+
 
 /*
 -(void)endSequenceForEricWithManager:(Manager*)m{

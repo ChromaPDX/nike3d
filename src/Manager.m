@@ -156,7 +156,7 @@
     
     NSMutableDictionary *playerPathsDict = [[NSMutableDictionary alloc] init];
     for(Player* p in _players.inGame) {
-        NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, ballLocation);
+      //  NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, ballLocation);
         NSArray* path = [aStar pathFromAtoB:p.location B:ballLocation NeighborhoodType:NeighborhoodTypeMoore];
         //  NSLog(@"in playersClosestToBall, path = %@", path);
         // NSString* count = [NSString stringWithFormat:@"%d",[path count]];
