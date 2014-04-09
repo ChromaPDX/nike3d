@@ -357,6 +357,8 @@
         return [hand.cardSprites objectForKey:c];
         
     }
+    
+    NSLog(@"error, no cardSprite found . . .");
     return nil;
     
 }

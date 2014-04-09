@@ -135,6 +135,7 @@
 }
 
 -(void)setCard:(Card *)card {
+    _card = card;
     _deck = card.deck;
     _playerPerforming = card.deck.player;
     self.manager = _playerPerforming.manager;

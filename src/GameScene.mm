@@ -325,8 +325,6 @@ float PARTICLE_SCALE;
     float MOVE_SPEED = .35;
     float BALL_SPEED = .2;
     
-    [self refreshActionPoints];
-    
     PlayerSprite* player = [playerSprites objectForKey:event.playerPerforming];
     
     if (event.type == kEventStartTurn){
@@ -596,39 +594,19 @@ float PARTICLE_SCALE;
     }
 
     else if (event.type == kEventPlayCard){
+
+        if (event.card) {
+            
         
-        // [self cameraShouldFollowSprite:nil withCompletionBlock:^{}];
-        
-        
-        CardSprite* card = [_uxWindow spriteForCard:event.playerPerforming];
-        
-        //            [card removeFromParent];
-        //            [_gameBoardNode addChild:card];
-        //            [card setZRotation:[self rotationForManager:_game.me]];
-        [card setHasShadow:YES];
-        
-        [card setZPosition:Z_INDEX_HUD];
-        
-        //[_uxWindow removeCard:card.model animated:YES withCompletionBlock:^{}];
-        
+        CardSprite* card = [_uxWindow spriteForCard:event.card];
+
         [card removeAllActions];
         
-        if (card.flipped) {
-            [card setFlipped:NO];
-        }
-        
-        [card runAction:[NKAction scaleTo:1.5 duration:FAST_ANIM_DUR]];
-        [card runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
-        
-        
-        [card runAction:[NKAction moveTo:[self windowPosForBoardSprite:[_gameTiles objectForKey:event.location]] duration:CARD_ANIM_DUR] completion:^{
+        [card runAction:[NKAction move3dByX:0 Y:h*.5 Z:300 duration:CARD_ANIM_DUR] completion:^{
             [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR*2] completion:^{
-                [card.shadow runAction:[NKAction scaleTo:1.1 duration:CARD_ANIM_DUR]];
                 
-                NKAction *fall = [NKAction scaleTo:.5 duration:FAST_ANIM_DUR];
-                [fall setTimingMode:NKActionTimingEaseIn];
+                NKAction *fall = [NKAction move3dByX:0 Y:h*.5 Z:-600 duration:CARD_ANIM_DUR];
                 [card runAction:fall completion:^{
-                    [card setZPosition:Z_INDEX_BOARD];
                     [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
                         block();
                         [_uxWindow fadeOutChild:card duration:FAST_ANIM_DUR];
@@ -639,6 +617,12 @@ float PARTICLE_SCALE;
             
             
         }];
+            
+        }
+        else {
+            NSLog(@"ERROR *** play card event with no Card !!!");
+            block();
+        }
         
         
         
@@ -868,12 +852,6 @@ float PARTICLE_SCALE;
     
 }
 
--(void)refreshActionPoints {
-//    
-//    [_uxWindow.turnTokenCount setText:[NSString stringWithFormat:@"%d", _game.me.ActionPoints]];
-//    [_uxWindow.opTokenCount setText:[NSString stringWithFormat:@"%d", _game.opponent.ActionPoints]];
-//    
-}
 
 
 //-(void)AniamteRoll:(GameEvent*)event withCompletionBlock:(void (^)())block {

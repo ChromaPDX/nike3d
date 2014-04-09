@@ -19,7 +19,9 @@
 +(instancetype) sequence;
 
 -(Manager*)manager;
+
 @property (nonatomic, strong) NSMutableArray *GameEvents;
+@property (nonatomic, copy) void (^completionBlock)(void);
 
 @property (nonatomic) int boost;
 @property (nonatomic) int index;

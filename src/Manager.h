@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NSString *name;
 // Game Engine
 
+@property (nonatomic) bool myTurn;
+@property (nonatomic) bool isAI;
 @property (nonatomic) int teamSide;
 @property (nonatomic) int ActionPoints;
 
