@@ -861,7 +861,6 @@
 
 
 
-
 -(BOOL)performEvent:(GameEvent*)event {
     
     event.wasSuccessful = true;
@@ -869,6 +868,8 @@
     // FIRST INHERIT WHO IS INVOLVED FROM PERSISTENT LOCATIONS
     
     [self getPlayerPointersForEvent:event];
+    
+        [self logEvent:event];
     
     //event.manager.SequencePoints -= event.cost;
     
@@ -884,20 +885,12 @@
     else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         
         for (Player* p in event.manager.players.inGame) {
-            [p.moveDeck turnOverNextCard];
-            [p.kickDeck turnOverNextCard];
-            [p.challengeDeck turnOverNextCard];
-            [p.specialDeck turnOverNextCard];
-            [p.specialDeck turnOverNextCard];
+            [p.moveDeck turnOverNextCardForEvent:event];
+            [p.kickDeck turnOverNextCardForEvent:event];
+            [p.challengeDeck turnOverNextCardForEvent:event];
+            [p.specialDeck turnOverNextCardForEvent:event];
+            [p.specialDeck turnOverNextCardForEvent:event];
         }
-        
-//        for (Player* p in event.manager.opponent.players.inGame) {
-//            [p.moveDeck turnOverNextCard];
-//            [p.kickDeck turnOverNextCard];
-//            [p.challengeDeck turnOverNextCard];
-//            [p.specialDeck turnOverNextCard];
-//            [p.specialDeck turnOverNextCard];
-//        }
         
         //NSLog(@"Game.m : drawing card %@ for:%@", newCard.name, event.manager.name);
         
@@ -1039,7 +1032,7 @@
         
     }
     
-    [self logEvent:event];
+
     
     
 #pragma mark card successful
