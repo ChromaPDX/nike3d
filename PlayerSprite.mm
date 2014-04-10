@@ -115,7 +115,9 @@
         
     }
     
+    if (block){
     block();
+    }
     
     
 }
@@ -170,16 +172,12 @@
         _ball.player = nil;
         _ball = nil;
         
-        
-        
         [self fadeOutChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
             NSLog(@"stopped possesion : %@", _model.name);
             [_ballTarget removeFromParent];
             _posession = nil;
         }];
         
-        [_posession removeAllActions];
-        [_ball removeAllActions];
         
         block();
         

@@ -91,6 +91,11 @@ typedef enum RTMessageType {
 -(void)applyBlurWithCompletionBlock:(void (^)())block;
 -(void)removeBlurWithCompletionBlock:(void (^)())block;
 
+// AI SELECTION
+-(void)AISelectedPlayer:(Player *)selectedPlayer;
+-(void)AISelectedCard:(Card *)selectedCard;
+-(void)AISelectedLocation:(BoardLocation*)selectedLocation;
+
 // ANIMATION
 -(void)finishSequenceWithCompletionBlock:(void (^)())block;
 -(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
@@ -190,7 +195,14 @@ typedef enum RTMessageType {
 -(void)showMetaData;
 -(NSDictionary*)metaDataForManager:(Manager*)m;
 
+
+// AI UX INTERACTION
+-(void)AIChoosePlayerForManager:(Manager*)m;
+-(void)AIChooseCardForPlayer:(Player*) p;
+-(void)AIChooseLocationForCard:(Card*) c;
+
 // REQUESTS FROM VIEW
+
 -(void)setCurrentManagerFromMatch;
 -(BOOL)canUsePlayer:(Player*)player;
 -(NSSet*)temporaryEnchantments;

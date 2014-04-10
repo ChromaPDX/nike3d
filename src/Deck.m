@@ -30,11 +30,15 @@
             case CardCategoryKick:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
             case CardCategoryChallenge:
                 _allCards = @[[[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
@@ -42,12 +46,23 @@
             case CardCategoryMove:
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
                 
                 
             case CardCategorySpecial:
                 _allCards = @[[[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
+                              [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self]];
                 break;
@@ -153,7 +168,7 @@
     
     shuffleCount++;
     
-      NSLog(@"--------------- SHUFFLE --------------------");
+    NSLog(@"--------------- SHUFFLE --------------------");
 
     NSMutableArray *cardsMutable = [NSMutableArray arrayWithArray:deck];
     
@@ -233,7 +248,12 @@
     
 }
 
--(Card*)turnOverNextCard{
+-(Card*)turnOverNextCardForEvent:(GameEvent*)event{
+    
+    if (!_theDeck.count) {
+        [self shuffleWithSeed:event.seed fromDeck:_discarded];
+        _discarded = nil;
+    }
     
     NSMutableArray *cardsMutable = [NSMutableArray arrayWithArray:_theDeck];
     NSMutableArray *inHandMutable = [NSMutableArray arrayWithArray:_inHand];
@@ -307,8 +327,7 @@
             _inHand = setMutable;
             
             //card.location = [BoardLocation pX:-100 Y:_discarded.count];
-            NSLog(@"in hand count %d", _inHand.count);
-            NSLog(@"Discard, pile is %d", _discarded.count);
+            NSLog(@"in hand %d, discarded %d", _inHand.count,_discarded.count);
             
             success = true;
         }
@@ -332,8 +351,8 @@
             _theDeck = setMutable;
             
             //card.location = [BoardLocation pX:-100 Y:_discarded.count];
-            NSLog(@"in deck count %d", _theDeck.count);
-            NSLog(@"Discard, pile is %d", _discarded.count);
+//            NSLog(@"in deck count %d", _theDeck.count);
+//            NSLog(@"Discard, pile is %d", _discarded.count);
             
             success = true;
         }
@@ -357,8 +376,7 @@
             _inGame = setMutable;
             
             //card.location = [BoardLocation pX:-100 Y:_discarded.count];
-            NSLog(@"in game count %d", _inGame.count);
-            NSLog(@"Discard, pile is %d", _discarded.count);
+            NSLog(@"in game %d, discarded %d", _inGame.count,_discarded.count);
             
             success = true;
         }

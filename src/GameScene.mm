@@ -287,11 +287,7 @@ float PARTICLE_SCALE;
             [self setSelectedCard:nil];
         }
         
-        for (PlayerSprite *p in playerSprites.allValues) {
-            [p setHighlighted:false];
-        }
-        
-        [[playerSprites objectForKey:selectedPlayer] setHighlighted:true];
+        [self showPlayerSelection:selectedPlayer];
         
         _selectedPlayer = selectedPlayer;
         
@@ -300,10 +296,46 @@ float PARTICLE_SCALE;
     
 }
 
--(void)setSelectedCard:(Card *)selectedCard {
+-(void)showPlayerSelection:(Player*)p{
+    for (PlayerSprite *p in playerSprites.allValues) {
+        [p setHighlighted:false];
+    }
+    [[playerSprites objectForKey:p] setHighlighted:true];
+}
+
+-(void)AISelectedPlayer:(Player *)selectedPlayer {
     
-    _game.selectedCard = selectedCard;
+    PlayerSprite *ps = [playerSprites objectForKey:selectedPlayer];
+    
+    [self showPlayerSelection:selectedPlayer];
+    
+    _selectedPlayer = selectedPlayer;
+    _game.selectedPlayer = selectedPlayer;
+    
+    if (_selectedCard) {
+        [self setSelectedCard:nil];
+    }
+    
+    [ps runAction:[NKAction moveByX:0 y:0 duration:AI_SPEED] completion:^{
+        [_game AIChooseCardForPlayer:selectedPlayer];
+    }];
+    
+}
+
+-(void)setSelectedCard:(Card *)selectedCard {
     _selectedCard = selectedCard;
+    _game.selectedCard = selectedCard;
+}
+
+-(void)AISelectedCard:(Card *)selectedCard {
+    
+    _selectedCard = selectedCard;
+    _game.selectedCard = selectedCard;
+    [self showCardPath:[_selectedCard validatedSelectionSet]];
+    
+    [self runAction:[NKAction moveByX:0 y:0 duration:AI_SPEED] completion:^{
+        [_game AIChooseLocationForCard:selectedCard];
+    }];
     
 }
 
@@ -317,6 +349,18 @@ float PARTICLE_SCALE;
     _selectedBoardTile = selectedBoardTile;
 }
 
+-(void)AISelectedLocation:(BoardLocation*)selectedLocation {
+    
+    BoardTile *selectedBoardTile = [_gameTiles objectForKey:selectedLocation];
+    
+    if (_selectedCard) {
+        _game.selectedLocation = selectedBoardTile.location;
+    }
+    
+    _selectedBoardTile = selectedBoardTile;
+    
+}
+
 
 #pragma mark - ANIMATIONS !!! AKA SOCCER_STAR_GALACTICA
 
@@ -324,8 +368,6 @@ float PARTICLE_SCALE;
     
     float MOVE_SPEED = .35;
     float BALL_SPEED = .2;
-    
-    [self refreshActionPoints];
     
     PlayerSprite* player = [playerSprites objectForKey:event.playerPerforming];
     
@@ -386,58 +428,45 @@ float PARTICLE_SCALE;
         
         PlayerSprite* receiver = [playerSprites objectForKey:event.playerReceiving];
         
-        NKEmitterNode *glow = [self ballGlowWithColor:receiver.color];
-        
-        [self.ballSprite addChild:glow];
-        
-        [glow runAction:[NKAction scaleTo:1. * PARTICLE_SCALE duration:CAM_SPEED*.5] completion:^{}];
+        //NKEmitterNode *glow = [self ballGlowWithColor:receiver.color];
+        //[self.ballSprite addChild:glow];
+        //[glow runAction:[NKAction scaleTo:1. * PARTICLE_SCALE duration:CAM_SPEED*.5] completion:^{}];
         
         [player runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.location] position] duration:MOVE_SPEED] completion:^(){
             
             if (event.wasSuccessful) {
-                
-                NKEmitterNode *glow2 = [self ballGlowWithColor:player.color];
-                [self.ballSprite addChild:glow2];
-                
-                [glow2 runAction:[NKAction scaleTo:2. * PARTICLE_SCALE duration:.01] completion:^{
-                    
+               // NKEmitterNode *glow2 = [self ballGlowWithColor:player.color];
+                //[self.ballSprite addChild:glow2];
+                //[glow2 runAction:[NKAction scaleTo:2. * PARTICLE_SCALE duration:.01] completion:^{
                     [receiver stopPosession:^{
-                        
                         [receiver runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.startingLocation] position] duration:MOVE_SPEED]];
-                        
-                        [glow removeFromParent];
-                        [receiver addChild:glow];
-                        [glow setPosition3d:[receiver.ballTarget positionInNode3d:_gameBoardNode]];
-                        
-                        [glow runAction:[NKAction moveTo:CGPointZero duration:CAM_SPEED*.25] completion:^{
-                        }];
-                        [glow runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED] completion:^{
-                            [glow removeFromParent];
-                        }];
-                        
-                        
+                       // [glow removeFromParent];
+                       // [receiver addChild:glow];
+                       // [glow setPosition3d:[receiver.ballTarget positionInNode3d:_gameBoardNode]];
+                       // [glow runAction:[NKAction moveTo:CGPointZero duration:CAM_SPEED*.25] completion:^{
+                       // }];
+                       // [glow runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED] completion:^{
+                        //    [glow removeFromParent];
+                        //}];
                         [player stealPossesionFromPlayer:receiver];
                         [player startPossession];
-                        
-                        [glow2 runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED] completion:^{
-                            [glow2 removeFromParent];
-                        }];
-                        
-                        
+//                        [glow2 runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED] completion:^{
+//                            [glow2 removeFromParent];
+//                        }];
                         block();
                         
                     }];
                     
-                }];
+                }
                 
-            }
+    
             else {
                 
                 
                 [player runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.startingLocation] position] duration:MOVE_SPEED] completion:^{
-                    [glow runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED*.25] completion:^{
-                        [glow removeFromParent];
-                    }];
+                    //[glow runAction:[NKAction scaleTo:.01 * PARTICLE_SCALE duration:CAM_SPEED*.25] completion:^{
+                    //    [glow removeFromParent];
+                    //}];
                     block();
                 }];
                 
@@ -596,49 +625,44 @@ float PARTICLE_SCALE;
     }
 
     else if (event.type == kEventPlayCard){
-        
-        // [self cameraShouldFollowSprite:nil withCompletionBlock:^{}];
-        
-        
-        CardSprite* card = [_uxWindow spriteForCard:event.playerPerforming];
-        
-        //            [card removeFromParent];
-        //            [_gameBoardNode addChild:card];
-        //            [card setZRotation:[self rotationForManager:_game.me]];
-        [card setHasShadow:YES];
-        
-        [card setZPosition:Z_INDEX_HUD];
-        
-        //[_uxWindow removeCard:card.model animated:YES withCompletionBlock:^{}];
-        
-        [card removeAllActions];
-        
-        if (card.flipped) {
-            [card setFlipped:NO];
-        }
-        
-        [card runAction:[NKAction scaleTo:1.5 duration:FAST_ANIM_DUR]];
-        [card runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
-        
-        
-        [card runAction:[NKAction moveTo:[self windowPosForBoardSprite:[_gameTiles objectForKey:event.location]] duration:CARD_ANIM_DUR] completion:^{
-            [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR*2] completion:^{
-                [card.shadow runAction:[NKAction scaleTo:1.1 duration:CARD_ANIM_DUR]];
+
+        if (event.card) {
+            
+            
+            CardSprite* card = [_uxWindow spriteForCard:event.card];
+            
+            if (card) {
                 
-                NKAction *fall = [NKAction scaleTo:.5 duration:FAST_ANIM_DUR];
-                [fall setTimingMode:NKActionTimingEaseIn];
-                [card runAction:fall completion:^{
-                    [card setZPosition:Z_INDEX_BOARD];
-                    [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
-                        block();
-                        [_uxWindow fadeOutChild:card duration:FAST_ANIM_DUR];
+                
+                [card removeAllActions];
+                
+                [card runAction:[NKAction move3dByX:0 Y:h*.5 Z:300 duration:CARD_ANIM_DUR] completion:^{
+                    [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR*2] completion:^{
+                        
+                        NKAction *fall = [NKAction move3dByX:0 Y:h*.5 Z:-600 duration:CARD_ANIM_DUR];
+                        [card runAction:fall completion:^{
+                            [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
+                                block();
+                                [_uxWindow fadeOutChild:card duration:FAST_ANIM_DUR];
+                            }];
+                        }];
+                        
                     }];
+                    
+                    
                 }];
                 
-            }];
+            }
             
+            else { // WERE USING AN AI CARD WITH NO GRAPHICS
+                block();
+            }
             
-        }];
+        }
+        else {
+            NSLog(@"ERROR *** play card event with no Card !!!");
+            block();
+        }
         
         
         
@@ -868,12 +892,6 @@ float PARTICLE_SCALE;
     
 }
 
--(void)refreshActionPoints {
-//    
-//    [_uxWindow.turnTokenCount setText:[NSString stringWithFormat:@"%d", _game.me.ActionPoints]];
-//    [_uxWindow.opTokenCount setText:[NSString stringWithFormat:@"%d", _game.opponent.ActionPoints]];
-//    
-}
 
 
 //-(void)AniamteRoll:(GameEvent*)event withCompletionBlock:(void (^)())block {

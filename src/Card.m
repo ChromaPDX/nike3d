@@ -24,26 +24,49 @@
     if(self){
         _deck = deck;
         _abilities = [[Abilities alloc]init];
-        _level = rand()%3 + 1;
-        _range = _level;
         _actionPointEarn = 0;
         _actionPointCost = 0;
+        switch (_deck.category) {
+            case CardCategoryMove:
+                 _level = rand()%2 + 1;
+                break;
+                
+            case CardCategoryKick:
+                _level = rand()%3 + 1;
+                break;
+            
+            case CardCategoryChallenge:
+                _level = 1;
+                break;
+                
+            default:
+                break;
+        }
+        
         if (_deck.category == CardCategorySpecial){
-            switch (rand()%3) {
+            int special = rand() % 3;
+            switch (special) {
                 case 0:
                     self.specialCategory = CardCategoryMove;
+                            _level = rand()%2 + 1;
                     break;
                 case 1:
                     self.specialCategory = CardCategoryKick;
+                            _level = rand()%3 + 1;
                     break;
                 case 2:
                     self.specialCategory = CardCategoryChallenge;
+                            _level = rand()%2 + 1;
                     break;
                 default:
                     self.specialCategory = CardCategoryMove;
+                            _level = rand()%3 + 1;
                     break;
             }
         }
+        
+                _range = _level;
+        
     }
     return self;
 }
@@ -282,6 +305,8 @@
         if ([accessible containsObject:self.deck.player.manager.goal]) {
             [set addObject:self.deck.player.manager.goal];
         }
+        
+        [set removeObject:self.deck.player.location];
     }
     
     else if (self.category == CardCategoryChallenge) {
@@ -293,8 +318,6 @@
             }
         }
     }
-    
-    [set removeObject:self.deck.player.location];
     
     if (!set.count) return nil;
 

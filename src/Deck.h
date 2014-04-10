@@ -48,6 +48,6 @@
 -(void)shuffleWithSeed:(NSInteger)seed fromDeck:(NSArray*)deck;
 -(void)revertToSeed:(NSInteger)seed fromDeck:(NSArray*)deck;
 
--(Card*)turnOverNextCard;
+-(Card*)turnOverNextCardForEvent:(GameEvent*)event;
 
 @end

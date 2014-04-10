@@ -10,6 +10,10 @@
 #import <SpriteKit/SpriteKit.h>
 
 @class Deck;
+@class Game;
+@class BoardLocation;
+@class Card;
+@class Player;
 
 @interface Manager : NSObject <NSCoding, NSCopying>
 
@@ -21,6 +25,8 @@
 @property (nonatomic, strong) NSString *name;
 // Game Engine
 
+@property (nonatomic) bool myTurn;
+@property (nonatomic) bool isAI;
 @property (nonatomic) int teamSide;
 @property (nonatomic) int ActionPoints;
 

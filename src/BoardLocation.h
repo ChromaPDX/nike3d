@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class Manager;
+
 typedef NS_OPTIONS(UInt16, BorderMask) {
     
     BorderMaskNone = 0,
@@ -50,4 +52,6 @@ typedef NS_OPTIONS(UInt16, BorderMask) {
 -(int)isAdjacentTo:(BoardLocation*)b;
 -(void)setBorderShapeInContext:(NSArray*)arrayOfLocations;
 +(NSArray*)tileSetIntersect:(NSArray*)tileSetA withTileSet:(NSArray*)tileSetB;
+
+-(int)distanceToGoalForManager:(Manager*)m neighborhoodType:(int)type;
 @end
