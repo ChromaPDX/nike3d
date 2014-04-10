@@ -1302,11 +1302,7 @@
     
 }
 
-
-#pragma mark - META DATA
-
--(void)endSequenceForEricWithManager:(Manager*)m{
-    NSLog(@"****** AI moving for %@, possesion = %d *******",m.name, m.hasPossesion);
+-(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
     
      NSLog(@"AI is choosing a location for card: %@", c.name);
     
@@ -1319,22 +1315,6 @@
         else {
             path = [c.deck.player pathToBall]; // DEFENSE
         }
-        
-        Player* playerWithBall = [m playerWithBall];
-        NSArray *playersToBall = [m playersClosestToBall];
-        Player* playerRecieving = playersToBall[[playersToBall count]-1];
-        GameSequence *gs = [GameSequence sequence];
-        NSLog(@"AI: passing from %@ to %@", playerWithBall.name, playerRecieving.name);
-        [self addEventToSequence:gs fromCardOrPlayer:playerWithBall toLocation:playerRecieving.location withType:kEventKickPass];
-        [self performSequence:gs record:YES animate:YES];
-    }
-    else{  // DEFENSE
-        NSArray *players = [m playersClosestToBall];
-        Player *p = [players objectAtIndex:[players count]-1];
-        Card* moveCard = p.moveDeck.inHand[0];
-        NSArray *possibleMoves = moveCard.validatedSelectionSet;
-        int selectedPosition = arc4random() % [possibleMoves count];
-        BoardLocation *chosenLocation = possibleMoves[selectedPosition];
         
         GameSequence *gs = [GameSequence sequence];
         
@@ -1447,7 +1427,7 @@
         }
     }
 }
-
+*/
 
 #pragma mark - REPLAY / TURN
 
