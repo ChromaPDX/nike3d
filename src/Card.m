@@ -33,6 +33,9 @@
                 
             case CardCategoryKick:
                 _level = rand()%3 + 1;
+#ifdef CHEAT
+                _level = 10;
+#endif
                 break;
             
             case CardCategoryChallenge:

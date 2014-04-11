@@ -139,6 +139,8 @@
     NSLog(@"added new players");
     
     [self addStartTurnEventsToSequence:_currentEventSequence forManager:_me];
+    [_currentEventSequence addEvent:[GameEvent eventWithType:kEventKickoff manager:_me]];
+    
     [self refreshGameBoard];
     
     NSLog(@"running new game action");
@@ -328,11 +330,15 @@
             else if (_selectedCard.category == CardCategoryKick){
                 if ([selectedLocation isEqual:_selectedPlayer.manager.goal]) {
                     [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickGoal];
-                    NSLog(@"is goal add SHOOT");
+                    GameEvent* resetPlayers = [GameEvent event];
+                    resetPlayers.type = kEventResetPlayers;
+                    resetPlayers.manager = _selectedPlayer.manager;
+                    [_currentEventSequence.GameEvents addObject:resetPlayers];
+              
+
                 }
                 else {
                     [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickPass];
-                    NSLog(@"not goal add PASS");
                 }
             }
             
@@ -988,10 +994,26 @@
     else if (event.type == kEventResetPlayers){
         
         // NSLog(@"resetting coin toss position");
-        
-        _ball.location = nil;
-        _ball.enchantee = nil;
-        
+        for (int i = 0; i<3; i++) {
+            
+            Player*p = [self managerForTeamSide:0].players.inGame[i];
+            [p setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+!i]];
+            
+            Player*p2 = [self managerForTeamSide:1].players.inGame[i];
+            [p2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1]];
+            
+            if (i == 1) {
+                if (event.manager.teamSide) {
+                    p.ball = _ball;
+                }
+                else {
+                    p2.ball = _ball;
+                }
+                
+                
+            }
+            
+        }
         
     }
     
@@ -1114,7 +1136,7 @@
             //NSLog(@"GOAL !!!!!!! %@ !!!!!", event.manager.name);
             //}
             
-            [_ball setLocation:event.manager.goal];
+            //[_ball setLocation:event.manager.goal];
             
             if (!_score) {
                 _score = [BoardLocation pX:0 Y:0];
@@ -1124,7 +1146,7 @@
             else _score.x += 1;
             
             
-            [_gameScene refreshScoreBoard];
+           // [_gameScene refreshScoreBoard];
             
             
         }
@@ -1772,7 +1794,10 @@
     }
     
     return boardLocations;
-    
+}
+
+-(NSArray*)allPlayerLocations {
+    return [_players allKeys];
 }
 
 #pragma mark - GAME KIT CONVENIENCE

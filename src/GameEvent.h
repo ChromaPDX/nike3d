@@ -20,6 +20,8 @@
 
 -(Manager*)manager;
 
+-(void)addEvent:(GameEvent*)event;
+
 @property (nonatomic, strong) NSMutableArray *GameEvents;
 @property (nonatomic, copy) void (^completionBlock)(void);
 
@@ -57,6 +59,8 @@
 //@property (nonatomic) BOOL wasSuccessful;
 
 +(instancetype) event;
++(instancetype) eventWithType:(EventType)type manager:(Manager*)manager;
+
 -(NSString*)name;
 -(BOOL)isRunningEvent;
 

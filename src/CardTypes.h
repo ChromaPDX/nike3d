@@ -48,6 +48,8 @@ typedef NS_ENUM(int32_t, EventType) {
     kEventReShuffleDeck,
     
     // Turn State
+    kEventStartGame,
+    kEventKickoff,
     kEventStartTurn,
     kEventStartTurnDraw,
     kEventEndTurn,
