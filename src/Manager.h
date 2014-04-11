@@ -61,6 +61,8 @@
 
 -(NSArray*)playersClosestToBall;
 -(NSArray*)playersClosestToGoal;
+-(NSArray*)playersInShootingRange;
 -(Player*)playerWithBall;
+
 
 @end
