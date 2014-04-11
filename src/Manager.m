@@ -156,7 +156,7 @@
     
     NSMutableDictionary *playerPathsDict = [[NSMutableDictionary alloc] init];
     for(Player* p in _players.inGame) {
-        NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, ballLocation);
+      //  NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, ballLocation);
         NSArray* path = [aStar pathFromAtoB:p.location B:ballLocation NeighborhoodType:NeighborhoodTypeMoore];
         //  NSLog(@"in playersClosestToBall, path = %@", path);
         // NSString* count = [NSString stringWithFormat:@"%d",[path count]];
@@ -201,7 +201,7 @@
     
     NSMutableDictionary *playerPathsDict = [[NSMutableDictionary alloc] init];
     for(Player* p in _players.inGame) {
-        NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, goalLocation);
+       // NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, goalLocation);
         NSArray* path = [aStar pathFromAtoB:p.location B:goalLocation NeighborhoodType:NeighborhoodTypeMoore];
         //  NSLog(@"in playersClosestToBall, path = %@", path);
         // NSString* count = [NSString stringWithFormat:@"%d",[path count]];
@@ -221,8 +221,6 @@
     }
     //NSLog(@"in playersClosestToBall, returning sortedPlayers: %@", sortedPlayers);
     return sortedPlayers;
-
-    
 }
 
 -(Manager*)opponent{
@@ -252,5 +250,19 @@
     }
     return NULL;
 }
+
+-(NSArray*)playersInShootingRange{
+    NSArray *players = [self playersClosestToGoal];
+    NSMutableArray * retPlayers;
+    for(Player *p in players){
+        if([p isInShootingRange]){
+            [retPlayers addObject:p];
+        }
+    }
+    return retPlayers;
+}
+
+
+
 
 @end

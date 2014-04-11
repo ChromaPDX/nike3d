@@ -49,6 +49,12 @@
 -(NSArray*)pathToKickRange:(Player*)player;
 -(NSArray*)pathToChallenge:(Player*)player;
 -(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet;
+-(BOOL)isInShootingRange;
+-(NSArray*)playersInPassRange;
+-(Player*)passToPlayerInShootingRange;
+-(NSArray*)playersCloserToGoal;
+-(BOOL)canMoveToChallenge;
+
 
 
 @end

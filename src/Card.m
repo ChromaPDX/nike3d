@@ -26,6 +26,7 @@
         _abilities = [[Abilities alloc]init];
         _actionPointEarn = 0;
         _actionPointCost = 0;
+        _aiActionType = NONE;
         switch (_deck.category) {
             case CardCategoryMove:
                  _level = rand()%2 + 1;

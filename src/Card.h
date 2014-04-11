@@ -27,6 +27,18 @@
 #define NSFWKeyOpponentModifiers @"opponentModifiers"
 #define NSFWKeyTeamModifiers @"teamModifiers"
 
+enum AI_ACTION_TYPE {
+    NONE,
+    MOVE_TO_GOAL,
+    SHOOT_ON_GOAL,
+    PASS_TO_PLAYER_IN_SHOOTING_RANGE,
+    PASS_TO_GOAL,
+    CHALLENGE,
+    MOVE_TO_CHALLENGE,
+    MOVE_TO_DEFENDGOAL,
+    MOVE_TO_BALL
+};
+
 @class BoardLocation;
 @class Manager;
 @class Abilities;
@@ -70,6 +82,8 @@
 
 -(void)play;
 -(void)discard;
+
+@property (nonatomic) enum AI_ACTION_TYPE aiActionType;
 
 @end
 

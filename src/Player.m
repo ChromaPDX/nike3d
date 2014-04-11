@@ -159,7 +159,7 @@
     
 }
 
-#pragma mark - AI FUNCTIONS
+#pragma mark - AI CONVENIENCE FUNCTIONS
 
 -(NSArray*)pathToBall{
     BoardLocation *ballLocation = _manager.game.ball.location;
@@ -240,7 +240,7 @@
 }
 
 -(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet{
-    int minPath = 10000;
+    int minPath = 100000;
     BoardLocation* retVal;
     for(BoardLocation* location in tileSet){
         NSArray *path = [self pathToBoardLocation:location];
@@ -251,5 +251,102 @@
     }
     return retVal;
 }
+
+-(BOOL)isInShootingRange{
+    Card* kickCard = self.kickDeck.inHand[0];
+    NSArray* pathToGoal = [self pathToGoal];
+    if(kickCard.range >= [pathToGoal count]){
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
+}
+
+-(NSArray*)playersInPassRange{
+    NSMutableArray* retPlayers;
+    NSArray* players = [self.manager playersClosestToBall];
+    for(Player *p in players){
+        NSArray *pathToKickRange = [self pathToKickRange:p];
+        if([pathToKickRange count] == 1){
+            [retPlayers addObject:p];
+        }
+    }
+    return retPlayers;
+}
+
+-(Player *)passToPlayerInShootingRange{
+    NSArray *playersInShootingRange = [self playersInPassRange];
+    NSArray *playersInPassRange = [self.manager playersInShootingRange];
+    NSArray *playersIntersect = [BoardLocation tileSetIntersect:playersInShootingRange withTileSet:playersInPassRange];
+    if(playersIntersect){
+        return playersIntersect[0];
+    }
+    else{
+        return NULL;
+    }
+
+}
+
+-(NSArray *)playersCloserToGoal{
+    NSMutableArray* obstacles = [[NSMutableArray alloc] init];
+    BoardLocation *goalLocation = [self.manager goal];
+    
+    for (Player* p in [self.manager.players allCards]) {
+        // add all players that aren't on the ball to the obstacles
+        if(!(p.location.x == goalLocation.x && p.location.y == goalLocation.y)){
+            [obstacles addObject:p.location];
+        }
+    }
+    for (Player* p in [self.manager.opponent.players allCards]) {
+        // add all players that aren't on the ball to the obstacles
+        if(!(p.location.x == goalLocation.x && p.location.y == goalLocation.y)){
+            [obstacles addObject:p.location];
+        }
+    }
+    
+    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
+    
+    //NSLog(@"_game = %@", _game.ball.location);
+    NSArray* selfPath = [aStar pathFromAtoB:self.location B:goalLocation NeighborhoodType:NeighborhoodTypeMoore];
+    
+    NSMutableDictionary *playerPathsDict = [[NSMutableDictionary alloc] init];
+    for(Player* p in self.manager.players.inGame) {
+        //NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, goalLocation);
+        NSArray* path = [aStar pathFromAtoB:p.location B:goalLocation NeighborhoodType:NeighborhoodTypeMoore];
+        //  NSLog(@"in playersClosestToBall, path = %@", path);
+        // NSString* count = [NSString stringWithFormat:@"%d",[path count]];
+        if(path && ([path count] <= [selfPath count])){
+            [playerPathsDict setObject:p forKey:path];
+        }
+    }
+    // NSLog(@"in playersClosestToBall, playersPathsDict = %@", playerPathsDict);
+    
+    // sort the playerPathsDict by lenth of the paths
+    NSArray *keys = [playerPathsDict allKeys];
+    NSMutableArray *sortedPlayers = [[NSMutableArray alloc] init];
+    NSSortDescriptor* descriptor = [NSSortDescriptor sortDescriptorWithKey: @"@count" ascending: YES];
+    NSArray* sortedKeys= [keys sortedArrayUsingDescriptors: @[ descriptor ]];
+    for(NSArray* key in sortedKeys){
+        [sortedPlayers addObject:[playerPathsDict objectForKey:key]];
+    }
+    //NSLog(@"in playersClosestToBall, returning sortedPlayers: %@", sortedPlayers);
+    return sortedPlayers;
+
+}
+
+-(BOOL)canMoveToChallenge{
+    Player* playerWithBall = [self.manager playerWithBall];
+    NSArray* pathToChallenge = [self pathToChallenge:playerWithBall];
+    Card* moveCard = self.moveDeck.inHand[0];
+    if([pathToChallenge count] <= moveCard.range){
+        return TRUE;
+    }
+    else{
+        return FALSE;
+    }
+}
+
+
 
 @end

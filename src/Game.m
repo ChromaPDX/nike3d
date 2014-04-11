@@ -1,9 +1,9 @@
 //
-//  Game.m
-//  CardDeck
+// Game.m
+// CardDeck
 //
-//  Created by Robby Kraft on 9/17/13.
-//  Copyright (c) 2013 Robby Kraft. All rights reserved.
+// Created by Robby Kraft on 9/17/13.
+// Copyright (c) 2013 Robby Kraft. All rights reserved.
 //
 
 #import <AVFoundation/AVFoundation.h>
@@ -25,7 +25,7 @@
 -(id) init{
     self = [super init];
     if(self){
-        NSString *path  = [[NSBundle mainBundle] pathForResource:@"touch" ofType:@"wav"];
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"touch" ofType:@"wav"];
         NSURL *pathURL = [NSURL fileURLWithPath : path];
         AudioServicesCreateSystemSoundID((__bridge CFURLRef) pathURL, &touchSound);
     }
@@ -40,48 +40,48 @@
 
 //-(void)startMultiPlayerGame {
 //
-//    _me = [[Manager alloc] init];
-//    _opponent = [[Manager alloc] init];
+// _me = [[Manager alloc] init];
+// _opponent = [[Manager alloc] init];
 //
-//    _score = [BoardLocation pX:0 Y:0];
+// _score = [BoardLocation pX:0 Y:0];
 //
-//    [_me setColor:[UIColor colorWithRed:0.0 green:80/255. blue:249/255. alpha:1.0]];
-//    [_opponent setColor:[UIColor colorWithRed:1.0 green:40/255. blue:0 alpha:1.0]];
-//    [_me setTeamSide:1];
-//    [_opponent setTeamSide:0];
-//
-//
-//    _rtmatchid = arc4random();
-//    NSNumber *uid = [NSNumber numberWithUnsignedInteger:_rtmatchid];
+// [_me setColor:[UIColor colorWithRed:0.0 green:80/255. blue:249/255. alpha:1.0]];
+// [_opponent setColor:[UIColor colorWithRed:1.0 green:40/255. blue:0 alpha:1.0]];
+// [_me setTeamSide:1];
+// [_opponent setTeamSide:0];
 //
 //
-//    _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
-//                                                                 @"current player":_match.currentParticipant.playerID,
-//                                                                 @"rtmatchid":uid,
-//                                                                 @"boardLength": [NSNumber numberWithInt:BOARD_LENGTH]
-//                                                                 }];
+// _rtmatchid = arc4random();
+// NSNumber *uid = [NSNumber numberWithUnsignedInteger:_rtmatchid];
+//
+//
+// _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
+// @"current player":_match.currentParticipant.playerID,
+// @"rtmatchid":uid,
+// @"boardLength": [NSNumber numberWithInt:BOARD_LENGTH]
+// }];
 //
 //
 //
 //
-//    _me.name = @"CHROMA";
-//    _opponent.name = @"NIKE";
+// _me.name = @"CHROMA";
+// _opponent.name = @"NIKE";
 //
-//    self.myTurn = YES;
+// self.myTurn = YES;
 //
-//    [_gameScene setupGameBoard];
+// [_gameScene setupGameBoard];
 //
-//    _history = [NSMutableArray array];
-//    _thisTurnSequences = [NSMutableArray array];
-//    players = [NSMutableDictionary dictionary];
+// _history = [NSMutableArray array];
+// _thisTurnSequences = [NSMutableArray array];
+// players = [NSMutableDictionary dictionary];
 //
-//    [self setupNewPlayers];
+// [self setupNewPlayers];
 //
-//    [self addStartTurnEventsToSequence:_currentEventSequence];
+// [self addStartTurnEventsToSequence:_currentEventSequence];
 //
-//    [self refreshGameBoard];
+// [self refreshGameBoard];
 //
-//    [self performSequence:_currentEventSequence record:YES animate:YES];
+// [self performSequence:_currentEventSequence record:YES animate:YES];
 //
 //
 //}
@@ -364,7 +364,7 @@
     }
     
     else if (event.type == kEventMove || event.type == kEventChallenge) {
-
+        
         if (event.type == kEventChallenge) {
             event.playerReceiving = [self playerAtLocation:event.location];
         }
@@ -566,7 +566,7 @@
     GameEvent* draw = [self addDrawEventToSequence:sequence forManager:m];
     draw.type = kEventStartTurnDraw;
     draw.cost = 0;
-
+    
     
 }
 
@@ -576,11 +576,11 @@
 
 
 -(void)recordSequence:(GameSequence*)sequence withCompletionBlock:(void (^)())block {
-
+    
     if (block) {
-         sequence.completionBlock = block;
+        sequence.completionBlock = block;
     }
-   
+    
     [self performSequence:sequence record:true animate:true];
     
 }
@@ -595,7 +595,7 @@
         _animating = YES;
     }
     
-    if  (shouldRecordSequence){
+    if (shouldRecordSequence){
         [self processMetaDataForSequence:sequence];
         
         [self sendSequence:sequence perform:YES];
@@ -638,22 +638,22 @@
 }
 
 //-(BOOL)shouldPerformCurrentSequence {
-//    
-//    if (_myTurn && [self canPerformCurrentSequence]) {
-//        
-//        
-//        _sequenceHeap = [[NSMutableArray alloc]initWithCapacity:5];
-//        [_sequenceHeap addObject:_currentEventSequence];
-//        
-//        [self performSequence:_currentEventSequence record:YES animate:YES];
-//        
-//        
-//        return 1;
-//        
-//    }
-//    
-//    return 0;
-//    
+//
+// if (_myTurn && [self canPerformCurrentSequence]) {
+//
+//
+// _sequenceHeap = [[NSMutableArray alloc]initWithCapacity:5];
+// [_sequenceHeap addObject:_currentEventSequence];
+//
+// [self performSequence:_currentEventSequence record:YES animate:YES];
+//
+//
+// return 1;
+//
+// }
+//
+// return 0;
+//
 //}
 
 -(void)enumerateSequence:(GameSequence*)sequence record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
@@ -732,7 +732,7 @@
             }
             
             if (animate) { // ALL 'REAL-TIME' TURNS WILL ANSWER YES !
-
+                
                 if (sequence.completionBlock) {
                     sequence.completionBlock();
                 }
@@ -766,11 +766,11 @@
                             
                             [self saveTurnWithCompletionBlock:^{
                                 
-                     
+                                
                                 
                             }];
                         }
-
+                        
                         
                     }
                     
@@ -830,9 +830,9 @@
             
             [_turnHeap removeLastObject];
             
-            //            if (!_turnHeap.count) {
-            //                [self fetchThisTurnSequences];
-            //            }
+            // if (!_turnHeap.count) {
+            // [self fetchThisTurnSequences];
+            // }
             
             if (animate) {
                 
@@ -868,7 +868,7 @@
     
     [self getPlayerPointersForEvent:event];
     
-        [self logEvent:event];
+    [self logEvent:event];
     
     //event.manager.SequencePoints -= event.cost;
     
@@ -1027,28 +1027,25 @@
         
         // START TEST
         
-        //        event.manager.deck.theDeck = event.manager.deck.allCards;
+        // event.manager.deck.theDeck = event.manager.deck.allCards;
         //
-        //        int seeds[7] = {2342, 234235, 123124, 6456, 12314, 5435435, 456456};
+        // int seeds[7] = {2342, 234235, 123124, 6456, 12314, 5435435, 456456};
         //
-        //        for (int i = 0; i < 7; i++) {
-        //            [event.manager.deck shuffleWithSeed:seeds[i] fromDeck:event.manager.deck.theDeck];
+        // for (int i = 0; i < 7; i++) {
+        // [event.manager.deck shuffleWithSeed:seeds[i] fromDeck:event.manager.deck.theDeck];
         //
-        //        }
+        // }
         //
-        //        for (int i = 6; i >= 0; i--) {
-        //            [event.manager.deck revertToSeed:seeds[i] fromDeck:event.manager.deck.theDeck];
+        // for (int i = 6; i >= 0; i--) {
+        // [event.manager.deck revertToSeed:seeds[i] fromDeck:event.manager.deck.theDeck];
         //
-        //        }
+        // }
         //
         
         // END TEST
         
         
     }
-    
-
-    
     
 #pragma mark card successful
     
@@ -1155,7 +1152,6 @@
         
         return 1;
     }
-    
 #pragma mark card failed
     
     else { // NOT SUCCESSFUL
@@ -1286,47 +1282,110 @@
     NSLog(@"AI is choosing card for Player: %@", p.name);
     
     
-    if (p.manager.hasPossesion) { // OFFENSE
-        
-
-        if (p.ball) {         // do kick check
+    if (p.manager.hasPossesion) {
+        // OFFENSE
+        if (p.ball) {
+            // HAS BALL
             Card* kickCard = p.kickDeck.inHand[0];
+            Card* moveCard = p.moveDeck.inHand[0];
+            if ([[kickCard validatedSelectionSet] containsObject:kickCard.deck.player.manager.goal]){
+                // CAN SHOOT ON GOAL
+                kickCard.aiActionType = SHOOT_ON_GOAL;
+                //[_gameScene AISelectedLocation:kickCard.deck.player.manager.goal];
+                [_gameScene AISelectedCard:kickCard];
+                return;
+            }
+            else{
+                //CAN NOT SHOOT ON GOAL
+                NSArray *pathToGoal = [p pathToGoal];
+                if([pathToGoal count] <= kickCard.range + moveCard.range){
+                    // CAN MOVE IN SHOOTING RANGE
+                    moveCard.aiActionType = MOVE_TO_GOAL;
+                    [_gameScene AISelectedCard:moveCard];
+                    return;
+                }
+                else{
+                    //CAN NOT MOVE IN SHOOTING RANGE
+                    Player *passToPlayer = [p passToPlayerInShootingRange];
+                    if(passToPlayer){
+                        // CAN PASS TO PLAYER IN SHOOTING RANGE
+                        kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
+                        [_gameScene AISelectedCard:kickCard];
+                        return;
+                    }
+                    else{
+                        // CAN NOT PASS TO PLAYER IN SHOOTING RANGE
+                        NSArray *playersCloserToGoal = [p playersCloserToGoal];
+                        if(playersCloserToGoal){
+                            // CAN PASS TO PLAYER CLOSER TO GOAL
+                            kickCard.aiActionType = PASS_TO_GOAL;
+                            [_gameScene AISelectedCard:kickCard];
+                            return;
+                        }
+                        else{
+                            // CAN NOT PASS TO GOAL
+                            moveCard.aiActionType = MOVE_TO_GOAL;
+                            [_gameScene AISelectedCard:moveCard];
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            // DOES NOT HAVE BALL
+            Card* moveCard = p.moveDeck.inHand[0];
+            moveCard.aiActionType = MOVE_TO_GOAL;
+            [_gameScene AISelectedCard:moveCard];
+            return;
             
-            for (BoardLocation *l in [kickCard validatedSelectionSet]) {
-                if ([l distanceToGoalForManager:p.manager neighborhoodType:NeighborhoodTypeRook] < [p.location distanceToGoalForManager:p.manager neighborhoodType:NeighborhoodTypeRook]) {  // pass / kick towards goal
-                    
-                    [_gameScene AISelectedCard:kickCard];
+        }
+    }
+    else {
+        // DEFENSE
+        Card* challengeCard = p.challengeDeck.inHand[0];
+        Card* moveCard = p.moveDeck.inHand[0];
+
+        
+        if ([[challengeCard validatedSelectionSet] count]) {
+            // CAN CHALLENGE
+            challengeCard.aiActionType = CHALLENGE;
+            [_gameScene AISelectedCard:challengeCard];
+            return;
+        }
+        else{
+            // CAN NOT CHALLENGE
+            if([p canMoveToChallenge]){
+                // CAN MOVE TO CHALLENGE
+                moveCard.aiActionType = MOVE_TO_CHALLENGE;
+                [_gameScene AISelectedCard:moveCard];
+                return;
+            }
+            else{
+                // CAN NOT MOVE TO CHALLENGE
+                NSArray *pathToGoal = [p pathToGoal];
+                NSArray *pathToBall = [p pathToBall];
+                if([pathToGoal count] > [pathToBall count]){
+                    // IS CLOSER TO BALL THAN GOAL
+                    moveCard.aiActionType = MOVE_TO_BALL;
+                    [_gameScene AISelectedCard:moveCard];
+                    return;
+                }
+                else{
+                    // IS CLOSER TO GOAL THAN BALL
+                    moveCard.aiActionType = MOVE_TO_GOAL;
+                    [_gameScene AISelectedCard:moveCard];
                     return;
                 }
             }
         }
         
-        // BAIL TO MOVE IF NO KICK
-        
-        [_gameScene AISelectedCard:p.moveDeck.inHand[0]];
-        return;
     }
-    
-    else { // DEFENSE
-        
-        Card* challengeCard = p.challengeDeck.inHand[0];
-        
-        if ([[challengeCard validatedSelectionSet] count]) { // can challenge
-             [_gameScene AISelectedCard:challengeCard];
-            return;
-        }
-        
-    }
- 
-    // LAST CALL, fall back to move
-    
-   [_gameScene AISelectedCard:p.moveDeck.inHand[0]];
-    
 }
 
 -(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
     
-     NSLog(@"AI is choosing a location for card: %@", c.name);
+    NSLog(@"AI is choosing a location for card: %@", c.name);
     
     if (c.category == CardCategoryMove) { // CALCULATE MOVE CARD
         
@@ -1381,58 +1440,6 @@
     
 }
 
-
--(void)endSequenceForEricWithManager:(Manager*)m{
-    NSLog(@"hi eric, this is: %@",m.name);
-    
-    int mode = arc4random() % 2;
-    NSLog(@"AI mode = %d", mode);
-    
-    //NSArray *players = [m playersClosestToBall];
-    NSArray *players;
-    if(mode == 0){
-        players = [m playersClosestToGoal];
-    }
-    else if(mode == 1){
-        players = [m playersClosestToBall];
-    }
-    if(players){
-        int lowerBound = 0;
-        int upperBound = [players count];
-        int playerIndex = lowerBound + arc4random() % (upperBound - lowerBound);
-        Player *p = [players objectAtIndex:playerIndex];
-        //Player *p = [players objectAtIndex:0];
-        NSArray *path;
-        if(mode == 0){
-            path = [p pathToGoal];
-        }
-        else if(mode == 1){
-            path = [p pathToBall];
-        }
-        // NSArray *path = [p pathToBall];
-        // NSArray *path = [p pathToGoal];
-        // NSLog(@"path = %@", path);
-        BoardLocation *newLoc;
-        
-        Card* moveCard = p.moveDeck.inHand[0];
-        int maxDist = [path count] - 1;
-        
-        int travelDistance = MAX(0,MIN(maxDist, moveCard.range));
-        // NSLog(@"travelDistance = %d", travelDistance);
-        // NSLog(@"path count = %d", [path count]);
-        
-        if(path && travelDistance > 0){
-            //newLoc = [path objectAtIndex:[path count]-travelDistance];
-            newLoc = [path objectAtIndex:[path count]-travelDistance];
-            
-            
-            GameSequence *gs = [GameSequence sequence];
-            
-            [self addEventToSequence:gs fromCardOrPlayer:p toLocation:newLoc withType:kEventMove];
-            [self performSequence:gs record:YES animate:YES];
-        }
-    }
-}
 
 
 #pragma mark - REPLAY / TURN
@@ -1617,7 +1624,7 @@
 }
 
 //-(void)showMetaData {
-//    [_gcController showMetaDataForMatch:_match];
+// [_gcController showMetaDataForMatch:_match];
 //}
 
 
@@ -1816,7 +1823,7 @@
     if ([[GKLocalPlayer localPlayer].playerID isEqualToString:player]) {
         
         NSLog(@"Game.m : current Manager is : %@", _me.name);
-        _scoreBoardManager =  _me;
+        _scoreBoardManager = _me;
     }
     else {
         
@@ -1900,11 +1907,11 @@
         
         else {
             NSLog(@"animating, wait . . .");
-            //            double delayInSeconds = 2.0;
-            //            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            //            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            //                [self fetchThisTurnSequences];
-            //            });
+            // double delayInSeconds = 2.0;
+            // dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            // dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            // [self fetchThisTurnSequences];
+            // });
         }
         
         
@@ -1984,14 +1991,14 @@
         
     }
     
-    //        else {
-    //            NSLog(@"FETCH IS REALLY NEW");
-    //            [self logCurrentGameData];
-    //            [self wipeBoard];
-    //            [self refreshGameBoard];
-    //            [self restoreGameWithData:_match];
-    //            [self replayLastTurn];
-    //        }
+    // else {
+    // NSLog(@"FETCH IS REALLY NEW");
+    // [self logCurrentGameData];
+    // [self wipeBoard];
+    // [self refreshGameBoard];
+    // [self restoreGameWithData:_match];
+    // [self replayLastTurn];
+    // }
     
     
     
@@ -2347,29 +2354,29 @@
         
         else if (type == RTMessageBeginCardTouch || type == RTMessageMoveCardTouch){
             
-            //            BoardLocation *location = [unarchiver decodeObjectForKey:@"location"];
-            //            //Card *c = [self cardInHandForManager:_opponent location:location];
+            // BoardLocation *location = [unarchiver decodeObjectForKey:@"location"];
+            // //Card *c = [self cardInHandForManager:_opponent location:location];
             //
-            //            CGPoint touch = [unarchiver decodeCGPointForKey:@"touch"];
-            //            CGSize inSize = [unarchiver decodeCGSizeForKey:@"bounds"];
-            //            CGSize outSize = [[UIScreen mainScreen] bounds].size;
+            // CGPoint touch = [unarchiver decodeCGPointForKey:@"touch"];
+            // CGSize inSize = [unarchiver decodeCGSizeForKey:@"bounds"];
+            // CGSize outSize = [[UIScreen mainScreen] bounds].size;
             //
-            //            float xScale = outSize.width / inSize.width;
-            //            float yScale = outSize.height / inSize.height;
+            // float xScale = outSize.width / inSize.width;
+            // float yScale = outSize.height / inSize.height;
             //
-            //            CGPoint pos = CGPointMake(touch.x * xScale, touch.y * yScale);
+            // CGPoint pos = CGPointMake(touch.x * xScale, touch.y * yScale);
             //
-            //            if (type == RTMessageBeginCardTouch) {
+            // if (type == RTMessageBeginCardTouch) {
             //
-            //                [_gameScene opponentBeganCardTouch:c atPoint:pos];
+            // [_gameScene opponentBeganCardTouch:c atPoint:pos];
             //
-            //            }
+            // }
             //
-            //            else if (type == RTMessageMoveCardTouch) {
+            // else if (type == RTMessageMoveCardTouch) {
             //
-            //                [_gameScene opponentMovedCardTouch:c atPoint:pos];
+            // [_gameScene opponentMovedCardTouch:c atPoint:pos];
             //
-            //            }
+            // }
             
         }
         
@@ -2599,19 +2606,19 @@
 
 -(void)saveTurnWithCompletionBlock:(void (^)())block {
     
-//    [_match saveCurrentTurnWithMatchData:[self saveGameToData] completionHandler:^(NSError *error){
-//        if (error) {
-//            NSLog(@"%@", error);
-//        }
-//        
-//        NSLog(@"**** FINISH SAVING GAME STATE ****");
-//        [self logCurrentGameData];
-//        
-//        [self sendRTPacketWithType:RTMessageCheckTurn point:nil];
-//        
-//        block();
-//        
-//    }];
+    // [_match saveCurrentTurnWithMatchData:[self saveGameToData] completionHandler:^(NSError *error){
+    // if (error) {
+    // NSLog(@"%@", error);
+    // }
+    //
+    // NSLog(@"**** FINISH SAVING GAME STATE ****");
+    // [self logCurrentGameData];
+    //
+    // [self sendRTPacketWithType:RTMessageCheckTurn point:nil];
+    //
+    // block();
+    //
+    // }];
     
 }
 
@@ -2636,7 +2643,7 @@
                 [_matchInfo removeObjectForKey:NEWPLAYER];
                 
                 [archiver encodeObject:_opponent forKey:p.playerID];
-                //  NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,p.playerID]);
+                // NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,p.playerID]);
             }
             else {
                 [_matchInfo setObject:[self metaDataForManager:_opponent] forKey:NEWPLAYER];
@@ -2848,8 +2855,8 @@
     
     //#warning lame o work around for game center
     //UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    //    SKViewController *rootViewController = (SKViewController*)window.rootViewController;
-    //    [rootViewController performSelector:@selector(showGK) withObject:Nil afterDelay:2.0];
+    // SKViewController *rootViewController = (SKViewController*)window.rootViewController;
+    // [rootViewController performSelector:@selector(showGK) withObject:Nil afterDelay:2.0];
     
 }
 
@@ -2937,4 +2944,3 @@
 
 
 @end
-
