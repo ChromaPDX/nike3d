@@ -137,13 +137,13 @@
     NSMutableArray* obstacles = [[NSMutableArray alloc] init];
     BoardLocation *ballLocation = _game.ball.location;
     
-    for (Player* p in [_players allCards]) {
+    for (Player* p in [_players inGame]) {
         // add all players that aren't on the ball to the obstacles
         if(!(p.location.x == ballLocation.x && p.location.y == ballLocation.y)){
             [obstacles addObject:p.location];
         }
     }
-    for (Player* p in [self.players allCards]) {
+    for (Player* p in [self.players inGame]) {
         // add all players that aren't on the ball to the obstacles
         if(!(p.location.x == ballLocation.x && p.location.y == ballLocation.y)){
             [obstacles addObject:p.location];
@@ -182,13 +182,13 @@
     NSMutableArray* obstacles = [[NSMutableArray alloc] init];
     BoardLocation *goalLocation = [self goal];
     
-    for (Player* p in [_players allCards]) {
+    for (Player* p in [_players inGame]) {
         // add all players that aren't on the ball to the obstacles
         if(!(p.location.x == goalLocation.x && p.location.y == goalLocation.y)){
             [obstacles addObject:p.location];
         }
     }
-    for (Player* p in [self.opponent.players allCards]) {
+    for (Player* p in [self.opponent.players inGame]) {
         // add all players that aren't on the ball to the obstacles
         if(!(p.location.x == goalLocation.x && p.location.y == goalLocation.y)){
             [obstacles addObject:p.location];

@@ -28,15 +28,15 @@
 #define NSFWKeyTeamModifiers @"teamModifiers"
 
 enum AI_ACTION_TYPE {
-    NONE,
-    MOVE_TO_GOAL,
-    SHOOT_ON_GOAL,
-    PASS_TO_PLAYER_IN_SHOOTING_RANGE,
-    PASS_TO_GOAL,
-    CHALLENGE,
-    MOVE_TO_CHALLENGE,
-    MOVE_TO_DEFENDGOAL,
-    MOVE_TO_BALL
+    NONE = 0,
+    MOVE_TO_GOAL = 1,
+    SHOOT_ON_GOAL = 2,
+    PASS_TO_PLAYER_IN_SHOOTING_RANGE = 3,
+    PASS_TO_GOAL = 4,
+    CHALLENGE = 5,
+    MOVE_TO_CHALLENGE = 6,
+    MOVE_TO_DEFENDGOAL = 7,
+    MOVE_TO_BALL = 8
 };
 
 @class BoardLocation;

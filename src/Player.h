@@ -44,6 +44,8 @@
 -(Card*)cardInDeckAtLocation:(BoardLocation*)location;
 
 -(NSArray*)pathToBoardLocation:(BoardLocation*)location;
+-(NSArray*)pathToClosestBoardLocation:(BoardLocation*)location;
+
 -(NSArray*)pathToBall;
 -(NSArray*)pathToGoal;
 -(NSArray*)pathToKickRange:(Player*)player;
