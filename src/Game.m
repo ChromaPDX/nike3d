@@ -1365,7 +1365,6 @@
     NSArray *pathToGoal;
     NSArray *pathToBall;
     Player *passToPlayer;
-    Player *player;
     NSArray *playersCloserToGoal;
     Player *p = c.deck.player;
    // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);

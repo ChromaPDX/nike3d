@@ -232,7 +232,7 @@
     NSArray *kickPath;
     NSArray *movePath;
     Card* kickCard;
-    if(player.kickDeck.inHand){
+    if(player.kickDeck.inHand && [player.kickDeck.inHand count]){
         kickCard = player.kickDeck.inHand[0];
     }
     else{
@@ -247,7 +247,7 @@
     }
     if(kickPath){
         Card* moveCard;
-        if(self.moveDeck.inHand){
+        if(self.moveDeck.inHand && [player.moveDeck.inHand count]){
             moveCard = self.moveDeck.inHand[0];
         }
         else{
@@ -302,7 +302,7 @@
 
 -(BOOL)isInShootingRange{
     Card *kickCard;
-    if(self.kickDeck){
+    if(self.kickDeck.inHand && [self.kickDeck.inHand count]){
         kickCard = self.kickDeck.inHand[0];
     }
     else{
@@ -371,7 +371,7 @@
             NSArray* path = [aStar pathFromAtoB:p.location B:goalLocation NeighborhoodType:NeighborhoodTypeMoore];
             //  NSLog(@"in playersClosestToBall, path = %@", path);
             // NSString* count = [NSString stringWithFormat:@"%d",[path count]];
-            if(path && ([path count] <= [selfPath count])){
+            if(path && ([path count] < [selfPath count]-1)){
                 [playerPathsDict setObject:p forKey:path];
             }
         }
@@ -387,7 +387,12 @@
         [sortedPlayers addObject:[playerPathsDict objectForKey:key]];
     }
     //NSLog(@"in playersClosestToBall, returning sortedPlayers: %@", sortedPlayers);
-    return sortedPlayers;
+    if([sortedPlayers count]){
+        return sortedPlayers;
+    }
+    else{
+        return NULL;
+    }
 
 }
 
