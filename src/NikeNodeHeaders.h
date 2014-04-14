@@ -26,6 +26,5 @@
 
 // STRINGS
 
-#define NSFWPlayerImage @"PlayerIndicator_PlayerON.png"
 #define NSFWPlayerShadow @"PlayerIndicator_PlayerSHADOW.png"
 #define NSFWPlayerHighlight @"CardType_HUD"

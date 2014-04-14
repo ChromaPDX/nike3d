@@ -256,16 +256,16 @@
     
     if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
         for (Player* p in [self.game.players allKeys]) {
-            [obstacles addObject:p.location];
+            [obstacles addObject:[p.location copy]];
         }
         if (self.category == CardCategoryChallenge) {
-            [obstacles removeObject:self.game.ball.location];
+            [obstacles removeObject:[self.game.ball.location copy]];
         }
     }
 
     else if (self.category == CardCategoryKick) {
         for (Player* p in self.deck.player.manager.opponent.players.inGame) {
-            [obstacles addObject:p.location];
+            [obstacles addObject:[p.location copy]];
         }
     }
     

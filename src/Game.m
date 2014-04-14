@@ -1068,6 +1068,10 @@
         
         else if (event.isRunningEvent) {
             
+            event.playerPerforming.location = [event.location copy];
+            
+            [_players setObject:[event.location copy] forKey:event.playerPerforming];
+            
             // DRIBBLE
             
             if (event.playerPerforming.ball) { // HAVE BALL, BRING IT WITH ME
@@ -1089,10 +1093,6 @@
                 
             }
             
-            else {
-                //NSLog(@">> %d Game.m : run/dribble SUCCEEDED %ld %ld", event.index, (long)event.location.x, (long)event.location.y);
-            }
-            
             // RUN
             
             if (!_ball.enchantee) { // NO ONE HAS BALL, PICK UP IF THERE
@@ -1103,16 +1103,7 @@
                 }
                 
             }
-            
-            // UNIVERSAL
-            
-            
-            
-            
-            event.playerPerforming.location = [event.location copy];
-            
-            [_players setObject:event.location forKey:event.playerPerforming];
-            
+
             
         }
         
