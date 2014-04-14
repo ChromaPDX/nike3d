@@ -20,6 +20,8 @@ float WINDOW_HEIGHT;
 float ANCHOR_WIDTH;
 float PARTICLE_SCALE;
 
+#define BALL_SPEED .2
+
 @interface GameScene (){
     float boardScale;
     NSMutableDictionary *playerSprites;
@@ -185,7 +187,7 @@ float PARTICLE_SCALE;
 //
     
 
-    
+   // [self.camera runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
     [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
     [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.35,0) duration:2.]];
 }
@@ -367,7 +369,6 @@ float PARTICLE_SCALE;
 -(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block {
     
     float MOVE_SPEED = .35;
-    float BALL_SPEED = .2;
     
     PlayerSprite* player = [playerSprites objectForKey:event.playerPerforming];
     
@@ -381,19 +382,10 @@ float PARTICLE_SCALE;
         //[self cameraShouldFollowSprite:Nil withCompletionBlock:^{}];
         
         if (_game.ball.enchantee) {
- 
-            PlayerSprite* p = [playerSprites objectForKey:_game.ball.enchantee];
-            
-            [p getReadyForPosession:^{
-                [self.ballSprite runAction:[NKAction move3dTo:[p.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED]  completion:^{
-                    //[_ballSprite removeAllActions];
-                    block();
-                    [p startPossession];
-                    NSLog(@"ball actions : %d", [self.ballSprite hasActions]);
-                    
-                }];
+
+            [self animateMoveBallToPlayer:_game.ball.enchantee withCompletionBlock:^{
+                block();
             }];
-            
         }
         
         else {
@@ -544,12 +536,12 @@ float PARTICLE_SCALE;
                     }];
                 }
                 
-                else if (event.wasSuccessful && event.type == kEventKickGoal) {
+                else if (event.type == kEventKickGoal && event.wasSuccessful) {
                     
                     // SUCCESSFUL GOAL
                     
 
-                        CGPoint dest = CGPointMake(0,_gameBoardNode.size.height);
+                        CGPoint dest = [[_gameTiles objectForKey:event.location] position];
                     
                         NKAction *move = [NKAction moveTo:dest duration:.3];
                     
@@ -561,20 +553,18 @@ float PARTICLE_SCALE;
                             
                             [self animateBigText:@"GOAL !!!" withCompletionBlock:^{
                                 
-                                [enchant runAction:[NKAction scaleTo:.01 duration:CAM_SPEED] completion:^{
-                                    [enchant removeFromParent];
-                                    _followNode = Nil;
-                                    
-                                    [self fadeOutChild:self.ballSprite duration:.3];
-                                    
                                     block();
+                                
+                                    //[self fadeOutChild:self.ballSprite duration:.3];
+                                    
+                                
                                 }];
                                 
                                 
                             }];
                             
-                        }];
-                        
+                
+                
   
                     
                     
@@ -598,10 +588,10 @@ float PARTICLE_SCALE;
                         
                         [self.ballSprite runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:CARD_ANIM_DUR]];
                         
-                        [enchant runAction:[NKAction scaleTo:.01 duration:CARD_ANIM_DUR*2] completion:^{
-                            [enchant removeFromParent];
-                            block();
-                        }];
+//                        [enchant runAction:[NKAction scaleTo:.01 duration:CARD_ANIM_DUR*2] completion:^{
+//                            [enchant removeFromParent];
+//                            block();
+//                        }];
                         
                     }];
                     
@@ -620,15 +610,20 @@ float PARTICLE_SCALE;
     
     else if (event.type == kEventResetPlayers) {
 
-        block();
         
+        for (PlayerSprite *ps in playerSprites.allValues) {
+            [ps runAction:[NKAction moveTo:[[_gameTiles objectForKey:ps.model.location] position] duration:1.]];
+        }
+        [self animateMoveBallToPlayer:_game.ball.enchantee withCompletionBlock:^{
+            block();
+        }];
+       
     }
 
     else if (event.type == kEventPlayCard){
 
         if (event.card) {
-            
-            
+
             CardSprite* card = [_uxWindow spriteForCard:event.card];
             
             if (card) {
@@ -760,20 +755,6 @@ float PARTICLE_SCALE;
         
     }
     else if (event.type == kEventDraw) {
-        
-        
-//        if (event.playerPerforming) {
-//            
-//            NSLog(@"GameScene.m : animateEvent : draw");
-//            [_uxWindow addCard:event.playerPerforming animated:YES withCompletionBlock:^{
-//                block();
-//            }];
-//            
-//        }
-//        
-//        else {
-//            block();
-//        }
 
            block();
         
@@ -814,6 +795,12 @@ float PARTICLE_SCALE;
         block();
         
         
+    }
+    
+    else if (event.type == kEventKickoff){
+        [self animateBigText:@"GAME ON !!!" withCompletionBlock:^{
+            block();
+        }];
     }
     
     
@@ -864,21 +851,33 @@ float PARTICLE_SCALE;
 
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block {
     
-    NKLabelNode *bigText = [[NKLabelNode alloc] initWithFontNamed:@"TradeGothicLTStd-BdCn20"];
+    for (int i = 0; i < 3; i++){
+        
+        NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(600, 200) FontNamed:@"TradeGothicLTStd-BdCn20"];
+        bigText.fontSize = 150;
+        bigText.fontColor = [NKColor whiteColor];//[NKColor colorWithRed:.2 green:.2 blue:1. alpha:1.];
+        bigText.text = theText;
+        
+        [bigText setOrientationEuler:ofVec3f(0,0,i*10. - 10)];
+        //[bigText setScale:.1];
+        [self addChild:bigText];
+        
+        //[bigText setPosition3d:ofPoint(0, 0,100)];
+        if (i == 0) {
+            [bigText runAction:[NKAction rotateByAngle:-i*20 duration:1.] completion:^{
+                [self fadeOutChild:bigText duration:.5];
+                  block();
+            }];
+        }
+        else {
+            [bigText runAction:[NKAction rotateByAngle:-i*20 duration:1.]  completion:^{
+                [self fadeOutChild:bigText duration:.5];
+            }];
+        }
 
-    bigText.fontSize = 150;
-    bigText.fontColor = [NKColor whiteColor];//[NKColor colorWithRed:.2 green:.2 blue:1. alpha:1.];
-    bigText.text = theText;
+        
+    }
     
-    [bigText setScale:.1];
-    [self addChild:bigText];
-    
-    [bigText setPosition3d:ofPoint(0, 0,100)];
-    
-    [bigText runAction:[NKAction scaleTo:1. duration:1.5] completion:^{
-        [bigText removeFromParent];
-        block();
-    }];
     
     
 }
@@ -952,7 +951,17 @@ float PARTICLE_SCALE;
 //        block();
 //    }
 //}
-
+-(void)animateMoveBallToPlayer:(Player *)player withCompletionBlock:(void (^)())block{
+    PlayerSprite* ps = [playerSprites objectForKey:player];
+    [ps getReadyForPosession:^{
+        [self.ballSprite runAction:[NKAction move3dTo:[ps.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED]  completion:^{
+            //[_ballSprite removeAllActions];
+            block();
+            [ps startPossession];
+            //NSLog(@"ball actions : %d", [self.ballSprite hasActions]);
+        }];
+    }];
+}
 
 -(void)addPlayerToBoardScene:(Player *)player animated:(BOOL)animated withCompletionBlock:(void (^)())block{
     

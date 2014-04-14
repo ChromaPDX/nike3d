@@ -11,7 +11,7 @@
 #import "CardTypes.h"
 #import "GlobalTypes.h"
 
-
+//#define CHEAT
 #define NEWPLAYER @"New Player"
 
 @class NKGameScene;
@@ -221,6 +221,7 @@ typedef enum RTMessageType {
 -(Manager*)managerForTeamSide:(int)teamSide;
 
 -(NSArray*)allBoardLocations;
+-(NSArray*)allPlayerLocations;
 
 -(BOOL)validatePlayerMove:(Card*)player;
 -(BOOL)canPerformCurrentSequence;

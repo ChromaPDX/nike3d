@@ -45,7 +45,6 @@
 -(void)addEvent:(GameEvent*)event {
     [_GameEvents addObject:event];
     event.parent = self;
-    
 }
 
 -(Manager*)manager{
@@ -60,6 +59,14 @@
     GameEvent *newEvent = [[GameEvent alloc]init];
     newEvent.seed = [newEvent newSeed];
     
+    return newEvent;
+}
+
++(instancetype)eventWithType:(EventType)type manager:(Manager *)manager {
+    GameEvent *newEvent = [[GameEvent alloc]init];
+    newEvent.seed = [newEvent newSeed];
+    newEvent.type = type;
+    newEvent.manager = manager;
     return newEvent;
 }
 

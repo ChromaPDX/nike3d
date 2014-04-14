@@ -318,7 +318,7 @@
 }
 
 -(NSArray*)playersInPassRange{
-    NSMutableArray* retPlayers;
+    NSMutableArray* retPlayers = [NSMutableArray array];
     NSArray* players = [self.manager playersClosestToBall];
     for(Player *p in players){
         NSArray *pathToKickRange = [self pathToKickRange:p];

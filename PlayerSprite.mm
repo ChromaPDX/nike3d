@@ -27,11 +27,22 @@
     return node;
 }
 
+-(NSString*)imageString {
+    if (_model.used) {
+        return @"PlayerInField_OFF";
+    }
+    else if (_model.ball) {
+        return @"PlayerInField_Possesion";
+    }
+    else {
+        return @"PlayerInField_ON";
+    }
+}
 
--(void)setModel:(Card *)model {
+-(void)setModel:(Player *)model {
     
     if (model) {
-        _model = model;
+            _model = model;
         //        cardName = [self styledLabelNode];
         //        cardName.fontSize = (int)(h/7.);
         //        [cardName setPosition:CGPointMake(w*.25 * ((model.manager.teamSide*2)-1), h*.1)];
@@ -46,12 +57,12 @@
             }
             
             NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:CGSizeMake(w, h)];
-            [shadow setAlpha:.4];
+            [shadow setAlpha:.2];
             [self addChild:shadow];
              [shadow setPosition3d:ofPoint(-self.size.width * .03, 0, 4)];
 
             
-            NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerImage] color:playerColor size:CGSizeMake(w, h)];
+            NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:playerColor size:CGSizeMake(w, h)];
       
             [triangle setOrientationEuler:ofVec3f(45,0,0)];
             
