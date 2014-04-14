@@ -1257,7 +1257,7 @@
 }
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
-    NSLog(@"AI is choosing card for Player: %@", p.name);
+    NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
     
     
     if (p.manager.hasPossesion) {
@@ -1324,7 +1324,8 @@
         Card* challengeCard = p.challengeDeck.inHand[0];
         Card* moveCard = p.moveDeck.inHand[0];
 
-        
+        NSLog(@"AIChooseCardForPlayer: challengeCard = %@", challengeCard.name);
+        NSLog(@"AIChooseCardForPlayer: challengeCard validatedSelectionSet = %@", [challengeCard validatedSelectionSet]);
         if ([[challengeCard validatedSelectionSet] count]) {
             // CAN CHALLENGE
             challengeCard.aiActionType = CHALLENGE;

@@ -43,9 +43,9 @@
 -(Card*)cardInHandAtlocation:(BoardLocation*)location;
 -(Card*)cardInDeckAtLocation:(BoardLocation*)location;
 
+// Convenience functions for AI, etc.
 -(NSArray*)pathToBoardLocation:(BoardLocation*)location;
 -(NSArray*)pathToClosestBoardLocation:(BoardLocation*)location;
-
 -(NSArray*)pathToBall;
 -(NSArray*)pathToGoal;
 -(NSArray*)pathToKickRange:(Player*)player;
@@ -56,6 +56,11 @@
 -(Player*)passToPlayerInShootingRange;
 -(NSArray*)playersCloserToGoal;
 -(BOOL)canMoveToChallenge;
+-(NSDictionary*)playersDistanceAfterMove:(BoardLocation*)location;
+-(int)distanceAfterMoveToClosestPlayer:(BoardLocation *)location;
+-(int)distanceAfterMoveToClosestOpponent:(BoardLocation *)location;
+
+
 
 
 

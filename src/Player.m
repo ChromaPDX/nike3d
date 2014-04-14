@@ -410,6 +410,24 @@
     }
 }
 
+-(NSDictionary*)playersDistanceAfterMove:(BoardLocation*)location{
+    NSMutableArray *allPlayers = [self.manager players];
+    [allPlayers addObjectsFromArray:[self.manager.opponent players]];
+    [allPlayers removeObject:self];
+    
+    
+}
+
+
+-(int)distanceAfterMoveToClosestPlayer:(BoardLocation *)location{
+    
+}
+
+
+-(int)distanceAfterMoveToClosestOpponent:(BoardLocation *)location{
+    
+}
+
 
 
 @end
