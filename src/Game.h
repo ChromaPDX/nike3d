@@ -11,7 +11,7 @@
 #import "CardTypes.h"
 #import "GlobalTypes.h"
 
-#define CHEAT
+//#define CHEAT
 #define NEWPLAYER @"New Player"
 
 @class NKGameScene;
