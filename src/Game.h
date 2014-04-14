@@ -139,7 +139,7 @@ typedef enum RTMessageType {
 @property (nonatomic, weak) Card *selectedCard;
 @property (nonatomic, weak) BoardLocation *selectedLocation;
 
-@property (nonatomic, strong) NSMutableDictionary *players;
+@property (nonatomic, strong) NSMutableArray *players;
 
 // GK TURN BASED MATCH
 @property (nonatomic, strong) GKTurnBasedMatch *match;
@@ -168,8 +168,6 @@ typedef enum RTMessageType {
 
 @property (nonatomic) BOOL myTurn;
 @property (nonatomic) BOOL animating;
-@property (nonatomic) BOOL aiGameMode;
-
 
 -(void)startMultiPlayerGame;
 -(void)startSinglePlayerGame;

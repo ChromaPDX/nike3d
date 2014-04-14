@@ -50,19 +50,13 @@
         //        [self addChild:cardName];
         
 
-            UIColor *playerColor =  NKWHITE;
-            
-            if([_model.manager isEqual:_delegate.game.me]){
-                playerColor = _model.manager.color;
-            }
-            
             NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:CGSizeMake(w, h)];
             [shadow setAlpha:.2];
             [self addChild:shadow];
              [shadow setPosition3d:ofPoint(-self.size.width * .03, 0, 4)];
 
             
-            NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:playerColor size:CGSizeMake(w, h)];
+            NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
       
             [triangle setOrientationEuler:ofVec3f(45,0,0)];
             
@@ -133,11 +127,6 @@
     
 }
 
--(void)stealPossesionFromPlayer:(PlayerSprite*)player {
-    
-    [self getReadyForPosession:nil];
-    
-}
 
 -(void)startPossession {
     if (!_ball) {
@@ -176,30 +165,16 @@
 
 
 -(void)stopPosession:(void (^)())block {
-    
-    
-    [_ball runAction:[NKAction scaleTo:BALL_SCALE_BIG duration:FAST_ANIM_DUR] completion:^{
-        
-        _ball.player = nil;
-        _ball = nil;
-        
+
         [self fadeOutChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
             NSLog(@"stopped possesion : %@", _model.name);
             [_ballTarget removeFromParent];
             _posession = nil;
+            _ball.player = nil;
+            _ball = nil;
+            block();
         }];
-        
-        
-        block();
-        
-        
-    }];
-    
-    
-    
-    
-    
-    
+
 }
 
 -(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {

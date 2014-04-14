@@ -15,6 +15,10 @@
 #define SKColor UIColor
 #endif
 
+#ifndef NKColor
+#define NKColor UIColor
+#endif
+
 // BOARD + GEOMETRY
 
 
