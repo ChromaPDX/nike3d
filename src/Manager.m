@@ -40,8 +40,6 @@
 -(void)setTeamSide:(int)teamSide {
     _teamSide = teamSide;
     
-   // _deck = [[Deck alloc] initWithManager:self];
-    
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {

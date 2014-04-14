@@ -12,7 +12,7 @@
 
 
 #define LOAD_TIME 1.0
-
+#define NKColor UIColor
 
 @interface Game (){
     SystemSoundID touchSound;
@@ -86,17 +86,15 @@
 //
 //}
 
--(void)startSinglePlayerGame {
+-(void)initGameShared {
     
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
-    
-    
-    
+
     _score = [BoardLocation pX:0 Y:0];
     
-    [_me setColor:[UIColor colorWithRed:0.0 green:80/255. blue:249/255. alpha:1.0]];
-    [_opponent setColor:[UIColor colorWithRed:1.0 green:40/255. blue:0 alpha:1.0]];
+    [_me setColor:V2BLUE];
+    [_opponent setColor:V2RED];
     
     [_me setTeamSide:1];
     [_opponent setTeamSide:0];
@@ -106,7 +104,6 @@
     
     
     singlePlayer = 1;
-    _aiGameMode = 0;
     
     
     _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
@@ -116,13 +113,9 @@
                                                                  @"singlePlayerMode": [NSNumber numberWithBool:YES]
                                                                  }];
     
-    
-    
-    
-    _me.name = @"HUMAN";
-    _opponent.name = @"COMPUTER";
-    
-    _opponent.isAI = true;
+}
+
+-(void)launchGame {
     
     self.myTurn = YES;
     
@@ -132,7 +125,7 @@
     
     _history = [NSMutableArray array];
     _thisTurnSequences = [NSMutableArray array];
-    _players = [NSMutableDictionary dictionary];
+    _players = [NSMutableArray array];
     
     [self setupNewPlayers];
     
@@ -146,67 +139,34 @@
     NSLog(@"running new game action");
     
     [self performSequence:_currentEventSequence record:YES animate:YES];
+
     
+}
+
+-(void)startSinglePlayerGame {
     
+    [self initGameShared];
+    
+    _me.name = @"HUMAN";
+    _opponent.name = @"COMPUTER";
+    
+    _opponent.isAI = true;
+    
+    [self launchGame];
 }
 
 
 -(void)startAIGame {
     
-    _me = [[Manager alloc] initWithGame:self];
-    _opponent = [[Manager alloc] initWithGame:self];
-    
-    _me.isAI = true;
-    _opponent.isAI = true;
-    
-    _score = [BoardLocation pX:0 Y:0];
-    
-    
-    [_me setColor:[UIColor colorWithRed:0.0 green:80/255. blue:249/255. alpha:1.0]];
-    [_opponent setColor:[UIColor colorWithRed:1.0 green:40/255. blue:0 alpha:1.0]];
-    
-    [_me setTeamSide:1];
-    [_opponent setTeamSide:0];
-    
-    
-    _rtmatchid = arc4random();
-    NSNumber *uid = [NSNumber numberWithUnsignedInteger:_rtmatchid];
-    
-    
-    singlePlayer = 1;
-    
-    
-    _matchInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"turns":@0,
-                                                                 @"current player":@"single player game",
-                                                                 @"rtmatchid":uid,
-                                                                 @"boardLength": [NSNumber numberWithInt:BOARD_LENGTH],
-                                                                 @"singlePlayerMode": [NSNumber numberWithBool:YES]
-                                                                 }];
+    [self initGameShared];
     
     _me.name = @"AI - DEEP BLUE";
     _opponent.name = @"AI - DEEP RED";
     
-    self.myTurn = YES;
+    _me.isAI = true;
+    _opponent.isAI = true;
     
-    [_gameScene setupGameBoard];
-    
-    NSLog(@"gameboard setup");
-    
-    _history = [NSMutableArray array];
-    _thisTurnSequences = [NSMutableArray array];
-    _players = [NSMutableDictionary dictionary];
-    
-    [self setupNewPlayers];
-    
-    NSLog(@"added new players");
-    
-    [self addStartTurnEventsToSequence:_currentEventSequence forManager:_me];
-    [self refreshGameBoard];
-    
-    NSLog(@"running new game sequence");
-    
-    [self performSequence:_currentEventSequence record:YES animate:YES];
-    
+    [self launchGame];
     
 }
 
@@ -393,18 +353,6 @@
     
     else if (event.type == kEventAddSpecial) {
         
-        int index = event.index;
-        
-        for (int i = index; i >= 0; i--){
-            GameEvent* testEvent = event.parent.GameEvents[i];
-            
-            if (testEvent.type == kEventPlayCard) {
-                event.playerPerforming = testEvent.playerPerforming;
-                NSLog(@"found player from 'play card sequence'");
-            }
-            
-        }
-        
         if (!event.playerPerforming) {
             NSLog(@"no player for deploy or enchant");
         }
@@ -436,16 +384,16 @@
         event.manager = event.playerPerforming.manager;
         event.deck = nil;
         event.type = kEventAddPlayer;
+        event.startingLocation = [card.location copy];
         NSLog(@"adding deploy event");
     }
     
     else if (card){ // IS CARD
-        event.card = card;
-        // NSLog(@"CARD'S DECK LOCATION IS %d %d", card.location.x, card.location.y);
+        event.card = card; // also sets other stuff
+        event.startingLocation = [card.deck.player.location copy];
     }
     
     event.type = type;
-    event.startingLocation = [card.deck.player.location copy];
     event.location = [location copy];
     
     [sequence.GameEvents addObject:event];
@@ -503,7 +451,7 @@
 
 -(void)fullFieldWipeForSequence:(GameSequence*)sequence {
     
-    for (Player* p in _players.allKeys) {
+    for (Player* p in _players) {
         GameEvent *e = [GameEvent event];
         e.location = [p.location copy];
         e.type = kEventRemovePlayer;
@@ -862,7 +810,14 @@
 
 -(BOOL)performEvent:(GameEvent*)event {
     
-    event.wasSuccessful = true;
+    
+    
+    if (event.type == kEventChallenge || event.type == kEventKickPass || event.type == kEventKickGoal) {
+        event.wasSuccessful = rand() % 100 > 50 ? true : false;
+    }
+    else {
+        event.wasSuccessful = true;
+    }
     
     // FIRST INHERIT WHO IS INVOLVED FROM PERSISTENT LOCATIONS
     
@@ -878,6 +833,8 @@
         for (Player* p in event.manager.players.inGame) {
             p.used = false;
         }
+        
+        [self assignBallIfPossible];
         
     }
     
@@ -913,6 +870,8 @@
         
         Player *newPlayer = [event.manager.players.theDeck lastObject];
         
+        [_players addObject:newPlayer];
+        
         if ([event.manager.players playCardFromDeck:newPlayer]){
             NSLog (@"putting player on field, shufflingcards");
             [newPlayer.moveDeck shuffleWithSeed:event.seed fromDeck:newPlayer.moveDeck.allCards];
@@ -925,7 +884,6 @@
         
         event.playerPerforming.location = [event.location copy];
         
-        [_players setObject:[event.location copy] forKey:event.playerPerforming];
         
     }
     
@@ -945,7 +903,7 @@
         
         p.enchantments = nil;
         
-        [_players removeObjectForKey:p];
+        [_players removeObject:p];
         
         
     }
@@ -993,6 +951,9 @@
     
     else if (event.type == kEventResetPlayers){
         
+        for (Player *p in event.manager.players.inGame) {
+            p.used = true;
+        }
         // NSLog(@"resetting coin toss position");
         for (int i = 0; i<3; i++) {
             
@@ -1009,8 +970,6 @@
                 else {
                     p2.ball = _ball;
                 }
-                
-                
             }
             
         }
@@ -1051,26 +1010,9 @@
     
     if (event.wasSuccessful) {
         
-        if (event.type == kEventSequence ) {
-            
-            //NSLog(@"%d Game.m : Start Player Events", event.index);
-            
-            if (!_ball.enchantee) { // NO ONE HAS BALL, PICK UP IF THERE
-                
-                if ([_ball.location isEqual:event.location]) {
-                    // NSLog(@"Take Posession");
-                    [event.playerPerforming setBall:_ball];
-                }
-            }
-            
-            
-        }
-        
-        else if (event.isRunningEvent) {
+       if (event.isRunningEvent) {
             
             event.playerPerforming.location = [event.location copy];
-            
-            [_players setObject:[event.location copy] forKey:event.playerPerforming];
             
             // DRIBBLE
             
@@ -1084,12 +1026,11 @@
                 
                 //NSLog(@">> %d Game.m : challengeSequence : SUCCEEDED", event.index);
                 
+                event.playerReceiving.location = [event.startingLocation copy];
+                
                 event.playerPerforming.ball = _ball;
                 
                 // MOVE OPPONENT TO MY SQUARE
-                
-                event.playerReceiving.location = [event.startingLocation copy];
-                [_players setObject:[event.startingLocation copy] forKey:event.playerReceiving];
                 
             }
             
@@ -1118,13 +1059,6 @@
         }
         
         else if (event.type == kEventKickGoal){ // SHOOT
-            //NSLog(@"shoot!");
-            
-            //for (int i = 0; i < 5; i++) {
-            //NSLog(@"GOAL !!!!!!! %@ !!!!!", event.manager.name);
-            //}
-            
-            //[_ball setLocation:event.manager.goal];
             
             if (!_score) {
                 _score = [BoardLocation pX:0 Y:0];
@@ -1132,10 +1066,6 @@
             
             if (event.manager.teamSide) _score.y += 1;
             else _score.x += 1;
-            
-            
-           // [_gameScene refreshScoreBoard];
-            
             
         }
         
@@ -1149,34 +1079,24 @@
         
         if (event.isRunningEvent) {
             
+            if (event.playerPerforming.ball) {
+                [event.playerPerforming setBall:Nil];
+                _ball.enchantee = Nil;
+            }
+            
             if (event.type != kEventChallenge) {
                 event.playerPerforming.location = [event.location copy];
-                [_players setObject:event.location forKey:event.playerPerforming];
-                //NSLog(@"moving to location %d %d", event.location.x, event.location.y);
             }
             else {
                 NSLog(@"challenge fail !!");
             }
-            
-            //
-            
-            if (event.playerPerforming.ball) {
-                
-                [event.playerPerforming setBall:Nil];
-                _ball.enchantee = Nil;
-                
-            }
+
         }
         
-        else if (event.type == kEventKickGoal){ // FAILED SHOT
-            
-        }
-        
-        else if (event.type == kEventKickPass){ // FAILED PASS
+        else if (event.type == kEventKickGoal || event.type == kEventKickPass){ // FAILED SHOT OR PASS
             [event.playerPerforming setBall:Nil];
             _ball.enchantee = Nil;
             _ball.location = [event scatter];
-            
         }
         
         return 0;
@@ -1188,9 +1108,12 @@
 
 
 -(void)logEvent:(GameEvent*)event{
-    
+
     if (event.playerPerforming) {
         NSLog(@">>%d %@ is %@ >> %d,%d to %d,%d", event.index, event.playerPerforming.name, event.name, event.startingLocation.x, event.startingLocation.y, event.location.x, event.location.y);
+        if (!event.wasSuccessful) {
+            NSLog(@"BUT THEY FAILED TO DO SO !!");
+        }
     }
     else if (event.startingLocation) {
         NSLog(@">>%d %@ for %@ from %d %d", event.index, event.name, event.manager.name, event.startingLocation.x, event.startingLocation.y);
@@ -1198,6 +1121,8 @@
     else {
         NSLog(@">>%d %@ for %@", event.index, event.name, event.manager.name);
     }
+    
+
     
 }
 
@@ -1421,34 +1346,36 @@
             NSLog(@"*********************************************AI: SHOOT ON GOAL");
             [_gameScene AISelectedLocation:c.deck.player.manager.goal];
             return;
-            break;
+            
         case PASS_TO_PLAYER_IN_SHOOTING_RANGE:
             NSLog(@"*********************************************AI: PASS TO PLAYER IN SHOOTING RANGE");
             passToPlayer = [c.deck.player passToPlayerInShootingRange];
             if(passToPlayer){
-                [_gameScene AISelectedLocation:passToPlayer.location];
+                if ([c.validatedSelectionSet containsObject:passToPlayer.location]) {
+                    [_gameScene AISelectedLocation:passToPlayer.location];
+                }
                 return;
             }
-            else{
-                NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:c.deck.player.location];
-                return;
-            }
-            break;
+            
+            NSLog(@"AI HAS NO VALID PASS: TRY A MOVE CARD");
+            [_gameScene AISelectedCard:c.deck.player.moveDeck.inHand[0]];
+            return;
+            
         case PASS_TO_GOAL:
-            NSLog(@"*********************************************AI: PASS TO GOAL");
-
             playersCloserToGoal = [c.deck.player playersCloserToGoal];
             if(playersCloserToGoal){
                 Player *p = playersCloserToGoal[0];
-                [_gameScene AISelectedLocation:p.location];
-                return;
+                if ([c.validatedSelectionSet containsObject:p.location]) {
+                    NSLog(@"*********************************************AI: PASS TOWARDS GOAL");
+                    [_gameScene AISelectedLocation:p.location];
+                    return;
+                }
             }
-            else{
-                NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:c.deck.player.location];
-                return;
-            }
+
+            NSLog(@"AI HAS NO VALID PASS: TRY A MOVE CARD");
+            [_gameScene AISelectedCard:c.deck.player.moveDeck.inHand[0]];
+            return;
+            
             break;
         case CHALLENGE:
             [_gameScene AISelectedLocation: _ball.location];
@@ -1755,11 +1682,12 @@
 #pragma mark -
 
 -(Player*)playerAtLocation:(BoardLocation*)location {
-    for (Player* inPlay in [_players allKeys]) {
+    for (Player* inPlay in _players) {
         if ([inPlay.location isEqual:location]) {
             return inPlay;
         }
     }
+    NSLog(@"ERROR: no player found at this location");
     return Nil;
 }
 
@@ -1771,8 +1699,6 @@
     NSLog(@"I have %d players on the board", [_me players].inGame.count);
     
     for (Player *p in [_me players].inGame) {
-        
-        
         
         if ([p.location isEqual:_ball.location]) {
             [p setBall:_ball];
@@ -1830,7 +1756,7 @@
 }
 
 -(void) addCardToBoard:(Card*)c {
-    [_players setObject:[c.location copy] forKey:c];
+    [_players addObject:c];
     [_gameScene addCardToBoardScene:c];
 }
 
@@ -1857,7 +1783,7 @@
     _ball = [[Card alloc] init];
     _ball.specialCategory = CardCategoryBall;
     
-    _players = [NSMutableDictionary dictionary];
+    _players = [NSMutableArray array];
     [_gameScene cleanupGameBoard];
 }
 
@@ -1865,7 +1791,7 @@
 -(NSSet*)temporaryEnchantments {
     NSMutableSet *temp = [NSMutableSet set];
     
-    for (Player* player in _players.allKeys) {
+    for (Player* player in _players) {
         
         for (Card* e in player.enchantments) {
             if (e.isTemporary) {
@@ -1882,7 +1808,7 @@
 
 -(void)purgeTemporaryEnchantments {
     
-    for (Player* player in _players.allKeys) {
+    for (Player* player in _players) {
         
         NSMutableSet *rem;
         
@@ -1906,7 +1832,7 @@
 
 -(void)assignBallIfPossible {
     
-    for (Player *p in [_players allKeys]){
+    for (Player *p in _players){
         if ([p.location isEqual:_ball.location]) {
             [p setBall:_ball];
         }
@@ -1927,7 +1853,11 @@
 }
 
 -(NSArray*)allPlayerLocations {
-    return [_players allKeys];
+    NSMutableArray *locs = [NSMutableArray array];
+    for (Player*p in _players) {
+        [locs addObject:[p.location copy]];
+    }
+    return locs;
 }
 
 #pragma mark - GAME KIT CONVENIENCE

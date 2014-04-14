@@ -6,8 +6,7 @@
 //  Copyright (c) 2013 Robby Kraft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <SpriteKit/SpriteKit.h>
+#import "GlobalTypes.h"
 
 @class Deck;
 @class Game;
@@ -33,7 +32,7 @@
 // Meta Data
 
 //@property (nonatomic) NSMutableArray *cardsInGame;
-@property (nonatomic, strong) SKColor *color;
+@property (nonatomic, strong) NKColor *color;
 
 @property (nonatomic) int actionPointsEarned;
 @property (nonatomic) int actionPointsSpent;

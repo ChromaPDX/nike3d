@@ -147,8 +147,6 @@
             ball.enchantee = self;
         }
         
-        ball.location = self.location;
-        
         _ball = ball;
         
     }

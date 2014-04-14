@@ -79,18 +79,21 @@
     else return 0;
 }
 
--(BoardLocation*)scatterLocation {
+-(BoardLocation*)scatter {
     
     NSLog(@"calculate failed pass!");
     
+    BoardLocation *random = [_location copy];
     
-    int randomX = _location.x + ([_deck randomForIndex:_seed]%3 - 1);
-    int randomY = _location.y + ([_deck randomForIndex:_seed+1]%3 - 1);
+    while ([random isEqual:_location]) {
+        random.x = _location.x + ([_deck randomForIndex:_seed]%3 - 1);
+        random.y = _location.y + ([_deck randomForIndex:_seed+1]%3 - 1);
+        
+        random.x = MIN(MAX(0, random.x), BOARD_WIDTH-1);
+        random.y = MIN(MAX(0, random.y), BOARD_LENGTH-1);
+    }
     
-    randomX = MIN(MAX(0, randomX), BOARD_LENGTH-1);
-    randomY = MIN(MAX(0, randomY), BOARD_WIDTH-1);
-    
-    return [BoardLocation pX:randomX Y:randomY];
+    return random;
     
 }
 

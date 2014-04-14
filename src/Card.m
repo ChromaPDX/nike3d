@@ -208,6 +208,13 @@
 
 }
 
+-(void)setEnchantee:(Player *)enchantee {
+    _enchantee = enchantee;
+    if (enchantee) {
+         _location = [enchantee.location copy];
+    }
+}
+
 #pragma mark - INTERROGATION
 
 -(Game*)game {
@@ -255,7 +262,7 @@
     // STEP 1:  GET BOARD OBSTACLES
     
     if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
-        for (Player* p in [self.game.players allKeys]) {
+        for (Player* p in self.game.players) {
             [obstacles addObject:[p.location copy]];
         }
         if (self.category == CardCategoryChallenge) {
