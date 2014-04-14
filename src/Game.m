@@ -1384,6 +1384,137 @@
 }
 
 -(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
+    NSArray *pathToGoal;
+    NSArray *pathToBall;
+    Player *passToPlayer;
+    NSArray *playersCloserToGoal;
+    Player *p = c.deck.player;
+   // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
+    switch (c.aiActionType){
+        case NONE:
+            NSLog(@"*********************************************AI: NONE!!!");
+            break;
+        case MOVE_TO_DEFENDGOAL:  // for now this is the same as move_to_goal
+            NSLog(@"*********************************************AI: DEVEND GOAL");
+        case MOVE_TO_GOAL:
+            NSLog(@"*********************************************AI: MOVE TO GOAL");
+            pathToGoal = [c.deck.player pathToGoal];
+            if(pathToGoal){
+                BoardLocation *newLoc;
+                
+                int maxDist = [pathToGoal count] - 1;
+                
+                int travelDistance = MAX(0,MIN(maxDist, c.range));
+                // NSLog(@"travelDistance = %d", travelDistance);
+                // NSLog(@"path count = %d", [path count]);
+                
+                if(pathToGoal && travelDistance > 0){
+                    newLoc = [pathToGoal objectAtIndex:[pathToGoal count]-travelDistance];
+                    [_gameScene AISelectedLocation:newLoc];
+                    return;
+                }
+                else {
+                    NSLog(@"AI HAS NO VALID MOVE: STAY");
+                    [_gameScene AISelectedLocation:c.deck.player.location];
+                    return;
+                }
+            }
+            else {
+                NSLog(@"AI HAS NO VALID MOVE: STAY");
+                [_gameScene AISelectedLocation:c.deck.player.location];
+                return;
+            }
+            break;
+        case SHOOT_ON_GOAL:
+            NSLog(@"*********************************************AI: SHOOT ON GOAL");
+            [_gameScene AISelectedLocation:c.deck.player.manager.goal];
+            return;
+            break;
+        case PASS_TO_PLAYER_IN_SHOOTING_RANGE:
+            NSLog(@"*********************************************AI: PASS TO PLAYER IN SHOOTING RANGE");
+            passToPlayer = [c.deck.player passToPlayerInShootingRange];
+            if(passToPlayer){
+                [_gameScene AISelectedLocation:passToPlayer.location];
+                return;
+            }
+            else{
+                NSLog(@"AI HAS NO VALID MOVE: STAY");
+                [_gameScene AISelectedLocation:c.deck.player.location];
+                return;
+            }
+            break;
+        case PASS_TO_GOAL:
+            NSLog(@"*********************************************AI: PASS TO GOAL");
+
+            playersCloserToGoal = [c.deck.player playersCloserToGoal];
+            if(playersCloserToGoal){
+                Player *p = playersCloserToGoal[0];
+                [_gameScene AISelectedLocation:p.location];
+                return;
+            }
+            else{
+                NSLog(@"AI HAS NO VALID MOVE: STAY");
+                [_gameScene AISelectedLocation:c.deck.player.location];
+                return;
+            }
+            break;
+        case CHALLENGE:
+            [_gameScene AISelectedLocation: _ball.location];
+            return;
+            break;
+        case MOVE_TO_CHALLENGE:
+            NSLog(@"*********************************************AI: MOVE TO CHALLENGE");
+
+            pathToBall = [p pathToBall];
+            if(pathToBall){
+                [_gameScene AISelectedLocation:pathToBall[[pathToBall count]-1]];
+                return;
+            }
+            else {
+                NSLog(@"AI HAS NO VALID MOVE: STAY");
+                [_gameScene AISelectedLocation:c.deck.player.location];
+                return;
+            }
+            break;
+        case MOVE_TO_BALL:
+            NSLog(@"*********************************************AI: MOVE TO BALL");
+            pathToBall = [c.deck.player pathToClosestBoardLocation:_ball.location];
+            if(pathToBall){
+                BoardLocation *newLoc;
+                NSLog(@"pathToBall.count = %d", [pathToBall count]);
+                int maxDist = [pathToBall count] - 1;
+                
+                int travelDistance = MAX(0,MIN(maxDist, c.range));
+                // NSLog(@"travelDistance = %d", travelDistance);
+                // NSLog(@"path count = %d", [path count]);
+                NSLog(@"travelDistance = %d", travelDistance);
+
+                if(travelDistance > 0){
+                    newLoc = [pathToBall objectAtIndex:[pathToBall count]-travelDistance];
+                    [_gameScene AISelectedLocation:newLoc];
+                    return;
+                }
+                else {
+                    NSLog(@"AI HAS NO VALID MOVE: STAY");
+                    [_gameScene AISelectedLocation:c.deck.player.location];
+                    return;
+                }
+            }
+            else {
+                NSLog(@"pathToBall = NULL, AI HAS NO VALID MOVE: STAY");
+                [_gameScene AISelectedLocation:c.deck.player.location];
+                return;
+            }
+            break;
+    }
+    NSLog(@"AI HAS NO VALID MOVE: STAY");
+    [_gameScene AISelectedLocation:c.deck.player.location];
+    return;
+}
+
+
+/*
+-(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
     
     NSLog(@"AI is choosing a location for card: %@", c.name);
     
@@ -1439,7 +1570,7 @@
     }
     
 }
-
+*/
 
 
 #pragma mark - REPLAY / TURN
