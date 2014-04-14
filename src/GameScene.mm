@@ -262,6 +262,8 @@ float PARTICLE_SCALE;
         [tile setUserInteractionEnabled:false];
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
+    
+    if  (path.count){
     for (BoardLocation* loc in path) {
         BoardTile* tile = [_gameTiles objectForKey:loc];
         [tile removeAllActions];
@@ -272,6 +274,10 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
     }
     
+    CGPoint p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:path]];
+    [_gameBoardNode removeAllActions];
+    [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/4.) duration:1.]];
+    }
 }
 
 -(void)setSelectedPlayer:(Player *)selectedPlayer {
@@ -810,10 +816,11 @@ float PARTICLE_SCALE;
 };
 
 -(void)finishSequenceWithCompletionBlock:(void (^)())block {
-    NSLog(@"GameScene.m : finished actions, return camera to . . .");
-    [self cameraShouldFollowSprite:Nil withCompletionBlock:^{
-        block();
-    }];
+//    NSLog(@"GameScene.m : finished actions, return camera to . . .");
+//    [self cameraShouldFollowSprite:Nil withCompletionBlock:^{
+//        block();
+//    }];
+    block();
 }
 
 //-(void)animatePosessionFor:(Card*)card withCompletionBlock:(void (^)())block {
@@ -1099,173 +1106,102 @@ float PARTICLE_SCALE;
 
 
 #pragma mark - POSITION FUNCTIONS
--(void)cameraShouldFollowSprite:(NKSpriteNode*)sprite withCompletionBlock:(void (^)())block {
-    if (MOVE_CAMERA) {
-        
-        if (!sprite) {
-            
-            _followNode = Nil;
-            [_gameBoardNode removeAllActions];
-            
-            if (_gameBoardNode.position.x != [self camPosNormal].x) {
-                
-                //[_gameBoardNode runAction:[NKAction scaleTo:1. duration:1.]];
-                NKAction *move = [NKAction moveTo:[self camPosNormal] duration:.5];
-                // boardScale = 1.;
-                [move setTimingMode:NKActionTimingEaseOut];
-                [_gameBoardNode runAction:move completion:^{
-                    block();
-                }];
-                
-            }
-            
-            else {
-                block();
-            }
-            
-        }
-        else {
-            [_gameBoardNode removeAllActions];
-            NKAction *move = [NKAction moveTo:[self boardPosForSprite:sprite] duration:.5];
-            [move setTimingMode:NKActionTimingEaseOut];
-            [_gameBoardNode runAction:move completion:^{
-                _followNode = sprite;
-                block();
-            }];
-        }
-        
-    }
-    
-    else {
-        
-        [_gameBoardNode runAction:[NKAction scaleTo:1. duration:.05]];
-        NKAction *move = [NKAction moveTo:[self camPosNormal] duration:.5];
-        [move setTimingMode:NKActionTimingEaseIn];
-        [_gameBoardNode runAction:move completion:^{
-            block();
-        }];
-        
-    }
-}
 
--(void)zoomTowards:(NKSpriteNode*)sprite withCompletionBlock:(void (^)())block {
+-(CGPoint)centerOfBoundingBox:(NSArray*)boundingBoxLocations {
     
-    [_gameBoardNode removeAllActions];
+    BoardTile *ll = [_gameTiles objectForKey:boundingBoxLocations[0]];
+    BoardTile *ur = [_gameTiles objectForKey:boundingBoxLocations[1]];
     
-    [_gameBoardNode runAction:[NKAction scaleTo:1.2 duration:.5]];
-    boardScale = 1.2;
-    NKAction *move = [NKAction moveTo:[self boardPosForSprite:sprite] duration:.5];
-    [move setTimingMode:NKActionTimingEaseIn];
+    CGPoint llpos = [ll position];
+    CGPoint urpos = [ur position];
     
-    [_gameBoardNode runAction:move completion:^{
-        
-    }];
-    
-    block();
+    return CGPointMake((llpos.x + urpos.x) / 2., (llpos.y + urpos.y)/2.);
     
 }
 
-
--(void)dollyTowards:(NKSpriteNode*)sprite duration:(float)duration{
-    
-    [_gameBoardNode removeAllActions];
-    
-    
-    NKAction *move = [NKAction moveTo:[self camPosHalfTrack:sprite] duration:duration];
-    
-    [move setTimingMode:NKActionTimingEaseOut];
-    
-    
-    [_gameBoardNode runAction:move completion:^{
-    }];
-    
-    
-}
-
-//-(void) repositionGameBoardOnScreenAnimted:(BOOL)animated{
-//    CGPoint newPosition =  [self camPosNormal];
-//    if(!animated)
-//        [_gameBoardNode setPosition:newPosition];
-//    else{
-//        NKAction *boardScroll = [NKAction moveTo:newPosition duration:BOARD_ANIM_DUR];
-//        [boardScroll setTimingMode:NKActionTimingEaseOut];
-//        [_gameBoardNode runAction:boardScroll];
+//-(void)cameraShouldFollowSprite:(NKSpriteNode*)sprite withCompletionBlock:(void (^)())block {
+//    if (MOVE_CAMERA) {
+//        
+//        if (!sprite) {
+//            
+//            _followNode = Nil;
+//            [_gameBoardNode removeAllActions];
+//            
+//            if (_gameBoardNode.position.x != [self camPosNormal].x) {
+//                
+//                //[_gameBoardNode runAction:[NKAction scaleTo:1. duration:1.]];
+//                NKAction *move = [NKAction moveTo:[self camPosNormal] duration:.5];
+//                // boardScale = 1.;
+//                [move setTimingMode:NKActionTimingEaseOut];
+//                [_gameBoardNode runAction:move completion:^{
+//                    block();
+//                }];
+//                
+//            }
+//            
+//            else {
+//                block();
+//            }
+//            
+//        }
+//        else {
+//            [_gameBoardNode removeAllActions];
+//            NKAction *move = [NKAction moveTo:[self boardPosForSprite:sprite] duration:.5];
+//            [move setTimingMode:NKActionTimingEaseOut];
+//            [_gameBoardNode runAction:move completion:^{
+//                _followNode = sprite;
+//                block();
+//            }];
+//        }
+//        
+//    }
+//    
+//    else {
+//        
+//        [_gameBoardNode runAction:[NKAction scaleTo:1. duration:.05]];
+//        NKAction *move = [NKAction moveTo:[self camPosNormal] duration:.5];
+//        [move setTimingMode:NKActionTimingEaseIn];
+//        [_gameBoardNode runAction:move completion:^{
+//            block();
+//        }];
+//        
 //    }
 //}
-
-// not sure which of these two will be more useful
-// both essentially do the same thing...
-
--(void) incrementGameBoardPosition:(NSInteger)xOffset{
-    _gameBoardNodeScrollOffset += xOffset;
-    if(_gameBoardNodeScrollOffset < 2) _gameBoardNodeScrollOffset = 2;
-    else if (_gameBoardNodeScrollOffset > 15) _gameBoardNodeScrollOffset = 15;
-    //  [self repositionGameBoardOnScreenAnimted:YES];
-    //    [_uxWindow refreshFieldHUDXOffset:_gameBoardNodeScrollOffset];
-}
-
-//-(void) setGameBoardGridPosition:(CGPoint)newFocus{
-//    gameBoardViewScrollOffset = newFocus.x;
-//    [self repositionGameBoardOnScreenAnimted:YES];
+//
+//-(void)zoomTowards:(NKSpriteNode*)sprite withCompletionBlock:(void (^)())block {
+//    
+//    [_gameBoardNode removeAllActions];
+//    
+//    [_gameBoardNode runAction:[NKAction scaleTo:1.2 duration:.5]];
+//    boardScale = 1.2;
+//    NKAction *move = [NKAction moveTo:[self boardPosForSprite:sprite] duration:.5];
+//    [move setTimingMode:NKActionTimingEaseIn];
+//    
+//    [_gameBoardNode runAction:move completion:^{
+//        
+//    }];
+//    
+//    block();
+//    
+//}
+//
+//
+//-(void)dollyTowards:(NKSpriteNode*)sprite duration:(float)duration{
+//    
+//    [_gameBoardNode removeAllActions];
+//    
+//    
+//    NKAction *move = [NKAction moveTo:[self camPosHalfTrack:sprite] duration:duration];
+//    
+//    [move setTimingMode:NKActionTimingEaseOut];
+//    
+//    
+//    [_gameBoardNode runAction:move completion:^{
+//    }];
+//    
+//    
 //}
 
--(CGPoint)zonePositionForLocation:(BoardLocation*)location {
-    
-    CGPoint newPosition =  CGPointMake((location.x-(BOARD_LENGTH / 2.)+2.5)*TILE_WIDTH, 0);
-    return  newPosition;
-    
-}
-
--(CGPoint)boardPositionForLocation:(BoardLocation*)location {
-    CGPoint zonePosition =  CGPointMake((location.x-(BOARD_LENGTH / 2.)+2.5)*TILE_WIDTH, 0);
-    return CGPointMake(-zonePosition.x * boardScale, 0);
-}
-
--(CGPoint)boardPosForSprite:(NKSpriteNode*)sprite{
-    
-    return CGPointMake(-sprite.position.x * boardScale, 0);
-    //return CGPointMake((_gameBoardNodeScrollOffset-(_game.BOARD_LENGTH / 2.)+.5)*TILE_SIZE - sprite.position.x, 0);
-    
-}
-
-//-(CGPoint)screenPosForBoardSprite:(NKSpriteNode*)sprite{
-//    return CGPointMake(sprite.position.y + _camera.position.x, (_gameBoardNodeScrollOffset-(_game.BOARD_LENGTH / 2.)+1.5)*TILE_SIZE - sprite.position.x);
-//}
-
--(CGPoint)windowPosForBoardSprite:(NKSpriteNode*)sprite{
-    
-    if (_game.me.teamSide) {
-        return CGPointMake((ANCHOR_WIDTH - WINDOW_WIDTH*.5) + sprite.position.y, -(_gameBoardNode.position.x + sprite.position.x * boardScale));
-    }
-    return CGPointMake((ANCHOR_WIDTH - WINDOW_WIDTH*.5) - sprite.position.y, _gameBoardNode.position.x + sprite.position.x * boardScale);
-    
-}
-
--(CGPoint)camPosHalfTrack:(NKSpriteNode*)sprite{
-    
-    CGPoint norm = [self camPosNormal];
-    return CGPointMake(norm.x - sprite.position.x*.5, 0);
-    
-}
-
--(CGPoint)camPosNormal {
-    return CGPointZero;
-    //    CGPoint newPosition =  CGPointMake(self.size.width*.64-(1.5)*TILE_SIZE,
-    //                                       self.size.height*.5-(_gameBoardNodeScrollOffset-_game.BOARD_LENGTH+.5)*TILE_SIZE);
-    //
-    //CGPoint newPosition =  CGPointMake((_gameBoardNodeScrollOffset-(BOARD_LENGTH / 2.)+.5)*TILE_WIDTH, 0);
-    
-    // return CGPointZero;
-    
-    // NSLog(@"GameScene.m : CamPosNormal (%f, %f) (%d)",newPosition.x, newPosition.y, _gameBoardNodeScrollOffset);
-    
-    //    NSLog(@"return to normal board position");
-    //    CGPoint spriteOffset = CGPointMake(_gameBoardNode.activeZone.position.x, _gameBoardNode.size.height);
-    //    NSLog(@"%f, %f",(self.size.width*.5) - (spriteOffset.x), (self.size.height*.466)-gameBoardViewScrollOffset*TILE_SIZE );
-    //    return  CGPointMake((self.size.width*.5) - (spriteOffset.x),
-    //                        (self.size.height*.466)-gameBoardViewScrollOffset*TILE_SIZE );
-    
-}
 
 
 

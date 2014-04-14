@@ -802,14 +802,9 @@
     
 }
 
-
-
 #pragma mark - PERFORM EVENT
 
-
-
 -(BOOL)performEvent:(GameEvent*)event {
-    
     
     
     if (event.type == kEventChallenge || event.type == kEventKickPass || event.type == kEventKickGoal) {
@@ -1857,6 +1852,34 @@
         [locs addObject:[p.location copy]];
     }
     return locs;
+}
+
+-(NSArray*)boundingBoxForLocationSet:(NSArray*)set {
+    
+    BoardLocation *ur = [BoardLocation pX:0 Y:0];
+    BoardLocation *ll = [BoardLocation pX:BOARD_WIDTH-1 Y:BOARD_LENGTH-1];
+    
+    for (BoardLocation* loc in set) {
+        if (loc.x <= ll.x) {
+            ll.x = loc.x;
+        }
+        if (loc.y <= ll.y) {
+            ll.y = loc.y;
+        }
+        
+        if (loc.x >= ur.x) {
+            ur.x = loc.x;
+        }
+        
+        if (loc.y >= ur.y) {
+            ur.y = loc.y;
+        }
+    }
+    
+    NSLog(@"BOUNDING BOX: LL %d,%d UR %d,%d", ll.x, ll.y, ur.x, ur.y);
+    
+    return @[ll,ur];
+    
 }
 
 #pragma mark - GAME KIT CONVENIENCE

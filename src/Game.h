@@ -220,6 +220,7 @@ typedef enum RTMessageType {
 
 -(NSArray*)allBoardLocations;
 -(NSArray*)allPlayerLocations;
+-(NSArray*)boundingBoxForLocationSet:(NSArray*)set;
 
 -(BOOL)validatePlayerMove:(Card*)player;
 -(BOOL)canPerformCurrentSequence;
