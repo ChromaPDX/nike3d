@@ -833,9 +833,7 @@
         for (Player* p in event.manager.players.inGame) {
             p.used = false;
         }
-        
         [self assignBallIfPossible];
-        
     }
     
     else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {

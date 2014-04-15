@@ -412,6 +412,7 @@
     NSMutableArray *allPlayers = [self.manager players] ;
     [allPlayers addObjectsFromArray:[self.manager.opponent players]];
     [allPlayers removeObject:self];
+    
 }
 
 
