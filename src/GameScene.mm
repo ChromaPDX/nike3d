@@ -190,7 +190,7 @@ float PARTICLE_SCALE;
     // [self.camera runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
     
     [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
-    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.15,0) duration:2.]];
+    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.25,0) duration:2.]];
 }
 
 -(void)startMiniGame {

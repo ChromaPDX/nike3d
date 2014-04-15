@@ -571,6 +571,7 @@
     
     self.selectedCard = card.model;
     _delegate.selectedCard = _selectedCard;
+    
 }
 
 -(void)setSelectedCard:(Card *)selectedCard {

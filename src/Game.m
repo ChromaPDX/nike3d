@@ -228,7 +228,9 @@
                 
                 if (!player.used) {
                     
-                    [_gameScene refreshUXWindowForPlayer:player withCompletionBlock:nil];
+                    [_gameScene refreshUXWindowForPlayer:player withCompletionBlock:^{
+                        
+                    }];
                     
                     self.selectedPlayer = player;
                     
