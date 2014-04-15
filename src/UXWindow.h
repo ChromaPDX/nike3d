@@ -22,6 +22,7 @@
     -(void)addCard:(Card*)card;
     -(void)removeCard:(Card*)card;
     -(void)sortCards;
+    -(void)sortCardsAnimated:(BOOL)animated WithCompletionBlock:(void (^)())block;
     -(void)shuffleAroundCard:(CardSprite*)card;
 @end
 
@@ -38,7 +39,7 @@
 @property (nonatomic) BOOL enableSubmitButton;
 @property (nonatomic, strong) AlertSprite *alert;
 
--(void)refreshCardsForPlayer:(Player*)p;
+-(void)refreshCardsForPlayer:(Player *)p WithCompletionBlock:(void (^)())block;
 
 -(void)cardTouchMoved:(CardSprite*)card atPoint:(CGPoint)point;
 -(void)cardTouchBegan:(CardSprite*)card atPoint:(CGPoint)point;

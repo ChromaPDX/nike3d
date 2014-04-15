@@ -557,20 +557,30 @@
 //    
 //}
 
+-(void)begin {
+    [super begin];
+    glDisable(GL_DEPTH_TEST);
+}
+
+-(void)end {
+    glEnable(GL_DEPTH_TEST);
+    [super end];
+}
+
 -(void)cardTouchEnded:(CardSprite*)card atPoint:(CGPoint)point {
     
     self.selectedCard = card.model;
+    _delegate.selectedCard = _selectedCard;
     
 }
 
 -(void)setSelectedCard:(Card *)selectedCard {
-
+    
     if (selectedCard) {
-         [[_playerHands objectForKey:_selectedCard.deck.player] shuffleAroundCard:[self spriteForCard:selectedCard]];
+         [[_playerHands objectForKey:selectedCard.deck.player] shuffleAroundCard:[self spriteForCard:selectedCard]];
     }
     
     _selectedCard = selectedCard;
-    _delegate.selectedCard = selectedCard;
     
 }
 
@@ -580,15 +590,17 @@
     
     [hand runAction:[NKAction moveByX:0 y:-hand.size.height duration:FAST_ANIM_DUR ] completion:^{
         [hand removeFromParent];
+        block();
     }];
     
     
 }
 
--(void)refreshCardsForPlayer:(Player *)p {
+-(void)refreshCardsForPlayer:(Player *)p WithCompletionBlock:(void (^)())block{
     if (_selectedPlayer){
         [self removeCardsForPlayer:_selectedPlayer animated:YES WithCompletionBlock:^{}];
     }
+    
     _selectedPlayer = p;
 
     if (p) {
@@ -598,7 +610,13 @@
         
         [self addChild:nHand];
         
-        [nHand sortCards];
+        [nHand sortCardsAnimated:true WithCompletionBlock:^{
+            block();
+        }];
+        
+    }
+    else {
+        block();
     }
 
 }
@@ -813,18 +831,12 @@
         
     }
     
-    [_playerName runAction:[NKAction move3dTo:ofPoint( (_playerName.size.width * .4) - w*.5, -h*.4, 2) duration:CARD_ANIM_DUR]];
- 
-    
     if (animated) {
         
-        if (block) {
+    [_playerName runAction:[NKAction move3dTo:ofPoint( (_playerName.size.width * .4) - w*.5, -h*.4, 2) duration:CARD_ANIM_DUR] completion:^{
             block();
-        }
-        
-        //        [self runAction:[NKAction moveByX:0 y:0 duration:FAST_ANIM_DUR] completion:^{
-        
-        //        }];
+    }];
+
     }
     
     else {
