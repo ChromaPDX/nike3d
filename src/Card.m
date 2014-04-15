@@ -33,7 +33,7 @@
                 break;
                 
             case CardCategoryKick:
-                _level = rand()%3 + 1;
+                _level = rand()%3 + 2;
 #ifdef CHEAT
                 _level = 10;
 #endif
@@ -56,7 +56,7 @@
                     break;
                 case 1:
                     self.specialCategory = CardCategoryKick;
-                            _level = rand()%3 + 1;
+                            _level = rand()%3 + 2;
                     break;
                 case 2:
                     self.specialCategory = CardCategoryChallenge;
@@ -70,6 +70,7 @@
         }
         
                 _range = _level;
+            if (_level > 2) _level = 2;
         
     }
     return self;

@@ -188,8 +188,9 @@ float PARTICLE_SCALE;
     
     
     // [self.camera runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
+    
     [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
-    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.35,0) duration:2.]];
+    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.15,0) duration:2.]];
 }
 
 -(void)startMiniGame {
@@ -263,21 +264,36 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
+    CGPoint p;
+    
     if  (path.count){
-    for (BoardLocation* loc in path) {
-        BoardTile* tile = [_gameTiles objectForKey:loc];
-        [tile removeAllActions];
-        [tile setColor:V2GREEN];
-        [tile.location setBorderShapeInContext:path];
-        [tile setTextureForBorder:tile.location.borderShape];
-        [tile setUserInteractionEnabled:true];
-        [tile runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
+        for (BoardLocation* loc in path) {
+            BoardTile* tile = [_gameTiles objectForKey:loc];
+            [tile removeAllActions];
+            [tile setColor:V2GREEN];
+            [tile.location setBorderShapeInContext:path];
+            [tile setTextureForBorder:tile.location.borderShape];
+            [tile setUserInteractionEnabled:true];
+            [tile runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
+        }
+        
+        p  = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:path]];
+        [_gameBoardNode removeAllActions];
+        [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/4.) duration:1.]];
     }
     
-    CGPoint p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:path]];
-    [_gameBoardNode removeAllActions];
-    [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/4.) duration:1.]];
-    }
+//    else {
+//        p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:[_game allPlayerLocations]]];
+//        if ((-p.y + h/4.) > _gameBoardNode.position.y+100 || (-p.y + h/4.) < _gameBoardNode.position.y-100) { // filter out subtle moves
+//            [_gameBoardNode removeAllActions];
+//            [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/4.) duration:1.]];
+//        }
+//    }
+    
+
+    
+
+    
 }
 
 -(void)setSelectedPlayer:(Player *)selectedPlayer {
@@ -314,11 +330,15 @@ float PARTICLE_SCALE;
     [[playerSprites objectForKey:p] setHighlighted:true];
 }
 
+#pragma mark - AI selection
+
 -(void)AISelectedPlayer:(Player *)selectedPlayer {
     
-    PlayerSprite *ps = [playerSprites objectForKey:selectedPlayer];
+    //PlayerSprite *ps = [playerSprites objectForKey:selectedPlayer];
     
     [self showPlayerSelection:selectedPlayer];
+    
+    
     
     _selectedPlayer = selectedPlayer;
     _game.selectedPlayer = selectedPlayer;
@@ -331,9 +351,10 @@ float PARTICLE_SCALE;
         [self setSelectedCard:nil];
     }
     
-    [ps runAction:[NKAction moveByX:0 y:0 duration:AI_SPEED] completion:^{
-        [_game AIChooseCardForPlayer:selectedPlayer];
+    [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
+          [_game AIChooseCardForPlayer:selectedPlayer];
     }];
+    
     
 }
 
@@ -346,6 +367,9 @@ float PARTICLE_SCALE;
     
     _selectedCard = selectedCard;
     _game.selectedCard = selectedCard;
+    
+    [_uxWindow setSelectedCard:selectedCard];
+    
     [self showCardPath:[_selectedCard validatedSelectionSet]];
     
     [self runAction:[NKAction moveByX:0 y:0 duration:AI_SPEED] completion:^{
@@ -386,6 +410,11 @@ float PARTICLE_SCALE;
     PlayerSprite* player = [playerSprites objectForKey:event.playerPerforming];
     
     if (event.type == kEventStartTurn){
+        CGPoint p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:[_game allPlayerLocations]]];
+        if ((-p.y + h/4.) > _gameBoardNode.position.y+100 || (-p.y + h/4.) < _gameBoardNode.position.y-100) { // filter out subtle moves
+            [_gameBoardNode removeAllActions];
+            [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/4.) duration:1.]];
+        }
         block();
     }
     
@@ -483,9 +512,9 @@ float PARTICLE_SCALE;
             
             [player stopPosession:^{
                 
-                if ((event.type == kEventKickPass && event.wasSuccessful) || (event.type == kEventKickGoal && !event.wasSuccessful)) {
+                if ((event.type == kEventKickPass && event.wasSuccessful)) {
                     
-                    // SUCESSFULL PASS OR FAILED GOAL
+                    // SUCESSFULL PASS
                     
                     [receiver getReadyForPosession:^{
                         
@@ -500,11 +529,6 @@ float PARTICLE_SCALE;
                             
                             [receiver startPossession];
                             
-                            if (event.type == kEventKickGoal) {
-                                [self animateBigText:@"MISSED!" withCompletionBlock:^{
-                                    
-                                }];
-                            }
                             
                             //                            else if (event.type == kGoaliePass) {
                             //
@@ -525,6 +549,7 @@ float PARTICLE_SCALE;
                         
                     }];
                 }
+
                 
                 else if (event.type == kEventKickGoal && event.wasSuccessful) {
                     
@@ -560,7 +585,7 @@ float PARTICLE_SCALE;
                     
                 }
                 
-                else { // FAILED PASS
+                else { // FAILED PASS OR FAILED GOAL
                     
                     
                     CGPoint dest = [[_gameTiles objectForKey:_game.ball.location] position];
@@ -577,11 +602,8 @@ float PARTICLE_SCALE;
                     [self.ballSprite runAction:move completion:^(){
                         
                         [self.ballSprite runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:CARD_ANIM_DUR]];
-                        
-                        //                        [enchant runAction:[NKAction scaleTo:.01 duration:CARD_ANIM_DUR*2] completion:^{
-                        //                            [enchant removeFromParent];
-                        //                            block();
-                        //                        }];
+
+                        block();
                         
                     }];
                     
@@ -620,18 +642,18 @@ float PARTICLE_SCALE;
                 
                 [card removeAllActions];
                 
-                [card runAction:[NKAction move3dByX:0 Y:h*.5 Z:300 duration:CARD_ANIM_DUR] completion:^{
-                    [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR*2] completion:^{
+                [card runAction:[NKAction move3dTo:ofPoint(0,h*.5,300) duration:CARD_ANIM_DUR] completion:^{
+                  //  [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR*2] completion:^{
                         
                         NKAction *fall = [NKAction move3dByX:0 Y:h*.5 Z:-600 duration:CARD_ANIM_DUR];
                         [card runAction:fall completion:^{
+                            block();
                             [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
-                                block();
                                 [_uxWindow fadeOutChild:card duration:FAST_ANIM_DUR];
                             }];
                         }];
                         
-                    }];
+                  //  }];
                     
                     
                 }];
@@ -875,9 +897,9 @@ float PARTICLE_SCALE;
 
 -(void)refreshUXWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
     
-    [_uxWindow refreshCardsForPlayer:p];
-    
-    //[self refreshActionPoints];
+    [_uxWindow refreshCardsForPlayer:p WithCompletionBlock:^{
+        block();
+    }];
     
 }
 

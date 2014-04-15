@@ -17,7 +17,7 @@
 @class Card;
 @class Game;
 
-#define AI_SPEED .5
+#define AI_SPEED .75
 
 
 @interface GameScene : NKSceneNode <GameSceneProtocol>
