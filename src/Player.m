@@ -161,14 +161,20 @@
 
 -(NSArray*)pathToBall{
     BoardLocation *ballLocation = _manager.game.ball.location;
-    return [self pathToBoardLocation:ballLocation];
+    NSMutableArray *retPath = [[self pathToClosestAdjacentBoardLocation:ballLocation] mutableCopy];
+    [retPath addObject:ballLocation];
+  //  NSArray* reversedPath = [[retPath reverseObjectEnumerator] allObjects];
+    return retPath;
 }
 
 -(NSArray*)pathToGoal{
     BoardLocation *goalLocation = _manager.goal;
-    return [self pathToBoardLocation:goalLocation];
+    NSArray *path = [self pathToClosestAdjacentBoardLocation:goalLocation];
+  //  NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+    return path;
 }
 
+// returns the path to the specified board location, unverified
 -(NSArray*)pathToBoardLocation:(BoardLocation *)location{
     if(!location){
         NSLog(@"pathToBoardLocation Error, null location");
@@ -179,24 +185,23 @@
    // BoardLocation *goalLocation = _manager.goal;
     
     for (Player* p in [_manager.players inGame]) {
-        // add all players that aren't on the ball to the obstacles
-      //  if(!([location isEqual:p.location])){
+        if(p != self){
             [obstacles addObject:p.location];
-      //  }
+        }
     }
     for (Player* p in [_manager.opponent.players inGame]) {
-        // add all players that aren't on the ball to the obstacles
-       // if(!([location isEqual:p.location])){
-            [obstacles addObject:p.location];
-       // }
+        [obstacles addObject:p.location];
     }
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
    // NSLog(@"in pathToLocation, player = %@ ball = %@", self.location, location);
     NSArray* path = [aStar pathFromAtoB:self.location B:location NeighborhoodType:NeighborhoodTypeMoore];
     
-    return path;
+    NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+    return reversedPath;
+  //  return path;
 }
--(NSArray*)pathToClosestBoardLocation:(BoardLocation *)location{
+
+-(NSArray*)pathToClosestAdjacentBoardLocation:(BoardLocation *)location{
     if(!location){
         NSLog(@"pathToBoardLocation Error, null location");
         return NULL;
@@ -206,13 +211,11 @@
     // BoardLocation *goalLocation = _manager.goal;
     
     for (Player* p in [_manager.players inGame]) {
-        // add all players that aren't on the ball to the obstacles
         if(!([location isEqual:p.location])){
             [obstacles addObject:p.location];
         }
     }
     for (Player* p in [_manager.opponent.players inGame]) {
-        // add all players that aren't on the ball to the obstacles
         if(!([location isEqual:p.location])){
             [obstacles addObject:p.location];
         }
@@ -220,10 +223,18 @@
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
     // NSLog(@"in pathToLocation, player = %@ ball = %@", self.location, location);
     NSArray* path = [aStar pathFromAtoB:self.location B:location NeighborhoodType:NeighborhoodTypeMoore];
-    
-    return path;
+    NSMutableArray* reversedPath = [[[path reverseObjectEnumerator] allObjects] mutableCopy];
+    [reversedPath removeLastObject];
+    if([reversedPath count]){
+        return reversedPath;
+    }
+    else{
+        return NULL;
+    }
 }
 
+-(NSArray *)pathToShootingRange{
+}
 
 -(NSArray*)pathToKickRange:(Player *)player{
     NSArray *retPath;
@@ -274,15 +285,13 @@
 
 -(NSArray*)pathToChallenge:(Player *)player{
     NSMutableArray *retPath;
-   
-    retPath = [NSMutableArray arrayWithArray:[self pathToClosestBoardLocation:player.location]];
-    if(!retPath){
+    retPath = [NSMutableArray arrayWithArray:[self pathToClosestAdjacentBoardLocation:player.location]];
+    if(!retPath && [retPath count]){
         return NULL;
     }
-    if([retPath count] > 1){
-        [retPath removeObjectAtIndex:[retPath count]-1];
+    else{
+        return retPath;
     }
-    return retPath;
 }
 
 -(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet{
@@ -302,13 +311,14 @@
     Card *kickCard;
     if(self.kickDeck.inHand && [self.kickDeck.inHand count]){
         kickCard = self.kickDeck.inHand[0];
-    }
-    else{
-        return FALSE;
-    }
-    NSArray* pathToGoal = [self pathToGoal];
-    if(kickCard.range >= [pathToGoal count]){
-        return TRUE;
+        NSArray *kickSelect = [kickCard validatedSelectionSet];
+        if([kickSelect containsObject:self.manager.goal]){
+            return TRUE;
+        }
+        else{
+            return FALSE;
+        }
+
     }
     else{
         return FALSE;
@@ -318,89 +328,65 @@
 -(NSArray*)playersInPassRange{
     NSMutableArray* retPlayers = [NSMutableArray array];
     NSArray* players = [self.manager playersClosestToBall];
+    Card *passCard = self.kickDeck.inHand[0];
     for(Player *p in players){
-        NSArray *pathToKickRange = [self pathToKickRange:p];
-        if([pathToKickRange count] == 1){
+        NSArray *pathToPlayer = [self pathToBoardLocation:p.location];
+        if(p != self && [pathToPlayer count] <= passCard.range){
             [retPlayers addObject:p];
         }
     }
     return retPlayers;
 }
 
--(Player *)passToPlayerInShootingRange{
-    NSArray *playersInShootingRange = [self playersInPassRange];
-    NSArray *playersInPassRange = [self.manager playersInShootingRange];
+-(Player *)passToAvailablePlayerInShootingRange{
+    NSArray *playersInPassRange = [self playersInPassRange];
+    NSArray *playersInShootingRange = [self.manager playersInShootingRange];
+    NSLog(@"passToPlayerInShootingRange -- playersInPassRange[count] = %d, playersInShootingRange[count] = %d", [playersInPassRange count], [playersInShootingRange count]);
     NSArray *playersIntersect = [BoardLocation tileSetIntersect:playersInShootingRange withTileSet:playersInPassRange];
     if(playersIntersect){
-        return playersIntersect[0];
-    }
-    else{
-        return NULL;
-    }
-
-}
-
--(NSArray *)playersCloserToGoal{
-    NSMutableArray* obstacles = [[NSMutableArray alloc] init];
-    BoardLocation *goalLocation = [self.manager goal];
-    
-    for (Player* p in [self.manager.players allCards]) {
-        // add all players that aren't on the ball to the obstacles
-        if(!(p.location.x == goalLocation.x && p.location.y == goalLocation.y)){
-            [obstacles addObject:p.location];
-        }
-    }
-    for (Player* p in [self.manager.opponent.players allCards]) {
-        // add all players that aren't on the ball to the obstacles
-        if(!(p.location.x == goalLocation.x && p.location.y == goalLocation.y)){
-            [obstacles addObject:p.location];
-        }
-    }
-    
-    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
-    
-    //NSLog(@"_game = %@", _game.ball.location);
-    NSArray* selfPath = [aStar pathFromAtoB:self.location B:goalLocation NeighborhoodType:NeighborhoodTypeMoore];
-    
-    NSMutableDictionary *playerPathsDict = [[NSMutableDictionary alloc] init];
-    for(Player* p in self.manager.players.inGame) {
-        if(p != self){
-            //NSLog(@"in playersClosestToBall, operating on player = %@, player location = %@  ball location = %@", p.name, p.location, goalLocation);
-            NSArray* path = [aStar pathFromAtoB:p.location B:goalLocation NeighborhoodType:NeighborhoodTypeMoore];
-            //  NSLog(@"in playersClosestToBall, path = %@", path);
-            // NSString* count = [NSString stringWithFormat:@"%d",[path count]];
-            if(path && ([path count] < [selfPath count]-1)){
-                [playerPathsDict setObject:p forKey:path];
+        for(Player *p in playersIntersect){
+            if(p != self && !p.used){
+                return playersIntersect[0];
             }
         }
     }
-    // NSLog(@"in playersClosestToBall, playersPathsDict = %@", playerPathsDict);
-    
-    // sort the playerPathsDict by lenth of the paths
-    NSArray *keys = [playerPathsDict allKeys];
-    NSMutableArray *sortedPlayers = [[NSMutableArray alloc] init];
-    NSSortDescriptor* descriptor = [NSSortDescriptor sortDescriptorWithKey: @"@count" ascending: YES];
-    NSArray* sortedKeys= [keys sortedArrayUsingDescriptors: @[ descriptor ]];
-    for(NSArray* key in sortedKeys){
-        [sortedPlayers addObject:[playerPathsDict objectForKey:key]];
+    return NULL;
+}
+
+-(NSArray *)playersAvailableCloserToGoal{
+    NSArray *players = self.manager.players.inGame;
+    NSArray *myPath = [self pathToGoal];
+    NSMutableArray *retPlayers = [[NSMutableArray alloc] init];
+    for(Player *p in players){
+        if(p != self){
+            NSArray *path = [p pathToGoal];
+            if([path count] < [myPath count]){
+                [retPlayers addObject:p];
+            }
+        }
     }
-    //NSLog(@"in playersClosestToBall, returning sortedPlayers: %@", sortedPlayers);
-    if([sortedPlayers count]){
-        return sortedPlayers;
+    return retPlayers;
+}
+-(NSArray *)playersAvailableInKickRangeCloserToGoal{
+    NSArray *closerToGaol = [self playersAvailableCloserToGoal];
+    if(closerToGaol){
+        NSArray *playersInPassRange = [self playersInPassRange];
+        if(playersInPassRange) {
+            return [BoardLocation tileSetIntersect:closerToGaol withTileSet:playersInPassRange];
+        }
     }
     else{
         return NULL;
     }
-
 }
 
 -(BOOL)canMoveToChallenge{
-    NSArray* pathToChallenge = [self pathToBall];
+    NSArray* pathToChallenge = [self pathToClosestAdjacentBoardLocation:_ball.location];
     Card* moveCard = self.moveDeck.inHand[0];
     if(!pathToChallenge){
         return FALSE;
     }
-    if([pathToChallenge count] <= moveCard.range){
+    if([moveCard validatedPath:pathToChallenge]){
         return TRUE;
     }
     else{
@@ -409,20 +395,52 @@
 }
 
 -(NSDictionary*)playersDistanceAfterMove:(BoardLocation*)location{
-    NSMutableArray *allPlayers = [self.manager players] ;
-    [allPlayers addObjectsFromArray:[self.manager.opponent players]];
+    NSMutableArray *allPlayers = [self.manager.players.inGame mutableCopy];
+    [allPlayers addObjectsFromArray:self.manager.opponent.players.inGame];
     [allPlayers removeObject:self];
     
+    NSMutableDictionary *playersDict = [[NSMutableDictionary alloc] init];
+    for(Player *p in allPlayers){
+        NSArray *path = [self pathToBoardLocation:p.location];
+        if(path){
+            [playersDict setObject:path forKey:p];
+        }
+    }
+    return playersDict;
 }
 
 
 -(int)distanceAfterMoveToClosestPlayer:(BoardLocation *)location{
-    
+    NSDictionary *playersDistanceDict = [self playersDistanceAfterMove:location];
+    NSArray *players = [playersDistanceDict allKeys];
+    int count = -1;
+    for(Player *p in players){
+        NSArray *path = [playersDistanceDict objectForKey:p];
+        if(path){
+            if(count == -1 || [path count] < count){
+                count = [path count];
+            }
+        }
+    }
+    return count;
 }
 
 
 -(int)distanceAfterMoveToClosestOpponent:(BoardLocation *)location{
-    
+    NSDictionary *playersDistanceDict = [self playersDistanceAfterMove:location];
+    NSArray *players = [playersDistanceDict allKeys];
+    int count = -1;
+    for(Player *p in players){
+        if(p.manager.teamSide != self.manager.teamSide){
+            NSArray *path = [playersDistanceDict objectForKey:p];
+            if(path){
+                if(count == -1 || [path count] < count){
+                    count = [path count];
+                }
+            }
+        }
+    }
+    return count;
 }
 
 

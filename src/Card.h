@@ -77,6 +77,7 @@ enum AI_ACTION_TYPE {
 -(Game*)game;
 -(NSArray*)validatedSelectionSet;
 -(NSArray*)selectionSet;
+-(NSArray*)validatedPath:(NSArray*)path;
 
 @property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Player *enchantee;

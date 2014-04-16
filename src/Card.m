@@ -337,15 +337,37 @@
 }
 
 
+-(NSArray*)validatedPath:(NSArray*)path{
+    NSLog(@"validatedPath, self.range = %d, input.count = %d", [self range], [path count]);
+    if(path){
+       // NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+       // NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+       // for(BoardLocation *l in path){
+       //     NSLog(@"%@", l);
+       // }
+        if([path count] >= [self range]){
+            NSArray *retPath = [path subarrayWithRange:NSMakeRange(0, [self range])];
+            NSLog(@"validatedPath, output.count = %d", [retPath count]);
+            return retPath;
+        }
+        else{
+            return NULL;
+        }
+    }
+    else {
+        return NULL;
+    }
+}
+
 #pragma mark - ENCODING
 
 //-(NSArray*)aArray {
-//    
+//
 //    return @[@"type",               //0
 //             @"manager",            //1
 //
 //             @"name",               //2
-//             
+//
 //             @"actionPointEarn",    //3
 //             @"actionPointCost",    //4
 //

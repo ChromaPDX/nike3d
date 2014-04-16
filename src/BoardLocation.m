@@ -132,7 +132,7 @@
 }
 
 +(NSArray*)tileSetIntersect:(NSArray*)tileSetA withTileSet:(NSArray*)tileSetB{
-    NSMutableArray *retPath;
+    NSMutableArray *retPath = [[NSMutableArray alloc] init];
     for(BoardLocation *locA in tileSetA){
         for(BoardLocation *locB in tileSetB){
             if([locA isEqual:locB]){
@@ -140,7 +140,12 @@
             }
         }
     }
-    return retPath;
+    if([retPath count]){
+        return retPath;
+    }
+    else{
+        return NULL;
+    }
 }
 
 

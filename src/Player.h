@@ -45,16 +45,18 @@
 
 // Convenience functions for AI, etc.
 -(NSArray*)pathToBoardLocation:(BoardLocation*)location;
--(NSArray*)pathToClosestBoardLocation:(BoardLocation*)location;
+-(NSArray*)pathToClosestAdjacentBoardLocation:(BoardLocation*)location;
 -(NSArray*)pathToBall;
 -(NSArray*)pathToGoal;
 -(NSArray*)pathToKickRange:(Player*)player;
+-(NSArray*)pathToShootingRange;
 -(NSArray*)pathToChallenge:(Player*)player;
 -(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet;
 -(BOOL)isInShootingRange;
 -(NSArray*)playersInPassRange;
--(Player*)passToPlayerInShootingRange;
--(NSArray*)playersCloserToGoal;
+-(Player*)passToAvailablePlayerInShootingRange;
+-(NSArray*)playersAvailableCloserToGoal;
+-(NSArray*)playersAvailableInKickRangeCloserToGoal;
 -(BOOL)canMoveToChallenge;
 -(NSDictionary*)playersDistanceAfterMove:(BoardLocation*)location;
 -(int)distanceAfterMoveToClosestPlayer:(BoardLocation *)location;
