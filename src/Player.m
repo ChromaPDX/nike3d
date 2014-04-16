@@ -294,6 +294,40 @@
     }
 }
 
+
+-(NSArray*)pathToOpenFieldClosestToLocation:(BoardLocation *)location{
+    Card *moveCard = self.moveDeck.inHand[0];
+    if(moveCard){
+        NSArray *moveSet = moveCard.validatedSelectionSet;
+        BoardLocation *retLoc;
+        if(moveSet){
+            int maxSpace = 0;
+            for(BoardLocation *loc in moveSet){
+                int thisSpace = [self distanceAfterMoveToClosestOpponent:loc];
+                if(thisSpace > maxSpace){
+                    retLoc = loc;
+                    maxSpace = thisSpace;
+                }
+            }
+            NSArray *retPath = [moveCard validatedPath:[self pathToBoardLocation:retLoc]];
+            if(retPath){
+                return retPath;
+            }
+            else{
+                return NULL;
+            }
+        }
+        else{
+            return NULL;
+        }
+    }
+    else{
+        return NULL;
+    }
+}
+
+
+
 -(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet{
     int minPath = 100000;
     BoardLocation* retVal;
@@ -442,7 +476,6 @@
     }
     return count;
 }
-
 
 
 @end

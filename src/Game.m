@@ -1218,6 +1218,7 @@
                 else{
                     // CAN NOT PASS TO PLAYER IN SHOOTING RANGE
                     NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
+                   // NSArray *pathToGoal = [p pathToOpenFieldClosestToLocation:p.manager.goal];
                     if(pathToGoal){
                         // CAN MOVE IN SHOOTING RANGE
                         moveCard.aiActionType = MOVE_TO_GOAL;
@@ -1311,7 +1312,7 @@
             NSLog(@"*********************************************AI: NONE!!!");
             break;
         case MOVE_TO_DEFENDGOAL:  // for now this is the same as move_to_goal
-            NSLog(@"*********************************************AI: DEVEND GOAL");
+            NSLog(@"*********************************************AI: DEFEND GOAL");
         case MOVE_TO_GOAL:
             NSLog(@"*********************************************AI: MOVE TO GOAL");
             pathToGoalUnverified = [c.deck.player pathToGoal];
