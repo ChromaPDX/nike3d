@@ -201,9 +201,55 @@
   //  return path;
 }
 
+
+// returns the path to the specified board location, unverified
+-(NSArray*)pathFromBoardLocationToBoardLocation:(BoardLocation*)fromLocation toLocation:(BoardLocation *)toLocation{
+    if(!fromLocation || !toLocation){
+        NSLog(@"pathFromBoardLocationToBoardLocation Error, null location");
+        return NULL;
+    }
+    
+    NSMutableArray *obstacles = [[NSMutableArray alloc] init];
+    // BoardLocation *goalLocation = _manager.goal;
+    
+    for (Player* p in [_manager.players inGame]) {
+        if(p != self){
+            [obstacles addObject:p.location];
+        }
+    }
+    for (Player* p in [_manager.opponent.players inGame]) {
+        [obstacles addObject:p.location];
+    }
+    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
+    // NSLog(@"in pathToLocation, player = %@ ball = %@", self.location, location);
+    NSArray* path = [aStar pathFromAtoB:fromLocation B:toLocation NeighborhoodType:NeighborhoodTypeMoore];
+    
+    NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+    return reversedPath;
+    //  return path;
+}
+
+// returns the path to the specified board location, unverified
+-(NSArray*)pathFromBoardLocationToBoardLocationNoObstacles:(BoardLocation*)fromLocation toLocation:(BoardLocation *)toLocation{
+    if(!fromLocation || !toLocation){
+        NSLog(@"pathFromBoardLocationToBoardLocationNoObstacles Error, null location");
+        return NULL;
+    }
+    
+    NSMutableArray *obstacles = [[NSMutableArray alloc] init];
+    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
+    // NSLog(@"in pathToLocation, player = %@ ball = %@", self.location, location);
+    NSArray* path = [aStar pathFromAtoB:fromLocation B:toLocation NeighborhoodType:NeighborhoodTypeMoore];
+    
+    NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+    return reversedPath;
+    //  return path;
+}
+
+
 -(NSArray*)pathToClosestAdjacentBoardLocation:(BoardLocation *)location{
     if(!location){
-        NSLog(@"pathToBoardLocation Error, null location");
+        NSLog(@"pathToClosestAdjacentBoardLocation Error, null location");
         return NULL;
     }
     
@@ -297,36 +343,72 @@
 
 -(NSArray*)pathToOpenFieldClosestToLocation:(BoardLocation *)location{
     Card *moveCard = self.moveDeck.inHand[0];
-    if(moveCard){
-        NSArray *moveSet = moveCard.validatedSelectionSet;
-        BoardLocation *retLoc;
-        if(moveSet){
-            int maxSpace = 0;
-            for(BoardLocation *loc in moveSet){
-                int thisSpace = [self distanceAfterMoveToClosestOpponent:loc];
-                if(thisSpace > maxSpace){
-                    retLoc = loc;
-                    maxSpace = thisSpace;
-                }
-            }
-            NSArray *retPath = [moveCard validatedPath:[self pathToBoardLocation:retLoc]];
-            if(retPath){
-                return retPath;
-            }
-            else{
-                return NULL;
-            }
+    if(!moveCard) return NULL;
+    
+    NSArray *moveSet = moveCard.validatedSelectionSet;
+    //NSLog(@"pathToOpenFieldClosestToLocation, moveSet.count = %d", [moveSet count]);
+    if(!moveSet){
+        return NULL;
+    }
+    //int maxSpace = 0;
+    
+    // compute the minimum distances to each temmate
+    // and the minum distances to the location for each player
+   // NSMutableDictionary *minTeammateDistances = [[NSMutableDictionary alloc]init];
+    NSMutableDictionary *locationDistances = [[NSMutableDictionary alloc]init];
+
+    for(BoardLocation *thisLoc in moveSet){
+        int distanceToTeammate = [self distanceAfterMoveToClosestTeammate:thisLoc];
+     //   [minTeammateDistances setObject:[NSNumber numberWithInt:distanceToTeammate] forKey:thisLoc];
+        NSArray *pathToTarget = [self pathFromBoardLocationToBoardLocationNoObstacles:thisLoc toLocation:location];
+      //  NSLog(@"distanceToTeammate = %d", distanceToTeammate);
+        if(pathToTarget && distanceToTeammate >= 2){
+       //     NSLog(@"adding %@ to the list with pathToTarget.count = %d", thisLoc, [pathToTarget count]);
+            [locationDistances setObject:[NSNumber numberWithInt:[pathToTarget count]] forKey:thisLoc];
         }
         else{
-            return NULL;
+         //   NSLog(@"removing %@ from location list, below threshold for min distance to teammates", thisLoc);
         }
+
+        // NSLog(@"pathToOpenFieldClosestLocation - thisSpace distance = %d", thisSpace);
+       // if(thisSpace > maxSpace){
+       //     retLoc = loc;
+       //     maxSpace = thisSpace;
+       // }
+    }
+    
+   // NSArray *myPathToLoc = [self pathFromBoardLocationToBoardLocationNoObstacles:self.location toLocation:location];
+    
+    BoardLocation *retLoc = NULL;
+
+    // remove any location that is under our threshold distance for distance to teammates
+   // for(BoardLocation *thisLoc in moveSet){
+   //     int distanceToTeammate = [minTeammateDistances objectForKey:thisLoc];
+   //     if(distanceToTeammate < 2){
+   //         [locationDistances removeObjectForKey:thisLoc];
+   //     }
+   // }
+    
+    int minDistance = 10000;
+    NSArray *keys = [locationDistances allKeys];
+    for(id key in keys){
+       // BoardLocation *thisLoc = [locationDistances objectForKey:key];
+        int distanceToTarget = [[locationDistances objectForKey:key] intValue];
+       // NSLog(@"distanceToTarget = %d", distanceToTarget);
+        if(distanceToTarget < minDistance){
+            retLoc = key;
+            minDistance = distanceToTarget;
+        }
+    }
+    
+    NSArray *retPath = [moveCard validatedPath:[self pathToBoardLocation:retLoc]];
+    if(retPath){
+        return retPath;
     }
     else{
         return NULL;
     }
 }
-
-
 
 -(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet{
     int minPath = 100000;
@@ -428,6 +510,7 @@
     }
 }
 
+// returns a dictionary of Player->Path pairs that correspond to the board after self moves to location
 -(NSDictionary*)playersDistanceAfterMove:(BoardLocation*)location{
     NSMutableArray *allPlayers = [self.manager.players.inGame mutableCopy];
     [allPlayers addObjectsFromArray:self.manager.opponent.players.inGame];
@@ -435,7 +518,7 @@
     
     NSMutableDictionary *playersDict = [[NSMutableDictionary alloc] init];
     for(Player *p in allPlayers){
-        NSArray *path = [self pathToBoardLocation:p.location];
+        NSArray *path = [p pathToBoardLocation:location];
         if(path){
             [playersDict setObject:path forKey:p];
         }
@@ -466,6 +549,24 @@
     int count = -1;
     for(Player *p in players){
         if(p.manager.teamSide != self.manager.teamSide){
+            NSArray *path = [playersDistanceDict objectForKey:p];
+            if(path){
+                if(count == -1 || [path count] < count){
+                    count = [path count];
+                }
+            }
+        }
+    }
+    return count;
+}
+
+
+-(int)distanceAfterMoveToClosestTeammate:(BoardLocation *)location{
+    NSDictionary *playersDistanceDict = [self playersDistanceAfterMove:location];
+    NSArray *players = [playersDistanceDict allKeys];
+    int count = -1;
+    for(Player *p in players){
+        if(p.manager.teamSide == self.manager.teamSide){
             NSArray *path = [playersDistanceDict objectForKey:p];
             if(path){
                 if(count == -1 || [path count] < count){

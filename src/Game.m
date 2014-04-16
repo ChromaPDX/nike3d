@@ -1316,15 +1316,18 @@
         case MOVE_TO_GOAL:
             NSLog(@"*********************************************AI: MOVE TO GOAL");
             pathToGoalUnverified = [c.deck.player pathToGoal];
-            NSLog(@"pathToGoalUnverified = ");
-            for(BoardLocation *loc in pathToGoalUnverified){
-                NSLog(@"%@",loc);
-            }
-            pathToGoal = [c validatedPath:[c.deck.player pathToGoal]];
-            NSLog(@"pathToGoalVerified = ");
-            for(BoardLocation *loc in pathToGoal){
-                NSLog(@"%@",loc);
-            }
+           // NSLog(@"pathToGoalUnverified = ");
+           // for(BoardLocation *loc in pathToGoalUnverified){
+           //     NSLog(@"%@",loc);
+           // }
+            
+            //pathToGoal = [c validatedPath:[c.deck.player pathToGoal]];
+            pathToGoal = [p pathToOpenFieldClosestToLocation:p.manager.goal];
+           
+            // NSLog(@"pathToGoalVerified = ");
+           // for(BoardLocation *loc in pathToGoal){
+           //     NSLog(@"%@",loc);
+           // }
             NSLog(@"pathToGoal count = %d", [pathToGoal count]);
             if(pathToGoal && [pathToGoal count]){
                 BoardLocation *newLoc;
@@ -1393,7 +1396,8 @@
             break;
         case MOVE_TO_BALL:
             NSLog(@"*********************************************AI: MOVE TO BALL");
-            NSArray *pathToBall = [c.deck.player pathToClosestAdjacentBoardLocation:_ball.location];
+            //NSArray *pathToBall = [c.deck.player pathToClosestAdjacentBoardLocation:_ball.location];
+            pathToBall = [p pathToOpenFieldClosestToLocation:_ball.location];
             NSMutableArray *validatedPath = [[NSMutableArray alloc]init];
             if(pathToBall){
                 validatedPath = [[c validatedPath:pathToBall] mutableCopy];
